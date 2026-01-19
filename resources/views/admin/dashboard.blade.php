@@ -5,7 +5,7 @@
 
         <div class="d-flex justify-content-between align-items-end mb-4 pb-3 border-bottom">
             <div>
-                <h2 class="mb-0 fw-bold" style="font-family: 'Algerian', sans-serif;">DIRECTORATE OF SHARIA</h2>
+                <h2 class="mb-0 fw-bold" style="font-family: 'Algerian', sans-serif;" data-i18n="directorate_of_sharia"></h2>
             </div>
             <div class="avatar-group">
                 <div class="bg-light p-2 rounded-3">
@@ -200,8 +200,7 @@
                 <div class="row">
                     <!-- Nikah Management -->
                     <div class="col-md-12 mb-4">
-                        <div class="card h-100 border-start border-4 border-primary shadow-sm"
-                            style="border-radius:14px;">
+                        <div class="card h-100 border-start border-4 border-primary shadow-sm" style="border-radius:14px;">
                             <div class="card-body p-4 d-flex flex-column">
                                 <!-- Card Header -->
                                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -646,13 +645,13 @@
         </style>
 
         <script>
-            document.getElementById('smartSearch').addEventListener('focus', function() {
+            document.getElementById('smartSearch').addEventListener('focus', function () {
                 var suggestions = document.getElementById('searchSuggestions');
                 suggestions.classList.add('show');
             });
 
-            document.getElementById('smartSearch').addEventListener('blur', function() {
-                setTimeout(function() {
+            document.getElementById('smartSearch').addEventListener('blur', function () {
+                setTimeout(function () {
                     var suggestions = document.getElementById('searchSuggestions');
                     suggestions.classList.remove('show');
                 }, 200);
@@ -735,10 +734,10 @@
     </style>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => {
-                card.addEventListener('click', function(e) {
+                card.addEventListener('click', function (e) {
                     if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return;
                     this.style.transform = 'scale(0.98)';
                     setTimeout(() => {
@@ -748,7 +747,7 @@
             });
 
             const searchInput = document.querySelector('input[placeholder*="Search"]');
-            searchInput.addEventListener('keypress', function(e) {
+            searchInput.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     performSearch();
                 }
