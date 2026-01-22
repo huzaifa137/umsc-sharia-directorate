@@ -694,3 +694,9 @@ return redirect()->route('student.dashboard')->with('error', 'You do not have pe
 -10  rejected
 10   accomplished
 100  all information
+
+
+Helper::auditTrail('Login Failed', 'User', Session::get('LoggedAdmin'), 'fail', ['status' => 'Failed Login'], ['status' => 'Failed'], 'Your account is not active.');
+Helper::auditTrail('Login Failed', 'User', Session::get('LoggedAdmin'), 'fail', ['status' => 'Failed Login'], ['status' => 'Failed'], 'We don’t recognize the provided credentials.');
+Helper::auditTrail('approve', 'NikkahApplication', $application->id, 'success', ['status' => 'submitted'], ['status' => 'approved'], 'Approved by District Qadh');
+Helper::auditTrail('Login Successful', 'User', Session::get('LoggedAdmin'), 'success', ['status' => 'Login Successful'], ['status' => 'Approved'], 'User Login Successful.');

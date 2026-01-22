@@ -130,13 +130,23 @@ Route::controller(MasterController::class)->group(function () {
         Route::get('convert-dashboard', 'convertDashboard')->name('convert.dashboard');
         Route::post('/save-convert-application', 'saveconvertApplication')->name('save.convert.application');
 
-
         // Users Routes 
 
         Route::get('users-dashboard', 'usersDashboard')->name('users.dashboard');
         Route::get('add-users', 'addUsers')->name('add.users');
         Route::get('manage-users', 'manageUsers')->name('manage.users');
         Route::post('/save-user-application', 'saveNewUser')->name('save.new.user');
+
+        // Search Routes 
+        Route::post('/smart-search', 'smartSearch');
+
+        // Rendered Search Routes 
+
+        Route::get('/nikah/view/{id}', 'viewNikahRecords');
+        Route::get('/divorce/view/{id}', 'view');
+        Route::get('/inheritance/view/{id}', 'view');
+        Route::get('/guardianship/view/{id}', 'view');
+        Route::get('/convert/view/{id}', 'view');
 
     });
 });

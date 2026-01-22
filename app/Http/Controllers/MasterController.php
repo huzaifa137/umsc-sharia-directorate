@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\SearchIndex;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,7 @@ use App\Models\NikkahApplication;
 use App\Models\ConvertApplication;
 use App\Models\GuardianshipApplication;
 use App\Models\InheritanceApplication;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -914,14 +916,14 @@ class MasterController extends Controller
                     'users' => $totalUsers,
                     'active' => $activeUsers,
                     'pending' => $pendingUsers,
-                    'suspended' => $suspended, 
+                    'suspended' => $suspended,
                 ]
             ];
         }
 
         $users = User::latest()->paginate(7);
 
-        return view('admin.user-dashboard', compact('roleStats', 'statusMessages', 'users','suspended'));
+        return view('admin.user-dashboard', compact('roleStats', 'statusMessages', 'users', 'suspended'));
     }
 
 
@@ -971,4 +973,108 @@ class MasterController extends Controller
         ]);
     }
 
+    public function smartSearch(Request $request)
+    {
+        $adminId = Session::get('LoggedAdmin');
+
+        if (!$adminId) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // 2️⃣ Get admin
+        $admin = DB::table('users')->where('id', $adminId)->first();
+
+        // 3️⃣ Build query
+        $query = SearchIndex::query();
+
+        // Category filter
+        if ($request->filled('scope')) {
+            $query->where('module', $request->scope);
+        }
+
+        // Keyword search
+        if ($request->filled('keyword')) {
+            $keyword = $request->keyword;
+
+            $query->where(function ($q) use ($keyword) {
+                $q->where('application_id', 'like', "%$keyword%")
+                    ->orWhere('keywords', 'like', "%$keyword%")
+                    ->orWhere('title', 'like', "%$keyword%");
+            });
+        }
+
+        // Date filters
+        if ($request->filled('date_from')) {
+            $query->whereDate('application_date', '>=', $request->date_from);
+        }
+
+        if ($request->filled('date_to')) {
+            $query->whereDate('application_date', '<=', $request->date_to);
+        }
+
+        // 4️⃣ Role-based filtering
+        $query->where(function ($q) use ($admin) {
+            $q->whereNull('required_role')
+                ->orWhere('required_role', '<=', $admin->user_role);
+        });
+
+        // 5️⃣ Execute
+        $results = $query
+            ->orderByDesc('application_date')
+            ->limit(50)
+            ->get();
+
+        return response()->json($results);
+    }
+
+    public function viewNikahRecords($id)
+    {
+        $adminId = Session::get('LoggedAdmin');
+
+        if (!$adminId) {
+            abort(401);
+        }
+
+        $admin = DB::table('users')->where('id', $adminId)->first();
+
+        $application = NikkahApplication::findOrFail($id);
+
+        // if ($admin->user_role < 1) {
+        //     abort(403);
+        // }
+
+        Helper::auditTrail('view', 'NikkahApplication', $application->id, 'success', null, null, 'Viewed Nikah application ' . $application->application_id);
+
+        return view('nikah.view', compact('application'));
+    }
+
+    public function view($id)
+    {
+        $adminId = Session::get('LoggedAdmin');
+
+        if (!$adminId){
+            abort(401);
+        }
+
+        $admin = DB::table('users')->where('id', $adminId)->first();
+
+        $application = DivorceApplication::findOrFail($id);
+
+        // Example: District Qadh & above
+        if ($admin->user_role < 2) {
+            abort(403);
+        }
+
+        Helper::auditTrail(
+            'view',
+            'DivorceApplication',
+            $application->id,
+            'success',
+            null,
+            null,
+            'Viewed Divorce case ' . $application->application_id
+        );
+
+        return view('divorce.view', compact('application'));
+    }
 }

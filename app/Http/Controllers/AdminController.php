@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use App\Models\password_reset_table;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -204,6 +205,9 @@ class AdminController extends Controller
         $userInfo = User::where($isEmail ? 'email' : 'username', $emailOrUsername)->first();
 
         if (!$userInfo) {
+
+            Helper::auditTrail('Login Failed', 'User', Session::get('LoggedAdmin'), 'fail', ['status' => 'Failed Login'], ['status' => 'Failed'], 'We don’t recognize the provided credentials.');
+
             return response()->json([
                 'status' => false,
                 'message' => 'We don’t recognize the provided credentials.',
@@ -211,6 +215,7 @@ class AdminController extends Controller
         }
 
         if (!Hash::check($request->password, $userInfo->password)) {
+            Helper::auditTrail('Login Failed', 'User', Session::get('LoggedAdmin'), 'fail', ['status' => 'Failed Login'], ['status' => 'Failed'], 'Invalid password or credentials.');
             return response()->json([
                 'status' => false,
                 'message' => 'Invalid password or credentials.',
@@ -224,6 +229,8 @@ class AdminController extends Controller
         ];
 
         if ($userInfo->account_status != 10) {
+            Helper::auditTrail('Login Failed', 'User', Session::get('LoggedAdmin'), 'fail', ['status' => 'Failed Login'], ['status' => 'Failed'], 'Your account is not active.');
+
             $message = $statusMessages[$userInfo->account_status] ?? 'Your account is not active.';
 
             return response()->json([
@@ -236,6 +243,8 @@ class AdminController extends Controller
         $url1 = '/users/dashboard';
 
         if ($userInfo->user_role == 1) {
+
+            Helper::auditTrail('Login Successful', 'User', Session::get('LoggedAdmin'), 'success', ['status' => 'Login Successful'], ['status' => 'Approved'], 'User Login Successful.');
 
             // Admin login basing on role
             $request->session()->put('LoggedAdmin', $userInfo->id);

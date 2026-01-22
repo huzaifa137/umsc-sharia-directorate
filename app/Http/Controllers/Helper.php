@@ -2,11 +2,11 @@
 namespace App\Http\Controllers;
 
 
-use Session;
-use App\Models\User;
-use Illuminate\Support\Str;
+use App\Models\SearchIndex;
+use App\Models\ActivityLog;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Request;
 
 class Helper extends Controller
 {
@@ -60,4 +60,58 @@ class Helper extends Controller
         }
     }
 
+    public static function auditTrail(
+        string $action,
+        string $targetType = null,
+        int $targetId = null,
+        string $status = 'success',
+        array $oldValues = null,
+        array $newValues = null,
+        string $description = null
+    ) {
+        $adminId = Session::get('LoggedAdmin');
+
+        $admin = $adminId
+            ? DB::table('users')->where('id', $adminId)->first()
+            : null;
+
+        ActivityLog::create([
+            'user_id' => $admin->id ?? null,
+            'user_role' => $admin ? self::getUserRole($admin->user_role) : 'System',
+            'action' => $action,
+            'target_type' => $targetType,
+            'target_id' => $targetId,
+            'status' => $status,
+            'ip_address' => Request::ip(),
+            'user_agent' => Request::header('User-Agent'),
+            'old_values' => $oldValues,
+            'new_values' => $newValues,
+            'description' => $description,
+        ]);
+    }
+
+    public static function syncSearchIndex(array $data)
+    {
+        SearchIndex::updateOrCreate(
+            [
+                'module' => $data['module'],
+                'reference_id' => $data['reference_id'],
+            ],
+            [
+                'application_id' => $data['application_id'],
+                'title' => $data['title'],
+                'keywords' => $data['keywords'],
+                'status' => $data['status'],
+                'application_date' => $data['application_date'],
+                'required_role' => $data['required_role'] ?? null,
+            ]
+        );
+    }
+
+    public static function removeFromSearchIndex(string $module, int $referenceId)
+    {
+        SearchIndex::where('module', $module)
+            ->where('reference_id', $referenceId)
+            ->delete();
+    }
 }
