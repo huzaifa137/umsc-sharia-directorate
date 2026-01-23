@@ -361,7 +361,7 @@
                                 <div class="input-group phone-input-group"
                                     style="display: grid; grid-template-columns: 120px 1fr; gap: 8px;">
                                     <!-- Country Code Dropdown -->
-                                    <select id="groomCountryCode" class="form-control" style="width: 100%;" required>
+                                    <select id="groomCountryCode" class="form-control" style="width: 100%;" >
                                         <option value="">Code</option>
                                         @foreach ($countries as $country)
                                             <option value="{{ $country->calling_code }}">
@@ -581,7 +581,7 @@
                                 <label for="brideTelephone">Telephone Number<span class="required">*</span></label>
 
                                 <div class="input-group phone-input-group">
-                                    <select id="brideCountryCode" class="form-control country-code" required>
+                                    <select id="brideCountryCode" class="form-control country-code" >
                                         <option value="">Code</option>
                                         @foreach ($countries as $country)
                                             <option value="{{ $country->calling_code }}">{{ $country->name }}

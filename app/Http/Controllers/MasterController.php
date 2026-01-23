@@ -68,6 +68,48 @@ class MasterController extends Controller
         // 5. Store Application
         $application = NikkahApplication::create($data);
 
+        $title = collect([
+            trim($application->groom_given_name . ' ' . $application->groom_surname),
+            trim($application->bride_given_name . ' ' . $application->bride_surname),
+        ])->filter()->implode(' And ');
+
+        Helper::syncSearchIndex([
+            'module' => 'nikah',
+            'application_id' => $application->application_id,
+            'reference_id' => $application->id,
+            'title' => 'Nikah Application - ' . $title,
+            'keywords' => implode(' ', array_filter([
+                $application->application_id,
+
+                // Groom
+                $application->groom_given_name,
+                $application->groom_surname,
+                $application->groomNIN,
+                $application->groom_email,
+
+                // Bride
+                $application->bride_given_name,
+                $application->bride_surname,
+                $application->brideNIN,
+                $application->bride_email,
+
+                // Groom's Father
+                $application->groom_father_given_name,
+                $application->groom_father_surname,
+                $application->groom_father_nin,
+                $application->groomFatherDistrict,
+
+                // Groom's Mother
+                $application->groom_mother_given_name,
+                $application->groom_mother_surname,
+                $application->groomMotherMaidenName,
+            ])),
+
+            'status' => $application->status,
+            'application_date' => $application->created_at->toDateString(),
+            'required_role' => 1, // Imaam
+        ]);
+
         // 6. Return success (adjust as needed)
         return response()->json([
             'success' => true,
@@ -115,6 +157,43 @@ class MasterController extends Controller
             }
 
             $application = DivorceApplication::create($data);
+
+            Helper::syncSearchIndex([
+                'module' => 'divorce',
+                'application_id' => $application->application_id,
+                'reference_id' => $application->id,
+                'title' => 'Divorce Application - ' .
+                    trim($application->groom_given_name . ' ' . $application->groom_surname),
+
+                'keywords' => implode(' ', array_filter([
+                    // Application
+                    $application->application_id,
+
+                    // Groom
+                    $application->groom_given_name,
+                    $application->groom_surname,
+                    $application->groom_nin,
+                    $application->groom_phone,
+                    $application->groom_email,
+
+                    // Bride
+                    $application->bride_given_name,
+                    $application->bride_surname,
+                    $application->bride_nin,
+                    $application->bride_phone,
+                    $application->bride_email,
+
+                    // Imam / Mosque
+                    $application->imam_name,
+                    $application->imam_reg,
+                    $application->qadhi_area,
+                    $application->mosque_name,
+                ])),
+
+                'status' => $application->status,
+                'application_date' => $application->created_at->toDateString(),
+                'required_role' => 1, // Imaam
+            ]);
 
             DB::commit();
 
@@ -290,6 +369,31 @@ class MasterController extends Controller
                 'verification_date' => now(),
             ]);
 
+            Helper::syncSearchIndex([
+                'module' => 'inheritance',
+                'application_id' => $application->application_id,
+                'reference_id' => $application->id,
+                'title' => 'Inheritance Application - ' . $application->deceased_name,
+                'keywords' => implode(' ', array_filter([
+                    $application->application_id,
+
+                    // Deceased
+                    $application->deceased_name,
+                    $application->place_of_death,
+                    $application->cause_of_death,
+                    $application->deceased_nin,
+                    $application->last_residence,
+
+                    // Applicant
+                    $application->applicant_name,
+                    $application->applicant_phone,
+                ])),
+
+                'status' => $application->status,
+                'application_date' => $application->created_at->toDateString(),
+                'required_role' => 1,
+            ]);
+
             DB::commit();
 
             /* ===========================
@@ -446,12 +550,40 @@ class MasterController extends Controller
             'witness2_nin' => $validated['witness2_nin'] ?? null,
 
             // Status
-            'status' => 'pending',
+            'status' => 'submitted',
         ];
 
         // Save to database
         try {
             $application = GuardianshipApplication::create($applicationData);
+
+            Helper::syncSearchIndex([
+                'module' => 'guardianship',
+                'application_id' => $application->application_id,
+                'reference_id' => $application->id,
+                'title' => 'Guardianship Application - ' . $application->ward_name,
+                'keywords' => implode(' ', array_filter([
+                    $application->application_id,
+
+                    // Ward
+                    $application->ward_name,
+                    $application->birth_certificate_number,
+
+                    // Parents
+                    $application->father_name,
+                    $application->mother_name,
+
+                    // Guardian
+                    $application->guardian_name,
+                    $application->guardian_nin,
+                    $application->guardian_phone,
+                ])),
+
+                'status' => $application->status,
+                'application_date' => $application->created_at->toDateString(),
+                'required_role' => 1,
+            ]);
+
 
             // Return success response
             return response()->json([
@@ -522,6 +654,41 @@ class MasterController extends Controller
 
         // Save
         $application = ConvertApplication::create($data);
+
+        $title = collect([
+            trim($application->former_names . ' ' . $application->new_names),
+        ])->filter()->implode(' TO ');
+
+        Helper::syncSearchIndex([
+            'module' => 'convert',
+            'application_id' => $application->application_id,
+            'reference_id' => $application->id,
+            'title' => 'Convert Application - ' . $title,
+
+            'keywords' => implode(' ', array_filter([
+                $application->application_id,
+
+                // Names before & after
+                $application->former_names,
+                $application->new_names,
+
+                // Parents
+                $application->father_name,
+                $application->mother_name,
+
+                // Conversion / Guardian
+                $application->conversion_place,
+                $application->guardian_name,
+
+                // Officer
+                $application->officer_name,
+            ])),
+
+            'status' => 'submitted',
+            'application_date' => $application->created_at->toDateString(),
+            'required_role' => 1,
+        ]);
+
 
         return response()->json([
             'success' => true,
@@ -681,24 +848,29 @@ class MasterController extends Controller
     {
         if ($statusId == 0) {
 
-            $applications = NikkahApplication::where('status', 'submitted')->paginate(10);
-            return view('nikah.status-applications', compact('applications', 'statusId'));
+            $applications = NikkahApplication::where('status', 'submitted')
+                ->orderBy('id', 'desc')
+                ->paginate(10);
 
         } elseif ($statusId == 10) {
 
-            $applications = NikkahApplication::where('status', 'approved')->paginate(10);
-            return view('nikah.status-applications', compact('applications', 'statusId'));
+            $applications = NikkahApplication::where('status', 'approved')
+                ->orderBy('id', 'desc')
+                ->paginate(10);
 
         } elseif ($statusId == -10) {
 
-            $applications = NikkahApplication::where('status', 'rejected')->paginate(10);
-            return view('nikah.status-applications', compact('applications', 'statusId'));
+            $applications = NikkahApplication::where('status', 'rejected')
+                ->orderBy('id', 'desc')
+                ->paginate(10);
 
         } elseif ($statusId == 100) {
 
-            $applications = NikkahApplication::orderBy('created_at', 'desc')->paginate(10);
-            return view('nikah.status-applications', compact('applications', 'statusId'));
+            $applications = NikkahApplication::orderBy('id', 'desc')
+                ->paginate(10);
         }
+
+        return view('nikah.status-applications', compact('applications', 'statusId'));
     }
 
     public function updateNikkahApplicationStatus(Request $request, $id)
@@ -1029,52 +1201,61 @@ class MasterController extends Controller
 
     public function viewNikahRecords($id)
     {
-        $adminId = Session::get('LoggedAdmin');
-
-        if (!$adminId) {
-            abort(401);
-        }
-
-        $admin = DB::table('users')->where('id', $adminId)->first();
-
         $application = NikkahApplication::findOrFail($id);
-
-        // if ($admin->user_role < 1) {
-        //     abort(403);
-        // }
-
         Helper::auditTrail('view', 'NikkahApplication', $application->id, 'success', null, null, 'Viewed Nikah application ' . $application->application_id);
 
-        return view('nikah.view', compact('application'));
+        return view(
+            'nikah.view-research-records',
+            ['applications' => collect([$application])]
+        );
     }
 
-    public function view($id)
+    public function viewDivorceRecords($id)
     {
-        $adminId = Session::get('LoggedAdmin');
-
-        if (!$adminId){
-            abort(401);
-        }
-
-        $admin = DB::table('users')->where('id', $adminId)->first();
 
         $application = DivorceApplication::findOrFail($id);
 
-        // Example: District Qadh & above
-        if ($admin->user_role < 2) {
-            abort(403);
-        }
+        Helper::auditTrail('view', 'DivorceApplication', $application->id, 'success', null, null, 'Viewed Divorce application ' . $application->application_id);
 
-        Helper::auditTrail(
-            'view',
-            'DivorceApplication',
-            $application->id,
-            'success',
-            null,
-            null,
-            'Viewed Divorce case ' . $application->application_id
+        return view(
+            'divorce.view-research-records',
+            ['applications' => collect([$application])]
         );
+    }
 
-        return view('divorce.view', compact('application'));
+    public function viewInheritanceRecords($id)
+    {
+        $application = InheritanceApplication::findOrFail($id);
+
+        Helper::auditTrail('view', 'InheritanceApplication', $application->id, 'success', null, null, 'Viewed Inheritance application ' . $application->application_id);
+
+        return view(
+            'inheritance.view-research-records',
+            ['applications' => collect([$application])]
+        );
+    }
+
+    public function viewGuardianshipRecords($id)
+    {
+        $application = GuardianshipApplication::findOrFail($id);
+
+        Helper::auditTrail('view', 'GuardianshipApplication', $application->id, 'success', null, null, 'Viewed Guardianship application ' . $application->application_id);
+
+        return view(
+            'guardianship.view-research-records',
+            ['applications' => collect([$application])]
+        );
+    }
+
+    public function viewConvertRecords($id)
+    {
+        $application = ConvertApplication::findOrFail($id);
+
+        Helper::auditTrail('view', 'ConvertApplication', $application->id, 'success', null, null, 'Viewed Convert application ' . $application->application_id);
+
+        return view(
+            'converts.view-research-records',
+            ['applications' => collect([$application])]
+        );
     }
 }

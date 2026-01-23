@@ -700,3 +700,4 @@ Helper::auditTrail('Login Failed', 'User', Session::get('LoggedAdmin'), 'fail', 
 Helper::auditTrail('Login Failed', 'User', Session::get('LoggedAdmin'), 'fail', ['status' => 'Failed Login'], ['status' => 'Failed'], 'We don’t recognize the provided credentials.');
 Helper::auditTrail('approve', 'NikkahApplication', $application->id, 'success', ['status' => 'submitted'], ['status' => 'approved'], 'Approved by District Qadh');
 Helper::auditTrail('Login Successful', 'User', Session::get('LoggedAdmin'), 'success', ['status' => 'Login Successful'], ['status' => 'Approved'], 'User Login Successful.');
+Helper::auditTrail('view', 'NikkahApplication', $application->id, 'success', null, null, 'Viewed Nikah application ' . $application->application_id);

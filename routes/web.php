@@ -98,7 +98,7 @@ Route::controller(MasterController::class)->group(function () {
         Route::get('/divorce/{id}/delete', 'deleteDivorceApplication')->name('divorce.delete.applications');
 
 
-        Route::get('/nikah/applications/{id}', 'showdivorceApplicationInformation')
+        Route::get('/nikah/divorce/{id}', 'showdivorceApplicationInformation')
             ->name('nikah.show');
 
         Route::post('/save-submitted-divorce-application', 'saveDivorceApplication')->name('save.divorce.application');
@@ -143,10 +143,10 @@ Route::controller(MasterController::class)->group(function () {
         // Rendered Search Routes 
 
         Route::get('/nikah/view/{id}', 'viewNikahRecords');
-        Route::get('/divorce/view/{id}', 'view');
-        Route::get('/inheritance/view/{id}', 'view');
-        Route::get('/guardianship/view/{id}', 'view');
-        Route::get('/convert/view/{id}', 'view');
+        Route::get('/divorce/view/{id}', 'viewDivorceRecords');
+        Route::get('/inheritance/view/{id}', 'viewInheritanceRecords');
+        Route::get('/guardianship/view/{id}', 'viewGuardianshipRecords');
+        Route::get('/convert/view/{id}', 'viewConvertRecords');
 
     });
 });

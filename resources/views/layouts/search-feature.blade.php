@@ -74,6 +74,100 @@
     </div>
 </div>
 
-@push('scripts')
-    <script src="{{ asset('asset/js/smart-search.js') }}"></script>
-@endpush
+<script>
+    $(document).ready(function () {
+
+        $('#smartSearchBtn').on('click', function () {
+            const keyword = $('#smartSearch').val().trim();
+
+            if (!keyword) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops!',
+                    text: 'Please enter a search keyword',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+
+            $.ajax({
+                url: '/smart-search',
+                method: 'POST',
+                data: {
+                    keyword: keyword,
+                    scope: $('#searchScope').val(),
+                    date_from: $('#dateFrom').val(),
+                    date_to: $('#dateTo').val(),
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (results) {
+                    renderSearchResults(results);
+                },
+                error: function () {
+                    alert('Search failed. Please try again.');
+                }
+            });
+        });
+
+    });
+
+    /* ===============================
+       Render Results
+    ================================ */
+    function renderSearchResults(results) {
+        let html = '';
+
+        if (!results.length) {
+            html = `
+            <div class="alert alert-warning">
+                No results found.
+            </div>
+        `;
+        } else {
+            html = '<ul class="list-group">';
+
+            results.forEach(item => {
+                html += `
+               <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>${item.application_id}</strong><br>
+                        <small class="text-white">${item.title}</small>
+                    </div>
+                   <button class="btn btn-sm btn-success"
+                        onclick='openResult(${JSON.stringify(item)})'>
+                        <i class="bi bi-eye me-1"></i> View
+                    </button>
+                </li>
+            `;
+            });
+
+            html += '</ul>';
+        }
+        $('#searchResults').html(html);
+    }
+
+
+    function openResult(item) {
+
+        const routes = {
+            nikah: '/nikah/view/',
+            divorce: '/divorce/view/',
+            inheritance: '/inheritance/view/',
+            guardianship: '/guardianship/view/',
+            convert: '/convert/view/'
+        };
+
+        if (!routes[item.module]) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Route Not Found',
+                html: `<pre style="text-align:left;">${JSON.stringify(item, null, 2)}</pre>`,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+        window.location.href = routes[item.module] + item.reference_id;
+    }
+</script>
