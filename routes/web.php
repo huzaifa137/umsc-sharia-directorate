@@ -97,12 +97,18 @@ Route::controller(MasterController::class)->group(function () {
         Route::get('/divorce/{id}/view', 'viewDivorceApplication')->name('divorce.view.applications');
         Route::get('/divorce/{id}/delete', 'deleteDivorceApplication')->name('divorce.delete.applications');
 
-
         Route::get('/nikah/divorce/{id}', 'showdivorceApplicationInformation')
             ->name('nikah.show');
 
         Route::post('/save-submitted-divorce-application', 'saveDivorceApplication')->name('save.divorce.application');
         Route::post('/save-updated-divorce-application-data', 'saveUpdatedDivorceApplication')->name('save.updated.divorce.application.data');
+
+        Route::get('divorce/{id}/details', 'showDivorceInformation');
+
+        Route::get('divorce/{id}/edit-data', 'editDivorceInformation');
+        Route::post('divorce/{id}/update', 'updateDivorceInformation');
+
+        Route::post('/divorce/{id}/delete', 'deleteApplication');
 
         // Inheritance Routes 
 
@@ -113,6 +119,13 @@ Route::controller(MasterController::class)->group(function () {
 
         Route::post('/save-inheritance-application', 'saveInheritanceApplication')->name('save.inheritance.application');
 
+        Route::prefix('inheritance')->group(function () {
+            Route::get('{id}/details', 'detailsInheritanceApplication')->name('inheritance.details');
+            Route::post('{id}/delete', 'deleteInheritanceApplication')->name('inheritance.delete');
+
+            Route::get('/{id}/information', 'getInheritanceDetails');
+            Route::post('/{id}/update', 'updateInheritanceInformation')->name('inheritance.update');
+        });
 
         // Guardianship Routes 
 
@@ -122,6 +135,20 @@ Route::controller(MasterController::class)->group(function () {
             ->name('guardianship.status.applications');
 
         Route::post('/save-guardianship-application', 'saveguardianshipApplication')->name('save.guardianship.application');
+
+        Route::prefix('guardianship')->group(function () {
+
+            Route::get('{id}/details', 'getGuardianshipDetails')
+                ->name('guardianship.details');
+
+            Route::post('{id}/update', 'updateGuardianshipApplication')
+                ->name('guardianship.update');
+
+            Route::post('{id}/delete', 'deleteGuardianshipApplication')
+                ->name('guardianship.delete');
+
+        });
+
 
         // Converts Routes 
 

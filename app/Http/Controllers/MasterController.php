@@ -1258,4 +1258,242 @@ class MasterController extends Controller
             ['applications' => collect([$application])]
         );
     }
+
+    public function showDivorceInformation($id)
+    {
+        $application = DivorceApplication::findOrFail($id);
+
+        return response()->json($application);
+    }
+
+    public function editDivorceInformation($id)
+    {
+        return DivorceApplication::findOrFail($id);
+    }
+
+    public function updateDivorceInformation(Request $request, $id)
+    {
+        $application = DivorceApplication::findOrFail($id);
+
+        $application->update($request->except(['_token']));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Application updated successfully'
+        ]);
+    }
+
+    public function deleteApplication($id)
+    {
+        $application = DivorceApplication::findOrFail($id);
+
+        // Delete groom photo if exists
+        if ($application->groom_photo_path && Storage::disk('public')->exists($application->groom_photo_path)) {
+            Storage::disk('public')->delete($application->groom_photo_path);
+        }
+
+        // Delete bride photo if exists
+        if ($application->bride_photo_path && Storage::disk('public')->exists($application->bride_photo_path)) {
+            Storage::disk('public')->delete($application->bride_photo_path);
+        }
+
+        // OPTIONAL: remove from search index if you have it
+        Helper::removeFromSearchIndex('divorce', $application->id);
+
+        // Delete application record
+        $application->delete();
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    public function detailsInheritanceApplication($id)
+    {
+        $application = InheritanceApplication::with(['properties', 'heirs', 'verification'])->findOrFail($id);
+
+        return response()->json([
+            'application_id' => $application->application_id,
+            'deceased_name' => $application->deceased_name,
+            'deceased_nin' => $application->deceased_nin,
+            'gender' => $application->gender,
+            'date_of_death' => $application->date_of_death,
+            'place_of_death' => $application->place_of_death,
+            'cause_of_death' => $application->cause_of_death,
+            'marital_status' => $application->marital_status,
+            'occupation' => $application->occupation,
+            'last_residence' => $application->last_residence,
+
+            'applicant_name' => $application->applicant_name,
+            'relationship' => $application->relationship,
+            'applicant_nin' => $application->applicant_nin,
+            'applicant_phone' => $application->applicant_phone,
+
+            'total_estate_value' => $application->total_estate_value,
+            'outstanding_debts' => $application->outstanding_debts,
+            'funeral_expenses' => $application->funeral_expenses,
+            'unpaid_zakat' => $application->unpaid_zakat,
+            'other_liabilities' => $application->other_liabilities,
+
+            'death_certificate_path' => $application->death_certificate_path,
+
+            'properties' => $application->properties->map(function ($p) {
+                return [
+                    'type' => $p->type,
+                    'description' => $p->description,
+                    'value' => $p->value,
+                    'location' => $p->location,
+                ];
+            }),
+
+            'sons_count' => $application->heirs->sons_count,
+            'daughters_count' => $application->heirs->daughters_count,
+            'father_alive' => $application->heirs->father_alive,
+            'father_name' => $application->heirs->father_name,
+            'mother_alive' => $application->heirs->mother_alive,
+            'mother_name' => $application->heirs->mother_name,
+            'full_brothers' => $application->heirs->full_brothers,
+            'full_sisters' => $application->heirs->full_sisters,
+            'uterine_brothers' => $application->heirs->uterine_brothers,
+            'uterine_sisters' => $application->heirs->uterine_sisters,
+            'pregnant_heir' => $application->heirs->pregnant_heir,
+            'minor_heirs' => $application->heirs->minor_heirs,
+
+            'imam_name' => $application->verification->imam_name ?? null,
+            'imam_reg_number' => $application->verification->imam_reg_number ?? null,
+            'mosque_name' => $application->verification->mosque_name ?? null,
+            'verification_date' => $application->verification->verification_date ?? null,
+        ]);
+    }
+
+    // Delete Application
+    public function deleteInheritanceApplication($id)
+    {
+        $application = InheritanceApplication::findOrFail($id);
+
+        // Optional: remove from search index
+        Helper::removeFromSearchIndex('inheritance', $application->id);
+
+        // Delete related records if needed
+        $application->properties()->delete();
+        $application->heirs()->delete();
+        $application->verification()->delete();
+
+        $application->delete();
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    // InheritanceController.php
+
+    public function getInheritanceDetails($id)
+    {
+
+        $app = InheritanceApplication::with(['properties', 'heirs', 'verification'])->findOrFail($id);
+
+        return response()->json([
+            'id' => $app->id,
+            'application_id' => $app->application_id,
+            'deceased_name' => $app->deceased_name,
+            'deceased_nin' => $app->deceased_nin,
+            'gender' => $app->gender,
+            'date_of_death' => $app->date_of_death,
+            'place_of_death' => $app->place_of_death,
+            'cause_of_death' => $app->cause_of_death,
+            'marital_status' => $app->marital_status,
+            'occupation' => $app->occupation,
+            'last_residence' => $app->last_residence,
+            'death_certificate_path' => $app->death_certificate_path,
+            'applicant_name' => $app->applicant_name,
+            'relationship' => $app->relationship,
+            'applicant_nin' => $app->applicant_nin,
+            'applicant_phone' => $app->applicant_phone,
+        ]);
+    }
+
+    public function updateInheritanceInformation(Request $request, $id)
+    {
+
+        $app = InheritanceApplication::findOrFail($id);
+
+        $validated = $request->validate([
+            'deceased_name' => 'required|string|max:255',
+            'deceased_nin' => 'required|string|max:30',
+            'gender' => 'required|string',
+            'date_of_death' => 'required|date',
+            'place_of_death' => 'required|string|max:255',
+            'marital_status' => 'required|string',
+            'last_residence' => 'required|string',
+            'applicant_name' => 'required|string|max:255',
+            'relationship' => 'required|string|max:100',
+            'applicant_nin' => 'required|string|max:30',
+            'applicant_phone' => 'required|string|max:20',
+            'death_certificate' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+        ]);
+
+        if ($request->hasFile('death_certificate')) {
+            $path = $request->file('death_certificate')->store('death_certificates', 'public');
+            $validated['death_certificate_path'] = $path;
+        }
+
+        $app->update($validated);
+
+        return response()->json(['success' => true]);
+    }
+
+    // Guardianship crud
+    public function getGuardianshipDetails($id)
+    {
+        $app = GuardianshipApplication::findOrFail($id);
+
+        return response()->json($app);
+    }
+
+    public function updateGuardianshipApplication(Request $request, $id)
+    {
+        $application = GuardianshipApplication::findOrFail($id);
+
+        $validated = $request->validate([
+            'ward_name' => 'required|string|max:255',
+            'ward_gender' => 'required|in:male,female',
+            'ward_dob' => 'required|date',
+            'ward_age' => 'required|integer|min:0',
+            'ward_type' => 'required',
+            'guardianship_type' => 'required',
+
+            'father_name' => 'required|string|max:255',
+            'father_status' => 'required',
+
+            'guardian_name' => 'required|string|max:255',
+            'guardian_nin' => 'required|string|max:255',
+            'guardian_phone' => 'required|string|max:20',
+            'guardian_address' => 'required|string',
+
+            'guardianship_duration' => 'required',
+            'motivation' => 'required|string',
+        ]);
+
+        $application->update($validated);
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    public function deleteGuardianshipApplication($id)
+    {
+        $app = GuardianshipApplication::findOrFail($id);
+
+        Helper::removeFromSearchIndex('guardianship', $app->id);
+
+        $app->delete();
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+
 }

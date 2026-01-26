@@ -47,6 +47,46 @@
 </div>
 @endif
 
+<!-- Working modal layout -->
+
+<div class="modal fade" id="editApplicationModal" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+
+    <div class="modal-content border-0 shadow-lg" style="border-radius:18px;">
+
+      <form id="editApplicationForm">
+        @csrf
+        <input type="hidden" id="editApplicationId">
+
+        <!-- Header -->
+        <div class="modal-header text-white"
+             style="background:linear-gradient(135deg,#16a34a,#15803d);">
+          <div>
+            <h5 class="modal-title fw-bold mb-0">Edit Divorce Application</h5>
+            <small id="editModalAppId" class="opacity-75"></small>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body p-4">
+          <!-- ALL your cards stay exactly the same -->
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success px-4">
+            <i class="bx bx-save me-1"></i> Save Changes
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
 
 error: function(data) {
 $('body').html(data.responseText);

@@ -1035,11 +1035,13 @@
                             <h4 style="color: white; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 12px; margin: 0;"
                                 data-i18n="properties_title">Property Details
                             </h4>
-                            <button type="button" id="addPropertyBtn" onclick="addProperty()"
-                                style="background: rgba(255,255,255,0.15); color: white; border: 2px solid rgba(255,255,255,0.3); padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: all 0.3s;"
-                                data-i18n="add_property_btn">
-                                Add Another Property
-                            </button>
+                           <button type="button" id="addPropertyBtn" onclick="addProperty()"
+    style="background: rgba(255,255,255,0.15); color: white; border: 2px solid rgba(255,255,255,0.3); padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: all 0.3s;"
+    data-i18n="add_property_btn">
+    <i class="bx bx-plus fs-5"></i>
+    Add Another Property
+</button>
+
                         </div>
 
                         <p style="color: rgba(255,255,255,0.7); font-size: 14px; margin-bottom: 25px;"
@@ -2890,7 +2892,10 @@
 
         requiredFields.forEach(field => {
             // Skip hidden fields
-            if (field.offsetParent === null) return;
+            // if (field.offsetParent === null) return;
+            // Skip hidden fields except file inputs
+            if (field.offsetParent === null && field.type !== 'file') return;
+
 
             let fieldValid = true;
 

@@ -197,23 +197,8 @@
                                         </span>
                                     </td>
 
-                                    <td class="text-left">
-                                        <div class="btn-group shadow-sm action-group" role="group"
-                                            style="border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
-                                            <!-- View -->
-                                            <button type="button"
-                                                class="btn btn-white btn-sm px-2 border-end view-application"
-                                                data-id="{{ $application->id }}" title="View Details">
-                                                <i class="bx bx-show-alt fs-5" style="color:#2563eb;"></i>
-                                            </button>
-
-                                            <!-- Delete -->
-                                            <button type="button" class="btn btn-white btn-sm px-2 delete-application"
-                                                data-id="{{ $application->id }}" title="Delete Application">
-                                                <i class="bx bx-trash-alt fs-5" style="color:#dc2626;"></i>
-                                            </button>
-                                        </div>
-                                    </td>
+                                    @include('layouts.views.inheritance-actions')
+                                    
                                 </tr>
                             @empty
                                 <tr>
