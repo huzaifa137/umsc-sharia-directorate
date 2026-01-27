@@ -163,8 +163,6 @@ Route::controller(MasterController::class)->group(function () {
         Route::get('manage-users', 'manageUsers')->name('manage.users');
         Route::post('/save-user-application', 'saveNewUser')->name('save.new.user');
 
-
-
         Route::prefix('users')->group(function () {
 
             Route::get('/{id}', 'showUser');            // Show user

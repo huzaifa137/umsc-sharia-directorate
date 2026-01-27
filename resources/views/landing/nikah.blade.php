@@ -281,8 +281,7 @@
 
             <!-- Updated form content with modern input styling matching reference image -->
             <main class="form-content">
-                <form id="nikkahForm" method="POST" action="{{ route('nikkah.save') }}"
-                    enctype="multipart/form-data">
+                <form id="nikkahForm" method="POST" action="{{ route('nikkah.save') }}" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <input type="hidden" id="application_id" name="application_id" value="">
                     <!-- Step 1: Groom Details -->
@@ -325,8 +324,8 @@
                                         <option value="11">November</option>
                                         <option value="12">December</option>
                                     </select>
-                                    <input type="number" name="groom_year_date_of_birth" placeholder="Year"
-                                        min="1900" max="2010" required>
+                                    <input type="number" name="groom_year_date_of_birth" placeholder="Year" min="1900"
+                                        max="2010" required>
                                 </div>
                             </div>
 
@@ -352,27 +351,23 @@
                                 <input type="text" name="groomNIN" id="groomNIN" class="form-control" required>
                             </div>
 
+
                             <!-- Groom Telephone -->
                             <div class="form-group">
-                                <label for="groomTelephone" data-i18n="labels.telephone">
-                                    Telephone Number<span class="required">*</span>
-                                </label>
+                                <label for="groomTelephone">Telephone Number<span class="required">*</span></label>
 
-                                <div class="input-group phone-input-group"
-                                    style="display: grid; grid-template-columns: 120px 1fr; gap: 8px;">
-                                    <!-- Country Code Dropdown -->
-                                    <select id="groomCountryCode" class="form-control" style="width: 100%;" >
+                                <div class="input-group phone-input-group">
+                                    <select id="groomCountryCode" class="form-control country-code select2">
                                         <option value="">Code</option>
                                         @foreach ($countries as $country)
-                                            <option value="{{ $country->calling_code }}">
-                                                {{ $country->name }} (+{{ $country->calling_code }})
+                                            <option value="{{ $country->calling_code }}">{{ $country->name }}
+                                                (+{{ $country->calling_code }})
                                             </option>
                                         @endforeach
                                     </select>
 
-                                    <!-- Phone Number Input -->
-                                    <input type="tel" id="groomTelephone" name="groom_telephone"
-                                        class="form-control" placeholder="Phone number" style="width: 100%;" required
+                                    <input type="tel" id="groomTelephone" name="bride_telephone"
+                                        class="form-control phone-number" placeholder="Phone number" required
                                         maxlength="15">
                                 </div>
                             </div>
@@ -499,8 +494,7 @@
                             <div class="form-group">
                                 <label for="groomVillage" data-i18n="labels.village">Village (LC1/Zone)<span
                                         class="required">*</span></label>
-                                <select id="groomVillage" name="groom_village" class="village-select" required
-                                    disabled>
+                                <select id="groomVillage" name="groom_village" class="village-select" required disabled>
                                     <option value="">--please select--</option>
                                 </select>
                             </div>
@@ -548,8 +542,8 @@
                                         <option value="11">November</option>
                                         <option value="12">December</option>
                                     </select>
-                                    <input type="number" name="bride_year_date_of_birth" placeholder="Year"
-                                        min="1900" max="2010" required>
+                                    <input type="number" name="bride_year_date_of_birth" placeholder="Year" min="1900"
+                                        max="2010" required>
                                 </div>
                             </div>
 
@@ -581,7 +575,7 @@
                                 <label for="brideTelephone">Telephone Number<span class="required">*</span></label>
 
                                 <div class="input-group phone-input-group">
-                                    <select id="brideCountryCode" class="form-control country-code" >
+                                    <select id="brideCountryCode" class="form-control country-code select2">
                                         <option value="">Code</option>
                                         @foreach ($countries as $country)
                                             <option value="{{ $country->calling_code }}">{{ $country->name }}
@@ -732,8 +726,7 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="brideVillage">Village (LC1/Zone)<span class="required">*</span></label>
-                                <select id="brideVillage" name="bride_village" class="village-select" required
-                                    disabled>
+                                <select id="brideVillage" name="bride_village" class="village-select" required disabled>
                                     <option value="">--please select--</option>
                                 </select>
                             </div>
@@ -766,8 +759,7 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="groomFatherGivenName">Given Name<span class="required">*</span></label>
-                                <input type="text" id="groomFatherGivenName" name="groom_father_given_name"
-                                    required>
+                                <input type="text" id="groomFatherGivenName" name="groom_father_given_name" required>
                             </div>
                             <div class="form-group">
                                 <label for="groomFatherNIN">National Identity Number (NIN)</label>
@@ -822,8 +814,7 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="groomMotherGivenName">Given Name<span class="required">*</span></label>
-                                <input type="text" id="groomMotherGivenName" name="groom_mother_given_name"
-                                    required>
+                                <input type="text" id="groomMotherGivenName" name="groom_mother_given_name" required>
                             </div>
                             <div class="form-group">
                                 <label for="groomMotherMaidenName">Maiden Name<span
@@ -867,8 +858,7 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="brideFatherGivenName">Given Name<span class="required">*</span></label>
-                                <input type="text" id="brideFatherGivenName" name="bride_father_given_name"
-                                    required>
+                                <input type="text" id="brideFatherGivenName" name="bride_father_given_name" required>
                             </div>
                             <div class="form-group">
                                 <label for="brideFatherNIN">National Identity Number (NIN)<span>*</span></label>
@@ -923,8 +913,7 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="brideMotherGivenName">Given Name<span class="required">*</span></label>
-                                <input type="text" id="brideMotherGivenName" name="bride_mother_given_name"
-                                    required>
+                                <input type="text" id="brideMotherGivenName" name="bride_mother_given_name" required>
                             </div>
                             <div class="form-group">
                                 <label for="brideMotherMaidenName">Maiden Name<span
@@ -985,8 +974,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="witness1District">District<span class="required">*</span></label>
-                                <select id="witness1District" name="witness1District" class="district-select"
-                                    required>
+                                <select id="witness1District" name="witness1District" class="district-select" required>
                                     <option value="">--please select--</option>
                                 </select>
                             </div>
@@ -1022,8 +1010,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="witness2District">District<span class="required">*</span></label>
-                                <select id="witness2District" name="witness2District" class="district-select"
-                                    required>
+                                <select id="witness2District" name="witness2District" class="district-select" required>
                                     <option value="">--please select--</option>
                                 </select>
                             </div>
@@ -1042,18 +1029,15 @@
                                     <img id="groomPhotoPreview" class="photo-preview" style="display: none;">
                                     <div class="upload-placeholder">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <rect x="3" y="3" width="18" height="18" rx="2"
-                                                ry="2"></rect>
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                                             <circle cx="8.5" cy="8.5" r="1.5"></circle>
                                             <polyline points="21 15 16 10 5 21"></polyline>
                                         </svg>
                                         <p>Click to upload or drag and drop</p>
                                         <span>Passport size photo (JPG, PNG)</span>
                                     </div>
-                                    <input type="file" id="groomPhoto" name="groomPhoto" accept="image/*"
-                                        required>
+                                    <input type="file" id="groomPhoto" name="groomPhoto" accept="image/*" required>
                                 </div>
                             </div>
 
@@ -1063,18 +1047,15 @@
                                     <img id="bridePhotoPreview" class="photo-preview" style="display: none;">
                                     <div class="upload-placeholder">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <rect x="3" y="3" width="18" height="18" rx="2"
-                                                ry="2"></rect>
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                                             <circle cx="8.5" cy="8.5" r="1.5"></circle>
                                             <polyline points="21 15 16 10 5 21"></polyline>
                                         </svg>
                                         <p>Click to upload or drag and drop</p>
                                         <span>Passport size photo (JPG, PNG)</span>
                                     </div>
-                                    <input type="file" id="bridePhoto" name="bridePhoto" accept="image/*"
-                                        required>
+                                    <input type="file" id="bridePhoto" name="bridePhoto" accept="image/*" required>
                                 </div>
                             </div>
                         </div>
@@ -1149,8 +1130,7 @@
                                 </button>
                             </div>
 
-                            <button type="button" class="btn btn-secondary" id="prevBtn"
-                                data-i18n="buttons.previous">
+                            <button type="button" class="btn btn-secondary" id="prevBtn" data-i18n="buttons.previous">
                                 <i class="fas fa-arrow-left"></i> Previous
                             </button>
                             <button type="button" class="btn btn-primary" id="nextBtn" data-i18n="buttons.next">
@@ -1177,7 +1157,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.select2').select2({
                 // placeholder: "Select Country",
                 allowClear: true,
@@ -1188,7 +1168,7 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
 
             function bindCountryToLabel(countrySelectId, labelId) {
                 const countrySelect = document.getElementById(countrySelectId);
@@ -1237,7 +1217,7 @@
 
     <script>
         document.querySelectorAll('.backToDashboard').forEach(button => {
-            button.addEventListener('click', function(e) {
+            button.addEventListener('click', function (e) {
                 e.preventDefault();
                 const url = this.href;
 
