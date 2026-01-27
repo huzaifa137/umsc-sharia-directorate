@@ -15,14 +15,13 @@
                 </div>
 
                 <!-- Button -->
-                <a href="{{ route('users.dashboard') }}" class="btn fw-bold d-flex align-items-center"
-                    style="
-                background: #f0fdf4;
-                color: #00580f;
-                border: 1px solid rgba(5, 88, 15, 0.2);
-                border-radius: 12px;
-                padding: 10px 18px;
-           ">
+                <a href="{{ route('users.dashboard') }}" class="btn fw-bold d-flex align-items-center" style="
+                    background: #f0fdf4;
+                    color: #00580f;
+                    border: 1px solid rgba(5, 88, 15, 0.2);
+                    border-radius: 12px;
+                    padding: 10px 18px;
+               ">
                     <i class="bx bx-home me-2 fs-5"></i>
                     Users Dashboard
                 </a>
@@ -188,8 +187,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="country" class="form-label fw-bold"
-                                        style="color: #00580f;">Country</label>
+                                    <label for="country" class="form-label fw-bold" style="color: #00580f;">Country</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-white border-end-0"
                                             style="border-color: rgba(5, 88, 15, 0.2);">
@@ -263,8 +261,8 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="account_status" class="form-label fw-bold"
-                                        style="color: #00580f;">Account Status *</label>
+                                    <label for="account_status" class="form-label fw-bold" style="color: #00580f;">Account
+                                        Status *</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-white border-end-0"
                                             style="border-color: rgba(5, 88, 15, 0.2);">
@@ -330,13 +328,13 @@
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
             <script>
-                document.addEventListener('DOMContentLoaded', function() {
+                document.addEventListener('DOMContentLoaded', function () {
                     const form = document.getElementById('createUserForm');
                     const requiredFields = form.querySelectorAll('[required]');
 
                     // Input validation on blur and input events
                     requiredFields.forEach(field => {
-                        field.addEventListener('blur', function() {
+                        field.addEventListener('blur', function () {
                             if (!this.value) {
                                 this.classList.add('is-invalid');
                                 this.classList.remove('is-valid');
@@ -346,7 +344,7 @@
                             }
                         });
 
-                        field.addEventListener('input', function() {
+                        field.addEventListener('input', function () {
                             if (this.value) {
                                 this.classList.remove('is-invalid');
                                 this.classList.add('is-valid');
@@ -354,31 +352,28 @@
                         });
                     });
 
-                    form.addEventListener('submit', function(e) {
+                    form.addEventListener('submit', function (e) {
                         e.preventDefault();
 
                         let isValid = true;
                         const invalidFields = [];
 
-                        // Check if all required fields are filled
+                        // Check required fields
                         requiredFields.forEach(field => {
                             if (!field.value.trim()) {
                                 field.classList.add('is-invalid');
                                 isValid = false;
-                                invalidFields.push(field.name); // Track invalid fields
+                                invalidFields.push(field.name);
                             } else {
                                 field.classList.remove('is-invalid');
                             }
                         });
 
-                        // If there are invalid fields, show error message
+                        // Validation error alert
                         if (!isValid) {
                             const firstInvalidField = document.querySelector('.is-invalid');
                             if (firstInvalidField) {
-                                firstInvalidField.scrollIntoView({
-                                    behavior: 'smooth',
-                                    block: 'center'
-                                });
+                                firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
                                 firstInvalidField.focus();
                             }
 
@@ -386,13 +381,12 @@
                                 icon: 'error',
                                 title: 'Missing Required Fields',
                                 text: 'Please fill in all required fields marked with *',
-                                confirmButtonColor: '#00580f',
-                                confirmButtonText: 'OK'
+                                confirmButtonColor: '#00580f'
                             });
                             return;
                         }
 
-                        // Confirm user creation with SweetAlert
+                        // Confirm creation
                         Swal.fire({
                             title: 'Confirm User Creation',
                             text: 'Are you sure you want to create this user account?',
@@ -404,74 +398,75 @@
                             cancelButtonText: 'Cancel',
                             reverseButtons: true
                         }).then((result) => {
-                            if (result.isConfirmed) {
-                                const submitBtn = form.querySelector('button[type="submit"]');
 
-                                // Button loading state
-                                submitBtn.innerHTML =
-                                    '<i class="bx bx-loader bx-spin me-2"></i> Creating...';
-                                submitBtn.disabled = true;
+                            if (!result.isConfirmed) return;
 
-                                // Show page overlay loader
-                                document.getElementById('pageLoader').classList.remove('d-none');
+                            const submitBtn = form.querySelector('button[type="submit"]');
 
-                                // Create FormData for AJAX submission
-                                const formData = new FormData(form);
+                            // Button loading state
+                            submitBtn.innerHTML = '<i class="bx bx-loader bx-spin me-2"></i> Creating...';
+                            submitBtn.disabled = true;
 
-                                // Submit the form via AJAX (fetch)
-                                fetch(form.action, {
-                                        method: 'POST',
-                                        headers: {
-                                            'X-CSRF-TOKEN': document.querySelector(
-                                                'input[name="_token"]').value
-                                        },
-                                        body: formData
-                                    })
-                                    .then(response => response.json()) // Parse JSON response
-                                    .then(data => {
-                                        // Hide page loader after response
-                                        document.getElementById('pageLoader').classList.add('d-none');
+                            // Show page loader
+                            document.getElementById('pageLoader').classList.remove('d-none');
 
-                                        // If the response indicates success
-                                        if (data.status === 'success') {
-                                            Swal.fire({
-                                                icon: 'success',
-                                                title: 'Success 🎉',
-                                                text: data.message,
-                                                confirmButtonColor: '#00580f'
-                                            }).then(() => {
-                                                window.location.href =
-                                                    "{{ route('users.dashboard') }}"; // Redirect to dashboard
-                                            });
-                                        } else {
-                                            // If the status is not success, show error
-                                            Swal.fire({
-                                                icon: 'error',
-                                                title: 'Error',
-                                                text: data.message ||
-                                                    'Something went wrong. Please try again.',
-                                                confirmButtonColor: '#dc3545'
-                                            });
-                                        }
-                                    })
-                                    .catch(error => {
-                                        document.getElementById('pageLoader').classList.add('d-none');
-                                        // Handle any fetch errors (e.g., network issues)
+                            const formData = new FormData(form);
+
+                            fetch(form.action, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                                },
+                                body: formData
+                            })
+                                .then(async response => {
+
+                                    // ❌ SERVER / VALIDATION / 500 ERROR
+                                    if (!response.ok) {
+                                        const html = await response.text();
+                                        document.body.innerHTML = html; // 👈 SAME AS $.ajax error dump
+                                        throw new Error('Server error');
+                                    }
+
+                                    return response.json();
+                                })
+                                .then(data => {
+
+                                    document.getElementById('pageLoader').classList.add('d-none');
+
+                                    if (data.status === 'success') {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success 🎉',
+                                            text: data.message,
+                                            confirmButtonColor: '#00580f'
+                                        }).then(() => {
+                                            window.location.href = "{{ route('users.dashboard') }}";
+                                        });
+                                    } else {
                                         Swal.fire({
                                             icon: 'error',
                                             title: 'Error',
-                                            text: 'An unexpected error occurred. Please try again later.',
+                                            text: data.message || 'Something went wrong.',
                                             confirmButtonColor: '#dc3545'
                                         });
-                                    });
-                            }
+
+                                        submitBtn.disabled = false;
+                                        submitBtn.innerHTML = 'Create User';
+                                    }
+                                })
+                                .catch(() => {
+                                    // Loader already hidden or page replaced
+                                    document.getElementById('pageLoader')?.classList.add('d-none');
+                                });
+
                         });
                     });
 
                     // Email field validation (example for email format)
                     const emailField = form.querySelector('input[type="email"]');
                     if (emailField) {
-                        emailField.addEventListener('blur', function() {
+                        emailField.addEventListener('blur', function () {
                             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                             if (this.value && !emailPattern.test(this.value)) {
                                 this.classList.add('is-invalid');
@@ -484,54 +479,52 @@
                     }
                 });
 
-
-
                 const style = document.createElement('style');
                 style.textContent = `
-    .is-valid {
-        border-color: #00580f !important;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2300580f' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") !important;
-        background-repeat: no-repeat;
-        background-position: right calc(0.375em + 0.1875rem) center;
-        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-    }
-    
-    .is-invalid {
-        border-color: #dc3545 !important;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e") !important;
-        background-repeat: no-repeat;
-        background-position: right calc(0.375em + 0.1875rem) center;
-        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-    }
-    
-    .is-invalid:focus {
-        border-color: #dc3545 !important;
-        box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
-    }
-    
-    .is-valid:focus {
-        border-color: #00580f !important;
-        box-shadow: 0 0 0 0.25rem rgba(5, 88, 15, 0.25) !important;
-    }
-    
-    .invalid-feedback {
-        display: none;
-        width: 100%;
-        margin-top: 0.25rem;
-        font-size: 0.875em;
-        color: #dc3545;
-    }
-    
-    .is-invalid ~ .invalid-feedback {
-        display: block;
-    }
-`;
+        .is-valid {
+            border-color: #00580f !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2300580f' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+        }
+
+        .is-invalid {
+            border-color: #dc3545 !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+        }
+
+        .is-invalid:focus {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+        }
+
+        .is-valid:focus {
+            border-color: #00580f !important;
+            box-shadow: 0 0 0 0.25rem rgba(5, 88, 15, 0.25) !important;
+        }
+
+        .invalid-feedback {
+            display: none;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.875em;
+            color: #dc3545;
+        }
+
+        .is-invalid ~ .invalid-feedback {
+            display: block;
+        }
+    `;
                 document.head.appendChild(style);
             </script>
 
             <script>
                 // JavaScript to toggle password visibility
-                document.getElementById('eye-icon').addEventListener('click', function() {
+                document.getElementById('eye-icon').addEventListener('click', function () {
                     var passwordField = document.getElementById('password');
                     var eyeIcon = this.querySelector('i');
 

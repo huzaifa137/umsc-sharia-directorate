@@ -30,12 +30,13 @@
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content rounded-4 shadow-lg border-0">
 
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title text-white">
-                    Guardianship Application
-                    <small class="d-block fs-6">#<span id="viewAppId"></span></small>
-                </h5>
-                <button type="button" class="btn-close btn-close-white"></button>
+            <!-- Header -->
+            <div class="modal-header text-white" style="background: linear-gradient(135deg,#16a34a,#15803d);">
+                <div>
+                    <h5 class="modal-title fw-bold mb-0 text-white">Guardianship Application</h5>
+                    <small id="viewAppId" class="opacity-75"></small>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
             <div class="modal-body">
@@ -159,7 +160,6 @@
     </div>
 </div>
 
-
 <!-- EDIT MODAL -->
 <div class="modal fade" id="editGuardianshipModal" tabindex="-1">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
@@ -172,7 +172,7 @@
                 <!-- Header -->
                 <div class="modal-header text-white" style="background: linear-gradient(135deg,#16a34a,#15803d);">
                     <div>
-                        <h5 class="modal-title fw-bold mb-0">Edit Guardianship Application</h5>
+                        <h5 class="modal-title fw-bold mb-0 text-white">Edit Guardianship Application</h5>
                         <small id="editModalAppId" class="opacity-75"></small>
                     </div>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -465,11 +465,9 @@
         /* ================= VIEW ================= */
         document.querySelectorAll('.view-guardianship').forEach(btn => {
             btn.addEventListener('click', () => {
-
                 fetch(`/guardianship/${btn.dataset.id}/details`)
                     .then(res => res.json())
                     .then(d => {
-
                         viewAppId.innerText = d.application_id;
                         viewWardName.innerText = d.ward_name;
                         viewWardGender.innerText = d.ward_gender;
@@ -485,211 +483,90 @@
                         viewDuration.innerText = d.guardianship_duration;
                         viewMotivation.innerText = d.motivation;
 
-                        bootstrap.Modal.getOrCreateInstance(viewGuardianshipModal).show();
+                        bootstrap.Modal.getOrCreateInstance(
+                            document.getElementById('viewGuardianshipModal')
+                        ).show();
                     });
             });
         });
 
         /* ================= EDIT ================= */
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('click', e => {
+            const btn = e.target.closest('.edit-guardianship');
+            if (!btn) return;
 
-            /* ================= VIEW ================= */
-            document.querySelectorAll('.view-guardianship').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    fetch(`/guardianship/${btn.dataset.id}/details`)
-                        .then(res => res.json())
-                        .then(d => {
+            const id = btn.dataset.id;
+            loadEditData(id);
+        });
 
-                            viewAppId.innerText = d.application_id;
-                            viewWardName.innerText = d.ward_name;
-                            viewWardGender.innerText = d.ward_gender;
-                            viewWardAge.innerText = d.ward_age;
-                            viewWardDob.innerText = d.ward_dob;
-                            viewWardType.innerText = d.ward_type;
+        function loadEditData(id) {
+            const form = document.getElementById('editGuardianshipForm');
+            form.reset();
 
-                            viewGuardianName.innerText = d.guardian_name;
-                            viewGuardianNIN.innerText = d.guardian_nin;
-                            viewGuardianPhone.innerText = d.guardian_phone;
-                            viewGuardianAddress.innerText = d.guardian_address;
+            fetch(`/guardianship/${id}/details`)
+                .then(res => res.json())
+                .then(data => {
 
-                            viewDuration.innerText = d.guardianship_duration;
-                            viewMotivation.innerText = d.motivation;
+                    document.getElementById('editApplicationId').value = data.id;
+                    document.getElementById('editModalAppId').innerText = `Application ID: ${data.application_id}`;
 
-                            bootstrap.Modal.getOrCreateInstance(viewGuardianshipModal).show();
-                        });
+                    // Ward
+                    editWardName.value = data.ward_name || '';
+                    editWardGender.value = data.ward_gender || '';
+                    editWardAge.value = data.ward_age || '';
+                    editWardDob.value = data.ward_dob || '';
+                    editWardType.value = data.ward_type || '';
+                    editGuardianshipType.value = data.guardianship_type || '';
+                    editHealthConditions.value = data.health_conditions || '';
+                    editWardEducation.value = data.ward_education_level || '';
+                    editBirthCertNumber.value = data.birth_certificate_number || '';
+
+                    // Parents
+                    editFatherName.value = data.father_name || '';
+                    editFatherStatus.value = data.father_status || '';
+                    editMotherName.value = data.mother_name || '';
+                    editMotherStatus.value = data.mother_status || '';
+
+                    // Guardian
+                    editGuardianName.value = data.guardian_name || '';
+                    editGuardianGender.value = data.guardian_gender || '';
+                    editGuardianDob.value = data.guardian_dob || '';
+                    editGuardianNIN.value = data.guardian_nin || '';
+                    editRelationship.value = data.relationship_to_ward || '';
+                    editGuardianPhone.value = data.guardian_phone || '';
+                    editGuardianAddress.value = data.guardian_address || '';
+                    editPreviousExperience.value = data.previous_experience || '';
+                    editCriminalRecord.value = data.criminal_record || '';
+                    editHealthStatus.value = data.health_status || '';
+                    editReligiousBackground.value = data.religious_background || '';
+                    editMotivation.value = data.motivation || '';
+
+                    // Terms
+                    editDuration.value = data.guardianship_duration || '';
+                    editReportingFrequency.value = data.reporting_frequency || '';
+                    editPowersGranted.value = data.powers_granted || '';
+                    editRestrictions.value = data.restrictions || '';
+
+                    // Verification
+                    editImamName.value = data.imam_name || '';
+                    editImamReg.value = data.imam_reg_number || '';
+                    editMosqueName.value = data.mosque_name || '';
+
+                    // Witnesses
+                    editWitness1Name.value = data.witness1_name || '';
+                    editWitness1NIN.value = data.witness1_nin || '';
+                    editWitness2Name.value = data.witness2_name || '';
+                    editWitness2NIN.value = data.witness2_nin || '';
+
+                    bootstrap.Modal.getOrCreateInstance(
+                        document.getElementById('editGuardianshipModal')
+                    ).show();
                 });
-            });
+        }
 
-            /* ================= EDIT ================= */
-            // EDIT MODAL HANDLER
-            document.addEventListener('DOMContentLoaded', function () {
-                // Event delegation for edit buttons
-                document.addEventListener('click', function (e) {
-                    if (!e.target.closest('.edit-guardianship')) return;
-
-                    const button = e.target.closest('.edit-guardianship');
-                    const id = button.dataset.id;
-
-                    console.log('Edit clicked for ID:', id); // Debug
-                    loadEditData(id);
-                });
-
-                // Function to load data into edit modal
-                function loadEditData(id) {
-                    const form = document.getElementById('editGuardianshipForm');
-                    if (!form) {
-                        console.error('Edit form not found');
-                        return;
-                    }
-
-                    form.reset();
-
-                    fetch(`/guardianship/${id}/details`)
-                        .then(res => {
-                            if (!res.ok) {
-                                throw new Error(`HTTP error! Status: ${res.status}`);
-                            }
-                            return res.json();
-                        })
-                        .then(data => {
-                            console.log('Received data:', data); // Debug
-
-                            // Fill ALL fields
-                            document.getElementById('editApplicationId').value = data.id || data.application_id;
-                            document.getElementById('editModalAppId').innerText = `App ID: ${data.application_id || data.id}`;
-
-                            // Ward Information - CORRECTED NAMES
-                            document.getElementById('editWardName').value = data.ward_name || '';
-                            document.getElementById('editWardGender').value = data.ward_gender || 'male';
-                            document.getElementById('editWardAge').value = data.ward_age || '';
-                            document.getElementById('editWardDob').value = data.ward_dob || '';
-                            document.getElementById('editWardType').value = data.ward_type || '';
-                            document.getElementById('editGuardianshipType').value = data.guardianship_type || 'minor';
-                            document.getElementById('editHealthConditions').value = data.health_conditions || '';
-                            document.getElementById('editWardEducation').value = data.ward_education_level || '';
-                            document.getElementById('editBirthCertNumber').value = data.birth_certificate_number || '';
-
-                            // Parental Information - CORRECTED NAMES
-                            document.getElementById('editFatherName').value = data.father_name || '';
-                            document.getElementById('editFatherStatus').value = data.father_status || 'alive';
-                            document.getElementById('editMotherName').value = data.mother_name || '';
-                            document.getElementById('editMotherStatus').value = data.mother_status || 'alive';
-
-                            // Guardian Information - CORRECTED NAMES
-                            document.getElementById('editGuardianName').value = data.guardian_name || '';
-                            document.getElementById('editGuardianGender').value = data.guardian_gender || '';
-                            document.getElementById('editGuardianDob').value = data.guardian_dob || '';
-                            document.getElementById('editGuardianNIN').value = data.guardian_nin || '';
-                            document.getElementById('editRelationship').value = data.relationship_to_ward || 'father';
-                            document.getElementById('editGuardianPhone').value = data.guardian_phone || '';
-                            document.getElementById('editGuardianAddress').value = data.guardian_address || '';
-                            document.getElementById('editPreviousExperience').value = data.previous_experience || '';
-                            document.getElementById('editCriminalRecord').value = data.criminal_record || 'no';
-                            document.getElementById('editHealthStatus').value = data.health_status || '';
-                            document.getElementById('editReligiousBackground').value = data.religious_background || '';
-                            document.getElementById('editMotivation').value = data.motivation || '';
-
-                            // Guardianship Terms - CORRECTED NAMES
-                            document.getElementById('editDuration').value = data.guardianship_duration || 'until_majority';
-                            document.getElementById('editReportingFrequency').value = data.reporting_frequency || '';
-                            document.getElementById('editPowersGranted').value = data.powers_granted || '';
-                            document.getElementById('editRestrictions').value = data.restrictions || '';
-
-                            // Verification - CORRECTED NAMES
-                            document.getElementById('editImamName').value = data.imam_name || '';
-                            document.getElementById('editImamReg').value = data.imam_reg_number || '';
-                            document.getElementById('editMosqueName').value = data.mosque_name || '';
-
-                            // Witnesses - CORRECTED NAMES
-                            document.getElementById('editWitness1Name').value = data.witness1_name || '';
-                            document.getElementById('editWitness1NIN').value = data.witness1_nin || '';
-                            document.getElementById('editWitness2Name').value = data.witness2_name || '';
-                            document.getElementById('editWitness2NIN').value = data.witness2_nin || '';
-
-                            // Show modal
-                            const modalEl = document.getElementById('editGuardianshipModal');
-                            if (modalEl) {
-                                const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
-                                modal.show();
-                            }
-
-                        }).catch(err => {
-                            console.error('Error loading edit data:', err);
-                            Swal.fire({
-                                title: 'Error!',
-                                text: 'Failed to load application data. Please try again.',
-                                icon: 'error'
-                            });
-                        });
-                }
-
-                // Form submission handler - UPDATE THE FORM DATA TO MATCH YOUR DATABASE
-                const editForm = document.getElementById('editGuardianshipForm');
-                if (editForm) {
-                    editForm.addEventListener('submit', function (e) {
-                        e.preventDefault();
-
-                        Swal.fire({
-                            title: 'Update Application?',
-                            text: 'Are you sure you want to update this guardianship application?',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#16a34a',
-                            confirmButtonText: 'Yes, update it!',
-                            cancelButtonText: 'Cancel'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                const id = document.getElementById('editApplicationId').value;
-
-                                // Create FormData with proper field names
-                                const formData = new FormData(editForm);
-
-                                // Make sure the ID is included
-                                formData.append('id', id);
-
-                                fetch(`/guardianship/${id}/update`, {
-                                    method: 'POST',
-                                    headers: {
-                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                                        'Accept': 'application/json'
-                                    },
-                                    body: formData
-                                })
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error(`HTTP error! Status: ${response.status}`);
-                                        }
-                                        return response.json();
-                                    })
-                                    .then(data => {
-                                        if (data.success) {
-                                            Swal.fire({
-                                                title: 'Success!',
-                                                text: data.message || 'Application updated successfully.',
-                                                icon: 'success'
-                                            }).then(() => {
-                                                const modal = bootstrap.Modal.getInstance(document.getElementById('editGuardianshipModal'));
-                                                if (modal) modal.hide();
-                                                location.reload();
-                                            });
-                                        } else {
-                                            Swal.fire('Error!', data.message || 'Update failed.', 'error');
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error('Update error:', error);
-                                        Swal.fire('Error!', 'Failed to update application. Please try again.', 'error');
-                                    });
-                            }
-                        });
-                    });
-                }
-            });
-
-
-            /* ================= UPDATE ================= */
-            const editForm = document.getElementById('editGuardianshipForm');
-            editForm.addEventListener('submit', e => {
+        /* ================= UPDATE ================= */
+        document.getElementById('editGuardianshipForm')
+            .addEventListener('submit', e => {
                 e.preventDefault();
 
                 Swal.fire({
@@ -698,90 +575,36 @@
                     showCancelButton: true,
                     confirmButtonColor: '#16a34a'
                 }).then(r => {
-
                     if (!r.isConfirmed) return;
 
-                    const id = document.getElementById('editApplicationId').value;
+                    const id = editApplicationId.value;
 
                     fetch(`/guardianship/${id}/update`, {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                         },
-                        body: new FormData(editForm)
+                        body: new FormData(e.target)
                     })
-                        .then(res => res.ok ? res.json() : res.text().then(h => document.write(h)))
-                        .then(d => {
-                            if (!d) return;
-
+                        .then(res => {
+                            if (!res.ok) {
+                                return res.text().then(html => {
+                                    // 🔥 EXACT equivalent of:
+                                    // error: function(data) { $('body').html(data.responseText); }
+                                    document.body.innerHTML = html;
+                                    throw new Error('Validation / Server Error');
+                                });
+                            }
+                            return res.json();
+                        })
+                        .then(() => {
                             Swal.fire('Updated!', 'Application updated successfully.', 'success')
-                                .then(() => location.href = '/guardianship-dashboard');
+                                .then(() => location.reload());
                         });
                 });
             });
 
-            /* ================= DELETE ================= */
-            document.querySelectorAll('.delete-guardianship').forEach(btn => {
-                btn.addEventListener('click', () => {
 
-                    Swal.fire({
-                        title: 'Delete Application?',
-                        text: 'This cannot be undone.',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#dc2626'
-                    }).then(r => {
-
-                        if (!r.isConfirmed) return;
-
-                        fetch(`/guardianship/${btn.dataset.id}/delete`, {
-                            method: 'POST',
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                            }
-                        })
-                            .then(res => res.ok ? res.json() : res.text().then(h => document.write(h)))
-                            .then(d => {
-                                Swal.fire('Deleted!', 'Application removed.', 'success')
-                                    .then(() => location.href = '/guardianship-dashboard');
-                            });
-                    });
-                });
-            });
-        });
-
-
-        /* ================= UPDATE ================= */
-        editGuardianshipForm.addEventListener('submit', e => {
-            e.preventDefault();
-
-            Swal.fire({
-                title: 'Update Application?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#16a34a'
-            }).then(r => {
-
-                if (!r.isConfirmed) return;
-
-                const id = editApplicationId.value;
-
-                fetch(`/guardianship/${id}/update`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: new FormData(editGuardianshipForm)
-                })
-                    .then(res => res.ok ? res.json() : res.text().then(h => document.write(h)))
-                    .then(d => {
-                        if (!d) return;
-
-                        Swal.fire('Updated!', 'Application updated successfully.', 'success')
-                            .then(() => location.href = '/guardianship-dashboard');
-                    });
-            });
-        });
 
         /* ================= DELETE ================= */
         document.querySelectorAll('.delete-guardianship').forEach(btn => {
@@ -811,6 +634,5 @@
                 });
             });
         });
-
     });
 </script>

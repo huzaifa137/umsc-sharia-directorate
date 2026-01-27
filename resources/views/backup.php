@@ -92,6 +92,16 @@ error: function(data) {
 $('body').html(data.responseText);
 }
 
+
+I want to apply this 
+
+error: function(data) {
+$('body').html(data.responseText);
+} , so that in the browser with dd($request->all()); i can see  the data in the browser
+  , here is the code i have
+
+
+  
 document.addEventListener("DOMContentLoaded", function() {
 const form = document.getElementById("quizForm");
 form.addEventListener("submit", function(e) {

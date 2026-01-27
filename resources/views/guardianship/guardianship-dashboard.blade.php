@@ -390,23 +390,8 @@
                                 </div>
 
                                 <div class="d-flex gap-2">
-                                    <!-- View -->
-                                    <button type="button" class="btn btn-outline-primary btn-sm px-2 view-application"
-                                        data-id="{{ $application->id }}" title="View Details">
-                                        <i class="bx bx-show-alt fs-5"></i>
-                                    </button>
+                                                                       @include('layouts.views.guardianship-actions')
 
-                                    <!-- Edit -->
-                                    <a href="javascript:void();" class="btn btn-outline-success btn-sm px-2"
-                                        title="Edit Application">
-                                        <i class="bx bx-edit fs-5"></i>
-                                    </a>
-
-                                    <!-- Delete -->
-                                    <button type="button" class="btn btn-outline-danger btn-sm px-2 delete-application"
-                                        data-id="{{ $application->id }}" title="Delete Application">
-                                        <i class="bx bx-trash-alt fs-5"></i>
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -533,7 +518,7 @@
                                     <i class="bx bx-calendar me-1"></i>
                                     {{ $application->created_at->format('M d, Y') }}
                                 </small>
-                                <a href="javascript:void();" class="btn btn-sm btn-primary px-3 rounded-pill fw-medium">
+                                <a href="{{url('guardianship-status-applications/100')}}" class="btn btn-sm btn-primary px-3 rounded-pill fw-medium">
                                     View Details <i class="bx bx-chevron-right ms-1"></i>
                                 </a>
                             </div>

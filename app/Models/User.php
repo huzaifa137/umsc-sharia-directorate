@@ -11,9 +11,6 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    // Optional: use SoftDeletes if you added it in the migration
-    // use SoftDeletes;
-
     protected $fillable = [
         'username',
         'email',

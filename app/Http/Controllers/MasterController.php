@@ -106,7 +106,7 @@ class MasterController extends Controller
             ])),
 
             'status' => $application->status,
-            'application_date' => $application->created_at->toDateString(),
+            'application_date' => @$application->created_at->toDateString(),
             'required_role' => 1, // Imaam
         ]);
 
@@ -1093,7 +1093,7 @@ class MasterController extends Controller
             ];
         }
 
-        $users = User::latest()->paginate(7);
+        $users = User::orderBy('id', 'desc')->paginate(7);
 
         return view('admin.user-dashboard', compact('roleStats', 'statusMessages', 'users', 'suspended'));
     }
@@ -1107,7 +1107,7 @@ class MasterController extends Controller
 
     public function manageUsers()
     {
-        $users = User::latest()->paginate(10);
+        $users = User::orderBy('id', 'desc')->paginate(7);
 
         return view('admin.manage-users', compact(['users']));
     }
@@ -1456,23 +1456,22 @@ class MasterController extends Controller
         $application = GuardianshipApplication::findOrFail($id);
 
         $validated = $request->validate([
-            'ward_name' => 'required|string|max:255',
-            'ward_gender' => 'required|in:male,female',
-            'ward_dob' => 'required|date',
-            'ward_age' => 'required|integer|min:0',
-            'ward_type' => 'required',
-            'guardianship_type' => 'required',
+            'ward_name' => 'nullable',
+            'ward_gender' => 'nullable',
+            'ward_age' => 'nullable',
+            'ward_type' => 'nullable',
+            'guardianship_type' => 'nullable',
 
-            'father_name' => 'required|string|max:255',
-            'father_status' => 'required',
+            'father_name' => 'nullable',
+            'father_status' => 'nullable',
 
-            'guardian_name' => 'required|string|max:255',
-            'guardian_nin' => 'required|string|max:255',
-            'guardian_phone' => 'required|string|max:20',
-            'guardian_address' => 'required|string',
+            'guardian_name' => 'nullable',
+            'guardian_nin' => 'nullable',
+            'guardian_phone' => 'nullable',
+            'guardian_address' => 'nullable',
 
-            'guardianship_duration' => 'required',
-            'motivation' => 'required|string',
+            'guardianship_duration' => 'nullable',
+            'motivation' => 'nullable',
         ]);
 
         $application->update($validated);
@@ -1495,5 +1494,57 @@ class MasterController extends Controller
         ]);
     }
 
+    public function showUser($id)
+    {
+        return response()->json(User::findOrFail($id));
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        try {
+            $data = $request->validate([
+                'username' => 'required|unique:users,username,' . $user->id,
+                'email' => 'required|email|unique:users,email,' . $user->id,
+                'firstname' => 'nullable|string',
+                'lastname' => 'nullable|string',
+                'gender' => 'nullable|in:male,female,other',
+                'phonenumber' => 'nullable|string',
+                'country' => 'nullable|string',
+                'user_role' => 'required|integer',
+                'account_status' => 'required|integer',
+                'registration_status' => 'required|integer',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->errors() // sends validation errors as JSON
+            ], 422);
+        }
+
+        if ($request->hasFile('profile_photo')) {
+            $data['profile_photo'] = $request->file('profile_photo')->store('profiles', 'public');
+        }
+
+        $user->update($data);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User updated successfully!',
+            'redirect_url' => '/manage-users'
+        ]);
+    }
+
+
+    public function deleteUser($id)
+    {
+        User::findOrFail($id)->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User deleted successfully!'
+        ]);
+    }
 
 }

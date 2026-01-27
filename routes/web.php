@@ -149,7 +149,6 @@ Route::controller(MasterController::class)->group(function () {
 
         });
 
-
         // Converts Routes 
 
         Route::get('/convert-status-applications/{statusId}', 'convertStatusApplications')
@@ -163,6 +162,15 @@ Route::controller(MasterController::class)->group(function () {
         Route::get('add-users', 'addUsers')->name('add.users');
         Route::get('manage-users', 'manageUsers')->name('manage.users');
         Route::post('/save-user-application', 'saveNewUser')->name('save.new.user');
+
+
+
+        Route::prefix('users')->group(function () {
+
+            Route::get('/{id}', 'showUser');            // Show user
+            Route::delete('/{id}', 'deleteUser');       // Delete user
+            Route::post('/{id}/update', 'updateUser');
+        });
 
         // Search Routes 
         Route::post('/smart-search', 'smartSearch');

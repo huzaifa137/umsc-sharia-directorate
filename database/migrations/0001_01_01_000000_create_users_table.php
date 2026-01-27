@@ -28,6 +28,8 @@ return new class extends Migration {
             $table->string('country')->nullable();
 
             $table->string('profile_photo')->nullable();
+
+            $table->timestamps();
         });
     }
 
