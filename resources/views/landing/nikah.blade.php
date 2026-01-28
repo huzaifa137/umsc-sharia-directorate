@@ -1510,6 +1510,88 @@
                         </div>
                     </section>
 
+                    <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    function generateReview() {
+
+        /* ===========================
+           Groom Review Section
+        ============================ */
+        const groomSurname = document.getElementById("groomSurname").value;
+        const groomGivenName = document.getElementById("groomGivenName").value;
+
+        document.getElementById("reviewGroom").innerHTML = `
+            <p><strong>Surname:</strong> ${groomSurname || "-"}</p>
+            <p><strong>Given Name:</strong> ${groomGivenName || "-"}</p>
+        `;
+
+
+        /* ===========================
+           Bride Section Example
+        ============================ */
+        const brideSurname = document.getElementById("brideSurname")?.value;
+        const brideGivenName = document.getElementById("brideGivenName")?.value;
+
+        document.getElementById("reviewBride").innerHTML = `
+            <p><strong>Surname:</strong> ${brideSurname || "-"}</p>
+            <p><strong>Given Name:</strong> ${brideGivenName || "-"}</p>
+        `;
+
+
+        /* ===========================
+           Parents Section Example
+        ============================ */
+        const fatherName = document.getElementById("fatherName")?.value;
+        const motherName = document.getElementById("motherName")?.value;
+
+        document.getElementById("reviewParents").innerHTML = `
+            <p><strong>Father:</strong> ${fatherName || "-"}</p>
+            <p><strong>Mother:</strong> ${motherName || "-"}</p>
+        `;
+
+
+        /* ===========================
+           Witnesses Section Example
+        ============================ */
+        const witness1 = document.getElementById("witness1")?.value;
+        const witness2 = document.getElementById("witness2")?.value;
+
+        document.getElementById("reviewWitnesses").innerHTML = `
+            <p><strong>Witness 1:</strong> ${witness1 || "-"}</p>
+            <p><strong>Witness 2:</strong> ${witness2 || "-"}</p>
+        `;
+    }
+
+
+    /* ===========================
+       Run Review When Step 6 Opens
+    ============================ */
+    document.querySelectorAll(".next-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+
+            // If user is going to Step 6
+            const activeSection = document.querySelector(".form-section.active");
+            if (activeSection && activeSection.id === "section5") {
+
+                // Build Review
+                generateReview();
+            }
+        });
+    });
+
+
+    /* ===========================
+       Also Update Review Live
+    ============================ */
+    document.querySelectorAll("input, select, textarea").forEach(field => {
+        field.addEventListener("input", generateReview);
+    });
+
+});
+</script>
+
+
                     <div class="form-navigation"
                         style="display: flex; justify-content: space-between; align-items: center;">
                         <div class="left-buttons">
