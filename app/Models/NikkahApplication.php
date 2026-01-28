@@ -98,7 +98,8 @@ class NikkahApplication extends Model
 
         // Imam
         'imam_name',
-
+        'dowery_specify',
+        
         // Photos (paths only)
         'groom_photo_path',
         'bride_photo_path',

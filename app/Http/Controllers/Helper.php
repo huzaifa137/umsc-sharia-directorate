@@ -22,6 +22,14 @@ class Helper extends Controller
         return $username = DB::table('users')->where('id', Session('LoggedAdmin'))->value('username');
     }
 
+public static function fullname()
+{
+    return DB::table('users')
+        ->where('id', Session('LoggedAdmin'))
+        ->value(DB::raw("CONCAT(firstname, ' ', lastname) as fullname"));
+}
+
+
     public static function generateApplicationId()
     {
         $prefix = 'UMSC';

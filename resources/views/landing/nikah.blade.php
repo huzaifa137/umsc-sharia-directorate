@@ -346,9 +346,9 @@
                             <!-- Groom NIN -->
                             <div class="form-group">
                                 <label for="groomNIN" id="ninLabel">
-                                    National Identity Number (NIN)<span class="required">*</span>
+                                    National Identity Number (NIN)<span class="required"></span>
                                 </label>
-                                <input type="text" name="groomNIN" id="groomNIN" class="form-control" required>
+                                <input type="text" name="groomNIN" id="groomNIN" class="form-control">
                             </div>
 
 
@@ -382,7 +382,7 @@
                             <div class="form-group">
                                 <label for="groomTribe" data-i18n="labels.tribe">Tribe<span
                                         class="required">*</span></label>
-                                <select class="select2" id="groomTribe" name="groom_tribe" required>
+                                <select class="select2" id="groomTribe" name="groom_tribe">
                                     <option value="">--please select--</option>
                                     <option value="Acholi">Acholi</option>
                                     <option value="Aliba">Aliba</option>
@@ -449,9 +449,52 @@
                                     <option value="Shana">Shana</option>
                                     <option value="So (Tepeth)">So (Tepeth)</option>
                                     <option value="Vonoma">Vonoma</option>
+                                    <option value="add_new">+ Add New Tribe</option>
                                 </select>
+
+                                <div id="newTribeWrapper" style="display:none; margin-top:10px;">
+                                    <label for="newTribe">Or add a new tribe</label><br>
+                                    <input type="text" id="newTribe" placeholder="Type your tribe here"
+                                        style="width:100%;">
+                                </div>
                             </div>
+
+                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                            <script>
+                                $(document).ready(function () {
+
+                                    $('#groomTribe').attr('required', true);
+
+                                    $('#groomTribe').on('change', function () {
+                                        if (this.value === 'add_new') {
+                                            $('#newTribeWrapper').show();
+                                            $('#newTribe').focus();
+
+                                            $('#newTribe').attr('required', true);
+                                            $(this).removeAttr('required');
+
+                                            $(this).val('');
+                                        } else {
+                                            $('#newTribeWrapper').hide();
+                                            $('#newTribe').val('');
+
+                                            $(this).attr('required', true);
+                                            $('#newTribe').removeAttr('required');
+                                        }
+                                    });
+
+                                    $('form').on('submit', function () {
+                                        let newTribeVal = $('#newTribe').val().trim();
+                                        if (newTribeVal) {
+                                            $('#groomTribe option.custom').remove();
+                                            $('#groomTribe').append(new Option(newTribeVal, newTribeVal, true, true)).addClass('custom');
+                                        }
+                                    });
+
+                                });
+                            </script>
                         </div>
+
 
                         <h4 class="subsection-title" data-i18n="labels.residentialAddress">RESIDENTIAL ADDRESS</h4>
 
@@ -567,7 +610,7 @@
                                 <label for="brideNIN" id="brideNiNLabel">
                                     National Identity Number (NIN)<span class="required"></span>
                                 </label>
-                                <input type="text" id="brideNIN" name="brideNIN" required>
+                                <input type="text" id="brideNIN" name="brideNIN">
                             </div>
 
                             <!-- Bride Telephone -->
@@ -617,9 +660,10 @@
                                 <label for="brideEmail">Email Address</label>
                                 <input type="email" id="brideEmail" name="bride_email">
                             </div>
+
                             <div class="form-group">
                                 <label for="brideTribe">Tribe<span class="required">*</span></label>
-                                <select class="select2" id="brideTribe" name="bride_tribe" required>
+                                <select id="brideTribe" class="select2" name="bride_tribe">
                                     <option value="">--please select--</option>
                                     <option value="Acholi">Acholi</option>
                                     <option value="Aliba">Aliba</option>
@@ -686,9 +730,57 @@
                                     <option value="Shana">Shana</option>
                                     <option value="So (Tepeth)">So (Tepeth)</option>
                                     <option value="Vonoma">Vonoma</option>
+                                    <option value="add_new">+ Add New Tribe</option>
                                 </select>
+
+                                <!-- Hidden label + input for new tribe -->
+                                <div id="newBrideTribeWrapper" style="display:none; margin-top:10px;">
+                                    <label for="newBrideTribe">Or add a new tribe</label><br>
+                                    <input type="text" id="newBrideTribe" placeholder="Type your tribe here"
+                                        style="width:100%;">
+                                </div>
                             </div>
                         </div>
+
+                        <script>
+                            $(document).ready(function () {
+                                // Make dropdown required by default
+                                $('#brideTribe').attr('required', true);
+
+                                $('#brideTribe').on('change', function () {
+                                    if (this.value === 'add_new') {
+                                        // Show input for custom tribe
+                                        $('#newBrideTribeWrapper').show();
+                                        $('#newBrideTribe').focus();
+
+                                        // Make input required, remove required from dropdown
+                                        $('#newBrideTribe').attr('required', true);
+                                        $(this).removeAttr('required');
+
+                                        // Clear dropdown temporarily
+                                        $(this).val('');
+                                    } else {
+                                        // Hide custom input
+                                        $('#newBrideTribeWrapper').hide();
+                                        $('#newBrideTribe').val('');
+
+                                        // Make dropdown required again, remove required from input
+                                        $(this).attr('required', true);
+                                        $('#newBrideTribe').removeAttr('required');
+                                    }
+                                });
+
+                                // On form submit, copy new tribe value into select
+                                $('form').on('submit', function () {
+                                    let newTribeVal = $('#newBrideTribe').val().trim();
+                                    if (newTribeVal) {
+                                        $('#brideTribe option.custom').remove();
+                                        $('#brideTribe').append(new Option(newTribeVal, newTribeVal, true, true)).addClass('custom');
+                                    }
+                                });
+                            });
+                        </script>
+
 
                         <h4 class="subsection-title">RESIDENTIAL ADDRESS</h4>
 
@@ -763,7 +855,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="groomFatherNIN">National Identity Number (NIN)</label>
-                                <input type="text" id="groomFatherNIN" name="groom_father_nin" required>
+                                <input type="text" id="groomFatherNIN" name="groom_father_nin">
                             </div>
                         </div>
 
@@ -771,8 +863,8 @@
                             <div class="form-group">
                                 <label for="groomFatherDistrict">District of Residence<span
                                         class="required">*</span></label>
-                                <select id="groomFatherDistrict" name="groomFatherDistrict" class="district-select"
-                                    required>
+                                <select id="groomFatherDistrict" name="groomFatherDistrict"
+                                    class="district-select select2" required>
                                     <option value="">--please select--</option>
                                 </select>
                             </div>
@@ -780,17 +872,118 @@
                                 <label for="groomFatherTribe">Tribe<span class="required">*</span></label>
                                 <select id="groomFatherTribe" name="groomFatherTribe" class="select2" required>
                                     <option value="">--please select--</option>
-                                    <option value="Baganda">Baganda</option>
-                                    <option value="Banyankole">Banyankole</option>
-                                    <option value="Basoga">Basoga</option>
-                                    <option value="Bakiga">Bakiga</option>
-                                    <option value="Iteso">Iteso</option>
-                                    <option value="Langi">Langi</option>
                                     <option value="Acholi">Acholi</option>
+                                    <option value="Aliba">Aliba</option>
+                                    <option value="Alur">Alur</option>
+                                    <option value="Aringa">Aringa</option>
+                                    <option value="Baamba">Baamba</option>
+                                    <option value="Babukusu">Babukusu</option>
+                                    <option value="Babwisi">Babwisi</option>
+                                    <option value="Bafumbira">Bafumbira</option>
+                                    <option value="Baganda">Baganda</option>
                                     <option value="Bagisu">Bagisu</option>
-                                    <option value="Lugbara">Lugbara</option>
+                                    <option value="Bagungu">Bagungu</option>
+                                    <option value="Bagwe (Samia-Bugwe)">Bagwe (Samia-Bugwe)</option>
+                                    <option value="Bagwere">Bagwere</option>
+                                    <option value="Bahehe">Bahehe</option>
+                                    <option value="Bahororo">Bahororo</option>
+                                    <option value="Bakenyi">Bakenyi</option>
+                                    <option value="Bakiga">Bakiga</option>
+                                    <option value="Bakonzo">Bakonzo</option>
+                                    <option value="Banyabindi">Banyabindi</option>
+                                    <option value="Banyabutumbi">Banyabutumbi</option>
+                                    <option value="Banyankore">Banyankore</option>
+                                    <option value="Banyara">Banyara</option>
+                                    <option value="Banyaruguru">Banyaruguru</option>
+                                    <option value="Banyole">Banyole</option>
+                                    <option value="Banyoro">Banyoro</option>
+                                    <option value="Baruli">Baruli</option>
+                                    <option value="Barundi">Barundi</option>
+                                    <option value="Basamia">Basamia</option>
+                                    <option value="Basimba">Basimba</option>
+                                    <option value="Basoga">Basoga</option>
+                                    <option value="Basongora">Basongora</option>
+                                    <option value="Batagwenda">Batagwenda</option>
                                     <option value="Batoro">Batoro</option>
+                                    <option value="Batuku">Batuku</option>
+                                    <option value="Batwa">Batwa</option>
+                                    <option value="Chope">Chope</option>
+                                    <option value="Dodoth">Dodoth</option>
+                                    <option value="Ethur (Acholi-Labwor)">Ethur (Acholi-Labwor)</option>
+                                    <option value="Gimara">Gimara</option>
+                                    <option value="Ik (Teuso)">Ik (Teuso)</option>
+                                    <option value="Iteso">Iteso</option>
+                                    <option value="Jie">Jie</option>
+                                    <option value="Jonam">Jonam</option>
+                                    <option value="Jopadhola">Jopadhola</option>
+                                    <option value="Kakwa">Kakwa</option>
+                                    <option value="Karimojong">Karimojong</option>
+                                    <option value="Kebu (Okebu)">Kebu (Okebu)</option>
+                                    <option value="Kuku">Kuku</option>
+                                    <option value="Kumam">Kumam</option>
+                                    <option value="Langi">Langi</option>
+                                    <option value="Lendu">Lendu</option>
+                                    <option value="Lugbara">Lugbara</option>
+                                    <option value="Madi">Madi</option>
+                                    <option value="Mening">Mening</option>
+                                    <option value="Mvuba">Mvuba</option>
+                                    <option value="Napore">Napore</option>
+                                    <option value="Ngikutio">Ngikutio</option>
+                                    <option value="Nubi">Nubi</option>
+                                    <option value="Nyangia">Nyangia</option>
+                                    <option value="Pokot">Pokot</option>
+                                    <option value="Reli">Reli</option>
+                                    <option value="Sabiny">Sabiny</option>
+                                    <option value="Shana">Shana</option>
+                                    <option value="So (Tepeth)">So (Tepeth)</option>
+                                    <option value="Vonoma">Vonoma</option>
+                                    <option value="add_new">+ Add New Tribe</option>
                                 </select>
+
+                                <div id="newGroomFatherTribeWrapper" style="display:none; margin-top:10px;">
+                                    <label for="newGroomFatherTribe">Or add a new tribe</label><br>
+                                    <input type="text" id="newGroomFatherTribe" placeholder="Type your tribe here"
+                                        style="width:100%;">
+                                </div>
+
+                                <script>
+                                    $(document).ready(function () {
+                                        // Make dropdown required by default
+                                        $('#groomFatherTribe').attr('required', true);
+
+                                        $('#groomFatherTribe').on('change', function () {
+                                            if (this.value === 'add_new') {
+                                                // Show input for custom tribe
+                                                $('#newGroomFatherTribeWrapper').show();
+                                                $('#newGroomFatherTribe').focus();
+
+                                                // Make input required, remove required from dropdown
+                                                $('#newGroomFatherTribe').attr('required', true);
+                                                $(this).removeAttr('required');
+
+                                                // Clear dropdown temporarily
+                                                $(this).val('');
+                                            } else {
+                                                // Hide custom input
+                                                $('#newGroomFatherTribeWrapper').hide();
+                                                $('#newGroomFatherTribe').val('');
+
+                                                // Make dropdown required again, remove required from input
+                                                $(this).attr('required', true);
+                                                $('#newGroomFatherTribe').removeAttr('required');
+                                            }
+                                        });
+
+                                        // On form submit, copy new tribe value into select
+                                        $('form').on('submit', function () {
+                                            let newTribeVal = $('#newGroomFatherTribe').val().trim();
+                                            if (newTribeVal) {
+                                                $('#groomFatherTribe option.custom').remove();
+                                                $('#groomFatherTribe').append(new Option(newTribeVal, newTribeVal, true, true)).addClass('custom');
+                                            }
+                                        });
+                                    });
+                                </script>
                             </div>
                         </div>
 
@@ -816,7 +1009,7 @@
                                 <label for="groomMotherGivenName">Given Name<span class="required">*</span></label>
                                 <input type="text" id="groomMotherGivenName" name="groom_mother_given_name" required>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="display: none;">
                                 <label for="groomMotherMaidenName">Maiden Name<span
                                         class="text-muted">(Optional)</span></label>
                                 <input type="text" id="groomMotherMaidenName" name="groomMotherMaidenName">
@@ -826,13 +1019,13 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="groomMotherNIN">National Identity Number (NIN)</label>
-                                <input type="text" id="groomMotherNIN" name="groomMotherNIN" required>
+                                <input type="text" id="groomMotherNIN" name="groomMotherNIN">
                             </div>
                             <div class="form-group">
                                 <label for="groomMotherDistrict">District of Residence<span
                                         class="required">*</span></label>
-                                <select id="groomMotherDistrict" name="groomMotherDistrict" class="district-select"
-                                    required>
+                                <select id="groomMotherDistrict" name="groomMotherDistrict"
+                                    class="district-select select2" required>
                                     <option value="">--please select--</option>
                                 </select>
                             </div>
@@ -861,8 +1054,8 @@
                                 <input type="text" id="brideFatherGivenName" name="bride_father_given_name" required>
                             </div>
                             <div class="form-group">
-                                <label for="brideFatherNIN">National Identity Number (NIN)<span>*</span></label>
-                                <input type="text" id="brideFatherNIN" name="brideFatherNIN" required>
+                                <label for="brideFatherNIN">National Identity Number (NIN)<span></span></label>
+                                <input type="text" id="brideFatherNIN" name="brideFatherNIN">
                             </div>
                         </div>
 
@@ -870,26 +1063,129 @@
                             <div class="form-group">
                                 <label for="brideFatherDistrict">District of Residence<span
                                         class="required">*</span></label>
-                                <select id="brideFatherDistrict" name="brideFatherDistrict" class="district-select"
-                                    required>
+                                <select id="brideFatherDistrict" name="brideFatherDistrict"
+                                    class="district-select select2" required>
                                     <option value="">--please select--</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="brideFatherTribe">Tribe<span class="required">*</span></label>
-                                <select id="brideFatherTribe" name="brideFatherTribe" required>
+                                <select id="brideFatherTribe" class="select2" name="brideFatherTribe" required>
                                     <option value="">--please select--</option>
-                                    <option value="Baganda">Baganda</option>
-                                    <option value="Banyankole">Banyankole</option>
-                                    <option value="Basoga">Basoga</option>
-                                    <option value="Bakiga">Bakiga</option>
-                                    <option value="Iteso">Iteso</option>
-                                    <option value="Langi">Langi</option>
                                     <option value="Acholi">Acholi</option>
+                                    <option value="Aliba">Aliba</option>
+                                    <option value="Alur">Alur</option>
+                                    <option value="Aringa">Aringa</option>
+                                    <option value="Baamba">Baamba</option>
+                                    <option value="Babukusu">Babukusu</option>
+                                    <option value="Babwisi">Babwisi</option>
+                                    <option value="Bafumbira">Bafumbira</option>
+                                    <option value="Baganda">Baganda</option>
                                     <option value="Bagisu">Bagisu</option>
-                                    <option value="Lugbara">Lugbara</option>
+                                    <option value="Bagungu">Bagungu</option>
+                                    <option value="Bagwe (Samia-Bugwe)">Bagwe (Samia-Bugwe)</option>
+                                    <option value="Bagwere">Bagwere</option>
+                                    <option value="Bahehe">Bahehe</option>
+                                    <option value="Bahororo">Bahororo</option>
+                                    <option value="Bakenyi">Bakenyi</option>
+                                    <option value="Bakiga">Bakiga</option>
+                                    <option value="Bakonzo">Bakonzo</option>
+                                    <option value="Banyabindi">Banyabindi</option>
+                                    <option value="Banyabutumbi">Banyabutumbi</option>
+                                    <option value="Banyankore">Banyankore</option>
+                                    <option value="Banyara">Banyara</option>
+                                    <option value="Banyaruguru">Banyaruguru</option>
+                                    <option value="Banyole">Banyole</option>
+                                    <option value="Banyoro">Banyoro</option>
+                                    <option value="Baruli">Baruli</option>
+                                    <option value="Barundi">Barundi</option>
+                                    <option value="Basamia">Basamia</option>
+                                    <option value="Basimba">Basimba</option>
+                                    <option value="Basoga">Basoga</option>
+                                    <option value="Basongora">Basongora</option>
+                                    <option value="Batagwenda">Batagwenda</option>
                                     <option value="Batoro">Batoro</option>
+                                    <option value="Batuku">Batuku</option>
+                                    <option value="Batwa">Batwa</option>
+                                    <option value="Chope">Chope</option>
+                                    <option value="Dodoth">Dodoth</option>
+                                    <option value="Ethur (Acholi-Labwor)">Ethur (Acholi-Labwor)</option>
+                                    <option value="Gimara">Gimara</option>
+                                    <option value="Ik (Teuso)">Ik (Teuso)</option>
+                                    <option value="Iteso">Iteso</option>
+                                    <option value="Jie">Jie</option>
+                                    <option value="Jonam">Jonam</option>
+                                    <option value="Jopadhola">Jopadhola</option>
+                                    <option value="Kakwa">Kakwa</option>
+                                    <option value="Karimojong">Karimojong</option>
+                                    <option value="Kebu (Okebu)">Kebu (Okebu)</option>
+                                    <option value="Kuku">Kuku</option>
+                                    <option value="Kumam">Kumam</option>
+                                    <option value="Langi">Langi</option>
+                                    <option value="Lendu">Lendu</option>
+                                    <option value="Lugbara">Lugbara</option>
+                                    <option value="Madi">Madi</option>
+                                    <option value="Mening">Mening</option>
+                                    <option value="Mvuba">Mvuba</option>
+                                    <option value="Napore">Napore</option>
+                                    <option value="Ngikutio">Ngikutio</option>
+                                    <option value="Nubi">Nubi</option>
+                                    <option value="Nyangia">Nyangia</option>
+                                    <option value="Pokot">Pokot</option>
+                                    <option value="Reli">Reli</option>
+                                    <option value="Sabiny">Sabiny</option>
+                                    <option value="Shana">Shana</option>
+                                    <option value="So (Tepeth)">So (Tepeth)</option>
+                                    <option value="Vonoma">Vonoma</option>
+                                    <option value="add_new">+ Add New Tribe</option>
                                 </select>
+
+
+                                <!-- Hidden input for adding a new tribe -->
+                                <div id="newBrideFatherTribeWrapper" style="display:none; margin-top:10px;">
+                                    <label for="newBrideFatherTribe">Or add a new tribe</label><br>
+                                    <input type="text" id="newBrideFatherTribe" placeholder="Type your tribe here"
+                                        style="width:100%;">
+                                </div>
+
+                                <script>
+                                    $(document).ready(function () {
+                                        // Make dropdown required by default
+                                        $('#brideFatherTribe').attr('required', true);
+
+                                        $('#brideFatherTribe').on('change', function () {
+                                            if (this.value === 'add_new') {
+                                                // Show input for custom tribe
+                                                $('#newBrideFatherTribeWrapper').show();
+                                                $('#newBrideFatherTribe').focus();
+
+                                                // Make input required, remove required from dropdown
+                                                $('#newBrideFatherTribe').attr('required', true);
+                                                $(this).removeAttr('required');
+
+                                                // Clear dropdown temporarily
+                                                $(this).val('');
+                                            } else {
+                                                // Hide custom input
+                                                $('#newBrideFatherTribeWrapper').hide();
+                                                $('#newBrideFatherTribe').val('');
+
+                                                // Make dropdown required again, remove required from input
+                                                $(this).attr('required', true);
+                                                $('#newBrideFatherTribe').removeAttr('required');
+                                            }
+                                        });
+
+                                        // On form submit, copy new tribe value into select
+                                        $('form').on('submit', function () {
+                                            let newTribeVal = $('#newBrideFatherTribe').val().trim();
+                                            if (newTribeVal) {
+                                                $('#brideFatherTribe option.custom').remove();
+                                                $('#brideFatherTribe').append(new Option(newTribeVal, newTribeVal, true, true)).addClass('custom');
+                                            }
+                                        });
+                                    });
+                                </script>
                             </div>
                         </div>
 
@@ -915,7 +1211,7 @@
                                 <label for="brideMotherGivenName">Given Name<span class="required">*</span></label>
                                 <input type="text" id="brideMotherGivenName" name="bride_mother_given_name" required>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="display: none;">
                                 <label for="brideMotherMaidenName">Maiden Name<span
                                         class="text-muted">(Optional)</span></label>
                                 <input type="text" id="brideMotherMaidenName" name="brideMotherMaidenName">
@@ -924,28 +1220,75 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="brideMotherNIN">National Identity Number (NIN)<span>*</span></label>
-                                <input type="text" id="brideMotherNIN" name="brideMotherNIN" required>
+                                <label for="brideMotherNIN">National Identity Number (NIN)<span></span></label>
+                                <input type="text" id="brideMotherNIN" name="brideMotherNIN">
                             </div>
                             <div class="form-group">
                                 <label for="brideMotherDistrict">District of Residence<span
                                         class="required">*</span></label>
-                                <select id="brideMotherDistrict" name="brideMotherDistrict" class="district-select"
-                                    required>
+                                <select id="brideMotherDistrict" name="brideMotherDistrict"
+                                    class="district-select select2" required>
                                     <option value="">--please select--</option>
                                 </select>
                             </div>
                         </div>
+
+                        <h3 class="section-title" style="margin-top: 30px;">DOWERY DETAILS</h3>
+
+                        <!-- Dowery Fields -->
+                        <div class="form-row mt-4">
+                            <!-- Dowery Type -->
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="doweryType" class="d-block">Dowery Type<span
+                                            class="required">*</span></label>
+                                    <select id="doweryType" name="dowery_type" class="form-control" required>
+                                        <option value="">-- Select Dowery Type --</option>
+                                        <option value="cash">Cash</option>
+                                        <option value="asset">Asset</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Specify -->
+                            <div class="col-12">
+                                <div class="form-group" id="dowerySpecifyWrapper" style="display:none;">
+                                    <label for="dowerySpecify" class="d-block">Specify</label>
+                                    <input type="text" id="dowerySpecify" name="dowery_specify" class="form-control"
+                                        placeholder="" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            $(document).ready(function () {
+                                $('#doweryType').on('change', function () {
+                                    let type = $(this).val();
+
+                                    if (type === 'cash') {
+                                        $('#dowerySpecifyWrapper').slideDown();
+                                        $('#dowerySpecify').attr('placeholder', 'Enter cash amount').attr('required', true);
+                                    } else if (type === 'asset') {
+                                        $('#dowerySpecifyWrapper').slideDown();
+                                        $('#dowerySpecify').attr('placeholder', 'Specify asset details').attr('required', true);
+                                    } else {
+                                        $('#dowerySpecifyWrapper').slideUp();
+                                        $('#dowerySpecify').val('').removeAttr('required');
+                                    }
+                                });
+                            });
+                        </script>
+
                     </section>
 
                     <!-- Step 4: Witnesses -->
                     <section class="form-section" id="section4">
-                        <h3 class="section-title">WITNESSES / REFEREES DETAILS</h3>
-                        <p class="info-text">Please provide details of 4 witnesses who were present at the Nikkah
+                        <h3 class="section-title">WITNESSES / REFEREES DETAILS NOTE : ALL WITNESS SHOULD BE MALE</h3>
+                        <p class="info-text">Please provide details of 2 witnesses who are present at the Nikkah
                             ceremony</p>
 
                         <!-- Witness 1 -->
-                        <h4 class="subsection-title">WITNESS 1</h4>
+                        <h4 class="subsection-title">MALE WITNESS 1 (GROOM'S SIDE)</h4>
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="witness1Surname">Surname<span class="required">*</span></label>
@@ -959,13 +1302,39 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="witness1NIN">National Identity Number (NIN)<span
-                                        class="required">*</span></label>
-                                <input type="text" id="witness1NIN" name="witness1_nin" required>
+                                        class="required"></span></label>
+                                <input type="text" id="witness1NIN" name="witness1_nin">
                             </div>
+                            <!-- Witness 1 Telephone -->
                             <div class="form-group">
                                 <label for="witness1Phone">Phone Number<span class="required">*</span></label>
-                                <input type="tel" id="witness1Phone" name="witness1_telephone" required>
+
+                                <div class="input-group phone-input-group">
+                                    <!-- Country code dropdown -->
+                                    <select id="witness1CountryCode" class="form-control country-code select2">
+                                        <option value="">Code</option>
+                                        @foreach ($countries as $country)
+                                            <option value="{{ $country->calling_code }}">{{ $country->name }}
+                                                        (+{{ $country->calling_code }})</option>
+                                        @endforeach
+                                    </select>
+
+                                    <!-- Phone number input -->
+                                    <input type="tel" id="witness1Phone" name="witness1_telephone"
+                                        class="form-control phone-number" placeholder="Phone number" required
+                                        maxlength="15">
+                                </div>
                             </div>
+
+                            <!-- Optional: Initialize Select2 for the country code -->
+                            <script>
+                                $(document).ready(function () {
+                                    $('.country-code').select2({
+                                        placeholder: "Code",
+                                        width: '100%'
+                                    });
+                                });
+                            </script>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
@@ -974,14 +1343,15 @@
                             </div>
                             <div class="form-group">
                                 <label for="witness1District">District<span class="required">*</span></label>
-                                <select id="witness1District" name="witness1District" class="district-select" required>
+                                <select id="witness1District" name="witness1District" class="district-select select2"
+                                    required>
                                     <option value="">--please select--</option>
                                 </select>
                             </div>
                         </div>
 
                         <!-- Witness 2 -->
-                        <h4 class="subsection-title">WITNESS 2</h4>
+                        <h4 class="subsection-title">MALE WITNESS 2 (BRIDES'S SIDE)</h4>
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="witness2Surname">Surname<span class="required">*</span></label>
@@ -995,12 +1365,28 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="witness2NIN">National Identity Number (NIN)<span
-                                        class="required">*</span></label>
-                                <input type="text" id="witness2NIN" name="witness2_nin" required>
+                                        class="required"></span></label>
+                                <input type="text" id="witness2NIN" name="witness2_nin">
                             </div>
+
                             <div class="form-group">
-                                <label for="witness2Phone">Phone Number<span class="required">*</span></label>
-                                <input type="tel" id="witness2Phone" name="witness2_telephone" required>
+                                <label for="witness1Phone">Phone Number<span class="required">*</span></label>
+
+                                <div class="input-group phone-input-group">
+                                    <!-- Country code dropdown -->
+                                    <select id="witness2CountryCode" class="form-control country-code select2">
+                                        <option value="">Code</option>
+                                        @foreach ($countries as $country)
+                                            <option value="{{ $country->calling_code }}">{{ $country->name }}
+                                                        (+{{ $country->calling_code }})</option>
+                                        @endforeach
+                                    </select>
+
+                                    <!-- Phone number input -->
+                                    <input type="tel" id="witness2Phone" name="witness2_telephone"
+                                        class="form-control phone-number" placeholder="Phone number" required
+                                        maxlength="15">
+                                </div>
                             </div>
                         </div>
                         <div class="form-row">
@@ -1010,7 +1396,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="witness2District">District<span class="required">*</span></label>
-                                <select id="witness2District" name="witness2District" class="district-select" required>
+                                <select id="witness2District" name="witness2District" class="district-select select2"
+                                    required>
                                     <option value="">--please select--</option>
                                 </select>
                             </div>
@@ -1068,25 +1455,28 @@
                         <div class="review-section">
                             <div class="review-header">
                                 <h4>{{ __('ui.review_section.groom') }}</h4>
-                                <button type="button" class="edit-btn"
+                                <button type="button"  class="edit-btn"
                                     data-section="1">{{ __('ui.buttons.edit') }}</button>
                             </div>
                             <div class="review-content" id="reviewGroom"></div>
                         </div>
 
-                        <!-- Imam name (for certificate signature) -->
-                        <div class="form-row" style="margin-top:18px;">
-                            <div class="form-group">
-                                <label for="imamName">Imam in Charge (Name)</label>
-                                <input type="text" id="imamName" name="imam_name" placeholder="Imam's Full Name"
-                                    required>
+                        <!-- Imam Name -->
+                        <div class="form-row mt-4" style="display: none;">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="imamName" class="d-block">Imam in Charge (Name)</label>
+                                    <input type="text" id="imamName" name="imam_name" class="form-control"
+                                        placeholder="Imam's Full Name" value="{{ Helper::fullname() }}" disabled
+                                        required>
+                                </div>
                             </div>
                         </div>
 
                         <div class="review-section">
                             <div class="review-header">
                                 <h4>{{ __('ui.review_section.bride') }}</h4>
-                                <button type="button" class="edit-btn"
+                                <button type="button"  class="edit-btn"
                                     data-section="2">{{ __('ui.buttons.edit') }}</button>
                             </div>
                             <div class="review-content" id="reviewBride"></div>
@@ -1095,7 +1485,7 @@
                         <div class="review-section">
                             <div class="review-header">
                                 <h4>{{ __('ui.review_section.parents') }}</h4>
-                                <button type="button" class="edit-btn"
+                                <button type="button"  class="edit-btn"
                                     data-section="3">{{ __('ui.buttons.edit') }}</button>
                             </div>
                             <div class="review-content" id="reviewParents"></div>
@@ -1104,7 +1494,7 @@
                         <div class="review-section">
                             <div class="review-header">
                                 <h4>{{ __('ui.review_section.witnesses') }}</h4>
-                                <button type="button" class="edit-btn"
+                                <button type="button"  class="edit-btn"
                                     data-section="4">{{ __('ui.buttons.edit') }}</button>
                             </div>
                             <div class="review-content" id="reviewWitnesses"></div>
@@ -1113,7 +1503,7 @@
                         <div class="review-section">
                             <div class="review-header">
                                 <h4>{{ __('ui.review_section.photos') }}</h4>
-                                <button type="button" class="edit-btn"
+                                <button type="button"  class="edit-btn"
                                     data-section="5">{{ __('ui.buttons.edit') }}</button>
                             </div>
                             <div class="review-content" id="reviewPhotos"></div>

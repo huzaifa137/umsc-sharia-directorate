@@ -39,6 +39,7 @@ return new class extends Migration {
             $table->string('bride_surname', 100)->nullable();
             $table->string('bride_given_name', 100)->nullable();
             $table->string('brideNIN', 20)->nullable();
+            $table->string('dowery_specify', 20)->nullable();
             $table->tinyInteger('bride_day_date_of_birth')->nullable();
             $table->tinyInteger('bride_month_date_of_birth')->nullable();
             $table->smallInteger('bride_year_date_of_birth')->nullable();

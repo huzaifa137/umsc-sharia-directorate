@@ -149,8 +149,7 @@
                         <div style="flex: 1;">
                             <div style="font-size: 15px; font-weight: 600; color: #64748b;">Step {{ $i }}
                             </div>
-                            <div style="font-size: 13px; color: #94a3b8; margin-top: 3px;"
-                                data-i18n="step_{{ $i }}_title">
+                            <div style="font-size: 13px; color: #94a3b8; margin-top: 3px;" data-i18n="step_{{ $i }}_title">
                                 {{ $stepTitles[$i] }}
                             </div>
                         </div>
@@ -158,14 +157,14 @@
                         <!-- Status Icon -->
                         <div class="step-status" style="width: 24px; height: 24px; flex-shrink: 0;">
                             @if ($i === 1)
-                                <svg style="color: #21532B; width: 100%; height: 100%;" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2">
+                                <svg style="color: #21532B; width: 100%; height: 100%;" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <path d="M12 8v4l3 3"></path>
                                 </svg>
                             @else
-                                <svg style="color: #cbd5e1; width: 100%; height: 100%;" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2">
+                                <svg style="color: #cbd5e1; width: 100%; height: 100%;" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
                                     <path d="M19 4.5L5 19.5"></path>
                                 </svg>
                             @endif
@@ -290,63 +289,64 @@
                     </div>
 
                     <!-- Fields -->
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; position: relative; z-index: 1;">
+                    <div class="groom-address">
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; position: relative; z-index: 1;">
 
-                        @php
-                            $fieldStyle =
-                                'width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid #cbd5e1; background: #ffffff; color: #1e293b; margin-top: 8px; font-size: 14px; transition: all 0.2s ease; outline: none;';
-                            $addressFields = [
-                                'groom_district' => [
-                                    'label' => 'District *',
-                                    'type' => 'select',
-                                    'class' => 'district-select',
-                                ],
-                                'groom_municipality' => [
-                                    'label' => 'County / Municipality *',
-                                    'type' => 'select',
-                                    'class' => 'county-select',
-                                ],
-                                'groom_sub_county' => [
-                                    'label' => 'Sub County *',
-                                    'type' => 'select',
-                                    'class' => 'subcounty-select',
-                                ],
-                                'groom_parish' => [
-                                    'label' => 'Parish / Ward *',
-                                    'type' => 'select',
-                                    'class' => 'parish-select',
-                                ],
-                                'groom_village' => [
-                                    'label' => 'Village (LC1 Zone) *',
-                                    'type' => 'select',
-                                    'class' => 'village-select',
-                                ],
-                                'groom_plot_number' => ['label' => 'Plot Number', 'type' => 'text'],
-                            ];
-                        @endphp
+                            @php
+                                $fieldStyle =
+                                    'width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid #cbd5e1; background: #ffffff; color: #1e293b; margin-top: 8px; font-size: 14px; transition: all 0.2s ease; outline: none;';
+                                $addressFields = [
+                                    'groom_district' => [
+                                        'label' => 'Groom District *',
+                                        'type' => 'select',
+                                        'class' => 'district-select select2',
+                                    ],
+                                    'groom_municipality' => [
+                                        'label' => 'County / Municipality *',
+                                        'type' => 'select',
+                                        'class' => 'county-select select2',
+                                    ],
+                                    'groom_sub_county' => [
+                                        'label' => 'Sub County *',
+                                        'type' => 'select',
+                                        'class' => 'subcounty-select select2',
+                                    ],
+                                    'groom_parish' => [
+                                        'label' => 'Parish / Ward *',
+                                        'type' => 'select',
+                                        'class' => 'parish-select select2',
+                                    ],
+                                    'groom_village' => [
+                                        'label' => 'Village (LC1 Zone) *',
+                                        'type' => 'select',
+                                        'class' => 'village-select select2',
+                                    ],
+                                    'groom_plot_number' => ['label' => 'Plot Number', 'type' => 'text'],
+                                ];
+                            @endphp
 
-                        @foreach ($addressFields as $name => $field)
-                            <div
-                                style="display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-                                <label style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600;">
-                                    {{ $field['label'] }}
-                                </label>
+                            @foreach ($addressFields as $name => $field)
+                                <div
+                                    style="display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+                                    <label style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600;">
+                                        {{ $field['label'] }}
+                                    </label>
 
-                                @if ($field['type'] === 'select')
-                                    <select name="{{ $name }}" class="{{ $field['class'] ?? '' }}"
-                                        style="{{ $fieldStyle }}"
-                                        data-required="{{ str_contains($field['label'], '*') ? 'true' : 'false' }}">
-                                        <option value="">Select
-                                            {{ strtolower(str_replace('*', '', $field['label'])) }}</option>
-                                    </select>
-                                @else
-                                    <input type="text" name="{{ $name }}"
-                                        placeholder="Enter {{ strtolower($field['label']) }}"
-                                        style="{{ $fieldStyle }}" data-required="false">
-                                @endif
-                            </div>
-                        @endforeach
+                                    @if ($field['type'] === 'select')
+                                        <select name="{{ $name }}" class="{{ $field['class'] ?? '' }}" style="{{ $fieldStyle }}"
+                                            data-required="{{ str_contains($field['label'], '*') ? 'true' : 'false' }}">
+                                            <option value="">Select
+                                                {{ strtolower(str_replace('*', '', $field['label'])) }}
+                                            </option>
+                                        </select>
+                                    @else
+                                        <input type="text" name="{{ $name }}" placeholder="Enter {{ strtolower($field['label']) }}"
+                                            style="{{ $fieldStyle }}" data-required="false">
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
@@ -375,35 +375,35 @@
                     </div>
 
                     <!-- Fields -->
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; position: relative; z-index: 1;">
-                        @php
-                            $wifeFields = [
-                                'bride_surname' => 'Surname *',
-                                'bride_given_name' => 'Given Name *',
-                                'bride_nin' => 'NIN *',
-                                'bride_phone' => 'Telephone *',
-                                'bride_email' => 'Email Address *',
-                                'bride_tribe' => 'Tribe *',
-                            ];
-                        @endphp
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; position: relative; z-index: 1;">
+                            @php
+                                $wifeFields = [
+                                    'bride_surname' => 'Surname *',
+                                    'bride_given_name' => 'Given Name *',
+                                    'bride_nin' => 'NIN *',
+                                    'bride_phone' => 'Telephone *',
+                                    'bride_email' => 'Email Address *',
+                                    'bride_tribe' => 'Tribe *',
+                                ];
+                            @endphp
 
-                        @foreach ($wifeFields as $name => $label)
-                            <div
-                                style="display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                                <label
-                                    style="font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 600; letter-spacing: 0.3px;">
-                                    {{ $label }}
-                                </label>
-                                <input type="text" name="{{ $name }}"
-                                    placeholder="Enter {{ strtolower(str_replace('*', '', $label)) }}"
-                                    style="{{ $fieldStyle }}"
-                                    data-required="{{ str_contains($label, '*') ? 'true' : 'false' }}"
-                                    onfocus="this.style.borderColor='#ffffff'; this.style.boxShadow='0 0 0 4px rgba(255, 255, 255, 0.15)';"
-                                    onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';">
-                            </div>
-                        @endforeach
-                    </div>
+                            @foreach ($wifeFields as $name => $label)
+                                <div
+                                    style="display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
+                                    <label
+                                        style="font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 600; letter-spacing: 0.3px;">
+                                        {{ $label }}
+                                    </label>
+                                    <input type="text" name="{{ $name }}"
+                                        placeholder="Enter {{ strtolower(str_replace('*', '', $label)) }}"
+                                        style="{{ $fieldStyle }}"
+                                        data-required="{{ str_contains($label, '*') ? 'true' : 'false' }}"
+                                        onfocus="this.style.borderColor='#ffffff'; this.style.boxShadow='0 0 0 4px rgba(255, 255, 255, 0.15)';"
+                                        onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';">
+                                </div>
+                            @endforeach
+                        </div>
                 </div>
             </div>
 
@@ -431,6 +431,8 @@
                     </div>
 
                     <!-- Fields -->
+                    <div class="bride-address">
+
                     <div
                         style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; position: relative; z-index: 1;">
                         @php
@@ -439,29 +441,29 @@
 
                             $brideAddressFields = [
                                 'bride_district' => [
-                                    'label' => 'District *',
+                                    'label' => 'Bride District *',
                                     'type' => 'select',
-                                    'class' => 'district-select',
+                                    'class' => 'district-select select2',
                                 ],
                                 'bride_municipality' => [
                                     'label' => 'County / Municipality *',
                                     'type' => 'select',
-                                    'class' => 'county-select',
+                                    'class' => 'county-select select2',
                                 ],
                                 'bride_sub_county' => [
                                     'label' => 'Sub County *',
                                     'type' => 'select',
-                                    'class' => 'subcounty-select',
+                                    'class' => 'subcounty-select select2',
                                 ],
                                 'bride_parish' => [
                                     'label' => 'Parish / Ward *',
                                     'type' => 'select',
-                                    'class' => 'parish-select',
+                                    'class' => 'parish-select select2',
                                 ],
                                 'bride_village' => [
                                     'label' => 'Village (LC1 Zone) *',
                                     'type' => 'select',
-                                    'class' => 'village-select',
+                                    'class' => 'village-select select2',
                                 ],
                                 'bride_plot_number' => ['label' => 'Plot Number', 'type' => 'text'],
                             ];
@@ -477,20 +479,20 @@
                                 </label>
 
                                 @if ($field['type'] === 'select')
-                                    <select name="{{ $name }}" class="{{ $field['class'] ?? '' }}"
-                                        style="{{ $fieldStyle }}"
+                                    <select name="{{ $name }}" class="{{ $field['class'] ?? '' }}" style="{{ $fieldStyle }}"
                                         data-required="{{ str_contains($field['label'], '*') ? 'true' : 'false' }}">
                                         <option value="">Select
-                                            {{ strtolower(str_replace('*', '', $field['label'])) }}</option>
+                                            {{ strtolower(str_replace('*', '', $field['label'])) }}
+                                        </option>
                                     </select>
                                 @else
-                                    <input type="text" name="{{ $name }}"
-                                        placeholder="Enter {{ strtolower($field['label']) }}"
+                                    <input type="text" name="{{ $name }}" placeholder="Enter {{ strtolower($field['label']) }}"
                                         style="{{ $fieldStyle }}" data-required="false">
                                 @endif
 
                             </div>
                         @endforeach
+                    </div>
                     </div>
                 </div>
             </div>
@@ -706,8 +708,7 @@
                     <h4
                         style="color: #ffffff; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
                         Authority Details</h4>
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
                         @foreach ($placeholdersAuthority as $name => $placeholder)
                             <div
                                 style="display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08);">
@@ -751,8 +752,7 @@
                     @endphp
 
                     <!-- Form Fields -->
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
 
                         <!-- Children Involved -->
                         <div
@@ -812,8 +812,7 @@
                         </div>
                     </div>
 
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
 
                         <!-- Husband Photo -->
                         <div
@@ -823,14 +822,13 @@
 
                             <div onclick="document.getElementById('groomPhoto').click()" style="cursor: pointer;">
                                 @if ($application && @$application->groom_photo_path)
-                                    <img id="groomPhotoPreview"
-                                        src="{{ Storage::url(@$application->groom_photo_path) }}"
+                                    <img id="groomPhotoPreview" src="{{ Storage::url(@$application->groom_photo_path) }}"
                                         style="width: 150px; height: 180px; object-fit: cover; border-radius: 8px; border: 3px solid #ffffff; margin-bottom: 15px;">
                                 @else
                                     <div id="groomPlaceholder"
                                         style="width: 150px; height: 180px; background: rgba(255,255,255,0.1); border-radius: 8px; margin: 0 auto 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #ffffff;">
-                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="1.5">
+                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="1.5">
                                             <rect x="3" y="3" width="18" height="18" rx="2" />
                                             <circle cx="8.5" cy="8.5" r="1.5" />
                                             <path d="M21 15l-5-5L5 21" />
@@ -842,8 +840,8 @@
                                     style="display: none; width: 150px; height: 180px; object-fit: cover; border-radius: 8px; border: 3px solid #ffffff; margin: 0 auto 15px;">
                             </div>
 
-                            <input type="file" id="groomPhoto" name="groomPhoto" accept="image/*"
-                                style="display: none;" data-required="true"
+                            <input type="file" id="groomPhoto" name="groomPhoto" accept="image/*" style="display: none;"
+                                data-required="true"
                                 onchange="previewImage(this, 'groomPhotoPreview', 'groomPlaceholder')">
                             <p style="color: rgba(255,255,255,0.5); font-size: 11px;">Max size 2MB (JPG, PNG)</p>
                         </div>
@@ -856,14 +854,13 @@
 
                             <div onclick="document.getElementById('bridePhoto').click()" style="cursor: pointer;">
                                 @if ($application && @$application->bride_photo_path)
-                                    <img id="bridePhotoPreview"
-                                        src="{{ Storage::url(@$application->bride_photo_path) }}"
+                                    <img id="bridePhotoPreview" src="{{ Storage::url(@$application->bride_photo_path) }}"
                                         style="width: 150px; height: 180px; object-fit: cover; border-radius: 8px; border: 3px solid #ffffff; margin-bottom: 15px;">
                                 @else
                                     <div id="bridePlaceholder"
                                         style="width: 150px; height: 180px; background: rgba(255,255,255,0.1); border-radius: 8px; margin: 0 auto 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #ffffff;">
-                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="1.5">
+                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="1.5">
                                             <rect x="3" y="3" width="18" height="18" rx="2" />
                                             <circle cx="8.5" cy="8.5" r="1.5" />
                                             <path d="M21 15l-5-5L5 21" />
@@ -875,8 +872,8 @@
                                     style="display: none; width: 150px; height: 180px; object-fit: cover; border-radius: 8px; border: 3px solid #ffffff; margin: 0 auto 15px;">
                             </div>
 
-                            <input type="file" id="bridePhoto" name="bridePhoto" accept="image/*"
-                                style="display: none;" data-required="true"
+                            <input type="file" id="bridePhoto" name="bridePhoto" accept="image/*" style="display: none;"
+                                data-required="true"
                                 onchange="previewImage(this, 'bridePhotoPreview', 'bridePlaceholder')">
                             <p style="color: rgba(255,255,255,0.5); font-size: 11px;">Max size 2MB (JPG, PNG)</p>
                         </div>
@@ -891,7 +888,7 @@
                     const placeholder = document.getElementById(placeholderId);
                     if (input.files && input.files[0]) {
                         const reader = new FileReader();
-                        reader.onload = function(e) {
+                        reader.onload = function (e) {
                             preview.src = e.target.result;
                             preview.style.display = 'block';
                             if (placeholder) placeholder.style.display = 'none';
@@ -1180,7 +1177,7 @@
 </style>
 
 <script>
-    document.getElementById('multiStepForm').addEventListener('submit', function(e) {
+    document.getElementById('multiStepForm').addEventListener('submit', function (e) {
         if (!validateCurrentStep()) {
             e.preventDefault();
             return false;
@@ -1417,11 +1414,11 @@
         });
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         for (let i = 1; i <= totalSteps; i++) {
             const indicator = document.getElementById(`stepIndicator${i}`);
             if (indicator) {
-                indicator.addEventListener('click', function() {
+                indicator.addEventListener('click', function () {
 
                     if (!this.classList.contains('locked')) {
                         switchStep(i);
@@ -1432,7 +1429,7 @@
 
 
         const form = document.getElementById('multiStepForm');
-        form.addEventListener('input', function(e) {});
+        form.addEventListener('input', function (e) { });
 
         updateUI();
     });
@@ -1471,7 +1468,7 @@
         }
     }
 
-    document.getElementById('multiStepForm').addEventListener('submit', function() {
+    document.getElementById('multiStepForm').addEventListener('submit', function () {
         localStorage.removeItem('divorceFormData');
         localStorage.removeItem('divorceFormCurrentStep');
         localStorage.removeItem('divorceFormCompletedSteps');
@@ -1479,100 +1476,7 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const districtsData = {
-            "Kampala": ["Central", "Nakawa", "Makindye"],
-            "Wakiso": ["Busiro", "Kyadondo", "Entebbe"],
-            "Jinja": ["Jinja Central", "Butembe"]
-        }
-
-        const subCountiesData = {
-            "Central": ["Central Sub 1", "Central Sub 2"],
-            "Nakawa": ["Nakawa Sub 1", "Nakawa Sub 2"],
-            "Makindye": ["Makindye Sub 1"],
-            "Busiro": ["Busiro Sub 1", "Busiro Sub 2"],
-            "Kyadondo": ["Kyadondo Sub 1"],
-            "Entebbe": ["Entebbe Sub 1"],
-            "Jinja Central": ["Jinja Sub 1"],
-            "Butembe": ["Butembe Sub 1"]
-        }
-
-        const parishesData = {
-            "Central Sub 1": ["Parish A", "Parish B"],
-            "Nakawa Sub 1": ["Parish C"],
-            "Makindye Sub 1": ["Parish D"],
-            "Busiro Sub 1": ["Parish E", "Parish F"],
-            "Kyadondo Sub 1": ["Parish G"],
-            "Entebbe Sub 1": ["Parish H"],
-            "Jinja Sub 1": ["Parish I"],
-            "Butembe Sub 1": ["Parish J"]
-        }
-
-        const villagesData = {
-            "Parish A": ["Village 1", "Village 2"],
-            "Parish B": ["Village 3"],
-            "Parish C": ["Village 4", "Village 5"],
-            "Parish D": ["Village 6"],
-            "Parish E": ["Village 7", "Village 8"],
-            "Parish F": ["Village 9"],
-            "Parish G": ["Village 10"],
-            "Parish H": ["Village 11"],
-            "Parish I": ["Village 12"],
-            "Parish J": ["Village 13"]
-        }
-
-        function populateSelect(select, options) {
-            select.innerHTML = '<option value="">-- Select --</option>'
-            options.forEach(opt => {
-                const el = document.createElement('option')
-                el.value = opt
-                el.textContent = opt
-                select.appendChild(el)
-            })
-        }
-
-        // Handle all address sections dynamically
-        document.querySelectorAll('.district-select').forEach(districtSelect => {
-            const container = districtSelect.closest('.form-step')
-            const countySelect = container.querySelector('.county-select')
-            const subcountySelect = container.querySelector('.subcounty-select')
-            const parishSelect = container.querySelector('.parish-select')
-            const villageSelect = container.querySelector('.village-select')
-
-            // Populate districts
-            populateSelect(districtSelect, Object.keys(districtsData))
-
-            districtSelect.addEventListener('change', () => {
-                const counties = districtsData[districtSelect.value] || []
-                populateSelect(countySelect, counties)
-                subcountySelect.innerHTML = '<option value="">-- Select --</option>'
-                parishSelect.innerHTML = '<option value="">-- Select --</option>'
-                villageSelect.innerHTML = '<option value="">-- Select --</option>'
-            })
-
-            countySelect.addEventListener('change', () => {
-                const subcounties = subCountiesData[countySelect.value] || []
-                populateSelect(subcountySelect, subcounties)
-                parishSelect.innerHTML = '<option value="">-- Select --</option>'
-                villageSelect.innerHTML = '<option value="">-- Select --</option>'
-            })
-
-            subcountySelect.addEventListener('change', () => {
-                const parishes = parishesData[subcountySelect.value] || []
-                populateSelect(parishSelect, parishes)
-                villageSelect.innerHTML = '<option value="">-- Select --</option>'
-            })
-
-            parishSelect.addEventListener('change', () => {
-                const villages = villagesData[parishSelect.value] || []
-                populateSelect(villageSelect, villages)
-            })
-        })
-    })
-</script>
-
-<script>
-    document.getElementById('multiStepForm').addEventListener('submit', function(e) {
+    document.getElementById('multiStepForm').addEventListener('submit', function (e) {
         e.preventDefault();
 
         if (!validateCurrentStep()) return;
@@ -1601,12 +1505,12 @@
             const formData = new FormData(form);
 
             fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
 
@@ -1647,33 +1551,128 @@
 </script>
 
 
+<script src="{{ asset('asset/js/uganda-data.js') }}"></script>
+
 <script>
-    // Optional: Dynamically adjust navigation buttons for mobile
-    function adjustNavigationForMobile() {
-        const navigationContainer = document.querySelector(
-            'div[style*="display: flex; justify-content: space-between; margin-top: 40px;"]');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const submitBtn = document.getElementById('submitBtn');
+    document.addEventListener("DOMContentLoaded", () => {
 
-        if (window.innerWidth <= 768) {
-            // Create a wrapper for buttons
-            if (!navigationContainer.querySelector('.mobile-button-wrapper')) {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'mobile-button-wrapper';
-                wrapper.style.cssText = 'display: flex; flex-direction: column; gap: 10px; width: 100%;';
+    function populateSelect(select, options) {
 
-                if (prevBtn) navigationContainer.insertBefore(prevBtn, navigationContainer.firstChild);
-                if (nextBtn) navigationContainer.insertBefore(nextBtn, prevBtn ? prevBtn.nextSibling :
-                    navigationContainer.firstChild);
-                if (submitBtn) navigationContainer.insertBefore(submitBtn, navigationContainer.firstChild);
-            }
+        select.innerHTML = `<option value="">-- Select --</option>`;
+
+        options.forEach(opt => {
+            let optionEl = document.createElement("option");
+            optionEl.value = opt;
+            optionEl.textContent = opt;
+            select.appendChild(optionEl);
+        });
+
+        // Refresh Select2 if applied
+        if ($(select).hasClass("select2")) {
+            $(select).trigger("change.select2");
         }
     }
 
-    // Run on load and resize
-    window.addEventListener('load', adjustNavigationForMobile);
-    window.addEventListener('resize', adjustNavigationForMobile);
+    // Initialize Select2 globally
+    // $(".select2").select2({
+    //     width: "100%"
+    // });
+    
+$(".select2").select2({
+    width: "100%",
+    tags: true,
+    placeholder: "-- Select --",
+    allowClear: true,
+    tokenSeparators: [','],
+
+    createTag: function (params) {
+        let term = $.trim(params.term);
+        if (term === "") return null;
+
+        return {
+            id: term,
+            text: term
+        };
+    },
+
+    insertTag: function (data, tag) {
+        data.push(tag);
+    },
+
+    language: {
+        noResults: function (params) {
+            return "Press Enter to add: " + params.term;
+        }
+    }
+});
+
+    // District list
+    const districtsList = window.ugandaData.districts.map(d => d.name);
+
+    // ================================
+    // Handle Each Address Block Separately
+    // ================================
+    document.querySelectorAll(".groom-address, .bride-address").forEach(section => {
+
+        const districtSelect  = section.querySelector(".district-select");
+        const countySelect    = section.querySelector(".county-select");
+        const subcountySelect = section.querySelector(".subcounty-select");
+        const parishSelect    = section.querySelector(".parish-select");
+        const villageSelect   = section.querySelector(".village-select");
+
+        // Load districts
+        populateSelect(districtSelect, districtsList);
+
+        // ================================
+        // District → County
+        // ================================
+        $(districtSelect).on("change", function () {
+
+            const districtObj = window.ugandaData.districts.find(
+                d => d.name === this.value
+            );
+
+            populateSelect(countySelect, districtObj ? districtObj.counties : []);
+            populateSelect(subcountySelect, []);
+            populateSelect(parishSelect, []);
+            populateSelect(villageSelect, []);
+        });
+
+        // ================================
+        // County → Subcounty
+        // ================================
+        $(countySelect).on("change", function () {
+
+            const subs = subCounties[this.value] || [];
+            populateSelect(subcountySelect, subs);
+
+            populateSelect(parishSelect, []);
+            populateSelect(villageSelect, []);
+        });
+
+        // ================================
+        // Subcounty → Parish
+        // ================================
+        $(subcountySelect).on("change", function () {
+
+            const parishList = parishes[this.value] || [];
+            populateSelect(parishSelect, parishList);
+
+            populateSelect(villageSelect, []);
+        });
+
+        // ================================
+        // Parish → Village
+        // ================================
+        $(parishSelect).on("change", function () {
+
+            const villageList = villages[this.value] || [];
+            populateSelect(villageSelect, villageList);
+        });
+
+    });
+
+});
 </script>
 
 @include('layouts.form-footers')
