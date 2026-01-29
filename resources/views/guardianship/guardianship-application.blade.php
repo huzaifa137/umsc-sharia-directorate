@@ -610,8 +610,8 @@
             @endphp
 
             @for ($i = 1; $i <= 4; $i++)
-                <div class="step-indicator {{ $i === 1 ? 'active' : '' }} {{ $i > 1 ? 'locked' : '' }}"
-                    data-step="{{ $i }}" id="stepIndicator{{ $i }}"
+                <div class="step-indicator {{ $i === 1 ? 'active' : '' }} {{ $i > 1 ? 'locked' : '' }}" data-step="{{ $i }}"
+                    id="stepIndicator{{ $i }}"
                     style="display: flex; align-items: center; gap: 16px; padding: 20px; background: white; border: 2px solid #e5e7eb; border-radius: 14px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; backdrop-filter: blur(10px);">
 
                     <!-- Step Icon -->
@@ -747,6 +747,9 @@
                                 style="color: rgba(255,255,255,0.8); margin: 8px 0 0 0; font-size: 15px; font-weight: 500;">
                                 Please provide accurate information about the ward
                             </p>
+
+                            <p><span style="color:#beb7b7;"><i>"ward" is typically a child or person who is in need of
+                                        care, protection, and guidance.</i></span></p>
                         </div>
                     </div>
 
@@ -806,8 +809,8 @@
                                 Age *
                             </label>
                             <input type="number" name="ward_age" data-i18n-placeholder="ward_age_placeholder"
-                                placeholder="Will be auto-calculated" style="{{ $fieldStyle }}"
-                                data-required="true" readonly>
+                                placeholder="Will be auto-calculated" style="{{ $fieldStyle }}" data-required="true"
+                                readonly>
                         </div>
 
                         <!-- Birth Certificate Number -->
@@ -858,6 +861,20 @@
                             </select>
                         </div>
 
+                        <!-- Type of Guardianship Relationship to Ward -->
+                        <div
+                            style="display: flex; flex-direction: column; background: rgba(255,255,255,0.08); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+                            <label data-i18n="guardianship_type_label"
+                                style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">
+                                Relationship to Ward *
+                            </label>
+                            <select name="relationship_type" style="{{ $selectStyle }}" data-required="true">
+                                <option value="" data-i18n="select_relationship_type">-- Select Relationship --</option>
+                                <option value="Relative" data-i18n="minor">Relative</option>
+                                <option value="Not Relative" data-i18n="minor">Not a Relative to Ward</option>
+                            </select>
+                        </div>
+
                         <!-- Health Conditions -->
                         <div
                             style="display: flex; flex-direction: column; background: rgba(255,255,255,0.08); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); grid-column: span 2;">
@@ -865,9 +882,10 @@
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">
                                 Any Health Conditions
                             </label>
-                            <textarea name="health_conditions" rows="2" data-i18n-placeholder="health_conditions_placeholder"
-                                placeholder="Describe any known health conditions or special needs" style="{{ $fieldStyle }} min-height: 80px;"
-                                data-required="false"></textarea>
+                            <textarea name="health_conditions" rows="2"
+                                data-i18n-placeholder="health_conditions_placeholder"
+                                placeholder="Describe any known health conditions or special needs"
+                                style="{{ $fieldStyle }} min-height: 80px;" data-required="false"></textarea>
                         </div>
 
                         <!-- Education Level -->
@@ -935,8 +953,7 @@
                     </div>
 
                     <!-- Header -->
-                    <div
-                        style="
+                    <div style="
     display: flex; 
     flex-wrap: wrap; 
     align-items: center; 
@@ -945,8 +962,7 @@
     position: relative; 
     z-index: 1;">
 
-                        <div
-                            style="
+                        <div style="
         background: white; 
         color: #2C5C36; 
         width: 60px; 
@@ -963,8 +979,7 @@
                         </div>
 
                         <div style="flex: 1; min-width: 250px;">
-                            <h3 data-i18n="step2_title"
-                                style="
+                            <h3 data-i18n="step2_title" style="
             color: white; 
             font-size: clamp(1.4rem, 5vw, 1.8rem); 
             font-weight: 800; 
@@ -973,8 +988,7 @@
             line-height: 1.2;">
                                 Parental/Biographical Information
                             </h3>
-                            <p data-i18n="step2_description"
-                                style="
+                            <p data-i18n="step2_description" style="
             color: rgba(255,255,255,0.8); 
             margin: 8px 0 0 0; 
             font-size: 15px; 
@@ -990,8 +1004,8 @@
                         style="background: rgba(255,255,255,0.08); padding: 30px; border-radius: 16px; margin-bottom: 40px; border: 1px solid #2C5C36; backdrop-filter: blur(10px);">
                         <h4 data-i18n="father_info"
                             style="color: white; font-size: 18px; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 12px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" style="opacity: 0.8;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="opacity: 0.8;">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
@@ -1006,9 +1020,8 @@
                                 <label data-i18n="father_name_label"
                                     style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; margin-bottom: 8px;">Father's
                                     Full Name *</label>
-                                <input type="text" name="father_name"
-                                    data-i18n-placeholder="father_name_placeholder" style="{{ $fieldStyle }}"
-                                    data-required="true">
+                                <input type="text" name="father_name" data-i18n-placeholder="father_name_placeholder"
+                                    style="{{ $fieldStyle }}" data-required="true">
                             </div>
 
                             <!-- Father's Status -->
@@ -1033,8 +1046,8 @@
                         style="background: rgba(255,255,255,0.08); padding: clamp(15px, 5vw, 30px); border-radius: 16px; margin-bottom: 40px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
                         <h4 data-i18n="mother_info"
                             style="color: white; font-size: 18px; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" style="opacity: 0.8; flex-shrink: 0;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="opacity: 0.8; flex-shrink: 0;">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
@@ -1049,8 +1062,7 @@
                                 <label data-i18n="mother_name_label"
                                     style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; margin-bottom: 8px;">Mother's
                                     Full Name</label>
-                                <input type="text" name="mother_name"
-                                    data-i18n-placeholder="mother_name_placeholder"
+                                <input type="text" name="mother_name" data-i18n-placeholder="mother_name_placeholder"
                                     style="{{ $fieldStyle }}; width: 100%; box-sizing: border-box;"
                                     data-required="false">
                             </div>
@@ -1078,8 +1090,8 @@
 
                         <h4 data-i18n="birth_certificate_title"
                             style="color: white; font-size: clamp(16px, 4vw, 18px); font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" style="opacity: 0.8; flex-shrink: 0;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="opacity: 0.8; flex-shrink: 0;">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                 <polyline points="14 2 14 8 20 8"></polyline>
                                 <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -1098,9 +1110,8 @@
                                 <div id="birthCertificatePlaceholder"
                                     style="width: 100%; max-width: 200px; height: 140px; background: rgba(255,255,255,0.1); border-radius: 12px; margin-left: auto; margin-right: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; transition: all 0.3s; padding: 15px; box-sizing: border-box;">
 
-                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="1.5"
-                                        style="opacity: 0.7; margin-bottom: 12px; flex-shrink: 0;">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="1.5" style="opacity: 0.7; margin-bottom: 12px; flex-shrink: 0;">
                                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                         <polyline points="14 2 14 8 20 8"></polyline>
                                         <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -1162,8 +1173,8 @@
 
                         <h4 data-i18n="personal_info_title"
                             style="color: white; font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-left: 5px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" style="opacity: 0.8; flex-shrink: 0;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="opacity: 0.8; flex-shrink: 0;">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
@@ -1214,8 +1225,7 @@
                                 <label data-i18n="guardian_nin_label"
                                     style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; margin-bottom: 6px;">National
                                     ID (NIN) *</label>
-                                <input type="text" name="guardian_nin"
-                                    data-i18n-placeholder="guardian_nin_placeholder"
+                                <input type="text" name="guardian_nin" data-i18n-placeholder="guardian_nin_placeholder"
                                     style="{{ $fieldStyle }} width: 100%; box-sizing: border-box; height: 45px;"
                                     data-required="true" maxlength="14">
                             </div>
@@ -1234,15 +1244,54 @@
                                 </select>
                             </div>
 
-                            <div
-                                style="display: flex; flex-direction: column; background: #2C5C36; padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
-                                <label data-i18n="phone_label"
-                                    style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; margin-bottom: 6px;">Telephone
-                                    Number *</label>
-                                <input type="tel" name="guardian_phone" data-i18n-placeholder="phone_placeholder"
-                                    style="{{ $fieldStyle }} width: 100%; box-sizing: border-box; height: 45px;"
-                                    data-required="true">
+                            <div style="display: flex; flex-direction: column;
+                                    background: #2C5C36;
+                                    padding: 15px;
+                                    border-radius: 10px;
+                                    border: 1px solid rgba(255,255,255,0.05);">
+
+                                <label data-i18n="phone_label" style="font-size: 12px;
+                                        color: rgba(255,255,255,0.9);
+                                        font-weight: 600;
+                                        margin-bottom: 6px;">
+                                    Telephone Number *
+                                </label>
+
+                                <!-- ✅ Phone Input Group -->
+                                <div style="
+                                        display: flex;
+                                        gap: 10px;
+                                        align-items: center;
+                                        width: 100%;
+                                    ">
+
+                                    <!-- Country Code Dropdown -->
+                                    <select name="guardian_country_code" class="select2" style="
+                                                width: 35%;
+                                                height: 45px;
+                                                border-radius: 8px;
+                                                border: 1px solid #cbd5e1;
+                                                padding: 8px;
+                                                font-size: 14px;
+                                            " required>
+
+                                        <option value="">Code</option>
+
+                                        @foreach ($countries as $country)
+                                            <option value="{{ $country->calling_code }}">
+                                                {{ $country->name }} (+{{ $country->calling_code }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    <!-- Phone Number Input -->
+                                    <input type="tel" name="guardian_phone" data-i18n-placeholder="phone_placeholder" class="form-control"
+                                        maxlength="15" style="{{ $fieldStyle }} width: 65%; height: 45px;"
+                                        data-required="true" placeholder="Phone number" required>
+                                </div>
+
                             </div>
+
 
                             <div
                                 style="display: flex; flex-direction: column; background: #2C5C36; padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
@@ -1261,8 +1310,8 @@
                         style="background: rgba(255,255,255,0.08); padding: 30px; border-radius: 16px; margin-bottom: 40px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
                         <h4 data-i18n="assessment_title"
                             style="color: white; font-size: 18px; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 12px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" style="opacity: 0.8;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="opacity: 0.8;">
                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
                             </svg>
@@ -1277,7 +1326,8 @@
                                 <label data-i18n="experience_label"
                                     style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; margin-bottom: 8px;">Previous
                                     Guardianship Experience (if any)</label>
-                                <textarea name="previous_experience" rows="3" data-i18n-placeholder="experience_placeholder"
+                                <textarea name="previous_experience" rows="3"
+                                    data-i18n-placeholder="experience_placeholder"
                                     style="{{ $fieldStyle }} min-height: 100px;" data-required="false"></textarea>
                             </div>
 
@@ -1311,7 +1361,8 @@
                                 <label data-i18n="religious_background_label"
                                     style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; margin-bottom: 8px;">Religious
                                     Knowledge/Background</label>
-                                <textarea name="religious_background" rows="2" data-i18n-placeholder="religious_background_placeholder"
+                                <textarea name="religious_background" rows="2"
+                                    data-i18n-placeholder="religious_background_placeholder"
                                     style="{{ $fieldStyle }} min-height: 80px;" data-required="false"></textarea>
                             </div>
 
@@ -1332,8 +1383,8 @@
                         style="background: rgba(255,255,255,0.08); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
                         <h4 data-i18n="guardian_photo_title"
                             style="color: white; font-size: 18px; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 12px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" style="opacity: 0.8;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="opacity: 0.8;">
                                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2">
                                 </rect>
                                 <circle cx="8.5" cy="8.5" r="1.5"></circle>
@@ -1347,8 +1398,8 @@
                             <div onclick="document.getElementById('guardianPhoto').click()" style="cursor: pointer;">
                                 <div id="guardianPhotoPlaceholder"
                                     style="width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; margin: 0 auto 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; transition: all 0.3s; overflow: hidden;">
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="1.5" style="opacity: 0.7;">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="1.5" style="opacity: 0.7;">
                                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
@@ -1401,8 +1452,8 @@
 
                         <h4 data-i18n="duration_title"
                             style="color: white; font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-left: 5px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" style="opacity: 0.8; flex-shrink: 0;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="opacity: 0.8; flex-shrink: 0;">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <polyline points="12 6 12 12 16 14"></polyline>
                             </svg>
@@ -1416,7 +1467,7 @@
                                 style="display: flex; flex-direction: column; background: #2C5C36; padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
                                 <label data-i18n="duration_label"
                                     style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; margin-bottom: 6px;">
-                                    Duration *
+                                    Duration * <span style="color:#beb7b7;"><i>Period under Guardianship</i></span>
                                 </label>
                                 <select name="guardianship_duration"
                                     style="{{ $selectStyle }} width: 100%; box-sizing: border-box; height: 45px; font-size: 14px;"
@@ -1435,7 +1486,7 @@
                                 style="display: flex; flex-direction: column; background: #2C5C36; padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
                                 <label data-i18n="reporting_frequency_label"
                                     style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; margin-bottom: 6px;">
-                                    Reporting Frequency
+                                    Reporting Frequency <span style="color:#beb7b7;"><i>Guardianship Reporting Interval</i></span>
                                 </label>
                                 <select name="reporting_frequency"
                                     style="{{ $selectStyle }} width: 100%; box-sizing: border-box; height: 45px; font-size: 14px;"
@@ -1455,8 +1506,8 @@
                         style="background: rgba(255,255,255,0.08); padding: 15px 10px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); width: 100%; box-sizing: border-box;">
                         <h4 data-i18n="powers_title"
                             style="color: white; font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-left: 5px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" style="opacity: 0.8; flex-shrink: 0;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="opacity: 0.8; flex-shrink: 0;">
                                 <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
                                 <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
                                 <line x1="12" y1="19" x2="12" y2="23"></line>
@@ -1499,8 +1550,8 @@
                         style="background: rgba(255,255,255,0.08); padding: 15px 10px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); width: 100%; box-sizing: border-box;">
                         <h4
                             style="color: white; font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; padding-left: 5px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" style="opacity: 0.8;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="opacity: 0.8;">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <line x1="12" y1="8" x2="12" y2="12"></line>
                                 <line x1="12" y1="16" x2="12.01" y2="16"></line>
@@ -1514,11 +1565,11 @@
                     </div>
 
                     <div
-                        style="background: rgba(255,255,255,0.08); padding: 15px 10px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); width: 100%; box-sizing: border-box;">
+                        style="background: rgba(255,255,255,0.08); padding: 15px 10px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); width: 100%; box-sizing: border-box;display:none;">
                         <h4
                             style="color: white; font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; padding-left: 5px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" style="opacity: 0.8;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="opacity: 0.8;">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                             </svg>
                             <span>VERIFICATION</span>
@@ -1556,8 +1607,8 @@
                         style="background: rgba(255,255,255,0.08); padding: 15px 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); width: 100%; box-sizing: border-box;">
                         <h4
                             style="color: white; font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; padding-left: 5px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" style="opacity: 0.8;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="opacity: 0.8;">
                                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="9" cy="7" r="4"></circle>
                             </svg>
@@ -1593,40 +1644,186 @@
             </div>
 
             <!-- Navigation Buttons -->
-            <div
-                style="display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 1px solid #e5e7eb;">
-                <button type="button" id="prevBtn" onclick="previousStep()"
-                    style="padding: 16px 32px; background: linear-gradient(135deg, #6b7280, #4b5563); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: none; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(107, 114, 128, 0.2);">
-                    <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2.5">
-                        <path d="M15 18l-6-6 6-6" />
-                    </svg>
-                    <span data-i18n="prev_btn">Previous</span>
-                </button>
+            <!-- Navigation Buttons -->
+<div style="display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 1px solid #e5e7eb;">
+    <button type="button" id="prevBtn" onclick="previousStep()"
+        style="padding: 16px 32px; background: linear-gradient(135deg, #6b7280, #4b5563); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: none; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(107, 114, 128, 0.2);">
+        <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5">
+            <path d="M15 18l-6-6 6-6" />
+        </svg>
+        <span data-i18n="prev_btn">Previous</span>
+    </button>
 
-                <div></div> <!-- Spacer -->
+    <div></div> <!-- Spacer -->
 
-                <div>
-                    <button type="button" id="nextBtn" onclick="nextStep()"
-                        style="padding: 16px 40px; background: linear-gradient(135deg, #2C5C36, #2C5C36); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);">
-                        <span data-i18n="next_btn">Next Step</span>
-                        <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5">
-                            <path d="M9 18l6-6-6-6" />
-                        </svg>
-                    </button>
+    <div style="display: flex; gap: 10px;">
+        <!-- Preview Button -->
+        <button type="button" id="previewBtn" onclick="showPreview()"
+            style="
+                padding: 16px 30px;
+                background: linear-gradient(135deg, #f59e0b, #d97706);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                cursor: pointer;
+                font-weight: 700;
+                font-size: 16px;
+                display: none;
+                align-items: center;
+                gap: 10px;
+                transition: all 0.3s;
+                box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            "
+            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(245, 158, 11, 0.4)'"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.3)'">
+            <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+            </svg>
+            Preview Application
+        </button>
 
-                    <button type="submit" id="submitBtn"
-                        style="padding: 16px 40px; background: linear-gradient(135deg, #2C5C36, #2C5C36); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: none; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
-                        <span data-i18n="submit_btn">Submit Application</span>
-                        <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5">
-                            <path d="M20 6L9 17l-5-5" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
+        <button type="button" id="nextBtn" onclick="nextStep()"
+            style="padding: 16px 40px; background: linear-gradient(135deg, #2C5C36, #2C5C36); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);">
+            <span data-i18n="next_btn">Next Step</span>
+            <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5">
+                <path d="M9 18l6-6-6-6" />
+            </svg>
+        </button>
+
+        <button type="submit" id="submitBtn"
+            style="padding: 16px 40px; background: linear-gradient(135deg, #2C5C36, #2C5C36); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: none; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
+            <span data-i18n="submit_btn">Submit Application</span>
+            <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5">
+                <path d="M20 6L9 17l-5-5" />
+            </svg>
+        </button>
+    </div>
+</div>
         </form>
+    </div>
+</div>
+
+<!-- Preview Modal -->
+<div id="previewModal"
+    style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        z-index: 99999;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    ">
+
+    <!-- Modal Box -->
+    <div style="
+        background: white;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 950px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+    ">
+
+        <!-- Header -->
+        <div style="
+            padding: 20px 25px;
+            background: #2C5C36;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 16px 16px 0 0;
+        ">
+            <h2 style="margin: 0; font-size: 20px; font-weight: 700;">
+                Guardianship Application Preview
+            </h2>
+
+            <button onclick="closePreview()"
+                style="
+                    border: none;
+                    background: transparent;
+                    font-size: 28px;
+                    color: white;
+                    cursor: pointer;
+                    padding: 0;
+                    width: 30px;
+                    height: 30px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                ">
+                &times;
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div id="previewContent" style="padding: 25px;">
+            <!-- Dynamic Preview Will Be Inserted Here -->
+        </div>
+
+        <!-- Footer -->
+        <div style="
+            padding: 15px 25px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            border-radius: 0 0 16px 16px;
+        ">
+            <div style="font-size: 14px; color: #64748b;">
+                Review all information before submitting
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="closePreview()"
+                    style="
+                        padding: 10px 18px;
+                        background: #64748b;
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: all 0.3s;
+                    "
+                    onmouseover="this.style.backgroundColor='#475569'"
+                    onmouseout="this.style.backgroundColor='#64748b'">
+                    Close Preview
+                </button>
+                {{-- <button onclick="printPreview()"
+                    style="
+                        padding: 10px 18px;
+                        background: #2C5C36;
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: all 0.3s;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    "
+                    onmouseover="this.style.backgroundColor='#1f3d24'"
+                    onmouseout="this.style.backgroundColor='#2C5C36'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
+                        <path d="M6 14h12v8H6z"/>
+                    </svg>
+                    Print Preview
+                </button> --}}
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -2588,7 +2785,7 @@
     };
 
     // Initialize the application
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         updateUI();
         setupEventListeners();
     });
@@ -2635,10 +2832,14 @@
             step.style.display = (index + 1 === currentStep) ? 'block' : 'none';
         });
 
-        // Update navigation buttons
-        document.getElementById('prevBtn').style.display = currentStep > 1 ? 'flex' : 'none';
-        document.getElementById('nextBtn').style.display = currentStep < totalSteps ? 'flex' : 'none';
-        document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'flex' : 'none';
+// Update navigation buttons
+    document.getElementById('prevBtn').style.display = currentStep > 1 ? 'flex' : 'none';
+    document.getElementById('nextBtn').style.display = currentStep < totalSteps ? 'flex' : 'none';
+    document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'flex' : 'none';
+    
+    // ✅ ADD THIS: Show preview button only on last step
+    document.getElementById('previewBtn').style.display = currentStep === totalSteps ? 'flex' : 'none';
+
 
         // Update progress
         const progress = (completedSteps.size / totalSteps) * 100;
@@ -2749,7 +2950,7 @@
         }
 
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             preview.src = e.target.result;
             preview.style.display = 'block';
             if (placeholder) placeholder.style.display = 'none';
@@ -2872,7 +3073,7 @@
         for (let i = 1; i <= totalSteps; i++) {
             const indicator = document.getElementById(`stepIndicator${i}`);
             if (indicator) {
-                indicator.addEventListener('click', function() {
+                indicator.addEventListener('click', function () {
                     if (!this.classList.contains('locked')) {
                         switchStep(i);
                     }
@@ -2881,7 +3082,7 @@
         }
 
         // Input validation on blur
-        document.addEventListener('blur', function(e) {
+        document.addEventListener('blur', function (e) {
             if (e.target.dataset.required === 'true') {
                 validateField(e.target);
             }
@@ -2900,7 +3101,7 @@
     }
 
     // Form Submission
-    document.getElementById('multiStepForm').addEventListener('submit', function(e) {
+    document.getElementById('multiStepForm').addEventListener('submit', function (e) {
         e.preventDefault();
 
         // Validate final step
@@ -2947,14 +3148,14 @@
 
                 // Submit via AJAX
                 fetch(form.action, {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .content
-                        }
-                    })
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .content
+                    }
+                })
                     .then(async response => {
 
                         // 🔥 IF CONTROLLER RETURNS dd(), dump(), validation HTML, etc.
@@ -3033,6 +3234,427 @@
         }
     `;
     document.head.appendChild(style);
+
+    // Preview Modal Functions
+function showPreview() {
+    const modal = document.getElementById("previewModal");
+    
+    // Show the modal
+    modal.style.display = "flex";
+    document.body.style.overflow = 'hidden'; // Prevent scrolling
+    
+    // Build Preview Content...
+    const form = document.getElementById("multiStepForm");
+    const formData = new FormData(form);
+    
+    let html = `
+        <div style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        ">
+    `;
+    
+    // Group data by step for better organization
+    const stepCategories = {
+        'Ward Details': ['ward_name', 'ward_gender', 'ward_dob', 'ward_age', 'ward_type', 'guardianship_type', 'relationship_type'],
+        'Parental Information': ['father_name', 'father_status', 'mother_name', 'mother_status', 'birth_certificate_number'],
+        'Guardian Details': ['guardian_name', 'guardian_gender', 'guardian_dob', 'guardian_nin', 'relationship_to_ward', 'guardian_phone', 'guardian_address', 'criminal_record', 'motivation'],
+        'Guardianship Terms': ['guardianship_duration', 'reporting_frequency', 'restrictions'],
+        'Witness Information': ['witness1_name', 'witness1_nin', 'witness2_name', 'witness2_nin']
+    };
+    
+    // Add header
+    html = `
+        <div style="margin-bottom: 25px;">
+            <h3 style="color: #2C5C36; margin: 0 0 10px 0; font-size: 18px;">
+                Guardianship Application Summary
+            </h3>
+            <p style="color: #64748b; margin: 0; font-size: 14px;">
+                Review all information below before submitting your application
+            </p>
+        </div>
+        ${html}
+    `;
+    
+    // Process form data
+    const processedData = {};
+    formData.forEach((value, key) => {
+        if (value instanceof File) return;
+        if (!value || value.trim() === "") return;
+        
+        // Skip system fields
+        if (key.startsWith('_') || key === 'csrf_token') return;
+        
+        // Handle arrays (like powers_granted)
+        if (key.includes('[]')) {
+            if (!processedData[key]) processedData[key] = [];
+            processedData[key].push(value);
+        } else {
+            processedData[key] = value;
+        }
+    });
+    
+    // Display data in organized sections
+    for (const [section, fields] of Object.entries(stepCategories)) {
+        let sectionHtml = '';
+        
+        fields.forEach(field => {
+            let value = processedData[field];
+            
+            if (value) {
+                // Format field name for display
+                const displayField = field
+                    .replace(/_/g, ' ')
+                    .replace(/\b\w/g, l => l.toUpperCase());
+                
+                // Format value based on field type
+                let displayValue = value;
+                
+                // Handle select fields with special formatting
+                if (field.includes('gender')) {
+                    displayValue = value === 'male' ? 'Male' : 'Female';
+                } else if (field.includes('status')) {
+                    displayValue = formatStatus(value);
+                } else if (field.includes('type')) {
+                    displayValue = formatType(value);
+                } else if (field.includes('relationship')) {
+                    displayValue = formatRelationship(value);
+                } else if (field.includes('duration')) {
+                    displayValue = formatDuration(value);
+                } else if (field.includes('frequency')) {
+                    displayValue = formatFrequency(value);
+                } else if (field.includes('dob')) {
+                    displayValue = new Date(value).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                } else if (field.includes('criminal_record')) {
+                    displayValue = value === 'yes' ? 'Yes' : 'No';
+                }
+                
+                sectionHtml += `
+                    <div style="
+                        background: #f8fafc;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 12px;
+                        padding: 18px;
+                        transition: all 0.3s;
+                    ">
+                        <p style="font-size: 12px; font-weight: 600; color: #64748b; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">
+                            ${displayField}
+                        </p>
+                        <p style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0;">
+                            ${displayValue}
+                        </p>
+                    </div>
+                `;
+            }
+        });
+        
+        if (sectionHtml) {
+            html += `
+                <div style="grid-column: 1 / -1; margin-top: 20px;">
+                    <h4 style="color: #2C5C36; margin: 0 0 15px 0; font-size: 16px; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">
+                        ${section}
+                    </h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px;">
+                        ${sectionHtml}
+                    </div>
+                </div>
+            `;
+        }
+    }
+    
+    // Add powers granted section
+    if (processedData['powers_granted[]'] && processedData['powers_granted[]'].length > 0) {
+        const powersMap = {
+            'financial': 'Financial Decisions',
+            'medical': 'Medical Decisions',
+            'educational': 'Educational Decisions',
+            'travel': 'Travel Permissions',
+            'marriage': 'Marriage Consent'
+        };
+        
+        let powersHtml = '';
+        processedData['powers_granted[]'].forEach(power => {
+            if (powersMap[power]) {
+                powersHtml += `
+                    <div style="
+                        background: #f0f9ff;
+                        border: 1px solid #e0f2fe;
+                        border-radius: 8px;
+                        padding: 10px 15px;
+                        margin: 5px 0;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    ">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2C5C36" stroke-width="2">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                        <span style="color: #1e293b; font-weight: 500;">${powersMap[power]}</span>
+                    </div>
+                `;
+            }
+        });
+        
+        html += `
+            <div style="grid-column: 1 / -1; margin-top: 20px;">
+                <h4 style="color: #2C5C36; margin: 0 0 15px 0; font-size: 16px; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">
+                    Powers Granted to Guardian
+                </h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px;">
+                    ${powersHtml}
+                </div>
+            </div>
+        `;
+    }
+    
+    // Add summary section
+    html += `
+        <div style="
+            grid-column: 1 / -1;
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 12px;
+            border-left: 4px solid #2C5C36;
+        ">
+            <h4 style="color: #2C5C36; margin: 0 0 10px 0; font-size: 16px;">
+                Application Summary
+            </h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                <div>
+                    <p style="font-size: 12px; color: #64748b; margin: 0;">Total Steps Completed</p>
+                    <p style="font-size: 20px; font-weight: 700; color: #2C5C36; margin: 5px 0 0 0;">
+                        ${completedSteps.size} of ${totalSteps}
+                    </p>
+                </div>
+                <div>
+                    <p style="font-size: 12px; color: #64748b; margin: 0;">Current Status</p>
+                    <p style="font-size: 20px; font-weight: 700; color: #2C5C36; margin: 5px 0 0 0;">
+                        ${currentStep === totalSteps ? 'Ready to Submit' : 'In Progress'}
+                    </p>
+                </div>
+                <div>
+                    <p style="font-size: 12px; color: #64748b; margin: 0;">Ward Age</p>
+                    <p style="font-size: 20px; font-weight: 700; color: #2C5C36; margin: 5px 0 0 0;">
+                        ${processedData.ward_age || 'N/A'}
+                    </p>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    html += `</div>`;
+    
+    document.getElementById("previewContent").innerHTML = html;
+    
+    // Scroll to top of modal content
+    document.getElementById("previewContent").scrollTop = 0;
+}
+
+// Helper functions for formatting values
+function formatStatus(status) {
+    const statusMap = {
+        'alive': 'Alive',
+        'deceased': 'Deceased',
+        'unknown': 'Unknown',
+        'incapacitated': 'Incapacitated'
+    };
+    return statusMap[status] || status;
+}
+
+function formatType(type) {
+    const typeMap = {
+        'orphan': 'Orphan',
+        'abandoned': 'Abandoned/Foundling',
+        'special_needs': 'Special Needs/Incapacitated',
+        'normal': 'Normal (Parents alive)',
+        'minor': 'Guardianship of Minor',
+        'incapacitated': 'Guardianship of Incapacitated Adult',
+        'testamentary': 'Testamentary Guardianship',
+        'emergency': 'Emergency Guardianship',
+        'Relative': 'Relative to Ward',
+        'Not Relative': 'Not Related to Ward'
+    };
+    return typeMap[type] || type;
+}
+
+function formatRelationship(rel) {
+    const relMap = {
+        'father': 'Father',
+        'mother': 'Mother',
+        'paternal_grandfather': 'Paternal Grandfather',
+        'paternal_grandmother': 'Paternal Grandmother',
+        'maternal_grandfather': 'Maternal Grandfather',
+        'maternal_grandmother': 'Maternal Grandmother',
+        'paternal_uncle': 'Paternal Uncle',
+        'maternal_uncle': 'Maternal Uncle',
+        'brother': 'Brother',
+        'sister': 'Sister',
+        'aunt': 'Aunt',
+        'nephew': 'Nephew',
+        'other_relative': 'Other Relative',
+        'family_friend': 'Family Friend',
+        'court_appointed': 'Court Appointed'
+    };
+    return relMap[rel] || rel;
+}
+
+function formatDuration(duration) {
+    const durationMap = {
+        'until_majority': 'Until Ward Reaches Majority (18 years)',
+        'specific_period': 'Specific Period',
+        'indefinite': 'Indefinite (for incapacitated adults)'
+    };
+    return durationMap[duration] || duration;
+}
+
+function formatFrequency(freq) {
+    const freqMap = {
+        'monthly': 'Monthly',
+        'quarterly': 'Quarterly',
+        'annually': 'Annually',
+        'none': 'No Regular Reporting'
+    };
+    return freqMap[freq] || freq;
+}
+
+function closePreview() {
+    document.getElementById("previewModal").style.display = "none";
+    document.body.style.overflow = 'auto'; // Restore scrolling
+}
+
+function printPreview() {
+    const printContent = document.getElementById("previewContent").innerHTML;
+    const originalContent = document.body.innerHTML;
+    
+    document.body.innerHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Guardianship Application Preview</title>
+            <style>
+                @media print {
+                    body { margin: 0; padding: 20px; }
+                    .no-print { display: none !important; }
+                    h1, h2, h3 { color: #000 !important; }
+                    .summary-box { 
+                        border: 1px solid #ddd !important;
+                        background: #f9f9f9 !important;
+                    }
+                }
+                body { font-family: Arial, sans-serif; }
+                .section { margin-bottom: 20px; }
+                .field { margin-bottom: 10px; }
+                .field-label { font-weight: bold; color: #333; }
+                .field-value { margin-left: 10px; }
+            </style>
+        </head>
+        <body>
+            <h1 style="color: #2C5C36; text-align: center; margin-bottom: 30px;">
+                Guardianship Application - Preview
+            </h1>
+            ${printContent}
+            <div class="no-print" style="margin-top: 30px; text-align: center; font-style: italic; color: #666;">
+                Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}
+            </div>
+        </body>
+        </html>
+    `;
+    
+    window.print();
+    document.body.innerHTML = originalContent;
+    updateUI(); // Restore the UI
+}
+
+// Add event listeners for modal
+document.addEventListener('DOMContentLoaded', function() {
+    // Close modal when clicking outside content
+    document.getElementById('previewModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closePreview();
+        }
+    });
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && document.getElementById('previewModal').style.display === 'flex') {
+            closePreview();
+        }
+    });
+});
+
+// If you have a mobile navigation adjustment function, add this
+function adjustNavigationForMobile() {
+    const previewBtn = document.getElementById('previewBtn');
+    // ... existing code ...
+    
+    if (window.innerWidth <= 768) {
+        if (previewBtn) {
+            previewBtn.style.cssText = `
+                padding: 14px 20px !important;
+                font-size: 15px !important;
+                width: 100% !important;
+                justify-content: center !important;
+                display: ${previewBtn.style.display === 'none' ? 'none' : 'flex'} !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+            `;
+        }
+    }
+}
 </script>
 
+
+<style>
+    /* Modal Styles */
+#previewModal {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Modal content animations */
+#previewModal > div {
+    animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile responsive for modal */
+@media (max-width: 768px) {
+    #previewModal {
+        padding: 10px !important;
+    }
+    
+    #previewModal > div {
+        max-height: 95vh !important;
+        max-width: 100% !important;
+    }
+    
+    #previewContent {
+        padding: 15px !important;
+    }
+    
+    #previewContent > div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+    }
+}
+</style>
 @include('layouts.form-footers')

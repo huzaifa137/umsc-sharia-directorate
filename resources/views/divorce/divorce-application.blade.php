@@ -248,20 +248,152 @@
 
                     <div
                         style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; position: relative; z-index: 1;">
-                        @php $fieldStyle = "width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid #cbd5e1; background: #ffffff; color: #1e293b; margin-top: 8px; font-size: 14px; transition: all 0.2s ease; outline: none;"; @endphp
-                        @foreach (['groom_surname' => 'Surname *', 'groom_given_name' => 'Given Name *', 'groom_nin' => 'NIN *', 'groom_phone' => 'Telephone *', 'groom_email' => 'Email Address *', 'groom_tribe' => 'Tribe *'] as $name => $label)
-                            <div
-                                style="display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                                <label
-                                    style="font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 600; letter-spacing: 0.3px;">{{ $label }}</label>
-                                <input type="text" name="{{ $name }}"
-                                    placeholder="Enter {{ strtolower(str_replace('*', '', $label)) }}"
-                                    style="{{ $fieldStyle }}"
-                                    data-required="{{ strpos($label, '*') !== false ? 'true' : 'false' }}">
+
+                        @php
+                            $fieldStyle =
+                                "width: 100%; padding: 12px 16px; border-radius: 8px;
+                                border: 1px solid #cbd5e1; background: #ffffff;
+                                color: #1e293b; margin-top: 8px;
+                                font-size: 14px; transition: all 0.2s ease;
+                                outline: none;";
+                        @endphp
+
+                        @foreach ([
+                            'groom_surname' => 'Surname *',
+                            'groom_given_name' => 'Given Name *',
+                            'groom_nin' => 'NIN',
+                            'groom_phone' => 'Telephone *',
+                            'groom_email' => 'Email Address *',
+                            'groom_tribe' => 'Tribe *'
+                        ] as $name => $label)
+
+                            <div style="display: flex; flex-direction: column;
+                                background: rgba(255, 255, 255, 0.05);
+                                padding: 16px; border-radius: 12px;
+                                border: 1px solid rgba(255, 255, 255, 0.08);">
+
+                                <label style="font-size: 12px; color: rgba(255, 255, 255, 0.9);
+                                    font-weight: 600; letter-spacing: 0.3px;">
+                                    {{ $label }}
+                                </label>
+
+                                {{-- PHONE FIELD --}}
+                                @if($name === 'groom_phone')
+                                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+                                        <select name="groom_country_code" style="{{ $fieldStyle }} max-width: 110px;">
+                                            <option value="">Code</option>
+                                            @foreach ($countries as $country)
+                                                <option value="{{ $country->calling_code }}">
+                                                    {{ $country->name }} (+{{ $country->calling_code }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+
+                                        <input type="tel"
+                                            name="{{ $name }}"
+                                            placeholder="Enter phone number"
+                                            style="{{ $fieldStyle }} flex:1;"
+                                            data-required="true">
+                                    </div>
+
+                                {{-- TRIBE FIELD AS SELECT2 --}}
+                                @elseif($name === 'groom_tribe')
+                                    <select class="select2"
+                                        id="groomTribe"
+                                        name="groom_tribe"
+                                        style="{{ $fieldStyle }}"
+                                        data-required="true">
+
+                                        <option value="">--please select--</option>
+
+                                        <option value="Acholi">Acholi</option>
+                                        <option value="Aliba">Aliba</option>
+                                        <option value="Alur">Alur</option>
+                                        <option value="Aringa">Aringa</option>
+                                        <option value="Baamba">Baamba</option>
+                                        <option value="Babukusu">Babukusu</option>
+                                        <option value="Babwisi">Babwisi</option>
+                                        <option value="Bafumbira">Bafumbira</option>
+                                        <option value="Baganda">Baganda</option>
+                                        <option value="Bagisu">Bagisu</option>
+                                        <option value="Bagungu">Bagungu</option>
+                                        <option value="Bagwe (Samia-Bugwe)">Bagwe (Samia-Bugwe)</option>
+                                        <option value="Bagwere">Bagwere</option>
+                                        <option value="Bahehe">Bahehe</option>
+                                        <option value="Bahororo">Bahororo</option>
+                                        <option value="Bakenyi">Bakenyi</option>
+                                        <option value="Bakiga">Bakiga</option>
+                                        <option value="Bakonzo">Bakonzo</option>
+                                        <option value="Banyabindi">Banyabindi</option>
+                                        <option value="Banyabutumbi">Banyabutumbi</option>
+                                        <option value="Banyankore">Banyankore</option>
+                                        <option value="Banyara">Banyara</option>
+                                        <option value="Banyaruguru">Banyaruguru</option>
+                                        <option value="Banyole">Banyole</option>
+                                        <option value="Banyoro">Banyoro</option>
+                                        <option value="Baruli">Baruli</option>
+                                        <option value="Barundi">Barundi</option>
+                                        <option value="Basamia">Basamia</option>
+                                        <option value="Basimba">Basimba</option>
+                                        <option value="Basoga">Basoga</option>
+                                        <option value="Basongora">Basongora</option>
+                                        <option value="Batagwenda">Batagwenda</option>
+                                        <option value="Batoro">Batoro</option>
+                                        <option value="Batuku">Batuku</option>
+                                        <option value="Batwa">Batwa</option>
+                                        <option value="Chope">Chope</option>
+                                        <option value="Dodoth">Dodoth</option>
+                                        <option value="Ethur (Acholi-Labwor)">Ethur (Acholi-Labwor)</option>
+                                        <option value="Gimara">Gimara</option>
+                                        <option value="Ik (Teuso)">Ik (Teuso)</option>
+                                        <option value="Iteso">Iteso</option>
+                                        <option value="Jie">Jie</option>
+                                        <option value="Jonam">Jonam</option>
+                                        <option value="Jopadhola">Jopadhola</option>
+                                        <option value="Kakwa">Kakwa</option>
+                                        <option value="Karimojong">Karimojong</option>
+                                        <option value="Kebu (Okebu)">Kebu (Okebu)</option>
+                                        <option value="Kuku">Kuku</option>
+                                        <option value="Kumam">Kumam</option>
+                                        <option value="Langi">Langi</option>
+                                        <option value="Lendu">Lendu</option>
+                                        <option value="Lugbara">Lugbara</option>
+                                        <option value="Madi">Madi</option>
+                                        <option value="Mening">Mening</option>
+                                        <option value="Mvuba">Mvuba</option>
+                                        <option value="Napore">Napore</option>
+                                        <option value="Ngikutio">Ngikutio</option>
+                                        <option value="Nubi">Nubi</option>
+                                        <option value="Nyangia">Nyangia</option>
+                                        <option value="Pokot">Pokot</option>
+                                        <option value="Reli">Reli</option>
+                                        <option value="Sabiny">Sabiny</option>
+                                        <option value="Shana">Shana</option>
+                                        <option value="So (Tepeth)">So (Tepeth)</option>
+                                        <option value="Vonoma">Vonoma</option>
+
+                                        <option value="add_new">+ Add New Tribe</option>
+                                    </select>
+
+                                @else
+                                    <input type="text"
+                                        name="{{ $name }}"
+                                        placeholder="Enter {{ strtolower(str_replace('*', '', $label)) }}"
+                                        style="{{ $fieldStyle }}"
+                                        
+                                        {{-- Make NIN and email optional --}}
+                                        @if($name !== 'groom_nin' && $name !== 'groom_email')
+                                            data-required="true"
+                                        @endif
+
+                                    >
+                                @endif
+
 
                             </div>
                         @endforeach
                     </div>
+
                 </div>
             </div>
 
@@ -374,36 +506,121 @@
                         </div>
                     </div>
 
-                    <!-- Fields -->
-                        <div
-                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; position: relative; z-index: 1;">
-                            @php
-                                $wifeFields = [
-                                    'bride_surname' => 'Surname *',
-                                    'bride_given_name' => 'Given Name *',
-                                    'bride_nin' => 'NIN *',
-                                    'bride_phone' => 'Telephone *',
-                                    'bride_email' => 'Email Address *',
-                                    'bride_tribe' => 'Tribe *',
-                                ];
-                            @endphp
 
-                            @foreach ($wifeFields as $name => $label)
-                                <div
-                                    style="display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                                    <label
-                                        style="font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 600; letter-spacing: 0.3px;">
-                                        {{ $label }}
-                                    </label>
-                                    <input type="text" name="{{ $name }}"
-                                        placeholder="Enter {{ strtolower(str_replace('*', '', $label)) }}"
+                    <!-- Fields -->
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; position: relative; z-index: 1;">
+
+                        @php
+                            $wifeFields = [
+                                'bride_surname' => 'Surname *',
+                                'bride_given_name' => 'Given Name *',
+                                'bride_nin' => 'NIN *',
+                                'bride_phone' => 'Telephone *',
+                                'bride_email' => 'Email Address *',
+                                'bride_tribe' => 'Tribe *',
+                            ];
+                        @endphp
+
+                        @foreach ($wifeFields as $name => $label)
+                            <div
+                                style="display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
+
+                                <label
+                                    style="font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 600; letter-spacing: 0.3px;">
+                                    {{ $label }}
+                                </label>
+
+                                {{-- PHONE FIELD --}}
+                                @if($name === 'bride_phone')
+
+                                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+
+                                        <select name="bride_country_code"
+                                            style="{{ $fieldStyle }} max-width: 100px;"
+                                            onfocus="this.style.borderColor='#ffffff'; this.style.boxShadow='0 0 0 4px rgba(255, 255, 255, 0.15)';"
+                                            onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';">
+
+                                            <option value="">Code</option>
+                                            @foreach ($countries as $country)
+                                                <option value="{{ $country->calling_code }}">
+                                                    {{ $country->name }} (+{{ $country->calling_code }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+
+                                        <input type="tel"
+                                            name="{{ $name }}"
+                                            placeholder="Enter phone number"
+                                            style="{{ $fieldStyle }} flex:1;"
+                                            data-required="true"
+                                            onfocus="this.style.borderColor='#ffffff'; this.style.boxShadow='0 0 0 4px rgba(255, 255, 255, 0.15)';"
+                                            onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';">
+                                    </div>
+
+
+                                @elseif($name === 'bride_tribe')
+
+                                    <select class="select2"
+                                        id="brideTribe"
+                                        name="bride_tribe"
                                         style="{{ $fieldStyle }}"
-                                        data-required="{{ str_contains($label, '*') ? 'true' : 'false' }}"
+                                        data-required="true"
                                         onfocus="this.style.borderColor='#ffffff'; this.style.boxShadow='0 0 0 4px rgba(255, 255, 255, 0.15)';"
                                         onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';">
-                                </div>
-                            @endforeach
-                        </div>
+
+                                        <option value="">--please select--</option>
+                                        <option value="Acholi">Acholi</option>
+                                        <option value="Aliba">Aliba</option>
+                                        <option value="Alur">Alur</option>
+                                        <option value="Aringa">Aringa</option>
+                                        <option value="Baamba">Baamba</option>
+                                        <option value="Babukusu">Babukusu</option>
+                                        <option value="Babwisi">Babwisi</option>
+                                        <option value="Bafumbira">Bafumbira</option>
+                                        <option value="Baganda">Baganda</option>
+                                        <option value="Bagisu">Bagisu</option>
+                                        <option value="Bagungu">Bagungu</option>
+                                        <option value="Bagwe (Samia-Bugwe)">Bagwe (Samia-Bugwe)</option>
+                                        <option value="Bagwere">Bagwere</option>
+                                        <option value="Bahehe">Bahehe</option>
+                                        <option value="Bahororo">Bahororo</option>
+                                        <option value="Bakiga">Bakiga</option>
+                                        <option value="Bakonzo">Bakonzo</option>
+                                        <option value="Banyankore">Banyankore</option>
+                                        <option value="Banyoro">Banyoro</option>
+                                        <option value="Basoga">Basoga</option>
+                                        <option value="Batoro">Batoro</option>
+                                        <option value="Iteso">Iteso</option>
+                                        <option value="Karimojong">Karimojong</option>
+                                        <option value="Langi">Langi</option>
+                                        <option value="Lugbara">Lugbara</option>
+                                        <option value="Madi">Madi</option>
+                                        <option value="Sabiny">Sabiny</option>
+                                        <option value="add_new">+ Add New Tribe</option>
+                                    </select>
+
+                                @else
+
+                                    <input type="text"
+                                        name="{{ $name }}"
+                                        placeholder="Enter {{ strtolower(str_replace('*', '', $label)) }}"
+                                        style="{{ $fieldStyle }}"
+
+                                        {{-- Make Bride NIN and Bride Email optional --}}
+                                    @if($name !== 'bride_nin' && $name !== 'bride_email')
+                                        data-required="true"
+                                    @endif
+
+                                        onfocus="this.style.borderColor='#ffffff'; this.style.boxShadow='0 0 0 4px rgba(255, 255, 255, 0.15)';"
+                                        onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';">
+
+                                @endif
+
+
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
 
@@ -645,7 +862,10 @@
 
                     @php
                         $fieldStyle =
-                            'width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid #cbd5e1; background: #ffffff; color: #1e293b; margin-top: 8px; font-size: 14px; transition: all 0.2s ease; outline: none;';
+                            'width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid #cbd5e1;
+                            background: #ffffff; color: #1e293b; margin-top: 8px; font-size: 14px;
+                            transition: all 0.2s ease; outline: none;';
+
                         $placeholdersW1 = [
                             'w1_given_name' => 'Enter Given Name',
                             'w1_surname' => 'Enter Surname',
@@ -653,6 +873,7 @@
                             'w1_phone' => 'Enter Phone Number',
                             'w1_address' => 'Enter Address',
                         ];
+
                         $placeholdersW2 = [
                             'w2_given_name' => 'Enter Given Name',
                             'w2_surname' => 'Enter Surname',
@@ -660,55 +881,200 @@
                             'w2_phone' => 'Enter Phone Number',
                             'w2_address' => 'Enter Address',
                         ];
+                    @endphp
+
+
+                        <!-- ====================== Witness 01 ====================== -->
+                        <h4 style="color:#fff; font-size:0.9rem; text-transform:uppercase;
+                        letter-spacing:1px; margin-bottom:15px; opacity:0.8;">
+                            Witness 01
+                        </h4>
+
+                        <!-- ✅ TOP ROW: Given Name, Surname, NIN -->
+                        <div style="display:grid;
+                        grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+                        gap:15px; margin-bottom:15px;">
+
+                            @foreach (['w1_given_name','w1_surname','w1_nin'] as $field)
+                                <div style="display:flex; flex-direction:column;
+                                background:rgba(255,255,255,0.05);
+                                padding:12px; border-radius:10px;
+                                border:1px solid rgba(255,255,255,0.08);">
+
+                                    <label style="font-size:11px; color:rgba(255,255,255,0.9); font-weight:600;">
+                                        {{ ucfirst(str_replace('_',' ',$field)) }} *
+                                    </label>
+
+                                    <input type="text"
+                                        name="{{ $field }}"
+                                        placeholder="{{ $placeholdersW1[$field] }}"
+                                        style="{{ $fieldStyle }}"
+                                        data-required="true">
+                                </div>
+                            @endforeach
+                        </div>
+
+
+                        <!-- ✅ BOTTOM ROW: Phone + Address -->
+                        <div style="display:grid;
+                        grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+                        gap:15px; margin-bottom:30px;">
+
+                            @foreach (['w1_phone','w1_address'] as $field)
+                                <div style="display:flex; flex-direction:column;
+                                background:rgba(255,255,255,0.05);
+                                padding:12px; border-radius:10px;
+                                border:1px solid rgba(255,255,255,0.08);">
+
+                                    <label style="font-size:11px; color:rgba(255,255,255,0.9); font-weight:600;">
+                                        {{ ucfirst(str_replace('_',' ',$field)) }} *
+                                    </label>
+
+                                    @if ($field === 'w1_phone')
+                                        <!-- ✅ Phone Expanded -->
+                                        <div style="display:flex; gap:8px; margin-top:8px;">
+
+                                            <select name="w1_phone_code"
+                                                style="width:30%;
+                                                padding:12px 8px;
+                                                border-radius:8px;
+                                                border:1px solid #cbd5e1;
+                                                background:#fff;
+                                                font-size:14px;">
+                                                <option value="">Code</option>
+                                                @foreach ($countries as $country)
+                                                    <option value="{{ $country->calling_code }}">
+                                                        +{{ $country->calling_code }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+
+                                            <input type="tel"
+                                                name="w1_phone"
+                                                placeholder="Enter Phone Number"
+                                                style="flex:1;
+                                                padding:12px 16px;
+                                                border-radius:8px;
+                                                border:1px solid #cbd5e1;
+                                                font-size:14px;"
+                                                maxlength="15"
+                                                data-required="true">
+                                        </div>
+                                    @else
+                                        <!-- ✅ Address Full Width -->
+                                        <input type="text"
+                                            name="w1_address"
+                                            placeholder="Enter Address"
+                                            style="{{ $fieldStyle }}"
+                                            data-required="true">
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+
+
+
+                        <!-- ====================== Witness 02 ====================== -->
+                        <h4 style="color:#fff; font-size:0.9rem; text-transform:uppercase;
+                        letter-spacing:1px; margin-bottom:15px; opacity:0.8;">
+                            Witness 02
+                        </h4>
+
+                        <!-- ✅ TOP ROW -->
+                        <div style="display:grid;
+                        grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+                        gap:15px; margin-bottom:15px;">
+
+                            @foreach (['w2_given_name','w2_surname','w2_nin'] as $field)
+                                <div style="display:flex; flex-direction:column;
+                                background:rgba(255,255,255,0.05);
+                                padding:12px; border-radius:10px;
+                                border:1px solid rgba(255,255,255,0.08);">
+
+                                    <label style="font-size:11px; color:rgba(255,255,255,0.9); font-weight:600;">
+                                        {{ ucfirst(str_replace('_',' ',$field)) }} *
+                                    </label>
+
+                                    <input type="text"
+                                        name="{{ $field }}"
+                                        placeholder="{{ $placeholdersW2[$field] }}"
+                                        style="{{ $fieldStyle }}"
+                                        data-required="true">
+                                </div>
+                            @endforeach
+                        </div>
+
+
+                        <!-- ✅ BOTTOM ROW -->
+                        <div style="display:grid;
+                        grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+                        gap:15px; margin-bottom:30px;">
+
+                            @foreach (['w2_phone','w2_address'] as $field)
+                                <div style="display:flex; flex-direction:column;
+                                background:rgba(255,255,255,0.05);
+                                padding:12px; border-radius:10px;
+                                border:1px solid rgba(255,255,255,0.08);">
+
+                                    <label style="font-size:11px; color:rgba(255,255,255,0.9); font-weight:600;">
+                                        {{ ucfirst(str_replace('_',' ',$field)) }} *
+                                    </label>
+
+                                    @if ($field === 'w2_phone')
+                                        <div style="display:flex; gap:8px; margin-top:8px;">
+
+                                            <select name="w2_phone_code"
+                                                style="width:30%;
+                                                padding:12px 8px;
+                                                border-radius:8px;
+                                                border:1px solid #cbd5e1;
+                                                background:#fff;
+                                                font-size:14px;">
+                                                <option value="">Code</option>
+                                                @foreach ($countries as $country)
+                                                    <option value="{{ $country->calling_code }}">
+                                                        +{{ $country->calling_code }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+
+                                            <input type="tel"
+                                                name="w2_phone"
+                                                placeholder="Enter Phone Number"
+                                                style="flex:1;
+                                                padding:12px 16px;
+                                                border-radius:8px;
+                                                border:1px solid #cbd5e1;
+                                                font-size:14px;"
+                                                maxlength="15"
+                                                data-required="true">
+                                        </div>
+                                    @else
+                                        <input type="text"
+                                            name="w2_address"
+                                            placeholder="Enter Address"
+                                            style="{{ $fieldStyle }}"
+                                            data-required="true">
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+
+                        @php
+                            
                         $placeholdersAuthority = [
                             'imam_name' => 'Enter Imam Name',
                             'imam_reg' => 'Enter Registration Number',
                             'qadhi_area' => 'Enter Qadhi Area if applicable',
                             'mosque_name' => 'Enter Mosque Name',
                         ];
-                    @endphp
 
-                    <!-- Witness 01 -->
-                    <h4
-                        style="color: #ffffff; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; opacity: 0.8;">
-                        Witness 01</h4>
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
-                        @foreach ($placeholdersW1 as $name => $placeholder)
-                            <div
-                                style="display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                                <label
-                                    style="font-size: 11px; color: rgba(255, 255, 255, 0.9); font-weight: 600;">{{ ucfirst(str_replace('_', ' ', $name)) }}
-                                    *</label>
-                                <input type="text" name="{{ $name }}" placeholder="{{ $placeholder }}"
-                                    style="{{ $fieldStyle }}" data-required="true">
-                            </div>
-                        @endforeach
-                    </div>
-
-                    <!-- Witness 02 -->
-                    <h4
-                        style="color: #ffffff; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; opacity: 0.8;">
-                        Witness 02</h4>
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
-                        @foreach ($placeholdersW2 as $name => $placeholder)
-                            <div
-                                style="display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                                <label
-                                    style="font-size: 11px; color: rgba(255, 255, 255, 0.9); font-weight: 600;">{{ ucfirst(str_replace('_', ' ', $name)) }}
-                                    *</label>
-                                <input type="text" name="{{ $name }}" placeholder="{{ $placeholder }}"
-                                    style="{{ $fieldStyle }}" data-required="true">
-                            </div>
-                        @endforeach
-                    </div>
-
+                        @endphp
                     <!-- Authority Details -->
                     <h4
                         style="color: #ffffff; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
                         Authority Details</h4>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;" style="display: none;">
                         @foreach ($placeholdersAuthority as $name => $placeholder)
                             <div
                                 style="display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08);">
@@ -925,6 +1291,24 @@
                     </svg>
                 </button>
 
+                <!-- Preview Button -->
+                <button type="button" id="previewBtn" onclick="showPreview()"
+                    style="padding: 14px 30px;
+                        background: #f59e0b;
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 600;
+                        font-size: 15px;
+                        display: none;
+                        align-items: center;
+                        gap: 8px;">
+
+                    Preview Application
+                </button>
+
+
                 <button type="submit" id="submitBtn" data-i18n="submit_application_button" data-required="true"
                     style="padding: 14px 40px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 15px; display: none; align-items: center; gap: 8px;">
                     Submit Application
@@ -937,6 +1321,87 @@
 
             </div>
         </form>
+
+        <!-- Preview Modal -->
+<div id="previewModal"
+    style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        z-index: 99999;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    ">
+
+    <!-- Modal Box -->
+    <div style="
+        background: white;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 950px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+    ">
+
+        <!-- Header -->
+        <div style="
+            padding: 20px 25px;
+            background: #21532B;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 16px 16px 0 0;
+        ">
+            <h2 style="margin: 0; font-size: 20px;">
+                Application Preview
+            </h2>
+
+            <button onclick="closePreview()"
+                style="
+                    border: none;
+                    background: transparent;
+                    font-size: 28px;
+                    color: white;
+                    cursor: pointer;
+                ">
+                &times;
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div id="previewContent" style="padding: 25px;">
+            <!-- Dynamic Preview Here -->
+        </div>
+
+        <!-- Footer -->
+        <div style="
+            padding: 15px 25px;
+            border-top: 1px solid #e2e8f0;
+            text-align: right;
+        ">
+            <button onclick="closePreview()"
+                style="
+                    padding: 10px 18px;
+                    background: #64748b;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-weight: 600;
+                ">
+                Close
+            </button>
+        </div>
+
+    </div>
+</div>
+
     </div>
 </div>
 
@@ -1243,6 +1708,69 @@
 
     });
 
+function showPreview() {
+
+    const modal = document.getElementById("previewModal");
+
+    // Toggle close
+    if (modal.style.display === "flex") {
+        modal.style.display = "none";
+        return;
+    }
+
+    // Build Preview Content...
+    const form = document.getElementById("multiStepForm");
+    const formData = new FormData(form);
+
+    let html = `
+        <div style="
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap:20px;
+        ">
+    `;
+
+    formData.forEach((value, key) => {
+
+        if (value instanceof File) return;
+        if (!value || value.trim() === "") return;
+
+        html += `
+            <div style="
+                background:#f9fafb;
+                border:1px solid #e2e8f0;
+                border-radius:12px;
+                padding:16px;
+            ">
+                <p style="font-size:13px; font-weight:600; color:#64748b;">
+                    ${key.replace(/_/g, " ").toUpperCase()}
+                </p>
+                <p style="font-size:16px; font-weight:700; color:#1e293b;">
+                    ${value}
+                </p>
+            </div>
+        `;
+    });
+
+    html += `</div>`;
+
+    document.getElementById("previewContent").innerHTML = html;
+
+    // ✅ Always open modal correctly
+    modal.style.display = "flex";
+}
+
+
+
+
+        function closePreview() {
+            document.getElementById("previewModal").style.display = "none";
+        }
+
+        function printPreview() {
+            window.print();
+        }
+
 
     function updateUI() {
 
@@ -1285,16 +1813,25 @@
             step.style.display = (index + 1 === currentStep) ? 'block' : 'none';
         });
 
-        document.getElementById('prevBtn').style.display = currentStep > 1 ? 'flex' : 'none';
-        document.getElementById('nextBtn').style.display = currentStep < totalSteps ? 'flex' : 'none';
-        document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'flex' : 'none';
+        document.getElementById('prevBtn').style.display =
+            currentStep > 1 ? 'flex' : 'none';
 
-        const progress = (completedSteps.size / totalSteps) * 100;
-        document.getElementById('progressBar').style.width = `${progress}%`;
-        document.getElementById('progressPercentage').textContent = `${Math.round(progress)}%`;
-        document.getElementById('completedSteps').textContent =
-            `${completedSteps.size} of ${totalSteps} sections completed`;
-    }
+        document.getElementById('nextBtn').style.display =
+            currentStep < totalSteps ? 'flex' : 'none';
+
+        document.getElementById('submitBtn').style.display =
+            currentStep === totalSteps ? 'flex' : 'none';
+
+        /* ✅ Preview Button should ONLY show on last step */
+        document.getElementById('previewBtn').style.display =
+            currentStep === totalSteps ? 'flex' : 'none';
+
+                const progress = (completedSteps.size / totalSteps) * 100;
+                document.getElementById('progressBar').style.width = `${progress}%`;
+                document.getElementById('progressPercentage').textContent = `${Math.round(progress)}%`;
+                document.getElementById('completedSteps').textContent =
+                    `${completedSteps.size} of ${totalSteps} sections completed`;
+            }
 
     function nextStep() {
         if (validateCurrentStep()) {

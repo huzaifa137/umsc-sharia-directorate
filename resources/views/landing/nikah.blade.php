@@ -1315,7 +1315,7 @@
                                         <option value="">Code</option>
                                         @foreach ($countries as $country)
                                             <option value="{{ $country->calling_code }}">{{ $country->name }}
-                                                        (+{{ $country->calling_code }})</option>
+                                                (+{{ $country->calling_code }})</option>
                                         @endforeach
                                     </select>
 
@@ -1378,7 +1378,7 @@
                                         <option value="">Code</option>
                                         @foreach ($countries as $country)
                                             <option value="{{ $country->calling_code }}">{{ $country->name }}
-                                                        (+{{ $country->calling_code }})</option>
+                                                (+{{ $country->calling_code }})</option>
                                         @endforeach
                                     </select>
 
@@ -1455,7 +1455,7 @@
                         <div class="review-section">
                             <div class="review-header">
                                 <h4>{{ __('ui.review_section.groom') }}</h4>
-                                <button type="button"  class="edit-btn"
+                                <button type="button" class="edit-btn"
                                     data-section="1">{{ __('ui.buttons.edit') }}</button>
                             </div>
                             <div class="review-content" id="reviewGroom"></div>
@@ -1476,7 +1476,7 @@
                         <div class="review-section">
                             <div class="review-header">
                                 <h4>{{ __('ui.review_section.bride') }}</h4>
-                                <button type="button"  class="edit-btn"
+                                <button type="button" class="edit-btn"
                                     data-section="2">{{ __('ui.buttons.edit') }}</button>
                             </div>
                             <div class="review-content" id="reviewBride"></div>
@@ -1485,7 +1485,7 @@
                         <div class="review-section">
                             <div class="review-header">
                                 <h4>{{ __('ui.review_section.parents') }}</h4>
-                                <button type="button"  class="edit-btn"
+                                <button type="button" class="edit-btn"
                                     data-section="3">{{ __('ui.buttons.edit') }}</button>
                             </div>
                             <div class="review-content" id="reviewParents"></div>
@@ -1494,7 +1494,7 @@
                         <div class="review-section">
                             <div class="review-header">
                                 <h4>{{ __('ui.review_section.witnesses') }}</h4>
-                                <button type="button"  class="edit-btn"
+                                <button type="button" class="edit-btn"
                                     data-section="4">{{ __('ui.buttons.edit') }}</button>
                             </div>
                             <div class="review-content" id="reviewWitnesses"></div>
@@ -1503,63 +1503,317 @@
                         <div class="review-section">
                             <div class="review-header">
                                 <h4>{{ __('ui.review_section.photos') }}</h4>
-                                <button type="button"  class="edit-btn"
+                                <button type="button" class="edit-btn"
                                     data-section="5">{{ __('ui.buttons.edit') }}</button>
                             </div>
                             <div class="review-content" id="reviewPhotos"></div>
                         </div>
                     </section>
 
-                    <script>
+                <script>
 document.addEventListener("DOMContentLoaded", () => {
+
+    function getSelectText(id) {
+        const el = document.getElementById(id);
+        return el && el.value
+            ? el.options[el.selectedIndex].text
+            : "-";
+    }
+
+    function getInputValue(id) {
+        const el = document.getElementById(id);
+        return el && el.value.trim() !== "" ? el.value : "-";
+    }
+
+    function getFileName(id) {
+        const el = document.getElementById(id);
+        return el && el.files.length > 0
+            ? el.files[0].name
+            : "No file uploaded";
+    }
 
     function generateReview() {
 
-        /* ===========================
-           Groom Review Section
+          /* ===========================
+           ✅ Groom Review Section
         ============================ */
-        const groomSurname = document.getElementById("groomSurname").value;
-        const groomGivenName = document.getElementById("groomGivenName").value;
+        const groomSurname = getInputValue("groomSurname");
+        const groomGivenName = getInputValue("groomGivenName");
+
+        const dobDay   = document.querySelector("[name='groom_day_date_of_birth']")?.value || "";
+        const dobMonth = document.querySelector("[name='groom_month_date_of_birth']")?.value || "";
+        const dobYear  = document.querySelector("[name='groom_year_date_of_birth']")?.value || "";
+
+        const groomDOB = (dobDay && dobMonth && dobYear)
+            ? `${dobDay}/${dobMonth}/${dobYear}`
+            : "-";
+
+        const groomCountry = getSelectText("groomCountry");
+        const groomNIN = getInputValue("groomNIN");
+
+        const groomCode = getSelectText("groomCountryCode");
+        const groomPhone = getInputValue("groomTelephone");
+
+        const groomTelephone = (groomPhone !== "-")
+            ? `${groomCode} ${groomPhone}`
+            : "-";
+
+        const groomEmail = getInputValue("groomEmail");
+
+        let groomTribe = getSelectText("groomTribe");
+        const newTribe = document.getElementById("newTribe")?.value.trim();
+        if (newTribe) groomTribe = newTribe;
+
+        const groomDistrict  = getSelectText("groomDistrict");
+        const groomCounty    = getSelectText("groomCounty");
+        const groomSubCounty = getSelectText("groomSubCounty");
+        const groomParish    = getSelectText("groomParish");
+        const groomVillage   = getSelectText("groomVillage");
+        const groomPlot      = getInputValue("groomPlot");
 
         document.getElementById("reviewGroom").innerHTML = `
-            <p><strong>Surname:</strong> ${groomSurname || "-"}</p>
-            <p><strong>Given Name:</strong> ${groomGivenName || "-"}</p>
+            <div class="review-grid">
+                <p><strong>Surname:</strong> ${groomSurname}</p>
+                <p><strong>Given Name:</strong> ${groomGivenName}</p>
+
+                <p><strong>Date of Birth:</strong> ${groomDOB}</p>
+                <p><strong>Country:</strong> ${groomCountry}</p>
+
+                <p><strong>NIN:</strong> ${groomNIN}</p>
+                <p><strong>Telephone:</strong> ${groomTelephone}</p>
+
+                <p><strong>Email:</strong> ${groomEmail}</p>
+                <p><strong>Tribe:</strong> ${groomTribe}</p>
+
+                <hr style="grid-column: 1/-1; margin:10px 0;">
+
+                <p><strong>District:</strong> ${groomDistrict}</p>
+                <p><strong>County:</strong> ${groomCounty}</p>
+
+                <p><strong>Sub County:</strong> ${groomSubCounty}</p>
+                <p><strong>Parish:</strong> ${groomParish}</p>
+
+                <p><strong>Village:</strong> ${groomVillage}</p>
+                <p><strong>Plot Number:</strong> ${groomPlot}</p>
+            </div>
         `;
 
 
         /* ===========================
-           Bride Section Example
+           ✅ Bride Review Section
         ============================ */
-        const brideSurname = document.getElementById("brideSurname")?.value;
-        const brideGivenName = document.getElementById("brideGivenName")?.value;
+        const brideSurname = getInputValue("brideSurname");
+        const brideGivenName = getInputValue("brideGivenName");
+
+        const brideDobDay   = document.querySelector("[name='bride_day_date_of_birth']")?.value || "";
+        const brideDobMonth = document.querySelector("[name='bride_month_date_of_birth']")?.value || "";
+        const brideDobYear  = document.querySelector("[name='bride_year_date_of_birth']")?.value || "";
+
+        const brideDOB = (brideDobDay && brideDobMonth && brideDobYear)
+            ? `${brideDobDay}/${brideDobMonth}/${brideDobYear}`
+            : "-";
+
+        const brideCountry = getSelectText("brideCountry");
+        const brideNIN = getInputValue("brideNIN");
+
+        const brideCode = getSelectText("brideCountryCode");
+        const bridePhone = getInputValue("brideTelephone");
+
+        const brideTelephone = (bridePhone !== "-")
+            ? `${brideCode} ${bridePhone}`
+            : "-";
+
+        const brideEmail = getInputValue("brideEmail");
+
+        let brideTribe = getSelectText("brideTribe");
+        const newBrideTribe = document.getElementById("newBrideTribe")?.value.trim();
+        if (newBrideTribe) brideTribe = newBrideTribe;
+
+        const brideDistrict  = getSelectText("brideDistrict");
+        const brideCounty    = getSelectText("brideCounty");
+        const brideSubCounty = getSelectText("brideSubCounty");
+        const brideParish    = getSelectText("brideParish");
+        const brideVillage   = getSelectText("brideVillage");
+        const bridePlot      = getInputValue("bridePlot");
 
         document.getElementById("reviewBride").innerHTML = `
-            <p><strong>Surname:</strong> ${brideSurname || "-"}</p>
-            <p><strong>Given Name:</strong> ${brideGivenName || "-"}</p>
+            <div class="review-grid">
+                <p><strong>Surname:</strong> ${brideSurname}</p>
+                <p><strong>Given Name:</strong> ${brideGivenName}</p>
+
+                <p><strong>Date of Birth:</strong> ${brideDOB}</p>
+                <p><strong>Country:</strong> ${brideCountry}</p>
+
+                <p><strong>NIN:</strong> ${brideNIN}</p>
+                <p><strong>Telephone:</strong> ${brideTelephone}</p>
+
+                <p><strong>Email:</strong> ${brideEmail}</p>
+                <p><strong>Tribe:</strong> ${brideTribe}</p>
+
+                <hr style="grid-column: 1/-1; margin:10px 0;">
+
+                <p><strong>District:</strong> ${brideDistrict}</p>
+                <p><strong>County:</strong> ${brideCounty}</p>
+
+                <p><strong>Sub County:</strong> ${brideSubCounty}</p>
+                <p><strong>Parish:</strong> ${brideParish}</p>
+
+                <p><strong>Village:</strong> ${brideVillage}</p>
+                <p><strong>Plot Number:</strong> ${bridePlot}</p>
+            </div>
         `;
-
-
         /* ===========================
-           Parents Section Example
+           ✅ STEP 3: Parents Review
         ============================ */
-        const fatherName = document.getElementById("fatherName")?.value;
-        const motherName = document.getElementById("motherName")?.value;
+
+        // Groom Father
+        const groomFatherStatus   = getSelectText("groomFatherStatus");
+        const groomFatherSurname  = getInputValue("groomFatherSurname");
+        const groomFatherGiven    = getInputValue("groomFatherGivenName");
+        const groomFatherNIN      = getInputValue("groomFatherNIN");
+        const groomFatherDistrict = getSelectText("groomFatherDistrict");
+
+        let groomFatherTribe = getSelectText("groomFatherTribe");
+        const newGroomFatherTribe =
+            document.getElementById("newGroomFatherTribe")?.value.trim();
+        if (newGroomFatherTribe) groomFatherTribe = newGroomFatherTribe;
+
+        // Groom Mother
+        const groomMotherStatus   = getSelectText("groomMotherStatus");
+        const groomMotherSurname  = getInputValue("groomMotherSurname");
+        const groomMotherGiven    = getInputValue("groomMotherGivenName");
+        const groomMotherNIN      = getInputValue("groomMotherNIN");
+        const groomMotherDistrict = getSelectText("groomMotherDistrict");
+
+        // Bride Father
+        const brideFatherStatus   = getSelectText("brideFatherStatus");
+        const brideFatherSurname  = getInputValue("brideFatherSurname");
+        const brideFatherGiven    = getInputValue("brideFatherGivenName");
+        const brideFatherNIN      = getInputValue("brideFatherNIN");
+        const brideFatherDistrict = getSelectText("brideFatherDistrict");
+
+        let brideFatherTribe = getSelectText("brideFatherTribe");
+        const newBrideFatherTribe =
+            document.getElementById("newBrideFatherTribe")?.value.trim();
+        if (newBrideFatherTribe) brideFatherTribe = newBrideFatherTribe;
+
+        // Bride Mother
+        const brideMotherStatus   = getSelectText("brideMotherStatus");
+        const brideMotherSurname  = getInputValue("brideMotherSurname");
+        const brideMotherGiven    = getInputValue("brideMotherGivenName");
+        const brideMotherNIN      = getInputValue("brideMotherNIN");
+        const brideMotherDistrict = getSelectText("brideMotherDistrict");
 
         document.getElementById("reviewParents").innerHTML = `
-            <p><strong>Father:</strong> ${fatherName || "-"}</p>
-            <p><strong>Mother:</strong> ${motherName || "-"}</p>
+            <div class="review-grid">
+
+                <h4 style="grid-column:1/-1;">👨 Groom's Father</h4>
+                <p><strong>Status:</strong> ${groomFatherStatus}</p>
+                <p><strong>Surname:</strong> ${groomFatherSurname}</p>
+                <p><strong>Given Name:</strong> ${groomFatherGiven}</p>
+                <p><strong>NIN:</strong> ${groomFatherNIN}</p>
+                <p><strong>District:</strong> ${groomFatherDistrict}</p>
+                <p><strong>Tribe:</strong> ${groomFatherTribe}</p>
+
+                <hr style="grid-column:1/-1;">
+
+                <h4 style="grid-column:1/-1;">👩 Groom's Mother</h4>
+                <p><strong>Status:</strong> ${groomMotherStatus}</p>
+                <p><strong>Surname:</strong> ${groomMotherSurname}</p>
+                <p><strong>Given Name:</strong> ${groomMotherGiven}</p>
+                <p><strong>NIN:</strong> ${groomMotherNIN}</p>
+                <p><strong>District:</strong> ${groomMotherDistrict}</p>
+
+                <hr style="grid-column:1/-1;">
+
+                <h4 style="grid-column:1/-1;">👨 Bride's Father</h4>
+                <p><strong>Status:</strong> ${brideFatherStatus}</p>
+                <p><strong>Surname:</strong> ${brideFatherSurname}</p>
+                <p><strong>Given Name:</strong> ${brideFatherGiven}</p>
+                <p><strong>NIN:</strong> ${brideFatherNIN}</p>
+                <p><strong>District:</strong> ${brideFatherDistrict}</p>
+                <p><strong>Tribe:</strong> ${brideFatherTribe}</p>
+
+                <hr style="grid-column:1/-1;">
+
+                <h4 style="grid-column:1/-1;">👩 Bride's Mother</h4>
+                <p><strong>Status:</strong> ${brideMotherStatus}</p>
+                <p><strong>Surname:</strong> ${brideMotherSurname}</p>
+                <p><strong>Given Name:</strong> ${brideMotherGiven}</p>
+                <p><strong>NIN:</strong> ${brideMotherNIN}</p>
+                <p><strong>District:</strong> ${brideMotherDistrict}</p>
+
+            </div>
         `;
 
 
         /* ===========================
-           Witnesses Section Example
+           ✅ STEP 4: Witnesses Review
         ============================ */
-        const witness1 = document.getElementById("witness1")?.value;
-        const witness2 = document.getElementById("witness2")?.value;
+
+        // Witness 1
+        const w1Surname  = getInputValue("witness1Surname");
+        const w1Given    = getInputValue("witness1GivenName");
+        const w1NIN      = getInputValue("witness1NIN");
+
+        const w1Code     = getSelectText("witness1CountryCode");
+        const w1Phone    = getInputValue("witness1Phone");
+        const w1Tel      = (w1Phone !== "-") ? `${w1Code} ${w1Phone}` : "-";
+
+        const w1Address  = getInputValue("witness1Address");
+        const w1District = getSelectText("witness1District");
+
+
+        // Witness 2
+        const w2Surname  = getInputValue("witness2Surname");
+        const w2Given    = getInputValue("witness2GivenName");
+        const w2NIN      = getInputValue("witness2NIN");
+
+        const w2Code     = getSelectText("witness2CountryCode");
+        const w2Phone    = getInputValue("witness2Phone");
+        const w2Tel      = (w2Phone !== "-") ? `${w2Code} ${w2Phone}` : "-";
+
+        const w2Address  = getInputValue("witness2Address");
+        const w2District = getSelectText("witness2District");
+
 
         document.getElementById("reviewWitnesses").innerHTML = `
-            <p><strong>Witness 1:</strong> ${witness1 || "-"}</p>
-            <p><strong>Witness 2:</strong> ${witness2 || "-"}</p>
+            <div class="review-grid">
+
+                <h4 style="grid-column:1/-1;">👤 Witness 1 (Groom Side)</h4>
+                <p><strong>Surname:</strong> ${w1Surname}</p>
+                <p><strong>Given Name:</strong> ${w1Given}</p>
+                <p><strong>NIN:</strong> ${w1NIN}</p>
+                <p><strong>Telephone:</strong> ${w1Tel}</p>
+                <p><strong>Address:</strong> ${w1Address}</p>
+                <p><strong>District:</strong> ${w1District}</p>
+
+                <hr style="grid-column:1/-1;">
+
+                <h4 style="grid-column:1/-1;">👤 Witness 2 (Bride Side)</h4>
+                <p><strong>Surname:</strong> ${w2Surname}</p>
+                <p><strong>Given Name:</strong> ${w2Given}</p>
+                <p><strong>NIN:</strong> ${w2NIN}</p>
+                <p><strong>Telephone:</strong> ${w2Tel}</p>
+                <p><strong>Address:</strong> ${w2Address}</p>
+                <p><strong>District:</strong> ${w2District}</p>
+
+            </div>
+        `;
+
+
+        /* ===========================
+           ✅ STEP 5: Photos Review
+        ============================ */
+
+        const groomPhoto = getFileName("groomPhoto");
+        const bridePhoto = getFileName("bridePhoto");
+
+        document.getElementById("reviewPhotos").innerHTML = `
+            <div class="review-grid">
+                <p><strong>Groom Photo:</strong> ${groomPhoto}</p>
+                <p><strong>Bride Photo:</strong> ${bridePhoto}</p>
+            </div>
         `;
     }
 
@@ -1569,12 +1823,10 @@ document.addEventListener("DOMContentLoaded", () => {
     ============================ */
     document.querySelectorAll(".next-btn").forEach(btn => {
         btn.addEventListener("click", () => {
+            const activeSection =
+                document.querySelector(".form-section.active");
 
-            // If user is going to Step 6
-            const activeSection = document.querySelector(".form-section.active");
             if (activeSection && activeSection.id === "section5") {
-
-                // Build Review
                 generateReview();
             }
         });
@@ -1582,14 +1834,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ===========================
-       Also Update Review Live
+       Live Update While Typing
     ============================ */
     document.querySelectorAll("input, select, textarea").forEach(field => {
         field.addEventListener("input", generateReview);
+        field.addEventListener("change", generateReview);
     });
 
 });
 </script>
+
+                    <style>
+                        .review-grid {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                            gap: 10px;
+                        }
+
+                        .review-grid p {
+                            background: #f9f9f9;
+                            padding: 8px 12px;
+                            border-radius: 8px;
+                            font-size: 14px;
+                        }
+                    </style>
+
 
 
                     <div class="form-navigation"

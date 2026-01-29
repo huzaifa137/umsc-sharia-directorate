@@ -418,7 +418,13 @@ class MasterController extends Controller
 
     public function guardianshipApplication()
     {
-        return view('guardianship.guardianship-application');
+        $countries = Cache::rememberForever('countries.list', function () {
+            return Countries::select('iso_3166_2', 'name', 'calling_code')
+                ->orderBy('name')
+                ->get();
+        });
+
+        return view('guardianship.guardianship-application', compact(['countries']));
     }
 
     public function saveguardianshipApplication(Request $request)
@@ -627,7 +633,13 @@ class MasterController extends Controller
 
     public function convertApplication()
     {
-        return view('converts.convert-application');
+        $countries = Cache::rememberForever('countries.list', function () {
+            return Countries::select('iso_3166_2', 'name', 'calling_code')
+                ->orderBy('name')
+                ->get();
+        });
+
+        return view('converts.convert-application', compact(['countries']));
     }
 
     public function saveConvertApplication(Request $request)

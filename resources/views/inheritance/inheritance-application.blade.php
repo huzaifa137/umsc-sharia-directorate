@@ -1493,40 +1493,181 @@
 
 
             <!-- Navigation Buttons -->
-            <div
-                style="display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 1px solid #e5e7eb;">
-                <button type="button" id="prevBtn" onclick="previousStep()" data-i18n="prev_btn"
-                    style="padding: 16px 32px; background: linear-gradient(135deg, #6b7280, #4b5563); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: none; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(107, 114, 128, 0.2);">
-                    <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2.5">
-                        <path d="M15 18l-6-6 6-6" />
-                    </svg>
-                    Previous
-                </button>
+<div style="display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 1px solid #e2e8f0;">
+    <button type="button" id="prevBtn" onclick="previousStep()"
+        style="padding: 16px 30px; background: #64748b; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 16px; display: none; align-items: center; gap: 8px; transition: all 0.3s;">
+        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6" />
+        </svg>
+        Previous
+    </button>
 
+    <div>
+        <!-- Preview Button -->
+        <button type="button" id="previewBtn" onclick="showPreview()"
+            style="
+                padding: 16px 30px;
+                background: linear-gradient(135deg, #f59e0b, #d97706);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                cursor: pointer;
+                font-weight: 700;
+                font-size: 16px;
+                display: none;
+                align-items: center;
+                gap: 10px;
+                transition: all 0.3s;
+                box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+                margin-right: 10px;
+            "
+            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(245, 158, 11, 0.4)'"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.3)'">
+            <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+            </svg>
+            Preview Application
+        </button>
 
-                <div>
-                    <button type="button" id="nextBtn" onclick="nextStep()" data-i18n="next_step_btn"
-                        style="padding: 16px 40px; background: linear-gradient(135deg, #2C5C36, #2C5C36); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);">
-                        Next Step
-                        <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5">
-                            <path d="M9 18l6-6-6-6" />
-                        </svg>
-                    </button>
+        <button type="button" id="nextBtn" onclick="nextStep()"
+            style="padding: 16px 40px; background: linear-gradient(135deg, #2C5C36, #2C5C36); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);">
+            Next Step
+            <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M9 18l6-6-6-6" />
+            </svg>
+        </button>
 
-                    <button type="submit" id="submitBtn" data-i18n="submit_btn"
-                        style="padding: 16px 40px; background: linear-gradient(135deg, #2C5C36, #10b981); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: none; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
-                        Submit Application
-                        <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5">
-                            <path d="M20 6L9 17l-5-5" />
-                        </svg>
-                    </button>
-                </div>
-
-            </div>
+        <button type="submit" id="submitBtn"
+            style="padding: 16px 40px; background: linear-gradient(135deg, #2C5C36, #10b981); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: none; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
+            Submit Application
+            <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M20 6L9 17l-5-5" />
+            </svg>
+        </button>
+    </div>
+</div>
         </form>
+
+        <!-- Preview Modal -->
+<div id="previewModal"
+    style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        z-index: 99999;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    ">
+
+    <!-- Modal Box -->
+    <div style="
+        background: white;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 950px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+    ">
+
+        <!-- Header -->
+        <div style="
+            padding: 20px 25px;
+            background: #2C5C36;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 16px 16px 0 0;
+        ">
+            <h2 style="margin: 0; font-size: 20px; font-weight: 700;">
+                Application Preview
+            </h2>
+
+            <button onclick="closePreview()"
+                style="
+                    border: none;
+                    background: transparent;
+                    font-size: 28px;
+                    color: white;
+                    cursor: pointer;
+                    padding: 0;
+                    width: 30px;
+                    height: 30px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                ">
+                &times;
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div id="previewContent" style="padding: 25px;">
+            <!-- Dynamic Preview Will Be Inserted Here -->
+        </div>
+
+        <!-- Footer -->
+        <div style="
+            padding: 15px 25px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            border-radius: 0 0 16px 16px;
+        ">
+            <div style="font-size: 14px; color: #64748b;">
+                Review all information before submitting
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="closePreview()"
+                    style="
+                        padding: 10px 18px;
+                        background: #64748b;
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: all 0.3s;
+                    "
+                    onmouseover="this.style.backgroundColor='#475569'"
+                    onmouseout="this.style.backgroundColor='#64748b'">
+                    Close Preview
+                </button>
+                {{-- <button onclick="printPreview()"
+                    style="
+                        padding: 10px 18px;
+                        background: #2C5C36;
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: all 0.3s;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    "
+                    onmouseover="this.style.backgroundColor='#1f3d24'"
+                    onmouseout="this.style.backgroundColor='#2C5C36'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
+                        <path d="M6 14h12v8H6z"/>
+                    </svg>
+                    Print Preview
+                </button> --}}
+            </div>
+        </div>
+
+    </div>
+</div>
     </div>
 </div>
 
@@ -2654,9 +2795,11 @@
         });
 
         // Update navigation buttons
-        document.getElementById('prevBtn').style.display = currentStep > 1 ? 'flex' : 'none';
-        document.getElementById('nextBtn').style.display = currentStep < totalSteps ? 'flex' : 'none';
-        document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'flex' : 'none';
+         document.getElementById('prevBtn').style.display = currentStep > 1 ? 'flex' : 'none';
+    document.getElementById('nextBtn').style.display = currentStep < totalSteps ? 'flex' : 'none';
+    document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'flex' : 'none';
+      document.getElementById('previewBtn').style.display = currentStep === totalSteps ? 'flex' : 'none';
+
 
         // Update progress
         const progress = (completedSteps.size / totalSteps) * 100;
@@ -3369,6 +3512,311 @@
         }
     `;
     document.head.appendChild(style);
+
+    // Preview Modal Functions
+function showPreview() {
+    const modal = document.getElementById("previewModal");
+    
+    // Show the modal
+    modal.style.display = "flex";
+    document.body.style.overflow = 'hidden'; // Prevent scrolling
+    
+    // Build Preview Content...
+    const form = document.getElementById("multiStepForm");
+    const formData = new FormData(form);
+    
+    let html = `
+        <div style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        ">
+    `;
+    
+    // Group data by step for better organization
+    const stepCategories = {
+        'Deceased Details': ['deceased_name', 'deceased_id_number', 'date_of_death', 'place_of_death', 'death_certificate_number'],
+        'Estate Information': ['total_properties', 'total_assets_value', 'total_liabilities', 'net_estate_value'],
+        'Heirs Information': ['heir_name_', 'heir_relationship_', 'heir_share_'],
+        'Shariah Verification': ['shariah_authority_name', 'shariah_authority_title', 'verification_date']
+    };
+    
+    // Add header
+    html = `
+        <div style="margin-bottom: 25px;">
+            <h3 style="color: #2C5C36; margin: 0 0 10px 0; font-size: 18px;">
+                Estate Distribution Application Summary
+            </h3>
+            <p style="color: #64748b; margin: 0; font-size: 14px;">
+                Review all information below before submitting your application
+            </p>
+        </div>
+        ${html}
+    `;
+    
+    // Process form data
+    formData.forEach((value, key) => {
+        if (value instanceof File) return;
+        if (!value || value.trim() === "") return;
+        
+        // Skip system fields
+        if (key.startsWith('_') || key === 'csrf_token') return;
+        
+        // Format key for display
+        const displayKey = key
+            .replace(/_/g, ' ')
+            .replace(/\b\w/g, l => l.toUpperCase());
+        
+        // Format value
+        let displayValue = value;
+        if (key.includes('date')) {
+            displayValue = new Date(value).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+        if (key.includes('value') || key.includes('amount')) {
+            displayValue = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(value);
+        }
+        
+        html += `
+            <div style="
+                background: #f8fafc;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+                padding: 18px;
+                transition: all 0.3s;
+            "
+            onmouseover="this.style.borderColor='#cbd5e1'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.05)'"
+            onmouseout="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'">
+                <p style="font-size: 12px; font-weight: 600; color: #64748b; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">
+                    ${displayKey}
+                </p>
+                <p style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0;">
+                    ${displayValue}
+                </p>
+            </div>
+        `;
+    });
+    
+    html += `</div>`;
+    
+    // Add summary section
+    html += `
+        <div style="
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 12px;
+            border-left: 4px solid #2C5C36;
+        ">
+            <h4 style="color: #2C5C36; margin: 0 0 10px 0; font-size: 16px;">
+                Application Summary
+            </h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                <div>
+                    <p style="font-size: 12px; color: #64748b; margin: 0;">Total Steps Completed</p>
+                    <p style="font-size: 20px; font-weight: 700; color: #2C5C36; margin: 5px 0 0 0;">
+                        ${completedSteps.size} of ${totalSteps}
+                    </p>
+                </div>
+                <div>
+                    <p style="font-size: 12px; color: #64748b; margin: 0;">Current Status</p>
+                    <p style="font-size: 20px; font-weight: 700; color: #2C5C36; margin: 5px 0 0 0;">
+                        ${currentStep === totalSteps ? 'Ready to Submit' : 'In Progress'}
+                    </p>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById("previewContent").innerHTML = html;
+    
+    // Scroll to top of modal content
+    document.getElementById("previewContent").scrollTop = 0;
+}
+
+function closePreview() {
+    document.getElementById("previewModal").style.display = "none";
+    document.body.style.overflow = 'auto'; // Restore scrolling
+}
+
+function printPreview() {
+    const printContent = document.getElementById("previewContent").innerHTML;
+    const originalContent = document.body.innerHTML;
+    
+    document.body.innerHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Application Preview</title>
+            <style>
+                @media print {
+                    body { margin: 0; padding: 20px; }
+                    .no-print { display: none !important; }
+                    h1, h2, h3 { color: #000 !important; }
+                    .summary-box { 
+                        border: 1px solid #ddd !important;
+                        background: #f9f9f9 !important;
+                    }
+                }
+                body { font-family: Arial, sans-serif; }
+                .section { margin-bottom: 20px; }
+                .field { margin-bottom: 10px; }
+                .field-label { font-weight: bold; color: #333; }
+                .field-value { margin-left: 10px; }
+            </style>
+        </head>
+        <body>
+            <h1 style="color: #2C5C36; text-align: center; margin-bottom: 30px;">
+                Estate Distribution Application - Preview
+            </h1>
+            ${printContent}
+            <div class="no-print" style="margin-top: 30px; text-align: center; font-style: italic; color: #666;">
+                Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}
+            </div>
+        </body>
+        </html>
+    `;
+    
+    window.print();
+    document.body.innerHTML = originalContent;
+    updateUI(); // Restore the UI
+}
+
+// Add these event listeners after your existing JavaScript functions
+
+// Close modal when clicking outside content
+document.getElementById('previewModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closePreview();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.getElementById('previewModal').style.display === 'flex') {
+        closePreview();
+    }
+});
+
+// Prevent form submission when preview modal is open
+document.getElementById('multiStepForm').addEventListener('submit', function(e) {
+    if (document.getElementById('previewModal').style.display === 'flex') {
+        e.preventDefault();
+        closePreview();
+        return false;
+    }
+});
+
+// Also update your mobile navigation function to include the preview button
+function adjustNavigationForMobile() {
+    const navigationContainer = document.querySelector(
+        'div[style*="display: flex; justify-content: space-between; margin-top: 40px;"]');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const previewBtn = document.getElementById('previewBtn'); // Add this line
+
+    if (window.innerWidth <= 768) {
+        // Create mobile-friendly navigation layout
+        if (navigationContainer) {
+            navigationContainer.style.cssText = `
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 15px !important;
+            margin-top: 30px !important;
+            padding-top: 20px !important;
+        `;
+
+            // Style all buttons for mobile (update to include previewBtn)
+            [prevBtn, nextBtn, submitBtn, previewBtn].forEach(btn => {
+                if (btn) {
+                    btn.style.cssText = `
+                    padding: 14px 20px !important;
+                    font-size: 15px !important;
+                    width: 100% !important;
+                    justify-content: center !important;
+                    display: ${btn.style.display === 'none' ? 'none' : 'flex'} !important;
+                    margin: 0 !important;
+                    box-shadow: none !important;
+                `;
+                }
+            });
+            
+            // Adjust the inner button container
+            const innerContainer = navigationContainer.querySelector('div');
+            if (innerContainer) {
+                innerContainer.style.cssText = `
+                    display: flex !important;
+                    flex-direction: column !important;
+                    gap: 15px !important;
+                    width: 100% !important;
+                `;
+            }
+        }
+    }
+}
 </script>
 
+<style>
+    /* Modal Styles */
+#previewModal {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Modal content animations */
+#previewModal > div {
+    animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile responsive for modal */
+@media (max-width: 768px) {
+    #previewModal {
+        padding: 10px !important;
+    }
+    
+    #previewModal > div {
+        max-height: 95vh !important;
+        max-width: 100% !important;
+    }
+    
+    #previewContent {
+        padding: 15px !important;
+    }
+    
+    #previewContent > div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .modal-footer {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .modal-footer button {
+        width: 100% !important;
+    }
+}
+</style>
 @include('layouts.form-footers')

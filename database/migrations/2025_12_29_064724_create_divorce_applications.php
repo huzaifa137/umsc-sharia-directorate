@@ -17,9 +17,9 @@ return new class extends Migration {
             // Groom
             $table->string('groom_surname');
             $table->string('groom_given_name');
-            $table->string('groom_nin');
+            $table->string('groom_nin')->nullable();
             $table->string('groom_phone');
-            $table->string('groom_email');
+            $table->string('groom_email')->nullable();
             $table->string('groom_tribe');
             $table->string('groom_district');
             $table->string('groom_municipality');
@@ -32,9 +32,9 @@ return new class extends Migration {
             // Bride
             $table->string('bride_surname');
             $table->string('bride_given_name');
-            $table->string('bride_nin');
+            $table->string('bride_nin')->nullable();
             $table->string('bride_phone');
-            $table->string('bride_email');
+            $table->string('bride_email')->nullable();
             $table->string('bride_tribe');
             $table->string('bride_district');
             $table->string('bride_municipality');
@@ -54,21 +54,21 @@ return new class extends Migration {
             // Witnesses
             $table->string('w1_given_name');
             $table->string('w1_surname');
-            $table->string('w1_nin');
+            $table->string('w1_nin')->nullable();
             $table->string('w1_phone');
             $table->string('w1_address');
 
             $table->string('w2_given_name');
             $table->string('w2_surname');
-            $table->string('w2_nin');
+            $table->string('w2_nin')->nullable();
             $table->string('w2_phone');
             $table->string('w2_address');
 
             // Authority
-            $table->string('imam_name');
-            $table->string('imam_reg');
+            $table->string('imam_name')->nullable();
+            $table->string('imam_reg')->nullable();
             $table->string('qadhi_area')->nullable();
-            $table->string('mosque_name');
+            $table->string('mosque_name')->nullable();
 
             // Children
             $table->string('children_involved');

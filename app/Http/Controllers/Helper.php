@@ -22,14 +22,29 @@ class Helper extends Controller
         return $username = DB::table('users')->where('id', Session('LoggedAdmin'))->value('username');
     }
 
-public static function fullname()
-{
-    return DB::table('users')
-        ->where('id', Session('LoggedAdmin'))
-        ->value(DB::raw("CONCAT(firstname, ' ', lastname) as fullname"));
-}
+    public static function fullname()
+    {
+        return DB::table('users')
+            ->where('id', Session('LoggedAdmin'))
+            ->value(DB::raw("CONCAT(firstname, ' ', lastname) as fullname"));
+    }
 
 
+    public static function activerUSerRole()
+    {
+         $roleId = DB::table('users')->where('id', Session('LoggedAdmin'))->value('user_role');
+
+        switch ($roleId) {
+            case 1:
+                return 'Imaam'; // Imaam
+            case 2:
+                return 'District Qadh'; // District Qadh
+            case 3:
+                return 'Directorate Sharia'; // Directorate Sharia
+            default:
+                return 'Un Known'; // Default icon
+        }
+    }
     public static function generateApplicationId()
     {
         $prefix = 'UMSC';

@@ -4,6 +4,16 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MasterController;
 
+use Illuminate\Support\Facades\Hash;
+
+Route::get('/hash-password', function () {
+    // Hash the password
+    $hashedPassword = Hash::make('Pa$$w0rd!');
+    
+    // Use dd() to dump and die, showing the hashed password
+    dd($hashedPassword);
+});
+
 
 Route::middleware([\Illuminate\Cookie\Middleware\EncryptCookies::class, \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class, \Illuminate\Session\Middleware\StartSession::class, \App\Http\Middleware\SetLocale::class])->group(function () {
 
@@ -24,6 +34,8 @@ Route::middleware([\Illuminate\Cookie\Middleware\EncryptCookies::class, \Illumin
 Route::get('/time-test', function () {
     dd(now()->toDateTimeString(), config('app.timezone'));
 });
+
+
 Route::controller(AdminController::class)->group(function () {
 
     Route::group(['middleware' => ['AdminAuth']], function () {

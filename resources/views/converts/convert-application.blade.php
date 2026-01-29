@@ -374,7 +374,8 @@
     <div
         style="flex: 0.4; background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); padding: 40px; overflow-y: auto; border-right: 1px solid #e2e8f0;">
         <div style="position: sticky; top: 0; background: transparent; padding-bottom: 20px; z-index: 10;">
-            <h1 data-i18n="convert_title" style="color: #2C5C36; margin-bottom: 5px; font-size: 2rem; font-weight: 800;">
+            <h1 data-i18n="convert_title"
+                style="color: #2C5C36; margin-bottom: 5px; font-size: 2rem; font-weight: 800;">
                 Convert Declaration</h1>
             <p data-i18n="convert_subtitle"
                 style="color: #2C5C36; font-size: 14px; margin-bottom: 30px; line-height: 1.5;">Complete all 4 sections
@@ -429,7 +430,8 @@
                         <div style="flex: 1;">
                             <div data-i18n="step_number"
                                 style="font-size: 15px; font-weight: 700; color: #2C5C36; letter-spacing: -0.2px;">Step
-                                {{ $i }}</div>
+                                {{ $i }}
+                            </div>
                             <div data-i18n="{{ $stepTitles[$i] }}"
                                 style="font-size: 13px; color: #9ca3af; margin-top: 4px; font-weight: 500;">
                                 {{-- Text will be filled by JavaScript --}}
@@ -437,17 +439,16 @@
                         </div>
 
                         <!-- Status Icon -->
-                        <div class="step-status"
-                            style="width: 24px; height: 24px; flex-shrink: 0; transition: all 0.3s;">
+                        <div class="step-status" style="width: 24px; height: 24px; flex-shrink: 0; transition: all 0.3s;">
                             @if ($i === 1)
-                                <svg style="color: #2C5C36; width: 100%; height: 100%;" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2.5">
+                                <svg style="color: #2C5C36; width: 100%; height: 100%;" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <path d="M12 8v4l3 3"></path>
                                 </svg>
                             @else
-                                <svg style="color: #d1d5db; width: 100%; height: 100%;" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2">
+                                <svg style="color: #d1d5db; width: 100%; height: 100%;" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
                                     <path d="M19 4.5L5 19.5"></path>
                                 </svg>
                             @endif
@@ -562,12 +563,17 @@
                         </div>
 
                         <!-- Former Religion -->
-                        <div
-                            style="display: flex; flex-direction: column; background: rgba(255,255,255,0.08); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
-                            <label data-i18n="former_religion_label"
-                                style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Former
-                                Religion *</label>
-                            <select name="former_religion" style="{{ $selectStyle }}" data-required="true">
+                        <div style="display: flex; flex-direction: column; background: rgba(255,255,255,0.08);
+    padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);">
+
+                            <label data-i18n="former_religion_label" style="font-size: 13px; color: rgba(255,255,255,0.95);
+        font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">
+                                Former Religion *
+                            </label>
+
+                            <!-- Dropdown -->
+                            <select id="formerReligionSelect" style="{{ $selectStyle }}" data-required="true">
                                 <option value="" data-i18n="select_religion">Select Religion</option>
                                 <option value="christianity" data-i18n="christianity">Christianity</option>
                                 <option value="hinduism" data-i18n="hinduism">Hinduism</option>
@@ -577,7 +583,43 @@
                                 <option value="atheist" data-i18n="atheist">Atheist/Agnostic</option>
                                 <option value="other" data-i18n="other">Other</option>
                             </select>
+
+                            <!-- Other text input (custom style, no selectStyle) -->
+                            <input type="text" id="formerReligionOther" placeholder="Enter Former Religion" style="width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid #cbd5e1;
+               margin-top: 12px; display: none; background: #fff; color: #000;" data-required="true" />
+
+                            <!-- Hidden field that always submits -->
+                            <input type="hidden" name="former_religion" id="formerReligionHidden" />
                         </div>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const select = document.getElementById("formerReligionSelect");
+                                const otherInput = document.getElementById("formerReligionOther");
+                                const hiddenField = document.getElementById("formerReligionHidden");
+
+                                function updateFormerReligion() {
+                                    if (select.value === "other") {
+                                        otherInput.style.display = "block";
+                                        hiddenField.value = "";
+                                        otherInput.setAttribute("data-required", "true");
+                                    } else {
+                                        otherInput.style.display = "none";
+                                        hiddenField.value = select.value;
+                                        otherInput.removeAttribute("data-required");
+                                        otherInput.value = "";
+                                    }
+                                }
+
+                                select.addEventListener("change", updateFormerReligion);
+                                otherInput.addEventListener("input", function () {
+                                    hiddenField.value = otherInput.value;
+                                });
+
+                                updateFormerReligion();
+                            });
+                        </script>
+
 
                         <!-- Date of Birth -->
                         <div
@@ -585,8 +627,7 @@
                             <label data-i18n="dob_label"
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Date
                                 of Birth *</label>
-                            <input type="date" name="date_of_birth" style="{{ $fieldStyle }}"
-                                data-required="true">
+                            <input type="date" name="date_of_birth" style="{{ $fieldStyle }}" data-required="true">
                         </div>
 
                         <!-- Occupation -->
@@ -611,13 +652,32 @@
                         </div>
 
                         <!-- Contact Information -->
-                        <div
-                            style="display: flex; flex-direction: column; background: rgba(255,255,255,0.08); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
-                            <label data-i18n="contact_label"
-                                style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Contact
-                                Information *</label>
-                            <input type="tel" name="contact" data-i18n-placeholder="contact_placeholder"
-                                style="{{ $fieldStyle }}" data-required="true">
+                        <div style="display: flex; flex-direction: column; background: rgba(255,255,255,0.08); 
+                            padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); 
+                            backdrop-filter: blur(10px);">
+
+                            <label data-i18n="contact_label" style="font-size: 13px; color: rgba(255,255,255,0.95); 
+                                font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">
+                                Contact Information *
+                            </label>
+
+                            <div style="display: flex; gap: 12px;">
+                                <!-- Country Code Dropdown -->
+                                <select name="contact_country_code" style="flex: 0 0 100px; /* fixed width */ 
+                       padding: 12px 16px; border-radius: 8px; border: 1px solid #cbd5e1; {{ $fieldStyle }};">
+                                    <option value="">Code</option>
+                                    @foreach ($countries as $country)
+                                        <option value="{{ $country->calling_code }}">
+                                            {{ $country->name }} (+{{ $country->calling_code }})
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                <!-- Telephone Input -->
+                                <input type="tel" name="contact" data-i18n-placeholder="contact_placeholder"
+                                    style="flex: 1 1 auto; min-width: 0; {{ $fieldStyle }}; padding: 12px 16px;"
+                                    data-required="true" maxlength="15" />
+                            </div>
                         </div>
 
                         <!-- Father's Name -->
@@ -654,10 +714,9 @@
                         <div
                             style="display: flex; flex-direction: column; background: rgba(255,255,255,0.08); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
                             <label data-i18n="county_label"
-                                style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">County
+                                style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">District
                                 *</label>
-                            <select name="county" class="county-select" style="{{ $selectStyle }}"
-                                data-required="true">
+                            <select name="county" class="county-select" style="{{ $selectStyle }}" data-required="true">
                                 <option value="" data-i18n="select_county">Select County</option>
                                 <!-- Options will be populated by JavaScript -->
                             </select>
@@ -667,7 +726,7 @@
                         <div
                             style="display: flex; flex-direction: column; background: rgba(255,255,255,0.08); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
                             <label data-i18n="district_label"
-                                style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">District
+                                style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">County
                                 *</label>
                             <select name="district" class="district-select" style="{{ $selectStyle }}"
                                 data-required="true">
@@ -723,8 +782,7 @@
                             <label data-i18n="conversion_date_label"
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Date
                                 of Conversion *</label>
-                            <input type="date" name="conversion_date" style="{{ $fieldStyle }}"
-                                data-required="true">
+                            <input type="date" name="conversion_date" style="{{ $fieldStyle }}" data-required="true">
                         </div>
 
                         <!-- Place of Entry to Islam -->
@@ -744,9 +802,8 @@
                             <label data-i18n="guardian_name_label"
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Guardian's
                                 Name *</label>
-                            <input type="text" name="guardian_name"
-                                data-i18n-placeholder="guardian_name_placeholder" style="{{ $fieldStyle }}"
-                                data-required="true">
+                            <input type="text" name="guardian_name" data-i18n-placeholder="guardian_name_placeholder"
+                                style="{{ $fieldStyle }}" data-required="true">
                         </div>
 
                         <!-- Guardian's Occupation -->
@@ -776,7 +833,8 @@
                             <label data-i18n="conversion_reasons_label"
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Reasons
                                 for Joining Islam *</label>
-                            <textarea name="conversion_reasons" rows="3" data-i18n-placeholder="conversion_reasons_placeholder"
+                            <textarea name="conversion_reasons" rows="3"
+                                data-i18n-placeholder="conversion_reasons_placeholder"
                                 style="{{ $fieldStyle }} min-height: 100px;" data-required="true"></textarea>
                         </div>
 
@@ -786,7 +844,8 @@
                             <label data-i18n="guardian_declaration_label"
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Guardian's
                                 Declaration *</label>
-                            <textarea name="guardian_declaration" rows="3" data-i18n-placeholder="guardian_declaration_placeholder"
+                            <textarea name="guardian_declaration" rows="3"
+                                data-i18n-placeholder="guardian_declaration_placeholder"
                                 style="{{ $fieldStyle }} min-height: 100px;" data-required="true"></textarea>
                         </div>
                     </div>
@@ -878,57 +937,57 @@
                                     </li>
                                 </ul>
                             </div>
-
-                            <div
-                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                                <!-- Signature Upload -->
+                            <div style="display: none;">
                                 <div
-                                    style="display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; border: 1px dashed rgba(255,255,255,0.2);">
-                                    <label data-i18n="signature_label"
-                                        style="font-size: 13px; color: white; font-weight: 600; margin-bottom: 10px; display: block;">Digital
-                                        Signature *</label>
-                                    <p data-i18n="signature_note"
-                                        style="color: rgba(255,255,255,0.7); font-size: 12px; margin-bottom: 15px;">
-                                        Upload a clear image of your handwritten signature (PNG or JPG)</p>
-                                    <div style="display: flex; align-items: center; gap: 15px;">
-                                        <input type="file" name="signature" accept="image/*"
-                                            style="display: none;" id="signatureUpload" data-required="true">
-                                        <button type="button" data-i18n="upload_signature_btn"
-                                            onclick="document.getElementById('signatureUpload').click()"
-                                            style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 12px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
-                                            <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24"
-                                                fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                                <polyline points="17 8 12 3 7 8"></polyline>
-                                                <line x1="12" y1="3" x2="12" y2="15">
-                                                </line>
-                                            </svg>
-                                            Upload Signature
-                                        </button>
-                                        <span id="signatureFileName" data-i18n="no_file_chosen"
-                                            style="color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500;">No
-                                            file chosen</span>
-                                    </div>
-                                    <div id="signaturePreview" style="margin-top: 15px; display: none;">
-                                        <div
-                                            style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px;">
-                                            <p data-i18n="signature_preview"
-                                                style="color: rgba(255,255,255,0.8); font-size: 12px; margin-bottom: 5px;">
-                                                Signature Preview:</p>
-                                            <img id="signatureImagePreview"
-                                                style="max-width: 200px; max-height: 80px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px;">
+                                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                                    <!-- Signature Upload -->
+                                    <div
+                                        style="display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; border: 1px dashed rgba(255,255,255,0.2);">
+                                        <label data-i18n="signature_label"
+                                            style="font-size: 13px; color: white; font-weight: 600; margin-bottom: 10px; display: block;">Digital
+                                            Signature *</label>
+                                        <p data-i18n="signature_note"
+                                            style="color: rgba(255,255,255,0.7); font-size: 12px; margin-bottom: 15px;">
+                                            Upload a clear image of your handwritten signature (PNG or JPG)</p>
+                                        <div style="display: flex; align-items: center; gap: 15px;">
+                                            <input type="file" name="signature" accept="image/*" style="display: none;"
+                                                id="signatureUpload" data-required="true">
+                                            <button type="button" data-i18n="upload_signature_btn"
+                                                onclick="document.getElementById('signatureUpload').click()"
+                                                style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 12px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
+                                                <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                                    <line x1="12" y1="3" x2="12" y2="15">
+                                                    </line>
+                                                </svg>
+                                                Upload Signature
+                                            </button>
+                                            <span id="signatureFileName" data-i18n="no_file_chosen"
+                                                style="color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500;">No
+                                                file chosen</span>
+                                        </div>
+                                        <div id="signaturePreview" style="margin-top: 15px; display: none;">
+                                            <div
+                                                style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px;">
+                                                <p data-i18n="signature_preview"
+                                                    style="color: rgba(255,255,255,0.8); font-size: 12px; margin-bottom: 5px;">
+                                                    Signature Preview:</p>
+                                                <img id="signatureImagePreview"
+                                                    style="max-width: 200px; max-height: 80px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px;">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- Date of Declaration -->
-                                <div
-                                    style="display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; border: 1px dashed rgba(255,255,255,0.2);">
-                                    <label data-i18n="declaration_date_label"
-                                        style="font-size: 13px; color: white; font-weight: 600; margin-bottom: 10px;">Date
-                                        of Declaration *</label>
-                                    <input type="date" name="declaration_date" style="{{ $fieldStyle }}"
-                                        data-required="true">
+                                    <!-- Date of Declaration -->
+                                    <div
+                                        style="display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; border: 1px dashed rgba(255,255,255,0.2);">
+                                        <label data-i18n="declaration_date_label"
+                                            style="font-size: 13px; color: white; font-weight: 600; margin-bottom: 10px;">Date
+                                            of Declaration *</label>
+                                        <input type="date" name="declaration_date" style="{{ $fieldStyle }}">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -992,9 +1051,9 @@
                             <label data-i18n="officer_name_label"
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Verifying
                                 Officer's Name *</label>
-                            <input type="text" name="officer_name"
-                                data-i18n-placeholder="officer_name_placeholder" style="{{ $fieldStyle }}"
-                                data-required="true">
+                            <input type="text" name="officer_name" data-i18n-placeholder="officer_name_placeholder"
+                                style="{{ $fieldStyle }}" value="{{ Helper::fullname() }}" data-required="true"
+                                disabled>
                         </div>
 
                         <!-- Officer's Position -->
@@ -1005,7 +1064,7 @@
                                 Position *</label>
                             <input type="text" name="officer_position"
                                 data-i18n-placeholder="officer_position_placeholder" style="{{ $fieldStyle }}"
-                                data-required="true">
+                                value="{{ Helper::activerUSerRole() }}" data-required="true" disabled>
                         </div>
 
                         <!-- Registration Number -->
@@ -1016,7 +1075,7 @@
                                 Number *</label>
                             <input type="text" name="registration_number"
                                 data-i18n-placeholder="registration_number_placeholder" style="{{ $fieldStyle }}"
-                                data-required="true">
+                                data-required="true" value="001" disabled>
                         </div>
 
                         <!-- Date of Verification -->
@@ -1025,8 +1084,8 @@
                             <label data-i18n="verification_date_label"
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Date
                                 of Verification *</label>
-                            <input type="date" name="verification_date" style="{{ $fieldStyle }}"
-                                data-required="true" value="{{ date('Y-m-d') }}">
+                            <input type="date" name="verification_date" style="{{ $fieldStyle }}" data-required="true"
+                                value="{{ date('Y-m-d') }}" disabled>
                         </div>
 
                         <!-- Certification -->
@@ -1044,34 +1103,36 @@
                                     Islamic principles and requirements."
                                 </p>
                             </div>
-                            <div style="display: flex; align-items: center; gap: 20px;">
-                                <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
-                                    <label data-i18n="officer_signature_label"
-                                        style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600;">Officer's
-                                        Signature *</label>
-                                    <input type="file" name="officer_signature" accept="image/*"
-                                        style="display: none;" id="officerSignatureUpload" data-required="true">
-                                    <button type="button" data-i18n="upload_officer_signature_btn"
-                                        onclick="document.getElementById('officerSignatureUpload').click()"
-                                        style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.3s; text-align: center;">
-                                        Upload Officer Signature
-                                    </button>
-                                    <span id="officerSignatureFileName" data-i18n="no_file_chosen"
-                                        style="color: rgba(255,255,255,0.7); font-size: 13px;">No file chosen</span>
-                                </div>
-                                <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
-                                    <label data-i18n="official_stamp_label"
-                                        style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600;">Official
-                                        Stamp *</label>
-                                    <input type="file" name="official_stamp" accept="image/*"
-                                        style="display: none;" id="officialStampUpload" data-required="true">
-                                    <button type="button" data-i18n="upload_official_stamp_btn"
-                                        onclick="document.getElementById('officialStampUpload').click()"
-                                        style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.3s; text-align: center;">
-                                        Upload Official Stamp
-                                    </button>
-                                    <span id="officialStampFileName" data-i18n="no_file_chosen"
-                                        style="color: rgba(255,255,255,0.7); font-size: 13px;">No file chosen</span>
+                            <div style="display: none;">
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+                                        <label data-i18n="officer_signature_label"
+                                            style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600;">Officer's
+                                            Signature *</label>
+                                        <input type="file" name="officer_signature" accept="image/*"
+                                            style="display: none;" id="officerSignatureUpload" data-required="true">
+                                        <button type="button" data-i18n="upload_officer_signature_btn"
+                                            onclick="document.getElementById('officerSignatureUpload').click()"
+                                            style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.3s; text-align: center;">
+                                            Upload Officer Signature
+                                        </button>
+                                        <span id="officerSignatureFileName" data-i18n="no_file_chosen"
+                                            style="color: rgba(255,255,255,0.7); font-size: 13px;">No file chosen</span>
+                                    </div>
+                                    <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+                                        <label data-i18n="official_stamp_label"
+                                            style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600;">Official
+                                            Stamp *</label>
+                                        <input type="file" name="official_stamp" accept="image/*" style="display: none;"
+                                            id="officialStampUpload" data-required="true">
+                                        <button type="button" data-i18n="upload_official_stamp_btn"
+                                            onclick="document.getElementById('officialStampUpload').click()"
+                                            style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.3s; text-align: center;">
+                                            Upload Official Stamp
+                                        </button>
+                                        <span id="officialStampFileName" data-i18n="no_file_chosen"
+                                            style="color: rgba(255,255,255,0.7); font-size: 13px;">No file chosen</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1089,50 +1150,457 @@
                 </div>
             </div>
 
-            <!-- Navigation Buttons (MUST BE HERE - AFTER ALL STEPS BUT BEFORE CLOSING FORM) -->
+<!-- Navigation Buttons (MUST BE HERE - AFTER ALL STEPS BUT BEFORE CLOSING FORM) -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 50px; padding-top: 25px; border-top: 1px solid #e5e7eb;">
+    <div>
+        <button type="button" id="prevBtn"
+            style="display: none; background: #f3f4f6; color: #2C5C36; border: 2px solid #d1d5db; padding: 14px 30px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 15px; display: flex; align-items: center; gap: 8px;"
+            onclick="prevStep()">
+            <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5">
+                <path d="M19 12H5"></path>
+                <path d="M12 19l-7-7 7-7"></path>
+            </svg>
+            <span data-i18n="prev_btn">Previous Step</span>
+        </button>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 15px;">
+        <span id="stepStatus"
+            style="font-size: 14px; color: #2C5C36; font-weight: 500; background: #f9fafb; padding: 8px 16px; border-radius: 20px; border: 1px solid #e5e7eb;">
+            <span id="completedFields">0</span> <span data-i18n="of_text">of</span> <span
+                id="totalFields">0</span> <span data-i18n="fields_completed">fields completed</span>
+        </span>
+
+        <!-- Preview Button Container -->
+        <div id="previewButtonContainer" style="display: none;">
+            <button type="button" id="previewBtn"
+                style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; padding: 14px 30px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 15px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2); display: flex; align-items: center; gap: 8px;"
+                onclick="showPreview()">
+                <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <span data-i18n="preview_btn">Preview Declaration</span>
+            </button>
+        </div>
+
+        <!-- Next/Submit Button Container -->
+        <div style="display: flex; gap: 10px;">
+            <button type="button" id="nextBtn"
+                style="background: linear-gradient(135deg, #2C5C36, #2C5C36); color: white; border: none; padding: 14px 40px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 15px; box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2); display: flex; align-items: center; gap: 8px;"
+                onclick="nextStep()">
+                <span data-i18n="next_btn">Next Step</span>
+                <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5">
+                    <path d="M5 12h14"></path>
+                    <path d="M12 5l7 7-7 7"></path>
+                </svg>
+            </button>
+
+            <button type="submit" id="submitBtn"
+                style="display: none; background: linear-gradient(135deg, #2C5C36, #2C5C36); color: white; border: none; padding: 14px 40px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 15px; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.2);">
+                <span data-i18n="submit_declaration_btn">Submit Declaration</span>
+            </button>
+        </div>
+    </div>
+</div>
+        </form>
+    </div>
+    <!-- Preview Modal -->
+    <div id="previewModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 9999; overflow-y: auto; padding: 20px; backdrop-filter: blur(5px);">
+        <div
+            style="max-width: 1200px; margin: 40px auto; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 24px; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); overflow: hidden; position: relative;">
+
+            <!-- Decorative Elements -->
             <div
-                style="display: flex; justify-content: space-between; align-items: center; margin-top: 50px; padding-top: 25px; border-top: 1px solid #e5e7eb;">
-                <div>
-                    <button type="button" id="prevBtn"
-                        style="display: none; background: #f3f4f6; color: #2C5C36; border: 2px solid #d1d5db; padding: 14px 30px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 15px; display: flex; align-items: center; gap: 8px;"
-                        onclick="prevStep()">
-                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5">
-                            <path d="M19 12H5"></path>
-                            <path d="M12 19l-7-7 7-7"></path>
-                        </svg>
-                        <span data-i18n="prev_btn">Previous Step</span>
+                style="position: absolute; top: 0; right: 0; width: 300px; height: 300px; background: radial-gradient(circle, rgba(44, 92, 54, 0.15) 0%, transparent 70%);">
+            </div>
+            <div
+                style="position: absolute; bottom: 0; left: 0; width: 400px; height: 400px; background: radial-gradient(circle, rgba(44, 92, 54, 0.1) 0%, transparent 70%);">
+            </div>
+
+            <!-- Modal Header -->
+            <div
+                style="background: linear-gradient(135deg, #2C5C36 0%, #1e3a29 100%); padding: 35px 40px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div
+                            style="width: 70px; height: 70px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 16px; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255, 255, 255, 0.2);">
+                            <svg style="width: 32px; height: 32px;" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M21 2H3a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z">
+                                </path>
+                                <path d="M2 7h20M2 12h20M2 17h20"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2
+                                style="color: white; font-size: 2rem; font-weight: 800; margin: 0; letter-spacing: -0.5px;">
+                                DECLARATION PREVIEW</h2>
+                            <p style="color: rgba(255, 255, 255, 0.8); margin: 8px 0 0 0; font-size: 16px;">Review all
+                                information before submission</p>
+                        </div>
+                    </div>
+                    <button onclick="closePreview()"
+                        style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; font-size: 20px;">
+                        ×
                     </button>
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <span id="stepStatus"
-                        style="font-size: 14px; color: #2C5C36; font-weight: 500; background: #f9fafb; padding: 8px 16px; border-radius: 20px; border: 1px solid #e5e7eb;">
-                        <span id="completedFields">0</span> <span data-i18n="of_text">of</span> <span
-                            id="totalFields">0</span> <span data-i18n="fields_completed">fields completed</span>
+                <!-- Status Badges -->
+                <div style="display: flex; gap: 15px;">
+                    <span
+                        style="background: rgba(255, 255, 255, 0.1); color: white; padding: 8px 20px; border-radius: 20px; font-size: 14px; font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.2);">
+                        📝 Draft Preview
                     </span>
+                    <span
+                        style="background: rgba(34, 197, 94, 0.2); color: #4ade80; padding: 8px 20px; border-radius: 20px; font-size: 14px; font-weight: 600; border: 1px solid rgba(34, 197, 94, 0.3);">
+                        ✅ All Sections Complete
+                    </span>
+                    <span id="previewTimestamp"
+                        style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 8px 20px; border-radius: 20px; font-size: 14px; font-weight: 600; border: 1px solid rgba(59, 130, 246, 0.3);">
+                        🕒 Preview generated just now
+                    </span>
+                </div>
+            </div>
 
-                    <button type="button" id="nextBtn"
-                        style="background: linear-gradient(135deg, #2C5C36, #2C5C36); color: white; border: none; padding: 14px 40px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 15px; box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2); display: flex; align-items: center; gap: 8px;"
-                        onclick="nextStep()">
-                        <span data-i18n="next_btn">Next Step</span>
-                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5">
-                            <path d="M5 12h14"></path>
-                            <path d="M12 5l7 7-7 7"></path>
-                        </svg>
+            <!-- Preview Content -->
+            <div style="padding: 40px; max-height: 70vh; overflow-y: auto;">
+                <!-- Section A -->
+                <div style="margin-bottom: 50px;">
+                    <div
+                        style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid rgba(44, 92, 54, 0.3);">
+                        <div
+                            style="width: 50px; height: 50px; background: linear-gradient(135deg, #2C5C36, #1e3a29); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 22px; box-shadow: 0 8px 20px rgba(44, 92, 54, 0.3);">
+                            A
+                        </div>
+                        <h3 style="color: white; font-size: 1.5rem; font-weight: 700; margin: 0;">SECTION A: CONVERT'S
+                            DECLARATION</h3>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                        <div class="preview-field">
+                            <label>Former Names</label>
+                            <div id="preview-former_names" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>Former Religion</label>
+                            <div id="preview-former_religion" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>Date of Birth</label>
+                            <div id="preview-date_of_birth" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>Occupation</label>
+                            <div id="preview-occupation" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>Current Residence</label>
+                            <div id="preview-current_residence" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>Contact Information</label>
+                            <div id="preview-contact" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>Father's Name</label>
+                            <div id="preview-father_name" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>Mother's Name</label>
+                            <div id="preview-mother_name" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field" style="grid-column: span 2;">
+                            <label>Home Address</label>
+                            <div id="preview-home_address" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>District</label>
+                            <div id="preview-county" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>County</label>
+                            <div id="preview-district" class="preview-value">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section B -->
+                <div style="margin-bottom: 50px;">
+                    <div
+                        style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid rgba(44, 92, 54, 0.3);">
+                        <div
+                            style="width: 50px; height: 50px; background: linear-gradient(135deg, #2C5C36, #1e3a29); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 22px; box-shadow: 0 8px 20px rgba(44, 92, 54, 0.3);">
+                            B
+                        </div>
+                        <h3 style="color: white; font-size: 1.5rem; font-weight: 700; margin: 0;">SECTION B: UPON
+                            CONVERSION</h3>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                        <div class="preview-field">
+                            <label>New Muslim Names</label>
+                            <div id="preview-new_names" class="preview-value highlight">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>Date of Conversion</label>
+                            <div id="preview-conversion_date" class="preview-value highlight">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>Place of Entry to Islam</label>
+                            <div id="preview-conversion_place" class="preview-value highlight">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>Guardian's Name</label>
+                            <div id="preview-guardian_name" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>Guardian's Occupation</label>
+                            <div id="preview-guardian_occupation" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>Guardian's Declaration Date</label>
+                            <div id="preview-guardian_declaration_date" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field" style="grid-column: span 2;">
+                            <label>Reasons for Joining Islam</label>
+                            <div id="preview-conversion_reasons" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field" style="grid-column: span 2;">
+                            <label>Guardian's Declaration</label>
+                            <div id="preview-guardian_declaration" class="preview-value">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section C -->
+                <div style="margin-bottom: 50px;">
+                    <div
+                        style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid rgba(44, 92, 54, 0.3);">
+                        <div
+                            style="width: 50px; height: 50px; background: linear-gradient(135deg, #2C5C36, #1e3a29); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 22px; box-shadow: 0 8px 20px rgba(44, 92, 54, 0.3);">
+                            C
+                        </div>
+                        <h3 style="color: white; font-size: 1.5rem; font-weight: 700; margin: 0;">SECTION C: DECLARATION
+                            OF FAITH</h3>
+                    </div>
+
+                    <div
+                        style="background: rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 30px; margin-bottom: 30px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                        <div style="text-align: center; margin-bottom: 25px;">
+                            <div
+                                style="background: rgba(44, 92, 54, 0.2); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(44, 92, 54, 0.3);">
+                                <p
+                                    style="color: white; font-size: 24px; font-weight: 700; margin: 0; direction: rtl; font-family: 'Traditional Arabic', 'Scheherazade', serif;">
+                                    أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا ٱللَّٰهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ
+                                    ٱللَّٰهِ
+                                </p>
+                            </div>
+                            <p
+                                style="color: rgba(255, 255, 255, 0.9); font-size: 18px; font-weight: 600; margin-bottom: 10px;">
+                                "Ash-hadu an la ilaha illa Allah, wa ash-hadu anna Muhammadan rasulu Allah."
+                            </p>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 16px; font-style: italic;">
+                                "I bear witness that there is no god but Allah, and I bear witness that Muhammad is the
+                                Messenger of Allah."
+                            </p>
+                        </div>
+
+                        <div class="preview-field">
+                            <label>Declaration Agreement</label>
+                            <div id="preview-declaration_agreement" class="preview-value highlight">
+                                <span style="color: #4ade80;">✓ Accepted</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Officer Verification -->
+                <div>
+                    <div
+                        style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid rgba(44, 92, 54, 0.3);">
+                        <div
+                            style="width: 50px; height: 50px; background: linear-gradient(135deg, #2C5C36, #1e3a29); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 22px; box-shadow: 0 8px 20px rgba(44, 92, 54, 0.3);">
+                            D
+                        </div>
+                        <h3 style="color: white; font-size: 1.5rem; font-weight: 700; margin: 0;">OFFICER VERIFICATION
+                        </h3>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                        <div class="preview-field">
+                            <label>Verifying Officer's Name</label>
+                            <div id="preview-officer_name" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>Officer's Position</label>
+                            <div id="preview-officer_position" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>Registration Number</label>
+                            <div id="preview-registration_number" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field">
+                            <label>Date of Verification</label>
+                            <div id="preview-verification_date" class="preview-value">-</div>
+                        </div>
+                        <div class="preview-field" style="grid-column: span 2;">
+                            <label>Remarks/Additional Notes</label>
+                            <div id="preview-officer_remarks" class="preview-value">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signature Preview (if uploaded) -->
+                <div id="signaturePreviewSection"
+                    style="display: none; margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <h4 style="color: white; font-size: 1.2rem; font-weight: 700; margin-bottom: 20px;">📝 SIGNATURE
+                        PREVIEW</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                        <div
+                            style="background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 20px; border: 1px dashed rgba(255, 255, 255, 0.2);">
+                            <div style="color: rgba(255, 255, 255, 0.7); font-size: 14px; margin-bottom: 10px;">
+                                Convert's Signature</div>
+                            <img id="previewSignatureImage"
+                                style="max-width: 200px; max-height: 80px; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div
+                style="background: rgba(255, 255, 255, 0.05); padding: 25px 40px; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center;">
+                <div style="color: rgba(255, 255, 255, 0.7); font-size: 14px;">
+                    <strong>Note:</strong> Please verify all information is correct before submission
+                </div>
+                <div style="display: flex; gap: 15px;">
+                    <button onclick="closePreview()"
+                        style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); color: white; padding: 12px 30px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 15px;">
+                        Close Preview
                     </button>
-
-                    <button type="submit" id="submitBtn"
-                        style="display: none; background: linear-gradient(135deg, #2C5C36, #2C5C36); color: white; border: none; padding: 14px 40px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 15px; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.2);">
-                        <span data-i18n="submit_declaration_btn">Submit Declaration</span>
+                    <button onclick="closePreview(); document.querySelector('#submitBtn').click();"
+                        style="background: linear-gradient(135deg, #2C5C36, #1e3a29); color: white; border: none; padding: 12px 40px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 15px; box-shadow: 0 4px 15px rgba(44, 92, 54, 0.3);">
+                        Submit Declaration
                     </button>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
-
 </div>
+
+<style>
+    /* Preview Field Styles */
+    .preview-field {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .preview-field:hover {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .preview-field label {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .preview-value {
+        color: white;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 1.5;
+        word-break: break-word;
+    }
+
+    .preview-value.highlight {
+        color: #4ade80;
+        font-weight: 600;
+        font-size: 17px;
+    }
+
+    /* Empty state styling */
+    .preview-value:empty::before {
+        content: "Not provided";
+        color: rgba(255, 255, 255, 0.4);
+        font-style: italic;
+    }
+
+    /* Modal animations */
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9) translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    #previewModal>div {
+        animation: modalFadeIn 0.4s ease-out;
+    }
+
+    /* Scrollbar styling for modal */
+    #previewModal>div>div:nth-child(2) {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(44, 92, 54, 0.5) transparent;
+    }
+
+    #previewModal>div>div:nth-child(2)::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    #previewModal>div>div:nth-child(2)::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+    }
+
+    #previewModal>div>div:nth-child(2)::-webkit-scrollbar-thumb {
+        background: rgba(44, 92, 54, 0.5);
+        border-radius: 4px;
+    }
+
+    #previewModal>div>div:nth-child(2)::-webkit-scrollbar-thumb:hover {
+        background: rgba(44, 92, 54, 0.7);
+    }
+
+    /* Responsive modal */
+    @media (max-width: 768px) {
+        #previewModal>div {
+            margin: 20px auto;
+            border-radius: 16px;
+        }
+
+        #previewModal>div>div:first-child {
+            padding: 25px;
+        }
+
+        #previewModal>div>div:nth-child(2) {
+            padding: 25px;
+        }
+
+        .preview-field {
+            grid-column: span 1 !important;
+        }
+    }
+</style>
 
 <script>
     let currentStep = 1;
@@ -1162,7 +1630,7 @@
     };
 
     // Initialize when DOM loads
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         initializeDistricts();
         updateStepIndicators();
         setupFileUploads();
@@ -1182,7 +1650,7 @@
         // Update declaration name when new names are entered
         const newNamesInput = document.querySelector('[name="new_names"]');
         if (newNamesInput) {
-            newNamesInput.addEventListener('input', function() {
+            newNamesInput.addEventListener('input', function () {
                 const declarationName = document.getElementById('declarationName');
                 if (declarationName) {
                     declarationName.textContent = this.value || '[Your Name Will Appear Here]';
@@ -1210,7 +1678,7 @@
         });
 
         // Add event listener for county selection
-        countySelect.addEventListener('change', function() {
+        countySelect.addEventListener('change', function () {
             const selectedDistrict = this.value;
             const counties = ugandaData.districts[selectedDistrict] || [];
 
@@ -1229,88 +1697,90 @@
         });
     }
 
-    function updateStepIndicators() {
-        for (let i = 1; i <= totalSteps; i++) {
-            const indicator = document.getElementById('stepIndicator' + i);
-            if (!indicator) continue;
+function updateStepIndicators() {
+    for (let i = 1; i <= totalSteps; i++) {
+        const indicator = document.getElementById('stepIndicator' + i);
+        if (!indicator) continue;
 
-            const statusIcon = indicator.querySelector('.step-status svg');
+        const statusIcon = indicator.querySelector('.step-status svg');
 
-            if (i < currentStep) {
-                indicator.style.borderColor = '#2C5C36';
-                indicator.style.background = '#f0f9f0';
-                indicator.style.boxShadow = '0 4px 20px rgba(44, 92, 54, 0.1)';
+        if (i < currentStep) {
+            indicator.style.borderColor = '#2C5C36';
+            indicator.style.background = '#f0f9f0';
+            indicator.style.boxShadow = '0 4px 20px rgba(44, 92, 54, 0.1)';
 
-                if (statusIcon) {
-                    statusIcon.innerHTML =
-                        '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />';
-                    statusIcon.style.color = '#2C5C36';
-                }
-            } else if (i === currentStep) {
-                indicator.style.borderColor = '#2C5C36';
-                indicator.style.background = '#f0f9f0';
-                indicator.style.boxShadow = '0 8px 30px rgba(44, 92, 54, 0.15)';
+            if (statusIcon) {
+                statusIcon.innerHTML =
+                    '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />';
+                statusIcon.style.color = '#2C5C36';
+            }
+        } else if (i === currentStep) {
+            indicator.style.borderColor = '#2C5C36';
+            indicator.style.background = '#f0f9f0';
+            indicator.style.boxShadow = '0 8px 30px rgba(44, 92, 54, 0.15)';
 
-                if (statusIcon) {
-                    statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><path d="M12 8v4l3 3"></path>';
-                    statusIcon.style.color = '#2C5C36';
-                }
-            } else {
-                indicator.style.borderColor = '#e5e7eb';
-                indicator.style.background = 'white';
-                indicator.style.boxShadow = 'none';
+            if (statusIcon) {
+                statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><path d="M12 8v4l3 3"></path>';
+                statusIcon.style.color = '#2C5C36';
+            }
+        } else {
+            indicator.style.borderColor = '#e5e7eb';
+            indicator.style.background = 'white';
+            indicator.style.boxShadow = 'none';
 
-                if (statusIcon) {
-                    statusIcon.innerHTML = '<path d="M19 4.5L5 19.5"></path>';
-                    statusIcon.style.color = '#d1d5db';
-                }
+            if (statusIcon) {
+                statusIcon.innerHTML = '<path d="M19 4.5L5 19.5"></path>';
+                statusIcon.style.color = '#d1d5db';
             }
         }
-
-        // Update current step title and number
-        const stepTitles = {
-            1: 'Section A: Convert\'s Declaration',
-            2: 'Section B: Upon Conversion',
-            3: 'Section C: Declaration',
-            4: 'Officer Verification'
-        };
-
-        const stepSubtitles = {
-            1: 'Step 1 of 4: Personal Information & Background',
-            2: 'Step 2 of 4: Conversion Information & Details',
-            3: 'Step 3 of 4: Declaration of Faith & Signature',
-            4: 'Step 4 of 4: Officer Verification & Processing'
-        };
-
-        const currentStepTitle = document.getElementById('currentStepTitle');
-        const currentStepSubtitle = document.getElementById('currentStepSubtitle');
-        const currentStepNumber = document.getElementById('currentStepNumber');
-
-        if (currentStepTitle) currentStepTitle.textContent = stepTitles[currentStep];
-        if (currentStepSubtitle) currentStepSubtitle.textContent = stepSubtitles[currentStep];
-        if (currentStepNumber) currentStepNumber.textContent = currentStep;
-
-        // Show/hide navigation buttons
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const submitBtn = document.getElementById('submitBtn');
-
-        if (prevBtn) prevBtn.style.display = currentStep > 1 ? 'flex' : 'none';
-        if (nextBtn) nextBtn.style.display = currentStep < totalSteps ? 'flex' : 'none';
-        if (submitBtn) submitBtn.style.display = currentStep === totalSteps ? 'inline-flex' : 'none';
-
-        // Update declaration name
-        if (currentStep === 3) {
-            const newNames = document.querySelector('[name="new_names"]');
-            const declarationName = document.getElementById('declarationName');
-            if (newNames && declarationName) {
-                declarationName.textContent = newNames.value || '[Your Name Will Appear Here]';
-            }
-        }
-
-        // Update progress
-        updateProgress();
     }
+
+    // Update current step title and number
+    const stepTitles = {
+        1: 'Section A: Convert\'s Declaration',
+        2: 'Section B: Upon Conversion',
+        3: 'Section C: Declaration',
+        4: 'Officer Verification'
+    };
+
+    const stepSubtitles = {
+        1: 'Step 1 of 4: Personal Information & Background',
+        2: 'Step 2 of 4: Conversion Information & Details',
+        3: 'Step 3 of 4: Declaration of Faith & Signature',
+        4: 'Step 4 of 4: Officer Verification & Processing'
+    };
+
+    const currentStepTitle = document.getElementById('currentStepTitle');
+    const currentStepSubtitle = document.getElementById('currentStepSubtitle');
+    const currentStepNumber = document.getElementById('currentStepNumber');
+
+    if (currentStepTitle) currentStepTitle.textContent = stepTitles[currentStep];
+    if (currentStepSubtitle) currentStepSubtitle.textContent = stepSubtitles[currentStep];
+    if (currentStepNumber) currentStepNumber.textContent = currentStep;
+
+    // Show/hide navigation buttons
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const previewBtnContainer = document.getElementById('previewButtonContainer'); // Add this
+
+    if (prevBtn) prevBtn.style.display = currentStep > 1 ? 'flex' : 'none';
+    if (nextBtn) nextBtn.style.display = currentStep < totalSteps ? 'flex' : 'none';
+    if (submitBtn) submitBtn.style.display = currentStep === totalSteps ? 'inline-flex' : 'none';
+    if (previewBtnContainer) previewBtnContainer.style.display = currentStep === totalSteps ? 'block' : 'none'; // Add this
+
+    // Update declaration name
+    if (currentStep === 3) {
+        const newNames = document.querySelector('[name="new_names"]');
+        const declarationName = document.getElementById('declarationName');
+        if (newNames && declarationName) {
+            declarationName.textContent = newNames.value || '[Your Name Will Appear Here]';
+        }
+    }
+
+    // Update progress
+    updateProgress();
+}
 
     function updateProgress() {
         const completedSteps = currentStep - 1;
@@ -1338,7 +1808,7 @@
                     'signature': 'signatureFileName',
                     'officer_signature': 'officerSignatureFileName',
                     'official_stamp': 'officialStampFileName'
-                } [field.name];
+                }[field.name];
                 if (fileNameSpan) {
                     const spanElement = document.getElementById(fileNameSpan);
                     return spanElement && spanElement.textContent !== 'No file chosen';
@@ -1373,7 +1843,7 @@
                     'signature': 'signatureFileName',
                     'officer_signature': 'officerSignatureFileName',
                     'official_stamp': 'officialStampFileName'
-                } [field.name];
+                }[field.name];
                 if (fileNameSpan) {
                     const spanElement = document.getElementById(fileNameSpan);
                     fieldValid = spanElement && spanElement.textContent !== 'No file chosen';
@@ -1476,7 +1946,7 @@
         const signatureImagePreview = document.getElementById('signatureImagePreview');
 
         if (signatureUpload && signatureFileName) {
-            signatureUpload.addEventListener('change', function() {
+            signatureUpload.addEventListener('change', function () {
                 if (this.files.length > 0) {
                     const file = this.files[0];
                     signatureFileName.textContent = file.name;
@@ -1484,7 +1954,7 @@
                     // Preview image
                     if (signaturePreview && signatureImagePreview) {
                         const reader = new FileReader();
-                        reader.onload = function(e) {
+                        reader.onload = function (e) {
                             signatureImagePreview.src = e.target.result;
                             signaturePreview.style.display = 'block';
                         };
@@ -1504,7 +1974,7 @@
         const officerSignatureFileName = document.getElementById('officerSignatureFileName');
 
         if (officerSignatureUpload && officerSignatureFileName) {
-            officerSignatureUpload.addEventListener('change', function() {
+            officerSignatureUpload.addEventListener('change', function () {
                 if (this.files.length > 0) {
                     officerSignatureFileName.textContent = this.files[0].name;
                 } else {
@@ -1519,7 +1989,7 @@
         const officialStampFileName = document.getElementById('officialStampFileName');
 
         if (officialStampUpload && officialStampFileName) {
-            officialStampUpload.addEventListener('change', function() {
+            officialStampUpload.addEventListener('change', function () {
                 if (this.files.length > 0) {
                     officialStampFileName.textContent = this.files[0].name;
                 } else {
@@ -1535,7 +2005,7 @@
             const indicator = document.getElementById('stepIndicator' + i);
             if (!indicator) continue;
 
-            indicator.addEventListener('click', function() {
+            indicator.addEventListener('click', function () {
                 const step = parseInt(this.dataset.step);
 
                 // Only allow navigation to completed or current steps
@@ -1561,7 +2031,7 @@
     function setupFormSubmission() {
         if (!form) return;
 
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
 
             // Validate all steps
@@ -1720,10 +2190,147 @@
             });
 
         });
+    }// Preview functions
+    function showPreview() {
+        // Update timestamp
+        const now = new Date();
+        const timestamp = document.getElementById('previewTimestamp');
+        if (timestamp) {
+            timestamp.innerHTML = `🕒 Preview generated at ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        }
+
+        // Collect all form data
+        const formData = new FormData(document.getElementById('multiStepForm'));
+
+        // Populate preview fields
+        const fields = [
+            'former_names', 'former_religion', 'date_of_birth', 'occupation', 'current_residence',
+            'contact', 'father_name', 'mother_name', 'home_address', 'county', 'district',
+            'new_names', 'conversion_date', 'conversion_place', 'guardian_name', 'guardian_occupation',
+            'guardian_declaration_date', 'conversion_reasons', 'guardian_declaration',
+            'officer_name', 'officer_position', 'registration_number', 'verification_date',
+            'officer_remarks'
+        ];
+
+        fields.forEach(field => {
+            const element = document.getElementById(`preview-${field}`);
+            if (element) {
+                const value = formData.get(field) || '-';
+                element.textContent = value;
+
+                // Format dates
+                if (field.includes('date') || field.includes('Date')) {
+                    try {
+                        const date = new Date(value);
+                        if (!isNaN(date.getTime())) {
+                            element.textContent = date.toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            });
+                        }
+                    } catch (e) {
+                        // Keep original value if date parsing fails
+                    }
+                }
+            }
+        });
+
+        // Handle former religion (select + other)
+        const formerReligionSelect = document.getElementById('formerReligionSelect');
+        const formerReligionOther = document.getElementById('formerReligionOther');
+        const formerReligionElement = document.getElementById('preview-former_religion');
+        if (formerReligionElement) {
+            if (formerReligionSelect && formerReligionSelect.value === 'other' && formerReligionOther) {
+                formerReligionElement.textContent = formerReligionOther.value || '-';
+            } else if (formerReligionSelect) {
+                const selectedOption = formerReligionSelect.options[formerReligionSelect.selectedIndex];
+                formerReligionElement.textContent = selectedOption.text || '-';
+            }
+        }
+
+        // Handle contact (country code + number)
+        const contactCountryCode = document.querySelector('[name="contact_country_code"]');
+        const contactNumber = document.querySelector('[name="contact"]');
+        const contactElement = document.getElementById('preview-contact');
+        if (contactElement && contactCountryCode && contactNumber) {
+            const countryCode = contactCountryCode.value ? `+${contactCountryCode.value}` : '';
+            const number = contactNumber.value || '';
+            contactElement.textContent = countryCode ? `${countryCode} ${number}` : number || '-';
+        }
+
+        // Handle declaration agreement
+        const agreementCheckbox = document.getElementById('declarationAgreement');
+        const agreementElement = document.getElementById('preview-declaration_agreement');
+        if (agreementElement && agreementCheckbox) {
+            agreementElement.innerHTML = agreementCheckbox.checked ?
+                '<span style="color: #4ade80;">✓ Accepted</span>' :
+                '<span style="color: #ef4444;">✗ Not accepted</span>';
+        }
+
+        // Show signature preview if uploaded
+        const signatureUpload = document.getElementById('signatureUpload');
+        const signaturePreviewSection = document.getElementById('signaturePreviewSection');
+        const signatureImagePreview = document.getElementById('signatureImagePreview');
+        const previewSignatureImage = document.getElementById('previewSignatureImage');
+
+        if (signatureUpload && signatureUpload.files.length > 0) {
+            if (signaturePreviewSection) signaturePreviewSection.style.display = 'block';
+            if (previewSignatureImage && signatureImagePreview) {
+                previewSignatureImage.src = signatureImagePreview.src;
+            }
+        } else {
+            if (signaturePreviewSection) signaturePreviewSection.style.display = 'none';
+        }
+
+        // Show modal
+        const modal = document.getElementById('previewModal');
+        if (modal) {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
     }
+
+    function closePreview() {
+        const modal = document.getElementById('previewModal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    // Close modal when clicking outside
+    document.addEventListener('click', function (event) {
+        const modal = document.getElementById('previewModal');
+        if (modal && event.target === modal) {
+            closePreview();
+        }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closePreview();
+        }
+    });
 </script>
 
 <style>
+    #previewBtn:hover {
+        background: linear-gradient(135deg, #2563eb, #1e40af) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3) !important;
+    }
+
+    /* Add icon animation */
+    #previewBtn svg {
+        transition: transform 0.3s ease;
+    }
+
+    #previewBtn:hover svg {
+        transform: scale(1.1);
+    }
+
     .step-indicator:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
@@ -2225,6 +2832,14 @@
         div {
             line-height: 1.4 !important;
         }
+    }
+
+    #formerReligionOther {
+        -webkit-appearance: none;
+        /* Remove dropdown arrow on Chrome/Safari */
+        -moz-appearance: none;
+        /* Remove arrow on Firefox */
+        appearance: none;
     }
 </style>
 

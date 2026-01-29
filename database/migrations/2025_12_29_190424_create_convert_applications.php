@@ -25,25 +25,25 @@ return new class extends Migration {
             $table->string('district');
 
             // Step B - Upon Conversion
-            $table->string('new_names');
-            $table->date('conversion_date');
-            $table->string('conversion_place');
-            $table->string('guardian_name');
-            $table->string('guardian_occupation');
-            $table->date('guardian_declaration_date');
-            $table->text('conversion_reasons');
-            $table->text('guardian_declaration');
+            $table->string('new_names')->nullable(); ;
+            $table->date('conversion_date')->nullable(); ;
+            $table->string('conversion_place')->nullable(); ;
+            $table->string('guardian_name')->nullable(); ;
+            $table->string('guardian_occupation')->nullable(); ;
+            $table->date('guardian_declaration_date')->nullable(); ;
+            $table->text('conversion_reasons')->nullable(); ;
+            $table->text('guardian_declaration')->nullable(); ;
 
             // Step C - Declaration
-            $table->date('declaration_date');
+            $table->date('declaration_date')->nullable(); ;
             $table->boolean('declaration_agreement')->default(false);
             $table->string('signature')->nullable(); // store file path
 
             // Step D - Officer Verification
-            $table->string('officer_name');
-            $table->string('officer_position');
-            $table->string('registration_number');
-            $table->date('verification_date');
+            $table->string('officer_name')->nullable();;
+            $table->string('officer_position')->nullable();;
+            $table->string('registration_number')->nullable();;
+            $table->date('verification_date')->nullable();;
             $table->text('officer_remarks')->nullable();
             $table->string('officer_signature')->nullable(); // file path
             $table->string('official_stamp')->nullable(); // file path
