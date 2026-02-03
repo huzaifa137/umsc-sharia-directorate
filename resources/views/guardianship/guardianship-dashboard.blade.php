@@ -386,11 +386,11 @@
                         <div class="card-header bg-white border-bottom-0 pt-3 pb-2">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="badge bg-label-{{ $statusColor }} rounded-pill px-3 py-1 fw-semibold">
-                                    {{ ucfirst(str_replace('_', ' ', $application->status)) }}
+                                   {{ ucfirst(str_replace('_', ' ', $application->status)) }}
                                 </div>
 
                                 <div class="d-flex gap-2">
-                                                                       @include('layouts.views.guardianship-actions')
+                                                                     
 
                                 </div>
                             </div>

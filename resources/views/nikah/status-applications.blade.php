@@ -22,26 +22,485 @@
         .table-hover tbody tr:hover {
             background-color: rgba(5, 149, 104, 0.02) !important;
         }
+
+        /* Custom Modal Styling */
+        .modal-content {
+            border-radius: 20px !important;
+            border: none;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #008F4C 0%, #39DA8A 100%);
+            color: white;
+            border-radius: 20px 20px 0 0 !important;
+            padding: 1.5rem 2rem;
+        }
+
+        .modal-header .btn-close {
+            filter: invert(1);
+            opacity: 0.8;
+        }
+
+        .modal-header .btn-close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 2rem;
+            background: #f8f9fa;
+        }
+
+        .modal-footer {
+            background: #f8f9fa;
+            border-radius: 0 0 20px 20px;
+            padding: 1rem 2rem;
+        }
+
+        /* Section Styling */
+        .section-title {
+            color: #4a5568;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 60px;
+            height: 2px;
+            background: #667eea;
+        }
+
+        /* Card Styling */
+        .info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Person Card */
+        .person-card {
+            border-left: 4px solid #667eea;
+        }
+
+        .bride-card {
+            border-left-color: #ed64a6;
+        }
+
+        .photo-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pending {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .status-approved {
+            background: #c6f6d5;
+            color: #276749;
+        }
+
+        .status-rejected {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .status-completed {
+            background: #bee3f8;
+            color: #2c5282;
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .info-item {
+            padding: 0.75rem;
+            background: #f7fafc;
+            border-radius: 8px;
+            border-left: 3px solid #cbd5e0;
+        }
+
+        .info-item label {
+            display: block;
+            font-size: 0.8rem;
+            color: #718096;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-item .value {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 0.95rem;
+        }
+
+        /* Contact Styling */
+        .contact-item {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0;
+        }
+
+        /* Parent Card */
+        .parent-card {
+            border-left: 3px solid #48bb78;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #f0fff4;
+        }
+
+        /* Witness Card */
+        .witness-card {
+            border-left: 3px solid #ed8936;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #fffaf0;
+        }
+
+        /* Imam Styling */
+        .imam-assigned {
+            color: #2b6cb0;
+            font-weight: 600;
+            padding: 0.75rem;
+            background: #ebf8ff;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .imam-not-assigned {
+            color: #718096;
+            font-style: italic;
+            padding: 0.75rem;
+            background: #f7fafc;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .modal-dialog {
+                margin: 1rem;
+            }
+
+            .modal-body {
+                padding: 1.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .photo-container {
+                margin: 0 auto 1rem;
+            }
+        }
+
+        .modal-dialog-scrollable .modal-content {
+            max-height: 85vh;
+            overflow: hidden;
+        }
+
+        .modal-dialog-scrollable .modal-body {
+            overflow-y: auto;
+            max-height: calc(85vh - 120px);
+        }
+
+        .modal-content {
+            border-radius: 20px !important;
+            border: none;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #008F4C 0%, #39DA8A 100%);
+            color: white;
+            border-radius: 20px 20px 0 0 !important;
+            padding: 1.5rem 2rem;
+        }
+
+        .modal-header .btn-close {
+            filter: invert(1);
+            opacity: 0.8;
+        }
+
+        .modal-header .btn-close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 2rem;
+            background: #f8f9fa;
+        }
+
+        .modal-footer {
+            background: #f8f9fa;
+            border-radius: 0 0 20px 20px;
+            padding: 1rem 2rem;
+        }
+
+        /* Section Styling */
+        .section-title {
+            color: #4a5568;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 60px;
+            height: 2px;
+            background: #667eea;
+        }
+
+        /* Card Styling */
+        .info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Person Card */
+        .person-card {
+            border-left: 4px solid #667eea;
+        }
+
+        .bride-card {
+            border-left-color: #ed64a6;
+        }
+
+        .photo-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pending {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .status-approved {
+            background: #c6f6d5;
+            color: #276749;
+        }
+
+        .status-rejected {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .status-completed {
+            background: #bee3f8;
+            color: #2c5282;
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .info-item {
+            padding: 0.75rem;
+            background: #f7fafc;
+            border-radius: 8px;
+            border-left: 3px solid #cbd5e0;
+        }
+
+        .info-item label {
+            display: block;
+            font-size: 0.8rem;
+            color: #718096;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-item .value {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 0.95rem;
+        }
+
+        /* Contact Styling */
+        .contact-item {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0;
+        }
+
+        /* Parent Card */
+        .parent-card {
+            border-left: 3px solid #48bb78;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #f0fff4;
+        }
+
+        /* Witness Card */
+        .witness-card {
+            border-left: 3px solid #ed8936;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #fffaf0;
+        }
+
+        /* Imam Styling */
+        .imam-assigned {
+            color: #2b6cb0;
+            font-weight: 600;
+            padding: 0.75rem;
+            background: #ebf8ff;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .imam-not-assigned {
+            color: #718096;
+            font-style: italic;
+            padding: 0.75rem;
+            background: #f7fafc;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .modal-dialog {
+                margin: 1rem;
+            }
+
+            .modal-body {
+                padding: 1.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .photo-container {
+                margin: 0 auto 1rem;
+            }
+        }
+
+        .modal-dialog-scrollable .modal-content {
+            max-height: 85vh;
+            overflow: hidden;
+        }
+
+        .modal-dialog-scrollable .modal-body {
+            overflow-y: auto;
+            max-height: calc(85vh - 120px);
+        }
     </style>
 
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="d-flex justify-content-between align-items-end mb-4 pb-3 border-bottom">
             <div>
                 @if ($statusId == 0)
-                    <h2 class="mb-0 fw-bold" style="font-family: 'Algerian', sans-serif;color:#059580;">PENDING nikah
-                        APPLICATIONS
+                    <h2 class="mb-0 fw-bold" style="font-family: 'Algerian', sans-serif;color:#059580;"
+                        data-i18n="header_pending_nikah">
+                        PENDING nikah APPLICATIONS
                     </h2>
                 @elseif($statusId == 100)
-                    <h2 class="mb-0 fw-bold" style="font-family: 'Algerian', sans-serif;color:#059580;">All nikah
-                        APPLICATIONS
+                    <h2 class="mb-0 fw-bold" style="font-family: 'Algerian', sans-serif;color:#059580;"
+                        data-i18n="header_all_nikah">
+                        All nikah APPLICATIONS
                     </h2>
                 @elseif($statusId == -10)
-                    <h2 class="mb-0 fw-bold" style="font-family: 'Algerian', sans-serif;color:#059580;">TERMINATED nikah
-                        APPLICATIONS
+                    <h2 class="mb-0 fw-bold" style="font-family: 'Algerian', sans-serif;color:#059580;"
+                        data-i18n="header_terminated_nikah">
+                        TERMINATED nikah APPLICATIONS
                     </h2>
                 @elseif($statusId == 10)
-                    <h2 class="mb-0 fw-bold" style="font-family: 'Algerian', sans-serif;color:#059580;">Completed nikah
-                        APPLICATIONS
+                    <h2 class="mb-0 fw-bold" style="font-family: 'Algerian', sans-serif;color:#059580;"
+                        data-i18n="header_completed_nikah">
+                        Completed nikah APPLICATIONS
                     </h2>
                 @endif
             </div>
@@ -54,71 +513,80 @@
         </div>
 
         @if ($statusId == 100)
-           @include('layouts.search-feature')
+            @include('layouts.search-feature')
         @endif
 
         <div class="card border-0 shadow-sm" style="border-radius: 16px;">
-            <div class="card-header bg-transparent border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
-                <!-- Search Bar -->
-                <div class="w-100 me-4">
-                    <div class="position-relative" style="max-width: 500px;">
-                        <div class="input-group"
-                            style="
-                                    background: white;
-                                    border-radius: 12px;
-                                    border: 1px solid #e2e8f0;
-                                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-                                    padding: 8px;
-                                    transition: all 0.3s ease;
-                                "
-                            onmouseover="this.style.boxShadow='0 6px 25px rgba(0, 0, 0, 0.08)'">
-                            <!-- Search Icon -->
+            <style>
+                /* Custom utility to handle the search label positioning on mobile */
+                @media (max-width: 576px) {
+                    .search-container {
+                        margin-bottom: 20px;
+                        margin-right: 0 !important;
+                    }
+
+                    .dashboard-link {
+                        width: 100%;
+                        justify-content: center;
+                        margin-left: 0 !important;
+                    }
+                }
+            </style>
+
+            <div
+                class="card-header bg-transparent border-0 pt-4 px-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+
+                <div class="w-100 search-container" style="max-width: 500px;">
+                    <div class="position-relative">
+                        <div class="input-group" style="
+                                                        background: white;
+                                                        border-radius: 12px;
+                                                        border: 1px solid #e2e8f0;
+                                                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+                                                        padding: 8px;
+                                                        transition: all 0.3s ease;
+                                                    " onmouseover="this.style.boxShadow='0 6px 25px rgba(0, 0, 0, 0.08)'">
+
                             <span class="input-group-text border-0 bg-transparent" style="padding-left: 15px;">
                                 <i class="bx bx-search-alt-2" style="color:#059568; font-size: 1.2rem;"></i>
                             </span>
 
-                            <!-- Search Input -->
-                            <input type="text" id="searchInput" class="form-control border-0 px-0"
-                                placeholder="Search by ID, names, status…"
+                            <input type="text" id="searchInput" class="form-control border-0 px-0 shadow-none"
+                                placeholder="Search by ID, names, status…" data-i18n-placeholder="search_placeholder_nikah"
                                 style="
-                                    background: transparent;
-                                    color: #1a202c;
-                                    font-weight: 600;
-                                    padding: 8px 0;
-                                    height: auto;
-                                ">
+                                                            background: transparent;
+                                                            color: #1a202c;
+                                                            font-weight: 600;
+                                                            padding: 8px 0;
+                                                            height: auto;
+                                                        ">
 
-                            <!-- Search Label -->
-                            <label class="position-absolute"
-                                style="
-                                    top: -10px;
-                                    left: 50px;
-                                    background: white;
-                                    padding: 0 10px;
-                                    font-size: 0.8rem;
-                                    color: #059568;
-                                    font-weight: 600;
-                                    letter-spacing: 0.5px;
-                                        ">
-                                Search Records
+                            <label class="position-absolute" style="
+                                                            top: -10px;
+                                                            left: 50px;
+                                                            background: white;
+                                                            padding: 0 10px;
+                                                            font-size: 0.8rem;
+                                                            color: #059568;
+                                                            font-weight: 600;
+                                                            letter-spacing: 0.5px;
+                                                            z-index: 5;
+                                                        " data-i18n="label_search_records_nikah">
+                                Tafuta Rekodi
                             </label>
 
-                            <!-- Search Actions -->
-                            <div class="d-flex align-items-center gap-2" style="padding-right: 15px;">
-                                <!-- Clear Button -->
-                                <button class="btn btn-sm p-1" id="clearSearch"
-                                    style="
-                                            background: #059568;
-                                            color: #FFF;
-                                            border-radius: 8px;
-                                            width: 32px;
-                                            height: 32px;
-                                            display: flex;
-                                            align-items: center;
-                                            justify-content: center;
-                                        "
-                                    onmouseover="this.style.background='#059568'"
-                                    onmouseout="this.style.background='#059568'">
+                            <div class="d-flex align-items-center gap-2" style="padding-right: 10px;">
+                                <button class="btn btn-sm p-1" id="clearSearch" style="
+                                                                background: #059568;
+                                                                color: #FFF;
+                                                                border-radius: 8px;
+                                                                width: 32px;
+                                                                height: 32px;
+                                                                display: flex;
+                                                                align-items: center;
+                                                                justify-content: center;
+                                                                border: none;
+                                                            ">
                                     <i class="bx bx-x" style="font-size: 1.1rem;"></i>
                                 </button>
                             </div>
@@ -126,23 +594,20 @@
                     </div>
                 </div>
 
-                <!-- Dashboard Link - FIXED -->
                 <a href="{{ url('nikah-dashboard') }}"
-                    class="text-decoration-none d-flex align-items-center text-primary fw-bold text-nowrap"
-                    style="
-                            background: #f0fdf4;
-                            padding: 10px 20px;
-                            border-radius: 10px;
-                            border: 1px solid rgba(5, 149, 104, 0.2);
-                            transition: all 0.3s ease;
-                            white-space: nowrap;
-                            flex-shrink: 0;
-                            margin-left: 16px;
-                        "
-                    onmouseover="this.style.background='#dcfce7'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(5, 149, 104, 0.1)'"
-                    onmouseout="this.style.background='#f0fdf4'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    class="dashboard-link text-decoration-none d-flex align-items-center fw-bold text-nowrap" style="
+                                                background: #f0fdf4;
+                                                padding: 12px 20px;
+                                                border-radius: 12px;
+                                                border: 1px solid rgba(5, 149, 104, 0.2);
+                                                transition: all 0.3s ease;
+                                                color:#00580F;
+                                                flex-shrink: 0;
+                                            "
+                    onmouseover="this.style.background='#dcfce7'; this.style.transform='translateY(-2px)'"
+                    onmouseout="this.style.background='#f0fdf4'; this.style.transform='translateY(0)'">
                     <i class="bx bx-home fs-4 me-2" style="color:#059568;"></i>
-                    <span style="color:#065f46;">Nikah Dashboard</span>
+                    <span data-i18n="link_dashboard_nikah">Nikah Dashboard</span>
                 </a>
             </div>
 
@@ -151,34 +616,37 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead class="bg-light">
                             <tr>
-                                <th class="ps-4 py-3 border-0 text-muted small fw-bold text-center">
+                                <th class="ps-4 py-3 border-0 text-muted small fw-bold text-center"
+                                    data-i18n="th_activity_id_nikah">
                                     ACTIVITY & ID
                                 </th>
-                                <th class="border-0 text-muted small fw-bold text-center">
+                                <th class="border-0 text-muted small fw-bold text-center" data-i18n="th_description_nikah">
                                     DESCRIPTION
                                 </th>
-                                <th class="border-0 text-muted small fw-bold text-center">
+                                <th class="border-0 text-muted small fw-bold text-center" data-i18n="th_timeline_nikah">
                                     TIMELINE
                                 </th>
-                                <th class="border-0 text-muted small fw-bold text-center">
+                                <th class="border-0 text-muted small fw-bold text-center" data-i18n="th_status_nikah">
                                     STATUS
                                 </th>
-                                <th class="pe-4 border-0 text-muted small fw-bold text-center" style="width: 150px;">
+                                <th class="pe-4 border-0 text-muted small fw-bold text-center" style="width: 150px;"
+                                    data-i18n="th_management_nikah">
                                     MANAGEMENT
                                 </th>
                             </tr>
                         </thead>
+
                         <tbody>
                             @forelse ($applications as $application)
                                 <tr class="border-bottom border-light application-row"
                                     data-search="
-                                        {{ strtolower($application->application_id) }}
-                                        {{ strtolower($application->groom_given_name) }}
-                                        {{ strtolower($application->groom_surname) }}
-                                        {{ strtolower($application->bride_given_name) }}
-                                        {{ strtolower($application->bride_surname) }}
-                                        {{ strtolower($application->status) }}
-                                    ">
+                                                                                                                                        {{ strtolower($application->application_id) }}
+                                                                                                                                        {{ strtolower($application->groom_given_name) }}
+                                                                                                                                        {{ strtolower($application->groom_surname) }}
+                                                                                                                                        {{ strtolower($application->bride_given_name) }}
+                                                                                                                                        {{ strtolower($application->bride_surname) }}
+                                                                                                                                        {{ strtolower($application->status) }}
+                                                                                                                                    ">
 
                                     <td class="ps-4">
                                         <div class="d-flex align-items-center">
@@ -244,28 +712,25 @@
                                             style="border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
 
                                             <!-- View -->
-                                            <button type="button"
-                                                class="btn btn-white btn-sm px-2 border-end view-application"
+                                            <button type="button" class="btn btn-white btn-sm px-2 border-end view-application"
                                                 data-id="{{ $application->id }}" title="View Details">
                                                 <i class="bx bx-show-alt fs-5" style="color:#2563eb;"></i>
                                             </button>
 
                                             <!-- Edit -->
-                                            <button type="button"
-                                                class="btn btn-white btn-sm px-2 border-end edit-application"
+                                            <button type="button" class="btn btn-white btn-sm px-2 border-end edit-application"
                                                 data-id="{{ $application->id }}" title="Edit Entry">
                                                 <i class="bx bx-edit-alt fs-5" style="color:#16a34a;"></i>
                                             </button>
 
                                             <!-- Download -->
-                                            <a href="#" class="btn btn-white btn-sm px-2 border-end"
-                                                title="Download Application">
+                                            <button class="btn btn-white btn-sm px-2 download-certificate"
+                                                data-id="{{ $application->id }}" title="Download Certificate">
                                                 <i class="bx bx-download fs-5" style="color:#ff5e00;"></i>
-                                            </a>
+                                            </button>
 
                                             <!-- Update Status -->
-                                            <button type="button"
-                                                class="btn btn-white btn-sm px-2 border-end update-status"
+                                            <button type="button" class="btn btn-white btn-sm px-2 border-end update-status"
                                                 data-id="{{ $application->id }}" title="Update Status">
                                                 <i class="bx bx-refresh fs-5" style="color:#8b5cf6;"></i>
                                             </button>
@@ -284,7 +749,7 @@
                                 <tr>
                                     <td colspan="5" class="text-center py-5 text-muted">
                                         <i class="bx bx-folder-open fs-1 mb-2"></i>
-                                        <p class="mb-0">No Nikah applications found</p>
+                                        <p class="mb-0" data-i18n="no_nikah_applications_text">No Nikah applications found</p>
                                     </td>
                                 </tr>
                             @endforelse
@@ -296,28 +761,29 @@
                     </div>
 
                     <!-- Update Status Modal -->
-                    <div class="modal fade" id="updateStatusModal" tabindex="-1"
-                        aria-labelledby="updateStatusModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
+                    <div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title text-white" id="updateStatusModalLabel">Update Application
-                                        Status</h5>
+                                    <h5 class="modal-title text-white" id="updateStatusModalLabel">Update Application Status
+                                    </h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <p>Current Status: <strong id="currentStatusText"></strong></p>
-                                    <div class="d-flex gap-2">
-                                        <button type="button" class="btn btn-warning status-option"
-                                            data-status="pending">
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button type="button" class="btn btn-warning status-option flex-fill"
+                                            data-status="submitted">
                                             <i class="bx bx-time me-1"></i> Pending
                                         </button>
-                                        <button type="button" class="btn btn-success status-option"
+                                        <button type="button" class="btn btn-success status-option flex-fill"
                                             data-status="approved">
                                             <i class="bx bx-check-circle me-1"></i> Approved
                                         </button>
-                                        <button type="button" class="btn btn-danger status-option"
+                                        <button type="button" class="btn btn-danger status-option flex-fill"
                                             data-status="rejected">
                                             <i class="bx bx-x-circle me-1"></i> Terminate
                                         </button>
@@ -360,8 +826,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <label>NIN</label>
-                                                <input type="text" name="groomNIN" id="groomNIN"
-                                                    class="form-control">
+                                                <input type="text" name="groomNIN" id="groomNIN" class="form-control">
                                             </div>
 
                                             <div class="col-md-2">
@@ -398,8 +863,7 @@
 
                                             <div class="col-md-3">
                                                 <label>Tribe</label>
-                                                <input type="text" name="groom_tribe" id="groom_tribe"
-                                                    class="form-control">
+                                                <input type="text" name="groom_tribe" id="groom_tribe" class="form-control">
                                             </div>
 
                                             <div class="col-md-3"><label>District</label><input type="text"
@@ -413,8 +877,8 @@
                                                     name="groom_parish" id="groom_parish" class="form-control"></div>
                                             <div class="col-md-3"><label>Village</label><input type="text"
                                                     name="groom_village" id="groom_village" class="form-control"></div>
-                                            <div class="col-md-3"><label>Plot</label><input type="text"
-                                                    name="groom_plot" id="groom_plot" class="form-control"></div>
+                                            <div class="col-md-3"><label>Plot</label><input type="text" name="groom_plot"
+                                                    id="groom_plot" class="form-control"></div>
                                         </div>
 
                                         <hr>
@@ -445,11 +909,11 @@
                                             <div class="col-md-3"><label>Telephone</label><input type="text"
                                                     name="bride_telephone" id="bride_telephone" class="form-control">
                                             </div>
-                                            <div class="col-md-3"><label>Email</label><input type="email"
-                                                    name="bride_email" id="bride_email" class="form-control"></div>
+                                            <div class="col-md-3"><label>Email</label><input type="email" name="bride_email"
+                                                    id="bride_email" class="form-control"></div>
 
-                                            <div class="col-md-3"><label>Tribe</label><input type="text"
-                                                    name="bride_tribe" id="bride_tribe" class="form-control"></div>
+                                            <div class="col-md-3"><label>Tribe</label><input type="text" name="bride_tribe"
+                                                    id="bride_tribe" class="form-control"></div>
 
                                             <div class="col-md-3"><label>District</label><input type="text"
                                                     name="bride_district" id="bride_district" class="form-control"></div>
@@ -462,8 +926,8 @@
                                                     name="bride_parish" id="bride_parish" class="form-control"></div>
                                             <div class="col-md-3"><label>Village</label><input type="text"
                                                     name="bride_village" id="bride_village" class="form-control"></div>
-                                            <div class="col-md-3"><label>Plot</label><input type="text"
-                                                    name="bride_plot" id="bride_plot" class="form-control"></div>
+                                            <div class="col-md-3"><label>Plot</label><input type="text" name="bride_plot"
+                                                    id="bride_plot" class="form-control"></div>
                                         </div>
 
                                         <hr>
@@ -477,11 +941,11 @@
                                             <div class="col-md-3"><label>Witness 1 Surname</label><input type="text"
                                                     name="witness1_surname" id="witness1_surname" class="form-control">
                                             </div>
-                                            <div class="col-md-3"><label>NIN</label><input type="text"
-                                                    name="witness1_nin" id="witness1_nin" class="form-control"></div>
+                                            <div class="col-md-3"><label>NIN</label><input type="text" name="witness1_nin"
+                                                    id="witness1_nin" class="form-control"></div>
                                             <div class="col-md-3"><label>Telephone</label><input type="text"
-                                                    name="witness1_telephone" id="witness1_telephone"
-                                                    class="form-control"></div>
+                                                    name="witness1_telephone" id="witness1_telephone" class="form-control">
+                                            </div>
                                             <div class="col-md-6"><label>Address</label><input type="text"
                                                     name="witness1_address" id="witness1_address" class="form-control">
                                             </div>
@@ -495,11 +959,11 @@
                                             <div class="col-md-3"><label>Witness 2 Surname</label><input type="text"
                                                     name="witness2_surname" id="witness2_surname" class="form-control">
                                             </div>
-                                            <div class="col-md-3"><label>NIN</label><input type="text"
-                                                    name="witness2_nin" id="witness2_nin" class="form-control"></div>
+                                            <div class="col-md-3"><label>NIN</label><input type="text" name="witness2_nin"
+                                                    id="witness2_nin" class="form-control"></div>
                                             <div class="col-md-3"><label>Telephone</label><input type="text"
-                                                    name="witness2_telephone" id="witness2_telephone"
-                                                    class="form-control"></div>
+                                                    name="witness2_telephone" id="witness2_telephone" class="form-control">
+                                            </div>
                                             <div class="col-md-6"><label>Address</label><input type="text"
                                                     name="witness2_address" id="witness2_address" class="form-control">
                                             </div>
@@ -515,8 +979,7 @@
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <label>Imam Name</label>
-                                                <input type="text" name="imam_name" id="imam_name"
-                                                    class="form-control">
+                                                <input type="text" name="imam_name" id="imam_name" class="form-control">
                                             </div>
                                         </div>
 
@@ -551,18 +1014,16 @@
                                             Application Details</h5>
                                         <p class="small mb-0 opacity-75">Complete application information</p>
                                     </div>
-                                    <button type="button"
-                                        style="
-        background-color: #4e8d5e;
-        color: #ffffff;
-        border: none;
-        font-size: 1.7rem;
-        line-height: 1;
-        padding: 0.25rem 0.5rem;
-        border-radius: 0.25rem;
-        cursor: pointer;
-    "
-                                        data-bs-dismiss="modal">
+                                    <button type="button" style="
+                                                        background-color: #4e8d5e;
+                                                        color: #ffffff;
+                                                        border: none;
+                                                        font-size: 1.7rem;
+                                                        line-height: 1;
+                                                        padding: 0.25rem 0.5rem;
+                                                        border-radius: 0.25rem;
+                                                        cursor: pointer;
+                                                    " data-bs-dismiss="modal">
                                         &times;
                                     </button>
                                 </div>
@@ -865,235 +1326,6 @@
                         </div>
                     </div>
 
-                    <style>
-                        /* Custom Modal Styling */
-                        .modal-content {
-                            border-radius: 20px !important;
-                            border: none;
-                            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-                        }
-
-                        .modal-header {
-                            background: linear-gradient(135deg, #008F4C 0%, #39DA8A 100%);
-                            color: white;
-                            border-radius: 20px 20px 0 0 !important;
-                            padding: 1.5rem 2rem;
-                        }
-
-                        .modal-header .btn-close {
-                            filter: invert(1);
-                            opacity: 0.8;
-                        }
-
-                        .modal-header .btn-close:hover {
-                            opacity: 1;
-                        }
-
-                        .modal-body {
-                            padding: 2rem;
-                            background: #f8f9fa;
-                        }
-
-                        .modal-footer {
-                            background: #f8f9fa;
-                            border-radius: 0 0 20px 20px;
-                            padding: 1rem 2rem;
-                        }
-
-                        /* Section Styling */
-                        .section-title {
-                            color: #4a5568;
-                            font-size: 1.1rem;
-                            font-weight: 600;
-                            margin-bottom: 1rem;
-                            padding-bottom: 0.5rem;
-                            border-bottom: 2px solid #e2e8f0;
-                            position: relative;
-                        }
-
-                        .section-title::after {
-                            content: '';
-                            position: absolute;
-                            left: 0;
-                            bottom: -2px;
-                            width: 60px;
-                            height: 2px;
-                            background: #667eea;
-                        }
-
-                        /* Card Styling */
-                        .info-card {
-                            background: white;
-                            border-radius: 12px;
-                            padding: 1.5rem;
-                            margin-bottom: 1.5rem;
-                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-                            border: 1px solid #e2e8f0;
-                            transition: transform 0.2s, box-shadow 0.2s;
-                        }
-
-                        .info-card:hover {
-                            transform: translateY(-2px);
-                            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-                        }
-
-                        /* Person Card */
-                        .person-card {
-                            border-left: 4px solid #667eea;
-                        }
-
-                        .bride-card {
-                            border-left-color: #ed64a6;
-                        }
-
-                        .photo-container {
-                            width: 120px;
-                            height: 120px;
-                            border-radius: 12px;
-                            overflow: hidden;
-                            border: 3px solid white;
-                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                            margin-bottom: 1rem;
-                        }
-
-                        .photo-container img {
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                        }
-
-                        /* Status Badges */
-                        .status-badge {
-                            display: inline-block;
-                            padding: 0.35rem 1rem;
-                            border-radius: 50px;
-                            font-size: 0.85rem;
-                            font-weight: 600;
-                            text-transform: uppercase;
-                            letter-spacing: 0.5px;
-                        }
-
-                        .status-pending {
-                            background: #fed7d7;
-                            color: #c53030;
-                        }
-
-                        .status-approved {
-                            background: #c6f6d5;
-                            color: #276749;
-                        }
-
-                        .status-rejected {
-                            background: #fed7d7;
-                            color: #c53030;
-                        }
-
-                        .status-completed {
-                            background: #bee3f8;
-                            color: #2c5282;
-                        }
-
-                        /* Info Grid */
-                        .info-grid {
-                            display: grid;
-                            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-                            gap: 1rem;
-                            margin-top: 1rem;
-                        }
-
-                        .info-item {
-                            padding: 0.75rem;
-                            background: #f7fafc;
-                            border-radius: 8px;
-                            border-left: 3px solid #cbd5e0;
-                        }
-
-                        .info-item label {
-                            display: block;
-                            font-size: 0.8rem;
-                            color: #718096;
-                            margin-bottom: 0.25rem;
-                            text-transform: uppercase;
-                            letter-spacing: 0.5px;
-                        }
-
-                        .info-item .value {
-                            font-weight: 600;
-                            color: #2d3748;
-                            font-size: 0.95rem;
-                        }
-
-                        /* Contact Styling */
-                        .contact-item {
-                            display: inline-flex;
-                            align-items: center;
-                            padding: 0.25rem 0;
-                        }
-
-                        /* Parent Card */
-                        .parent-card {
-                            border-left: 3px solid #48bb78;
-                            padding: 1rem;
-                            margin-bottom: 1rem;
-                            background: #f0fff4;
-                        }
-
-                        /* Witness Card */
-                        .witness-card {
-                            border-left: 3px solid #ed8936;
-                            padding: 1rem;
-                            margin-bottom: 1rem;
-                            background: #fffaf0;
-                        }
-
-                        /* Imam Styling */
-                        .imam-assigned {
-                            color: #2b6cb0;
-                            font-weight: 600;
-                            padding: 0.75rem;
-                            background: #ebf8ff;
-                            border-radius: 8px;
-                            display: inline-block;
-                        }
-
-                        .imam-not-assigned {
-                            color: #718096;
-                            font-style: italic;
-                            padding: 0.75rem;
-                            background: #f7fafc;
-                            border-radius: 8px;
-                            display: inline-block;
-                        }
-
-                        /* Responsive Adjustments */
-                        @media (max-width: 768px) {
-                            .modal-dialog {
-                                margin: 1rem;
-                            }
-
-                            .modal-body {
-                                padding: 1.5rem;
-                            }
-
-                            .info-grid {
-                                grid-template-columns: 1fr;
-                            }
-
-                            .photo-container {
-                                margin: 0 auto 1rem;
-                            }
-                        }
-
-                        .modal-dialog-scrollable .modal-content {
-                            max-height: 85vh;
-                            overflow: hidden;
-                        }
-
-                        .modal-dialog-scrollable .modal-body {
-                            overflow-y: auto;
-                            max-height: calc(85vh - 120px);
-                        }
-                    </style>
                     <div class="modal fade" id="editApplicationModal" tabindex="-1">
                         <div class="modal-dialog modal-xl modal-dialog-scrollable">
                             <div class="modal-content">
@@ -1125,8 +1357,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <label>NIN</label>
-                                                <input type="text" name="groomNIN" id="groomNIN"
-                                                    class="form-control">
+                                                <input type="text" name="groomNIN" id="groomNIN" class="form-control">
                                             </div>
 
                                             <div class="col-md-2">
@@ -1163,8 +1394,7 @@
 
                                             <div class="col-md-3">
                                                 <label>Tribe</label>
-                                                <input type="text" name="groom_tribe" id="groom_tribe"
-                                                    class="form-control">
+                                                <input type="text" name="groom_tribe" id="groom_tribe" class="form-control">
                                             </div>
 
                                             <div class="col-md-3"><label>District</label><input type="text"
@@ -1178,8 +1408,8 @@
                                                     name="groom_parish" id="groom_parish" class="form-control"></div>
                                             <div class="col-md-3"><label>Village</label><input type="text"
                                                     name="groom_village" id="groom_village" class="form-control"></div>
-                                            <div class="col-md-3"><label>Plot</label><input type="text"
-                                                    name="groom_plot" id="groom_plot" class="form-control"></div>
+                                            <div class="col-md-3"><label>Plot</label><input type="text" name="groom_plot"
+                                                    id="groom_plot" class="form-control"></div>
                                         </div>
 
                                         <hr>
@@ -1210,11 +1440,11 @@
                                             <div class="col-md-3"><label>Telephone</label><input type="text"
                                                     name="bride_telephone" id="bride_telephone" class="form-control">
                                             </div>
-                                            <div class="col-md-3"><label>Email</label><input type="email"
-                                                    name="bride_email" id="bride_email" class="form-control"></div>
+                                            <div class="col-md-3"><label>Email</label><input type="email" name="bride_email"
+                                                    id="bride_email" class="form-control"></div>
 
-                                            <div class="col-md-3"><label>Tribe</label><input type="text"
-                                                    name="bride_tribe" id="bride_tribe" class="form-control"></div>
+                                            <div class="col-md-3"><label>Tribe</label><input type="text" name="bride_tribe"
+                                                    id="bride_tribe" class="form-control"></div>
 
                                             <div class="col-md-3"><label>District</label><input type="text"
                                                     name="bride_district" id="bride_district" class="form-control"></div>
@@ -1227,8 +1457,8 @@
                                                     name="bride_parish" id="bride_parish" class="form-control"></div>
                                             <div class="col-md-3"><label>Village</label><input type="text"
                                                     name="bride_village" id="bride_village" class="form-control"></div>
-                                            <div class="col-md-3"><label>Plot</label><input type="text"
-                                                    name="bride_plot" id="bride_plot" class="form-control"></div>
+                                            <div class="col-md-3"><label>Plot</label><input type="text" name="bride_plot"
+                                                    id="bride_plot" class="form-control"></div>
                                         </div>
 
                                         <hr>
@@ -1242,11 +1472,11 @@
                                             <div class="col-md-3"><label>Witness 1 Surname</label><input type="text"
                                                     name="witness1_surname" id="witness1_surname" class="form-control">
                                             </div>
-                                            <div class="col-md-3"><label>NIN</label><input type="text"
-                                                    name="witness1_nin" id="witness1_nin" class="form-control"></div>
+                                            <div class="col-md-3"><label>NIN</label><input type="text" name="witness1_nin"
+                                                    id="witness1_nin" class="form-control"></div>
                                             <div class="col-md-3"><label>Telephone</label><input type="text"
-                                                    name="witness1_telephone" id="witness1_telephone"
-                                                    class="form-control"></div>
+                                                    name="witness1_telephone" id="witness1_telephone" class="form-control">
+                                            </div>
                                             <div class="col-md-6"><label>Address</label><input type="text"
                                                     name="witness1_address" id="witness1_address" class="form-control">
                                             </div>
@@ -1260,11 +1490,11 @@
                                             <div class="col-md-3"><label>Witness 2 Surname</label><input type="text"
                                                     name="witness2_surname" id="witness2_surname" class="form-control">
                                             </div>
-                                            <div class="col-md-3"><label>NIN</label><input type="text"
-                                                    name="witness2_nin" id="witness2_nin" class="form-control"></div>
+                                            <div class="col-md-3"><label>NIN</label><input type="text" name="witness2_nin"
+                                                    id="witness2_nin" class="form-control"></div>
                                             <div class="col-md-3"><label>Telephone</label><input type="text"
-                                                    name="witness2_telephone" id="witness2_telephone"
-                                                    class="form-control"></div>
+                                                    name="witness2_telephone" id="witness2_telephone" class="form-control">
+                                            </div>
                                             <div class="col-md-6"><label>Address</label><input type="text"
                                                     name="witness2_address" id="witness2_address" class="form-control">
                                             </div>
@@ -1280,8 +1510,7 @@
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <label>Imam Name</label>
-                                                <input type="text" name="imam_name" id="imam_name"
-                                                    class="form-control">
+                                                <input type="text" name="imam_name" id="imam_name" class="form-control">
                                             </div>
                                         </div>
 
@@ -1303,570 +1532,46 @@
                         </div>
                     </div>
 
-
-                    <!-- View Application Modal -->
-                    <div class="modal fade" id="viewApplicationModal" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                            <div class="modal-content">
-                                <!-- Modal Header -->
-                                <div class="modal-header">
-                                    <div>
-                                        <h5 class="modal-title fw-bold text-white"><i
-                                                class="fas fa-file-contract me-2"></i>Marriage
-                                            Application Details</h5>
-                                        <p class="small mb-0 opacity-75">Complete application information</p>
-                                    </div>
-                                    <button type="button"
-                                        style="
-        background-color: #4e8d5e;
-        color: #ffffff;
-        border: none;
-        font-size: 1.7rem;
-        line-height: 1;
-        padding: 0.25rem 0.5rem;
-        border-radius: 0.25rem;
-        cursor: pointer;
-    "
-                                        data-bs-dismiss="modal">
-                                        &times;
-                                    </button>
-                                </div>
-
-                                <!-- Modal Body -->
-                                <div class="modal-body">
-                                    <!-- Application Info Card -->
-                                    <div class="info-card">
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6 class="section-title mb-0">Application Information</h6>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="info-item">
-                                                    <label>Application ID</label>
-                                                    <div class="value" id="view_application_id"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="info-item">
-                                                    <label>Application Date</label>
-                                                    <div class="value" id="view_date"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="info-item">
-                                                    <label>Application Status</label>
-                                                    <div class="value" id="view_status"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Couple Information -->
-                                    <h6 class="section-title mt-4">Couple Information</h6>
-                                    <div class="row">
-                                        <!-- Groom Card -->
-                                        <div class="col-lg-6 mb-4">
-                                            <div class="info-card person-card">
-                                                <div class="d-flex align-items-start">
-                                                    <div class="photo-container me-3">
-                                                        <img id="view_groom_photo" src="" alt="Groom Photo"
-                                                            class="img-fluid rounded">
-                                                    </div>
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="fw-bold mb-2 text-primary">
-                                                            <i class="fas fa-user-tie me-2"></i>Groom
-                                                        </h6>
-                                                        <h5 class="mb-3" id="view_groom"></h5>
-                                                        <div class="info-grid">
-                                                            <div class="info-item">
-                                                                <label>NIN</label>
-                                                                <div class="value" id="view_groomNIN"></div>
-                                                            </div>
-                                                            <div class="info-item">
-                                                                <label>Date of Birth</label>
-                                                                <div class="value" id="view_groom_dob"></div>
-                                                            </div>
-                                                            <div class="info-item">
-                                                                <label>Contact</label>
-                                                                <div class="value" id="view_groom_contact"></div>
-                                                            </div>
-                                                            <div class="info-item">
-                                                                <label>Tribe & Country</label>
-                                                                <div class="value" id="view_groom_tribe_country"></div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="mt-3">
-                                                            <label class="text-muted small">Address</label>
-                                                            <p class="mb-0" id="view_groom_address"></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Bride Card -->
-                                        <div class="col-lg-6 mb-4">
-                                            <div class="info-card person-card bride-card">
-                                                <div class="d-flex align-items-start">
-                                                    <div class="photo-container me-3">
-                                                        <img id="view_bride_photo" src="" alt="Bride Photo"
-                                                            class="img-fluid rounded">
-                                                    </div>
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="fw-bold mb-2 text-pink">
-                                                            <i class="fas fa-user-dress me-2"></i>Bride
-                                                        </h6>
-                                                        <h5 class="mb-3" id="view_bride"></h5>
-                                                        <div class="info-grid">
-                                                            <div class="info-item">
-                                                                <label>NIN</label>
-                                                                <div class="value" id="view_brideNIN"></div>
-                                                            </div>
-                                                            <div class="info-item">
-                                                                <label>Date of Birth</label>
-                                                                <div class="value" id="view_bride_dob"></div>
-                                                            </div>
-                                                            <div class="info-item">
-                                                                <label>Contact</label>
-                                                                <div class="value" id="view_bride_contact"></div>
-                                                            </div>
-                                                            <div class="info-item">
-                                                                <label>Tribe & Country</label>
-                                                                <div class="value" id="view_bride_tribe_country"></div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="mt-3">
-                                                            <label class="text-muted small">Address</label>
-                                                            <p class="mb-0" id="view_bride_address"></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Parents Information -->
-                                    <h6 class="section-title mt-4">Parents Information</h6>
-                                    <div class="row">
-                                        <!-- Groom's Parents -->
-                                        <div class="col-lg-6 mb-4">
-                                            <div class="parent-card">
-                                                <h6 class="fw-bold text-success mb-3">
-                                                    <i class="fas fa-people-roof me-2"></i>Groom's Parents
-                                                </h6>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="mb-3">
-                                                            <label class="text-muted small">Father</label>
-                                                            <p class="fw-bold mb-1" id="view_groom_father"></p>
-                                                            <p class="small mb-0">
-                                                                <span class="badge bg-light text-dark me-2"
-                                                                    id="view_groomFatherStatus"></span>
-                                                                NIN: <span id="view_groom_father_nin"></span>
-                                                            </p>
-                                                            <p class="small mb-0">
-                                                                District: <span id="view_groomFatherDistrict"></span>
-                                                            </p>
-                                                            <p class="small mb-0">
-                                                                Tribe: <span id="view_groomFatherTribe"></span>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="mb-3">
-                                                            <label class="text-muted small">Mother</label>
-                                                            <p class="fw-bold mb-1" id="view_groom_mother"></p>
-                                                            <p class="small mb-0">
-                                                                <span class="badge bg-light text-dark me-2"
-                                                                    id="view_groomMotherStatus"></span>
-                                                                NIN: <span id="view_groomMotherNIN"></span>
-                                                            </p>
-                                                            <p class="small mb-0">
-                                                                District: <span id="view_groomMotherDistrict"></span>
-                                                            </p>
-                                                            <p class="small mb-0">
-                                                                Maiden Name: <span id="view_groomMotherMaidenName"></span>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Bride's Parents -->
-                                        <div class="col-lg-6 mb-4">
-                                            <div class="parent-card">
-                                                <h6 class="fw-bold text-success mb-3">
-                                                    <i class="fas fa-people-roof me-2"></i>Bride's Parents
-                                                </h6>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="mb-3">
-                                                            <label class="text-muted small">Father</label>
-                                                            <p class="fw-bold mb-1" id="view_bride_father"></p>
-                                                            <p class="small mb-0">
-                                                                <span class="badge bg-light text-dark me-2"
-                                                                    id="view_brideFatherStatus"></span>
-                                                                NIN: <span id="view_brideFatherNIN"></span>
-                                                            </p>
-                                                            <p class="small mb-0">
-                                                                District: <span id="view_brideFatherDistrict"></span>
-                                                            </p>
-                                                            <p class="small mb-0">
-                                                                Tribe: <span id="view_brideFatherTribe"></span>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="mb-3">
-                                                            <label class="text-muted small">Mother</label>
-                                                            <p class="fw-bold mb-1" id="view_bride_mother"></p>
-                                                            <p class="small mb-0">
-                                                                <span class="badge bg-light text-dark me-2"
-                                                                    id="view_brideMotherStatus"></span>
-                                                                NIN: <span id="view_brideMotherNIN"></span>
-                                                            </p>
-                                                            <p class="small mb-0">
-                                                                District: <span id="view_brideMotherDistrict"></span>
-                                                            </p>
-                                                            <p class="small mb-0">
-                                                                Maiden Name: <span id="view_brideMotherMaidenName"></span>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Witnesses -->
-                                    <h6 class="section-title mt-4">Witnesses</h6>
-                                    <div class="row">
-                                        <div class="col-lg-6 mb-4">
-                                            <div class="witness-card">
-                                                <h6 class="fw-bold text-warning mb-3">
-                                                    <i class="fas fa-user-check me-2"></i>Witness 1
-                                                </h6>
-                                                <p class="fw-bold mb-2" id="view_witness1_name"></p>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <p class="small mb-1">
-                                                            <i class="fas fa-id-card me-2"></i>
-                                                            NIN: <span id="view_witness1_nin"></span>
-                                                        </p>
-                                                        <p class="small mb-1">
-                                                            <i class="fas fa-phone me-2"></i>
-                                                            Phone: <span id="view_witness1_phone"></span>
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <p class="small mb-1">
-                                                            <i class="fas fa-map-marker-alt me-2"></i>
-                                                            District: <span id="view_witness1_district"></span>
-                                                        </p>
-                                                        <p class="small mb-0">
-                                                            <i class="fas fa-home me-2"></i>
-                                                            Address: <span id="view_witness1_address"></span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 mb-4">
-                                            <div class="witness-card">
-                                                <h6 class="fw-bold text-warning mb-3">
-                                                    <i class="fas fa-user-check me-2"></i>Witness 2
-                                                </h6>
-                                                <p class="fw-bold mb-2" id="view_witness2_name"></p>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <p class="small mb-1">
-                                                            <i class="fas fa-id-card me-2"></i>
-                                                            NIN: <span id="view_witness2_nin"></span>
-                                                        </p>
-                                                        <p class="small mb-1">
-                                                            <i class="fas fa-phone me-2"></i>
-                                                            Phone: <span id="view_witness2_phone"></span>
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <p class="small mb-1">
-                                                            <i class="fas fa-map-marker-alt me-2"></i>
-                                                            District: <span id="view_witness2_district"></span>
-                                                        </p>
-                                                        <p class="small mb-0">
-                                                            <i class="fas fa-home me-2"></i>
-                                                            Address: <span id="view_witness2_address"></span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Imam Assignment -->
-                                    <div class="info-card mt-4">
-                                        <h6 class="section-title mb-0">Wedding Imam</h6>
-                                        <div class="d-flex align-items-center mt-3">
-                                            <div class="flex-grow-1">
-                                                <h5 class="mb-1" id="view_imam_name"></h5>
-                                                <p class="small text-muted mb-0">Imam assigned to conduct the marriage
-                                                    ceremony</p>
-                                            </div>
-                                            <div>
-                                                <i class="fas fa-user-circle fa-3x text-primary"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Modal Footer -->
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
-                                        <i class="fas fa-times me-2"></i>Close
-                                    </button>
-                                    {{-- <button type="button" class="btn btn-primary px-4">
-                                        <i class="fas fa-print me-2"></i>Print
-                                    </button> --}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <style>
-                        /* Custom Modal Styling */
-                        .modal-content {
-                            border-radius: 20px !important;
-                            border: none;
-                            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-                        }
-
-                        .modal-header {
-                            background: linear-gradient(135deg, #008F4C 0%, #39DA8A 100%);
-                            color: white;
-                            border-radius: 20px 20px 0 0 !important;
-                            padding: 1.5rem 2rem;
-                        }
-
-                        .modal-header .btn-close {
-                            filter: invert(1);
-                            opacity: 0.8;
-                        }
-
-                        .modal-header .btn-close:hover {
-                            opacity: 1;
-                        }
-
-                        .modal-body {
-                            padding: 2rem;
-                            background: #f8f9fa;
-                        }
-
-                        .modal-footer {
-                            background: #f8f9fa;
-                            border-radius: 0 0 20px 20px;
-                            padding: 1rem 2rem;
-                        }
-
-                        /* Section Styling */
-                        .section-title {
-                            color: #4a5568;
-                            font-size: 1.1rem;
-                            font-weight: 600;
-                            margin-bottom: 1rem;
-                            padding-bottom: 0.5rem;
-                            border-bottom: 2px solid #e2e8f0;
-                            position: relative;
-                        }
-
-                        .section-title::after {
-                            content: '';
-                            position: absolute;
-                            left: 0;
-                            bottom: -2px;
-                            width: 60px;
-                            height: 2px;
-                            background: #667eea;
-                        }
-
-                        /* Card Styling */
-                        .info-card {
-                            background: white;
-                            border-radius: 12px;
-                            padding: 1.5rem;
-                            margin-bottom: 1.5rem;
-                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-                            border: 1px solid #e2e8f0;
-                            transition: transform 0.2s, box-shadow 0.2s;
-                        }
-
-                        .info-card:hover {
-                            transform: translateY(-2px);
-                            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-                        }
-
-                        /* Person Card */
-                        .person-card {
-                            border-left: 4px solid #667eea;
-                        }
-
-                        .bride-card {
-                            border-left-color: #ed64a6;
-                        }
-
-                        .photo-container {
-                            width: 120px;
-                            height: 120px;
-                            border-radius: 12px;
-                            overflow: hidden;
-                            border: 3px solid white;
-                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                            margin-bottom: 1rem;
-                        }
-
-                        .photo-container img {
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                        }
-
-                        /* Status Badges */
-                        .status-badge {
-                            display: inline-block;
-                            padding: 0.35rem 1rem;
-                            border-radius: 50px;
-                            font-size: 0.85rem;
-                            font-weight: 600;
-                            text-transform: uppercase;
-                            letter-spacing: 0.5px;
-                        }
-
-                        .status-pending {
-                            background: #fed7d7;
-                            color: #c53030;
-                        }
-
-                        .status-approved {
-                            background: #c6f6d5;
-                            color: #276749;
-                        }
-
-                        .status-rejected {
-                            background: #fed7d7;
-                            color: #c53030;
-                        }
-
-                        .status-completed {
-                            background: #bee3f8;
-                            color: #2c5282;
-                        }
-
-                        /* Info Grid */
-                        .info-grid {
-                            display: grid;
-                            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-                            gap: 1rem;
-                            margin-top: 1rem;
-                        }
-
-                        .info-item {
-                            padding: 0.75rem;
-                            background: #f7fafc;
-                            border-radius: 8px;
-                            border-left: 3px solid #cbd5e0;
-                        }
-
-                        .info-item label {
-                            display: block;
-                            font-size: 0.8rem;
-                            color: #718096;
-                            margin-bottom: 0.25rem;
-                            text-transform: uppercase;
-                            letter-spacing: 0.5px;
-                        }
-
-                        .info-item .value {
-                            font-weight: 600;
-                            color: #2d3748;
-                            font-size: 0.95rem;
-                        }
-
-                        /* Contact Styling */
-                        .contact-item {
-                            display: inline-flex;
-                            align-items: center;
-                            padding: 0.25rem 0;
-                        }
-
-                        /* Parent Card */
-                        .parent-card {
-                            border-left: 3px solid #48bb78;
-                            padding: 1rem;
-                            margin-bottom: 1rem;
-                            background: #f0fff4;
-                        }
-
-                        /* Witness Card */
-                        .witness-card {
-                            border-left: 3px solid #ed8936;
-                            padding: 1rem;
-                            margin-bottom: 1rem;
-                            background: #fffaf0;
-                        }
-
-                        /* Imam Styling */
-                        .imam-assigned {
-                            color: #2b6cb0;
-                            font-weight: 600;
-                            padding: 0.75rem;
-                            background: #ebf8ff;
-                            border-radius: 8px;
-                            display: inline-block;
-                        }
-
-                        .imam-not-assigned {
-                            color: #718096;
-                            font-style: italic;
-                            padding: 0.75rem;
-                            background: #f7fafc;
-                            border-radius: 8px;
-                            display: inline-block;
-                        }
-
-                        /* Responsive Adjustments */
-                        @media (max-width: 768px) {
-                            .modal-dialog {
-                                margin: 1rem;
-                            }
-
-                            .modal-body {
-                                padding: 1.5rem;
-                            }
-
-                            .info-grid {
-                                grid-template-columns: 1fr;
-                            }
-
-                            .photo-container {
-                                margin: 0 auto 1rem;
-                            }
-                        }
-
-                        .modal-dialog-scrollable .modal-content {
-                            max-height: 85vh;
-                            overflow: hidden;
-                        }
-
-                        .modal-dialog-scrollable .modal-body {
-                            overflow-y: auto;
-                            max-height: calc(85vh - 120px);
-                        }
-                    </style>
-
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="https: //cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"> </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            document.querySelectorAll('.download-certificate').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const applicationId = btn.dataset.id;
+
+                    // Open a new window with certificate HTML
+                    const url = `/certificate/view/${applicationId}`; // create a route to render your certificate blade
+                    const win = window.open(url, '_blank');
+
+                    // Wait for the content to load
+                    win.onload = () => {
+                        html2canvas(win.document.querySelector('.certificate-container'), {
+                            scale: 2, // higher resolution
+                            useCORS: true
+                        }).then(canvas => {
+                            // Create a link to download the image
+                            const link = document.createElement('a');
+                            link.href = canvas.toDataURL('image/png');
+                            link.download = `Certificate_${applicationId}.png`;
+                            link.click();
+
+                            win.close();
+                        });
+                    };
+                });
+            });
+
+        });
+    </script>
+
 
     <script>
         const dateElement = document.getElementById('currentDateFull');
@@ -1880,13 +1585,13 @@
         });
 
         dateElement.textContent = formattedDate;
-        document.getElementById('smartSearch').addEventListener('focus', function() {
+        document.getElementById('smartSearch').addEventListener('focus', function () {
             var suggestions = document.getElementById('searchSuggestions');
             suggestions.classList.add('show');
         });
 
-        document.getElementById('smartSearch').addEventListener('blur', function() {
-            setTimeout(function() {
+        document.getElementById('smartSearch').addEventListener('blur', function () {
+            setTimeout(function () {
                 var suggestions = document.getElementById('searchSuggestions');
                 suggestions.classList.remove('show');
             }, 200);
@@ -1894,7 +1599,7 @@
     </script>
 
     <script>
-        document.getElementById('clearSearch').addEventListener('click', function() {
+        document.getElementById('clearSearch').addEventListener('click', function () {
             const input = document.getElementById('searchInput');
             input.value = '';
             input.dispatchEvent(new Event('keyup'));
@@ -1902,7 +1607,7 @@
     </script>
 
     <script>
-        document.getElementById('searchInput').addEventListener('keyup', function() {
+        document.getElementById('searchInput').addEventListener('keyup', function () {
             const query = this.value.toLowerCase();
             const rows = document.querySelectorAll('.application-row');
 
@@ -1918,56 +1623,66 @@
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const modal = new bootstrap.Modal(document.getElementById('viewApplicationModal'));
 
             document.querySelectorAll('.view-application').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     const id = this.dataset.id;
 
-                    fetch(`/nikah/applications/${id}`)
-                        .then(res => res.json())
+                    fetch(`/nikah/applications/${id}`, {
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    })
+                        .then(async response => {
+                            if (!response.ok) {
+                                const text = await response.text();
+
+                                // 🔴 Dump Laravel error into page (like $.ajax error)
+                                document.body.innerHTML = text;
+
+                                throw new Error('Request failed');
+                            }
+
+                            return response.json();
+                        })
                         .then(data => {
-                            // Clear previous data
                             clearModalData();
 
-                            // Application Info Card
-                            document.getElementById('view_application_id').textContent = data
-                                .application_id;
+                            document.getElementById('view_application_id').textContent = data.application_id;
                             document.getElementById('view_status').innerHTML =
-                                `<span class="status-badge status-${data.status}">${data.status.charAt(0).toUpperCase() + data.status.slice(1)}</span>`;
-                            document.getElementById('view_date').textContent = new Date(data
-                                .created_at).toLocaleDateString('en-US', {
-                                weekday: 'long',
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            });
+                                `<span class="status-badge status-${data.status}">
+                                                ${data.status.charAt(0).toUpperCase() + data.status.slice(1)}
+                                            </span>`;
 
-                            // Groom & Bride Cards
+                            document.getElementById('view_date').textContent =
+                                new Date(data.created_at).toLocaleDateString('en-US', {
+                                    weekday: 'long',
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                });
+
                             populatePersonCard('groom', data, true);
                             populatePersonCard('bride', data, false);
-
-                            // Parents Information
                             populateParentCard('groom', data, true);
                             populateParentCard('bride', data, false);
-
-                            // Witnesses
                             populateWitnessCard('witness1', data);
                             populateWitnessCard('witness2', data);
 
-                            // Imam
-                            document.getElementById('view_imam_name').textContent = data
-                                .imam_name || 'Not Assigned Yet';
-                            document.getElementById('view_imam_name').className = data
-                                .imam_name ? 'imam-assigned' : 'imam-not-assigned';
+                            document.getElementById('view_imam_name').textContent =
+                                data.imam_name || 'Not Assigned Yet';
+
+                            document.getElementById('view_imam_name').className =
+                                data.imam_name ? 'imam-assigned' : 'imam-not-assigned';
 
                             modal.show();
                         })
-                        .catch(() => {
-                            showError('Failed to load application details.');
+                        .catch(error => {
+                            console.error('Fetch Error:', error);
                         });
                 });
             });
@@ -2008,7 +1723,7 @@
 
                 // Father
                 document.getElementById(`view_${prefix}_father`).textContent = data[
-                        `${prefix}_father_given_name`] && data[`${prefix}_father_surname`] ?
+                    `${prefix}_father_given_name`] && data[`${prefix}_father_surname`] ?
                     `${data[`${prefix}_father_given_name`]} ${data[`${prefix}_father_surname`]}` :
                     'Not provided';
                 document.getElementById(`view_${prefix}FatherStatus`).textContent = data[`${prefix}FatherStatus`] ||
@@ -2020,7 +1735,7 @@
 
                 // Mother
                 document.getElementById(`view_${prefix}_mother`).textContent = data[
-                        `${prefix}_mother_given_name`] && data[`${prefix}_mother_surname`] ?
+                    `${prefix}_mother_given_name`] && data[`${prefix}_mother_surname`] ?
                     `${data[`${prefix}_mother_given_name`]} ${data[`${prefix}_mother_surname`]}` :
                     'Not provided';
                 document.getElementById(`view_${prefix}MotherStatus`).textContent = data[`${prefix}MotherStatus`] ||
@@ -2093,7 +1808,7 @@
     </script>
 
     <script>
-        $(document).on('click', '.edit-application', function() {
+        $(document).on('click', '.edit-application', function () {
             let id = $(this).data('id');
 
 
@@ -2101,7 +1816,7 @@
                 url: `/nikah/${id}/edit`,
                 type: 'GET',
                 dataType: 'json',
-                success: function(res) {
+                success: function (res) {
 
                     if (!res.success) {
                         Swal.fire('Error', 'Failed to load application', 'error');
@@ -2117,7 +1832,7 @@
                      * 🔁 AUTO-FILL ALL INPUTS
                      * Field ID MUST match column name
                      */
-                    Object.keys(data).forEach(function(key) {
+                    Object.keys(data).forEach(function (key) {
                         let field = $('#' + key);
 
                         if (field.length) {
@@ -2130,7 +1845,7 @@
                      */
                     $('#editApplicationModal').modal('show');
                 },
-                error: function(data) {
+                error: function (data) {
                     $('body').html(data.responseText);
                 }
             });
@@ -2139,7 +1854,7 @@
 
 
     <script>
-        $('#editApplicationForm').submit(function(e) {
+        $('#editApplicationForm').submit(function (e) {
             e.preventDefault();
 
             let id = $('#edit_id').val();
@@ -2160,7 +1875,7 @@
                         data: formData,
                         contentType: false,
                         processData: false,
-                        success: function(res) {
+                        success: function (res) {
                             Swal.fire({
                                 title: 'Updated!',
                                 text: res.message,
@@ -2175,7 +1890,7 @@
                                 location.reload();
                             }, 3000);
                         },
-                        error: function(data) {
+                        error: function (data) {
                             $('body').html(data.responseText);
                         }
                     });
@@ -2187,11 +1902,11 @@
 
     <script>
         // Add this to your JS file or script tag
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const editModal = document.getElementById('editApplicationModal');
 
             if (editModal) {
-                editModal.addEventListener('show.bs.modal', function() {
+                editModal.addEventListener('show.bs.modal', function () {
                     // Ensure modal body is scrollable
                     const modalBody = this.querySelector('.modal-body');
                     if (modalBody) {
@@ -2205,7 +1920,7 @@
 
 
     <script>
-        $(document).on('click', '.delete-application', function() {
+        $(document).on('click', '.delete-application', function () {
             let id = $(this).data('id');
             let row = $(this).closest('tr');
 
@@ -2227,7 +1942,7 @@
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
-                        success: function(res) {
+                        success: function (res) {
 
                             Swal.fire({
                                 title: 'Deleted!',
@@ -2235,7 +1950,7 @@
                                 icon: 'success',
                                 confirmButtonColor: '#16a34a'
                             }).then(() => {
-                                row.fadeOut(300, function() {
+                                row.fadeOut(300, function () {
                                     $(this).remove();
                                 });
                             });
@@ -2248,7 +1963,7 @@
                         //         'error'
                         //     );
                         // }
-                        error: function(data) {
+                        error: function (data) {
                             $('body').html(data.responseText);
                         }
                     });
@@ -2260,11 +1975,11 @@
 
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             let selectedApplicationId;
 
             // Open modal on "Update Status" click
-            $('.update-status').on('click', function() {
+            $('.update-status').on('click', function () {
                 selectedApplicationId = $(this).data('id'); // store application id
                 let currentStatus = $(this).closest('tr').find('span.badge').text().trim();
                 $('#currentStatusText').text(currentStatus);
@@ -2272,7 +1987,7 @@
             });
 
             // Click on a status option
-            $('.status-option').on('click', function() {
+            $('.status-option').on('click', function () {
                 let newStatus = $(this).data('status');
                 let statusLabel = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
 
@@ -2295,14 +2010,14 @@
                                 _token: '{{ csrf_token() }}',
                                 status: newStatus
                             },
-                            success: function(response) {
+                            success: function (response) {
                                 // Close modal
                                 $('#updateStatusModal').modal('hide');
 
                                 // Update badge in table
                                 let badge = $('tr').find(
                                     `[data-id='${selectedApplicationId}']`).closest(
-                                    'tr').find('span.badge');
+                                        'tr').find('span.badge');
                                 let colors = {
                                     'approved': ['#05956815', '#059568'],
                                     'pending': ['#FFF7E6', '#FF9F43'],
@@ -2328,7 +2043,7 @@
                                 });
                             },
 
-                            error: function(err) {
+                            error: function (err) {
                                 Swal.fire(
                                     'Error!',
                                     'Failed to update status.',

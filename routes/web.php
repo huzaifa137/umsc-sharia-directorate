@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 Route::get('/hash-password', function () {
     // Hash the password
     $hashedPassword = Hash::make('Pa$$w0rd!');
-    
+
     // Use dd() to dump and die, showing the hashed password
     dd($hashedPassword);
 });
@@ -90,6 +90,7 @@ Route::controller(MasterController::class)->group(function () {
         Route::get('/nikah-status-applications/{statusId}', 'nikahStatusApplications')
             ->name('nikah.status.applications');
 
+        Route::get('/certificate/view/{id}', 'viewCertificate');
 
         Route::delete('/nikah/{id}', 'deleteNikahApplication');
 
@@ -163,10 +164,13 @@ Route::controller(MasterController::class)->group(function () {
 
         // Converts Routes 
 
-        Route::get('/convert-status-applications/{statusId}', 'convertStatusApplications')
-            ->name('convert.status.applications');
+        Route::get('/convert-status-applications/{statusId}', 'convertStatusApplications')->name('convert.status.applications');
         Route::get('convert-dashboard', 'convertDashboard')->name('convert.dashboard');
         Route::post('/save-convert-application', 'saveconvertApplication')->name('save.convert.application');
+
+        Route::get('applications/{application}',  'show')->name('show');
+        Route::put('applications/{application}',  'update')->name('update');
+        Route::delete('applications/{application}',  'destroy')->name('destroy');
 
         // Users Routes 
 

@@ -15,6 +15,7 @@ use App\Models\ConvertApplication;
 use App\Models\GuardianshipApplication;
 use App\Models\InheritanceApplication;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -714,7 +715,7 @@ class MasterController extends Controller
     public function divorceDashboard()
     {
         $all = DivorceApplication::all()->count();
-        $pending = DivorceApplication::where('status', 'pending')->count();
+        $pending = DivorceApplication::where('status', 'submitted')->count();
         $Rejected = DivorceApplication::where('status', 'rejected')->count();
         $Finalised = DivorceApplication::where('status', 'accomplished')->count();
 
@@ -856,6 +857,12 @@ class MasterController extends Controller
         ]);
     }
 
+    public function viewCertificate($id)
+    {
+        $application = NikkahApplication::findOrFail($id);
+        return view('certificates.certificateNikah', compact('application'));
+    }
+
     public function nikahStatusApplications($statusId)
     {
         if ($statusId == 0) {
@@ -901,7 +908,7 @@ class MasterController extends Controller
     public function divorceStatusApplications($statusId)
     {
         if ($statusId == 0) {
-            $applications = DivorceApplication::where('status', 'pending')->paginate(10);
+            $applications = DivorceApplication::where('status', 'submitted')->paginate(10);
             return view('divorce.status-applications', compact('applications', 'statusId'));
         } elseif ($statusId == 10) {
             $applications = DivorceApplication::where('status', 'accomplished')->paginate(10);
@@ -1557,6 +1564,157 @@ class MasterController extends Controller
             'status' => 'success',
             'message' => 'User deleted successfully!'
         ]);
+    }
+
+    public function show(ConvertApplication $application)
+    {
+        // Return JSON for AJAX requests (modal view)
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'application' => $application
+            ]);
+        }
+
+        // Return view for regular requests
+        return view('applications.show', compact('application'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, ConvertApplication $application)
+    {
+        $validator = Validator::make($request->all(), [
+            'former_names' => 'required|string|max:255',
+            'former_religion' => 'required|string|max:255',
+            'date_of_birth' => 'required|date',
+            'occupation' => 'required|string|max:255',
+            'current_residence' => 'required|string|max:255',
+            'contact' => 'required|string|max:20',
+            'father_name' => 'required|string|max:255',
+            'mother_name' => 'required|string|max:255',
+            'home_address' => 'required|string',
+            'county' => 'required|string|max:255',
+            'district' => 'required|string|max:255',
+
+            // Step B - Optional fields
+            'new_names' => 'nullable|string|max:255',
+            'conversion_date' => 'nullable|date',
+            'conversion_place' => 'nullable|string|max:255',
+            'guardian_name' => 'nullable|string|max:255',
+            'guardian_occupation' => 'nullable|string|max:255',
+            'guardian_declaration_date' => 'nullable|date',
+            'conversion_reasons' => 'nullable|string',
+            'guardian_declaration' => 'nullable|string',
+
+            // Step C - Optional fields
+            'declaration_date' => 'nullable|date',
+            'declaration_agreement' => 'nullable|boolean',
+            'signature' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+
+            // Step D - Optional fields
+            'officer_name' => 'nullable|string|max:255',
+            'officer_position' => 'nullable|string|max:255',
+            'registration_number' => 'nullable|string|max:255',
+            'verification_date' => 'nullable|date',
+            'officer_remarks' => 'nullable|string',
+            'officer_signature' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'official_stamp' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'status' => 'nullable|in:pending,approved,rejected,completed',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $data = $request->except(['signature', 'officer_signature', 'official_stamp', '_method']);
+
+            // Handle file uploads
+            if ($request->hasFile('signature')) {
+                // Delete old file if exists
+                if ($application->signature && Storage::disk('public')->exists($application->signature)) {
+                    Storage::disk('public')->delete($application->signature);
+                }
+
+                $signaturePath = $request->file('signature')->store('signatures', 'public');
+                $data['signature'] = $signaturePath;
+            }
+
+            if ($request->hasFile('officer_signature')) {
+                // Delete old file if exists
+                if ($application->officer_signature && Storage::disk('public')->exists($application->officer_signature)) {
+                    Storage::disk('public')->delete($application->officer_signature);
+                }
+
+                $officerSignaturePath = $request->file('officer_signature')->store('officer-signatures', 'public');
+                $data['officer_signature'] = $officerSignaturePath;
+            }
+
+            if ($request->hasFile('official_stamp')) {
+                // Delete old file if exists
+                if ($application->official_stamp && Storage::disk('public')->exists($application->official_stamp)) {
+                    Storage::disk('public')->delete($application->official_stamp);
+                }
+
+                $stampPath = $request->file('official_stamp')->store('stamps', 'public');
+                $data['official_stamp'] = $stampPath;
+            }
+
+            // Handle boolean field
+            $data['declaration_agreement'] = $request->has('declaration_agreement') ? 1 : 0;
+
+            // Update application
+            $application->update($data);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Application updated successfully!',
+                'application' => $application
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update application: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(ConvertApplication $application)
+    {
+        try {
+            // Delete associated files
+            $files = ['signature', 'officer_signature', 'official_stamp'];
+
+            foreach ($files as $file) {
+                if ($application->$file && Storage::disk('public')->exists($application->$file)) {
+                    Storage::disk('public')->delete($application->$file);
+                }
+            }
+
+            // Delete the application
+            $application->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Application deleted successfully!'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete application: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
 }

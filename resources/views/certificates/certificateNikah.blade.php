@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marriage Certificate</title>
+    <title></title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,8 @@
         body {
             background-color: #f0f0f0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             padding: 30px;
             margin: 0;
             font-family: 'Times New Roman', serif;
@@ -21,9 +22,7 @@
 
         .certificate-container {
             width: 1100px;
-            /* wider for landscape */
             min-height: 700px;
-            /* shorter height */
             padding: 20px;
             position: relative;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
@@ -180,17 +179,130 @@
             text-align: right;
             font-weight: bold;
         }
+
+        @media print {
+            body {
+                background-color: #fff !important;
+                padding: 0 !important;
+            }
+
+            .certificate-container {
+                box-shadow: none !important;
+                border: none !important;
+                margin: 0 auto !important;
+                page-break-inside: avoid;
+            }
+
+            button {
+                display: none;
+                /* hide print button in print */
+            }
+        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
+    <div style="width: 1100px; text-align: right; margin-bottom: 15px;">
+        <div style="width: 1100px; text-align: right; margin-bottom: 15px;">
+            <button id="downloadCertificate"
+                style="padding: 10px 20px; background-color: #059580; color: #fff; border: none; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center;">
+                <i class="bi bi-download" style="margin-right: 8px; font-size: 1.1rem;"></i>
+                Download Certificate PDF
+            </button>
+        </div>
+
+        <!-- Loader Overlay -->
+        <!-- Loader Overlay -->
+        <div id="pageLoader" class="d-none">
+            <div class="loader-box">
+                <div class="spinner"></div>
+                <p class="loader-main-text">Processing your certificate</p>
+                <p class="loader-sub-text">Please do not refresh the page</p>
+            </div>
+        </div>
+
+        <style>
+            /* Hide by default */
+            .d-none {
+                display: none !important;
+            }
+
+            /* Full screen overlay with frosted glass effect */
+            #pageLoader {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(8px);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+                font-family: 'Segoe UI', Roboto, sans-serif;
+            }
+
+            /* Loader box */
+            .loader-box {
+                background: white;
+                padding: 40px;
+                border-radius: 24px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                min-width: 260px;
+            }
+
+            /* Spinner animation */
+            .spinner {
+                width: 50px;
+                height: 50px;
+                border: 3px solid #f3f3f3;
+                border-top: 3px solid #3498db;
+                /* Primary color */
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 20px;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            /* Loader text styles */
+            .loader-main-text {
+                color: #2c3e50;
+                font-weight: 600;
+                font-size: 1.1rem;
+                margin: 0;
+            }
+
+            .loader-sub-text {
+                color: #7f8c8d;
+                font-size: 0.9rem;
+                margin-top: 8px;
+            }
+        </style>
+    </div>
+    </div>
     <div class="certificate-container">
         <div class="inner-border">
             <div class="header">
                 <span>UGANDA MUSLIM</span>
                 <div class="logo-area">
                     <span class="sharia-text">SHARIA</span>
-                    <img class="logo-img" src="logo-png.png" alt="UMSC Logo" style="width:100px;">
+                    <img class="logo-img" src="{{ asset('assets/img/branding/logo-png.png') }}" alt="UMSC Logo"
+                        style="width:100px;">
+
                     <span class="sharia-text">DIRECTORATE</span>
                 </div>
                 <span>SUPREME COUNCIL</span>
@@ -200,24 +312,46 @@
 
             <div class="photo-section">
                 <div class="box-container">
-                    <div class="photo-box"></div>
+                    <div class="photo-box">
+                        <!-- For groom photo -->
+                        @if($application->groom_photo_path)
+                            <img src="{{ asset('storage/' . $application->groom_photo_path) }}"
+                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px;" />
+                        @endif
+
+                    </div>
                     <div class="label-text">GROOM</div>
                 </div>
 
                 <div class="center-content">
                     <div class="main-content">
                         This record of marriage between<br>
-                        <span class="input-line name"></span><br>
+                        <span class="input-line name">
+                            {{ $application->groom_given_name . ' ' . $application->groom_surname }}
+                        </span><br>
                         and<br>
-                        <span class="input-line name"></span><br>
+                        <span class="input-line name">
+                            {{ $application->bride_given_name . ' ' . $application->bride_surname }}
+                        </span><br>
                         was lawfully solemnized in accordance to<br>
-                        Islamic Sharia at Masjid <span class="input-line" style="min-width:450px"></span><br>
-                        officiated by Imam <span class="input-line" style="min-width:487px"></span>
+                        Islamic Sharia at Masjid <span class="input-line name" style="min-width:450px">
+                            {{-- {{ $application->masjid_name ?? '________________' }} --}}
+                            {{ $application->masjid_name ?? 'UMSC - HEADQUARTERS'}}
+                        </span><br>
+                        officiated by Imam <span class="input-line name" style="min-width:487px">
+                            {{ $application->imam_name ?? '________________' }}
+                        </span>
                     </div>
                 </div>
 
                 <div class="box-container">
-                    <div class="photo-box"></div>
+                    <div class="photo-box">
+                        <!-- For bride photo -->
+                        @if($application->bride_photo_path)
+                            <img src="{{ asset('storage/' . $application->bride_photo_path) }}"
+                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px;" />
+                        @endif
+                    </div>
                     <div class="label-text">BRIDE</div>
                 </div>
             </div>
@@ -230,16 +364,62 @@
 
             <div class="footer-section">
                 <div class="footer-content">
-                    <div class="qr-code">OFFICIAL<br>SEAL</div>
+                    <div class="qr-code">
+                        <img src="{{ asset('/assets/img/branding/dummyQr.png') }}" alt="Official QR Code"
+                            style="width: 90px; height: 90px; object-fit: contain; border: 2px solid #2c3e50; box-shadow: inset 0 0 5px rgba(191, 163, 63, 0.5);">
+                    </div>
                     <div class="signature-block">
                         PROF. DR. ZIYAD S. LUBANGA<br>
                         DIRECTOR OF SHARIA
                     </div>
-                    <div class="reg-info">Date of Issue: _________________</div>
+                    <div class="reg-info"
+                        style="display: flex; justify-content: center; align-items: center; gap: 5px; white-space: nowrap; width: 100%;">
+                        <span>Date of Issue:</span>
+                        <span class="input-line" style="flex-shrink: 0; min-width: 150px; text-align: center;">
+                            {{ \Carbon\Carbon::now()->format('jS/m/Y') }}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        const downloadBtn = document.getElementById('downloadCertificate');
+        const loader = document.getElementById('pageLoader');
+
+        downloadBtn.addEventListener('click', () => {
+            // Show loader
+            loader.classList.remove('d-none');
+            downloadBtn.disabled = true; // prevent multiple clicks
+
+            const element = document.querySelector('.certificate-container');
+            const elementWidth = element.offsetWidth;
+            const elementHeight = element.offsetHeight;
+            const pdfWidthInches = elementWidth / 96;
+            const pdfHeightInches = elementHeight / 96;
+
+            const opt = {
+                margin: 0,
+                filename: '{{ $application->groom_given_name }}_{{ $application->bride_given_name }}_NikahCertificate.pdf',
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: { scale: 3, logging: true, useCORS: true },
+                jsPDF: { unit: 'in', format: [pdfWidthInches, pdfHeightInches], orientation: 'landscape' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                loader.classList.add('d-none'); // hide loader
+                downloadBtn.disabled = false;   // re-enable button
+            }).catch(() => {
+                loader.classList.add('d-none');
+                downloadBtn.disabled = false;
+                alert('An error occurred while generating the PDF.');
+            });
+        });
+
+    </script>
+
+
 </body>
 
 </html>
