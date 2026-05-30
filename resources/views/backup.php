@@ -1,6 +1,13 @@
 <script type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+[u453625278@de-fra-web1700 public_html]$ rm -f public/storage
+[u453625278@de-fra-web1700 public_html]$ ln -s /home/u453625278/domains/umsc-sharia.com/public_html/storage/app/public public/storage
+[u453625278@de-fra-web1700 public_html]$ ls public/storage/nikkah/grooms/
+TiJrTtaNqR3iFAnXMQpk5cTrLf2cnYpEU51yA1JM.jpg
+[u453625278@de-fra-web1700 public_html]$ pwd
+/home/u453625278/domains/umsc-sharia.com/public_html
+
 
 <button type="button" class="btn btn-lg btn-primary btn-block px-4" onclick="confirmSubmission(this)">
     <i class="fe fe-check"></i> Send
