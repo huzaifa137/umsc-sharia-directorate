@@ -14,6 +14,10 @@ class NikkahApplication extends Model
         // Application
         'application_id',
         'status',
+        'created_by',
+        'officer_region',
+        'officer_district',
+        'officer_county',
 
         // Groom
         'groom_surname',
@@ -104,4 +108,9 @@ class NikkahApplication extends Model
         'groom_photo_path',
         'bride_photo_path',
     ];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

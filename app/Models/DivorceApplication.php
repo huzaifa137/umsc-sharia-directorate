@@ -9,6 +9,10 @@ class DivorceApplication extends Model
     protected $fillable = [
         'application_id',
         'status',
+        'created_by',
+        'officer_region',
+        'officer_district',
+        'officer_county',
 
         'groom_surname',
         'groom_given_name',
@@ -65,4 +69,9 @@ class DivorceApplication extends Model
         'num_children',
         'custody_arrangement',
     ];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

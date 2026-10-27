@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Role;
+use App\Models\Permission;
 use App\Models\SearchIndex;
+use App\Services\AccessControl;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -51,6 +54,10 @@ class MasterController extends Controller
         $datePart = Carbon::now()->format('dmy'); // 260109
         $randomPart = random_int(1000000, 9999999); // 0551164-like
         $data['application_id'] = 'NK-UMSC' . $datePart . $randomPart;
+
+        // 2b. Record who registered this Nikah and where they are stationed,
+        // so role-based visibility (Imaam/County Sheikh/District Khadhi) works.
+        $data = array_merge($data, AccessControl::officerStamp());
 
         // 3. Handle Groom Photo
         if ($request->hasFile('groomPhoto')) {
@@ -143,6 +150,7 @@ class MasterController extends Controller
             $randomPart = random_int(1000000, 9999999);
             $data['application_id'] = 'DV-UMSC' . $datePart . $randomPart;
             $data['status'] = 'submitted';
+            $data = array_merge($data, AccessControl::officerStamp());
 
             // Store photos
             if ($request->hasFile('groomPhoto')) {
@@ -300,7 +308,7 @@ class MasterController extends Controller
 
             $applicationId = 'INH-UMSC' . Carbon::now()->format('dmy') . random_int(1000000, 9999999);
 
-            $application = InheritanceApplication::create([
+            $application = InheritanceApplication::create(array_merge([
                 'application_id' => $applicationId,
                 'status' => 'submitted',
 
@@ -326,7 +334,7 @@ class MasterController extends Controller
                 'other_liabilities' => $request->other_liabilities,
 
                 'death_certificate_path' => $certificatePath,
-            ]);
+            ], AccessControl::officerStamp()));
 
             /* ===========================
              | Save Properties
@@ -560,6 +568,8 @@ class MasterController extends Controller
             'status' => 'submitted',
         ];
 
+        $applicationData = array_merge($applicationData, AccessControl::officerStamp());
+
         // Save to database
         try {
             $application = GuardianshipApplication::create($applicationData);
@@ -619,15 +629,16 @@ class MasterController extends Controller
 
     public function guardianshipDashboard()
     {
-        // Fetch stats globally across all records
+        // Fetch stats scoped to whatever the logged-in officer is allowed to see
         $stats = [
-            'total' => GuardianshipApplication::count(),
-            'pending' => GuardianshipApplication::where('status', 'submitted')->count(),
-            'approved' => GuardianshipApplication::where('status', 'accomplished')->count(),
-            'rejected' => GuardianshipApplication::where('status', 'rejected')->count(),
+            'total' => AccessControl::scopeApplications(GuardianshipApplication::query())->count(),
+            'pending' => AccessControl::scopeApplications(GuardianshipApplication::query())->where('status', 'submitted')->count(),
+            'approved' => AccessControl::scopeApplications(GuardianshipApplication::query())->where('status', 'accomplished')->count(),
+            'rejected' => AccessControl::scopeApplications(GuardianshipApplication::query())->where('status', 'rejected')->count(),
         ];
 
-        $applications = GuardianshipApplication::orderBy('created_at', 'desc')->paginate(10);
+        $applications = AccessControl::scopeApplications(GuardianshipApplication::query())
+            ->orderBy('created_at', 'desc')->paginate(10);
 
         return view('guardianship.guardianship-dashboard', compact('applications', 'stats'));
     }
@@ -664,6 +675,8 @@ class MasterController extends Controller
 
         // Convert checkbox to boolean
         $data['declaration_agreement'] = $request->has('declaration_agreement');
+
+        $data = array_merge($data, AccessControl::officerStamp());
 
         // Save
         $application = ConvertApplication::create($data);
@@ -714,10 +727,10 @@ class MasterController extends Controller
 
     public function divorceDashboard()
     {
-        $all = DivorceApplication::all()->count();
-        $pending = DivorceApplication::where('status', 'submitted')->count();
-        $Rejected = DivorceApplication::where('status', 'rejected')->count();
-        $Finalised = DivorceApplication::where('status', 'accomplished')->count();
+        $all = AccessControl::scopeApplications(DivorceApplication::query())->count();
+        $pending = AccessControl::scopeApplications(DivorceApplication::query())->where('status', 'submitted')->count();
+        $Rejected = AccessControl::scopeApplications(DivorceApplication::query())->where('status', 'rejected')->count();
+        $Finalised = AccessControl::scopeApplications(DivorceApplication::query())->where('status', 'accomplished')->count();
 
         return view('divorce.divorce-dashboard', compact(['all', 'pending', 'Rejected', 'Finalised']));
     }
@@ -725,12 +738,12 @@ class MasterController extends Controller
     public function inheritanceDashboard()
     {
 
-        $all = InheritanceApplication::all()->count();
-        $pending = InheritanceApplication::where('status', 'submitted')->count();
-        $Rejected = InheritanceApplication::where('status', 'rejected')->count();
-        $Finalised = InheritanceApplication::where('status', 'accomplished')->count();
+        $all = AccessControl::scopeApplications(InheritanceApplication::query())->count();
+        $pending = AccessControl::scopeApplications(InheritanceApplication::query())->where('status', 'submitted')->count();
+        $Rejected = AccessControl::scopeApplications(InheritanceApplication::query())->where('status', 'rejected')->count();
+        $Finalised = AccessControl::scopeApplications(InheritanceApplication::query())->where('status', 'accomplished')->count();
 
-        $applications = InheritanceApplication::latest()->paginate(5);
+        $applications = AccessControl::scopeApplications(InheritanceApplication::query())->latest()->paginate(5);
 
         return view('inheritance.inheritance-dashboard', compact(['all', 'pending', 'Rejected', 'Finalised', 'applications']));
     }
@@ -738,20 +751,21 @@ class MasterController extends Controller
     public function nikahDashboard()
     {
         // Existing stats
-        $totalNikah = NikkahApplication::count();
-        $submittedNikah = NikkahApplication::where('status', 'submitted')->count();
-        $approvedNikah = NikkahApplication::where('status', 'approved')->count();
-        $rejectedNikah = NikkahApplication::where('status', 'rejected')->count();
+        $totalNikah = AccessControl::scopeApplications(NikkahApplication::query())->count();
+        $submittedNikah = AccessControl::scopeApplications(NikkahApplication::query())->where('status', 'submitted')->count();
+        $approvedNikah = AccessControl::scopeApplications(NikkahApplication::query())->where('status', 'approved')->count();
+        $rejectedNikah = AccessControl::scopeApplications(NikkahApplication::query())->where('status', 'rejected')->count();
 
         // Nikah management card
         $pendingNikah = $submittedNikah;
 
-        $thisMonthNikah = NikkahApplication::whereMonth('created_at', now()->month)
+        $thisMonthNikah = AccessControl::scopeApplications(NikkahApplication::query())
+            ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->count();
 
         // Recent registrations (latest 5)
-        $recentNikah = NikkahApplication::latest()->take(5)->get();
+        $recentNikah = AccessControl::scopeApplications(NikkahApplication::query())->latest()->take(5)->get();
 
         return view('nikah.nikah-dashboard', compact(
             'totalNikah',
@@ -766,7 +780,7 @@ class MasterController extends Controller
 
     public function nikahApplications()
     {
-        $applications = NikkahApplication::latest()->paginate(10);
+        $applications = AccessControl::scopeApplications(NikkahApplication::query())->latest()->paginate(10);
 
         return view('nikah.all-applications', compact('applications'));
     }
@@ -860,32 +874,34 @@ class MasterController extends Controller
     public function viewCertificate($id)
     {
         $application = NikkahApplication::findOrFail($id);
-        return view('certificates.certificateNikah', compact('application'));
+        return view('certificates.nikah', compact('application'));
     }
 
     public function nikahStatusApplications($statusId)
     {
+        $base = AccessControl::scopeApplications(NikkahApplication::query());
+
         if ($statusId == 0) {
 
-            $applications = NikkahApplication::where('status', 'submitted')
+            $applications = (clone $base)->where('status', 'submitted')
                 ->orderBy('id', 'desc')
                 ->paginate(10);
 
         } elseif ($statusId == 10) {
 
-            $applications = NikkahApplication::where('status', 'approved')
+            $applications = (clone $base)->where('status', 'approved')
                 ->orderBy('id', 'desc')
                 ->paginate(10);
 
         } elseif ($statusId == -10) {
 
-            $applications = NikkahApplication::where('status', 'rejected')
+            $applications = (clone $base)->where('status', 'rejected')
                 ->orderBy('id', 'desc')
                 ->paginate(10);
 
         } elseif ($statusId == 100) {
 
-            $applications = NikkahApplication::orderBy('id', 'desc')
+            $applications = (clone $base)->orderBy('id', 'desc')
                 ->paginate(10);
         }
 
@@ -907,59 +923,64 @@ class MasterController extends Controller
 
     public function divorceStatusApplications($statusId)
     {
+        $base = AccessControl::scopeApplications(DivorceApplication::query());
+
         if ($statusId == 0) {
-            $applications = DivorceApplication::where('status', 'submitted')->paginate(10);
+            $applications = (clone $base)->where('status', 'submitted')->paginate(10);
             return view('divorce.status-applications', compact('applications', 'statusId'));
         } elseif ($statusId == 10) {
-            $applications = DivorceApplication::where('status', 'accomplished')->paginate(10);
+            $applications = (clone $base)->where('status', 'accomplished')->paginate(10);
             return view('divorce.status-applications', compact('applications', 'statusId'));
         } elseif ($statusId == -10) {
-            $applications = DivorceApplication::where('status', 'rejected')->paginate(10);
+            $applications = (clone $base)->where('status', 'rejected')->paginate(10);
             return view('divorce.status-applications', compact('applications', 'statusId'));
         } elseif ($statusId == 100) {
-            $applications = DivorceApplication::orderBy('created_at', 'desc')->paginate(10);
+            $applications = (clone $base)->orderBy('created_at', 'desc')->paginate(10);
             return view('divorce.status-applications', compact('applications', 'statusId'));
         }
     }
 
     public function inheritanceStatusApplications($statusId)
     {
+        $base = AccessControl::scopeApplications(InheritanceApplication::query());
 
         if ($statusId == 0) {
-            $applications = InheritanceApplication::where('status', 'submitted')->paginate(10);
+            $applications = (clone $base)->where('status', 'submitted')->paginate(10);
             return view('inheritance.status-applications', compact('applications', 'statusId'));
         } elseif ($statusId == 10) {
 
-            $applications = InheritanceApplication::where('status', 'accomplished')->paginate(10);
+            $applications = (clone $base)->where('status', 'accomplished')->paginate(10);
             return view('inheritance.status-applications', compact('applications', 'statusId'));
         } elseif ($statusId == -10) {
 
-            $applications = InheritanceApplication::where('status', 'rejected')->paginate(10);
+            $applications = (clone $base)->where('status', 'rejected')->paginate(10);
             return view('inheritance.status-applications', compact('applications', 'statusId'));
         } elseif ($statusId == 100) {
 
-            $applications = InheritanceApplication::orderBy('created_at', 'desc')->paginate(10);
+            $applications = (clone $base)->orderBy('created_at', 'desc')->paginate(10);
             return view('inheritance.status-applications', compact('applications', 'statusId'));
         }
     }
 
     public function guardianshipStatusApplications($statusId)
     {
+        $base = AccessControl::scopeApplications(GuardianshipApplication::query());
+
         if ($statusId == 0) {
 
-            $applications = GuardianshipApplication::where('status', 'submitted')->paginate(10);
+            $applications = (clone $base)->where('status', 'submitted')->paginate(10);
             return view('guardianship.status-applications', compact('applications', 'statusId'));
         } elseif ($statusId == 10) {
 
-            $applications = GuardianshipApplication::where('status', 'accomplished')->paginate(10);
+            $applications = (clone $base)->where('status', 'accomplished')->paginate(10);
             return view('guardianship.status-applications', compact('applications', 'statusId'));
         } elseif ($statusId == -10) {
 
-            $applications = GuardianshipApplication::where('status', 'rejected')->paginate(10);
+            $applications = (clone $base)->where('status', 'rejected')->paginate(10);
             return view('guardianship.status-applications', compact('applications', 'statusId'));
         } elseif ($statusId == 100) {
 
-            $applications = GuardianshipApplication::orderBy('created_at', 'desc')->paginate(10);
+            $applications = (clone $base)->orderBy('created_at', 'desc')->paginate(10);
             return view('guardianship.status-applications', compact('applications', 'statusId'));
         }
     }
@@ -971,19 +992,21 @@ class MasterController extends Controller
         $currentMonth = now()->month;
         $currentYear = now()->year;
 
-        $total_converts = ConvertApplication::count();
+        $total_converts = AccessControl::scopeApplications(ConvertApplication::query())->count();
 
-        $this_month = ConvertApplication::whereMonth('created_at', $currentMonth)
+        $this_month = AccessControl::scopeApplications(ConvertApplication::query())
+            ->whereMonth('created_at', $currentMonth)
             ->whereYear('created_at', $currentYear)
             ->count();
 
-        $pending = ConvertApplication::where('status', 'pending')->count();
-        $accomplished = ConvertApplication::where('status', 'accomplished')->count();
+        $pending = AccessControl::scopeApplications(ConvertApplication::query())->where('status', 'pending')->count();
+        $accomplished = AccessControl::scopeApplications(ConvertApplication::query())->where('status', 'accomplished')->count();
 
-        $sources = ConvertApplication::distinct('former_religion')->count();
-        $applications = ConvertApplication::latest()->paginate(10);
+        $sources = AccessControl::scopeApplications(ConvertApplication::query())->distinct('former_religion')->count();
+        $applications = AccessControl::scopeApplications(ConvertApplication::query())->latest()->paginate(10);
 
-        $religions = ConvertApplication::select('former_religion')
+        $religions = AccessControl::scopeApplications(ConvertApplication::query())
+            ->select('former_religion')
             ->get()
             ->groupBy('former_religion')
             ->map(function ($group) use ($total_converts) {
@@ -1003,21 +1026,22 @@ class MasterController extends Controller
 
     public function convertStatusApplications($statusId)
     {
+        $base = AccessControl::scopeApplications(ConvertApplication::query());
 
         if ($statusId == 0) {
-            $applications = ConvertApplication::where('status', 'pending')->paginate(10);
+            $applications = (clone $base)->where('status', 'pending')->paginate(10);
             return view('converts.status-applications', compact('applications', 'statusId'));
         } elseif ($statusId == 10) {
 
-            $applications = ConvertApplication::where('status', 'accomplished')->paginate(10);
+            $applications = (clone $base)->where('status', 'accomplished')->paginate(10);
             return view('converts.status-applications', compact('applications', 'statusId'));
         } elseif ($statusId == -10) {
 
-            $applications = ConvertApplication::where('status', 'rejected')->paginate(10);
+            $applications = (clone $base)->where('status', 'rejected')->paginate(10);
             return view('converts.status-applications', compact('applications', 'statusId'));
         } elseif ($statusId == 100) {
 
-            $applications = ConvertApplication::orderBy('created_at', 'desc')->paginate(10);
+            $applications = (clone $base)->orderBy('created_at', 'desc')->paginate(10);
             return view('converts.status-applications', compact('applications', 'statusId'));
         }
     }
@@ -1072,95 +1096,224 @@ class MasterController extends Controller
             9 => 'Your account is suspended.',
         ];
 
-        // Get stats for each user role
-        $roles = [
-            'Imaam' => 1,
-            'District Qadh' => 2,
-            'Directorate Sharia' => 3
-        ];
+        // Build per-role stat cards from whichever roles the logged-in
+        // officer is actually allowed to see (Director sees every role,
+        // a District Khadhi sees County Sheikh + Imaam, etc.)
+        $visibleUsersBase = AccessControl::visibleUsersQuery();
 
-        $roleStats = [];
+        $roleStats = Role::orderByDesc('level')->get()
+            ->filter(function ($role) {
+                $me = AccessControl::user();
+                return AccessControl::hasFullAccess() || $role->level < ($me->role?->level ?? 0);
+            })
+            ->map(function ($role) {
+                $base = AccessControl::visibleUsersQuery()->where('role_id', $role->id);
 
-        foreach ($roles as $roleName => $roleId) {
-            // Total users for this role
-            $totalUsers = User::where('user_role', $roleId)->count();
+                return [
+                    'title' => $role->name,
+                    'icon' => $role->icon,
+                    'color' => $role->color,
+                    'bg' => '#F0FDF0',
+                    'slug' => $role->slug,
+                    'stats' => [
+                        'users' => (clone $base)->count(),
+                        'active' => (clone $base)->where('account_status', 10)->count(),
+                        'pending' => (clone $base)->whereIn('account_status', [1, 0, 8, 9])->count(),
+                        'suspended' => (clone $base)->where('account_status', 9)->count(),
+                    ],
+                ];
+            })
+            ->values()
+            ->all();
 
-            $activeUsers = User::where('user_role', $roleId)
-                ->where('account_status', 10)
-                ->count();
+        $users = (clone $visibleUsersBase)->orderBy('id', 'desc')->paginate(7);
 
-            // Pending users for this role (assuming status 0 means pending)
-            $pendingUsers = User::where('user_role', $roleId)
-                ->whereIn('account_status', [1, 0, 8, 9]) // Pending status (banned, locked, suspended)
-                ->count();
-
-            $suspended = User::where('user_role', $roleId)
-                ->where('account_status', 9) // Pending status (banned, locked, suspended)
-                ->count();
-
-            $roleStats[] = [
-                'title' => $roleName,
-                'icon' => Helper::getIconForRole($roleId),
-                'color' => '#00580f',
-                'bg' => '#F0FDF0',
-                'stats' => [
-                    'users' => $totalUsers,
-                    'active' => $activeUsers,
-                    'pending' => $pendingUsers,
-                    'suspended' => $suspended,
-                ]
-            ];
-        }
-
-        $users = User::orderBy('id', 'desc')->paginate(7);
-
-        return view('admin.user-dashboard', compact('roleStats', 'statusMessages', 'users', 'suspended'));
+        return view('admin.user-dashboard', compact('roleStats', 'statusMessages', 'users'));
     }
 
 
     public function addUsers()
     {
-        return view('admin.add-users');
+        $assignableRoles = AccessControl::assignableRoles();
+
+        return view('admin.add-users', compact('assignableRoles'));
     }
 
 
-    public function manageUsers()
+    public function manageUsers(Request $request)
     {
-        $users = User::orderBy('id', 'desc')->paginate(7);
+        $query = AccessControl::visibleUsersQuery();
 
-        return view('admin.manage-users', compact(['users']));
+        $activeRole = null;
+        if ($request->filled('role')) {
+            $activeRole = Role::where('slug', $request->query('role'))->first();
+            if ($activeRole) {
+                $query->where('role_id', $activeRole->id);
+            }
+        }
+
+        $users = $query->orderBy('id', 'desc')->paginate(7)->withQueryString();
+        $assignableRoles = AccessControl::assignableRoles();
+
+        // Every role currently visible to this officer — powers the role
+        // filter chips at the top of the page.
+        $visibleRoles = Role::orderByDesc('level')->get()->filter(function ($role) {
+            $me = AccessControl::user();
+            return AccessControl::hasFullAccess() || $role->level < ($me->role?->level ?? 0);
+        })->values();
+
+        return view('admin.manage-users', compact('users', 'assignableRoles', 'activeRole', 'visibleRoles'));
     }
 
 
     public function saveNewUser(Request $request)
     {
+        $me = AccessControl::user();
 
         $data = $request->validate([
             'username' => 'required|unique:users,username',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'nullable|email|unique:users,email',
             'password' => 'required|min:6',
-            'firstname' => 'nullable|string',
+            'firstname' => 'required|string',
             'lastname' => 'nullable|string',
             'gender' => 'nullable|in:male,female,other',
             'phonenumber' => 'nullable|string',
             'country' => 'nullable|string',
             'profile_photo' => 'nullable|image|max:2048',
-            'user_role' => 'required|integer',
-            'account_status' => 'required|integer',
-            'registration_status' => 'required|integer',
+            'role_id' => 'required|integer|exists:roles,id',
+            'region' => 'nullable|string',
+            'district' => 'nullable|string',
+            'county' => 'nullable|string',
+            'mosque_name' => 'nullable|string',
+            'account_status' => 'nullable|integer',
+            'registration_status' => 'nullable|integer',
         ]);
+
+        // Every scope below "global" rolls its case records up through
+        // region -> district -> county, all the way to the Regional
+        // Assistant and Director. If region is left blank here, this
+        // account's records become invisible to their Regional Assistant,
+        // so it's required for every role except a global (Director) one.
+        $targetRole = Role::find($data['role_id']);
+
+        if ($targetRole && $targetRole->data_scope !== 'global' && empty($data['region'])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Region is required for this role.',
+                'errors' => ['region' => ['Region is required for this role.']],
+            ], 422);
+        }
+
+        // The role being granted must be one this officer is actually
+        // allowed to hand out (Director -> anyone, District Khadhi ->
+        // County Sheikh/Imaam only, everyone else -> nobody).
+        $assignableRoleIds = AccessControl::assignableRoles()->pluck('id')->all();
+
+        if (!in_array((int) $data['role_id'], $assignableRoleIds, true)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You are not permitted to create an account with that role.',
+            ], 403);
+        }
+
+        // Officers below full access may only onboard staff into their own
+        // jurisdiction — this is enforced server-side regardless of what the
+        // form submits. Region always inherits from the creator, since it's
+        // the top-level grouping every scope below Director rolls up into —
+        // leaving it to free-text entry at every level would let a typo
+        // ("Busoga" vs "busoga") silently break the Regional Assistant's
+        // and Director's visibility into records several levels down.
+        if (!AccessControl::hasFullAccess()) {
+            $scope = $me->role?->data_scope;
+
+            $data['region'] = $me->region;
+
+            if ($scope === 'district') {
+                $data['district'] = $me->district;
+            } elseif ($scope === 'county') {
+                $data['district'] = $me->district;
+                $data['county'] = $me->county;
+            }
+        }
 
         if ($request->hasFile('profile_photo')) {
             $data['profile_photo'] = $request->file('profile_photo')->store('profiles', 'public');
         }
 
-        $data['password'] = bcrypt($data['password']);
+        $role = Role::find($data['role_id']);
 
-        User::create($data);
+        $data['password'] = bcrypt($data['password']);
+        $data['user_role'] = match ($role->slug) {
+            'imaam' => 1,
+            'district_khadhi' => 2,
+            'director' => 3,
+            'regional_assistant' => 4,
+            default => 1,
+        };
+        $data['account_status'] = $data['account_status'] ?? 10;
+        $data['registration_status'] = $data['registration_status'] ?? 1;
+        $data['created_by'] = $me?->id;
+
+        $user = User::create($data);
+
+        Helper::auditTrail('User Created', 'User', $user->id, 'success', null, ['role' => $role->name], "Created account for {$user->full_name} ({$role->name}).");
 
         return response()->json([
             'status' => 'success',
             'message' => 'User created successfully!'
+        ]);
+    }
+
+    /**
+     * Suspend, unsuspend, or ban an account. Re-uses the same jurisdiction
+     * rules as account creation: a Director can act on anyone, a District
+     * Khadhi only on County Sheikhs/Imaams within his own district.
+     */
+    public function changeUserStatus(Request $request, $id)
+    {
+        $data = $request->validate([
+            'status' => 'required|in:0,9,10',
+        ]);
+
+        $target = User::with('role')->findOrFail($id);
+        $me = AccessControl::user();
+
+        if ($me && $me->id === $target->id) {
+            return response()->json(['status' => 'error', 'message' => 'You cannot change the status of your own account.'], 403);
+        }
+
+        if (!AccessControl::canManageUser($target)) {
+            return response()->json(['status' => 'error', 'message' => 'You are not permitted to manage this account.'], 403);
+        }
+
+        $requiredPermission = match ((int) $data['status']) {
+            0 => 'users.ban',
+            default => 'users.suspend',
+        };
+
+        if (!AccessControl::can($requiredPermission)) {
+            return response()->json(['status' => 'error', 'message' => 'You do not have permission to perform this action.'], 403);
+        }
+
+        $previous = $target->account_status;
+        $target->account_status = $data['status'];
+        $target->save();
+
+        $labels = [0 => 'Banned', 9 => 'Suspended', 10 => 'Activated'];
+
+        Helper::auditTrail(
+            'Account ' . ($labels[$data['status']] ?? 'Updated'),
+            'User',
+            $target->id,
+            'success',
+            ['account_status' => $previous],
+            ['account_status' => $data['status']],
+            "{$labels[$data['status']]} the account for {$target->full_name}."
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'message' => "Account {$labels[$data['status']]} successfully.",
         ]);
     }
 
@@ -1171,9 +1324,6 @@ class MasterController extends Controller
         if (!$adminId) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-
-        // 2️⃣ Get admin
-        $admin = DB::table('users')->where('id', $adminId)->first();
 
         // 3️⃣ Build query
         $query = SearchIndex::query();
@@ -1203,11 +1353,10 @@ class MasterController extends Controller
             $query->whereDate('application_date', '<=', $request->date_to);
         }
 
-        // 4️⃣ Role-based filtering
-        $query->where(function ($q) use ($admin) {
-            $q->whereNull('required_role')
-                ->orWhere('required_role', '<=', $admin->user_role);
-        });
+        // 4️⃣ Jurisdiction-based filtering — an officer can only search within
+        // the same scope (own records / county / district / global) that
+        // governs their module dashboards.
+        $query = AccessControl::scopeApplications($query);
 
         // 5️⃣ Execute
         $results = $query
@@ -1324,6 +1473,71 @@ class MasterController extends Controller
 
         return response()->json([
             'success' => true
+        ]);
+    }
+
+    /**
+     * Director-only: update the status of a case in one of the four
+     * modules. The target model is resolved from an explicit `type` route
+     * parameter (see routes/web.php) — NOT by guessing which of the four
+     * tables happens to contain a row with this numeric $id.
+     *
+     * Guessing was the actual bug here: each of these four tables has its
+     * own independent auto-increment id column, so the same $id (e.g. 7)
+     * routinely exists in all four simultaneously. The old version always
+     * tried Divorce first, so finalizing a Guardianship/Inheritance/Convert
+     * application whose id collided with an existing Divorce row silently
+     * updated that unrelated Divorce row instead — leaving the intended
+     * application stuck at its old status forever, which is exactly why
+     * the Certificates module could never find any "accomplished" records
+     * for those three modules.
+     */
+    public function updateApplicationStatus(Request $request, $id)
+    {
+        $request->validate(['status' => 'required|string']);
+
+        $typeMap = [
+            'divorce' => DivorceApplication::class,
+            'inheritance' => InheritanceApplication::class,
+            'guardianship' => GuardianshipApplication::class,
+            'convert' => ConvertApplication::class,
+        ];
+
+        $type = $request->route('type');
+        $model = $typeMap[$type] ?? null;
+
+        if (!$model) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unknown application type.',
+            ], 404);
+        }
+
+        $application = $model::find($id);
+
+        if (!$application) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Application not found.',
+            ], 404);
+        }
+
+        $newStatus = $request->status;
+        $application->update(['status' => $newStatus]);
+
+        Helper::auditTrail(
+            'Status Updated',
+            class_basename($model),
+            $id,
+            'success',
+            null,
+            ['status' => $newStatus],
+            'Director updated application status to ' . $newStatus
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status updated successfully.',
         ]);
     }
 
@@ -1515,25 +1729,50 @@ class MasterController extends Controller
 
     public function showUser($id)
     {
-        return response()->json(User::findOrFail($id));
+        $user = User::with('role')->findOrFail($id);
+
+        if (!AccessControl::hasFullAccess() && !AccessControl::canManageUser($user) && AccessControl::user()?->id !== $user->id) {
+            return response()->json(['status' => 'error', 'message' => 'You are not permitted to view this account.'], 403);
+        }
+
+        $viewerRole = AccessControl::role();
+        $canSeeCredentials = AccessControl::hasFullAccess()
+            || ($viewerRole && in_array($viewerRole->data_scope, ['district', 'region'], true));
+
+        $payload = $user->toArray();
+
+        if (!$canSeeCredentials) {
+            $payload['generated_password'] = null;
+            $payload['credentials_status'] = null;
+        }
+
+        return response()->json($payload);
     }
 
     public function updateUser(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('role')->findOrFail($id);
+        $me = AccessControl::user();
+
+        if (!AccessControl::canManageUser($user)) {
+            return response()->json(['status' => 'error', 'message' => 'You are not permitted to edit this account.'], 403);
+        }
 
         try {
             $data = $request->validate([
                 'username' => 'required|unique:users,username,' . $user->id,
-                'email' => 'required|email|unique:users,email,' . $user->id,
-                'firstname' => 'nullable|string',
+                'email' => 'nullable|email|unique:users,email,' . $user->id,
+                'firstname' => 'required|string',
                 'lastname' => 'nullable|string',
                 'gender' => 'nullable|in:male,female,other',
                 'phonenumber' => 'nullable|string',
                 'country' => 'nullable|string',
-                'user_role' => 'required|integer',
-                'account_status' => 'required|integer',
-                'registration_status' => 'required|integer',
+                'role_id' => 'required|integer|exists:roles,id',
+                'region' => 'nullable|string',
+                'district' => 'nullable|string',
+                'county' => 'nullable|string',
+                'mosque_name' => 'nullable|string',
+                'registration_status' => 'nullable|integer',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
@@ -1542,11 +1781,45 @@ class MasterController extends Controller
             ], 422);
         }
 
+        $assignableRoleIds = AccessControl::assignableRoles()->pluck('id')->all();
+
+        if ((int) $data['role_id'] !== (int) $user->role_id && !in_array((int) $data['role_id'], $assignableRoleIds, true)) {
+            return response()->json(['status' => 'error', 'message' => 'You are not permitted to assign that role.'], 403);
+        }
+
+        // Same rule as account creation: region is required for every role
+        // except a global (Director) one, since it's what lets the Regional
+        // Assistant/Director see records several levels down the hierarchy.
+        $targetRole = Role::find($data['role_id']);
+
+        if ($targetRole && $targetRole->data_scope !== 'global' && empty($data['region'])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Region is required for this role.',
+                'errors' => ['region' => ['Region is required for this role.']],
+            ], 422);
+        }
+
+        if (!AccessControl::hasFullAccess()) {
+            $scope = $me->role?->data_scope;
+
+            $data['region'] = $me->region;
+
+            if ($scope === 'district') {
+                $data['district'] = $me->district;
+            } elseif ($scope === 'county') {
+                $data['district'] = $me->district;
+                $data['county'] = $me->county;
+            }
+        }
+
         if ($request->hasFile('profile_photo')) {
             $data['profile_photo'] = $request->file('profile_photo')->store('profiles', 'public');
         }
 
         $user->update($data);
+
+        Helper::auditTrail('User Updated', 'User', $user->id, 'success', null, $data, "Updated account for {$user->full_name}.");
 
         return response()->json([
             'status' => 'success',
@@ -1558,7 +1831,16 @@ class MasterController extends Controller
 
     public function deleteUser($id)
     {
-        User::findOrFail($id)->delete();
+        $user = User::with('role')->findOrFail($id);
+
+        if (!AccessControl::canManageUser($user) || !AccessControl::can('users.delete')) {
+            return response()->json(['status' => 'error', 'message' => 'You are not permitted to delete this account.'], 403);
+        }
+
+        $name = $user->full_name;
+        $user->delete();
+
+        Helper::auditTrail('User Deleted', 'User', $id, 'success', null, null, "Deleted account for {$name}.");
 
         return response()->json([
             'status' => 'success',

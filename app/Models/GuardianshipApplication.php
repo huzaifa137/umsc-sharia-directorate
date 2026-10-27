@@ -10,8 +10,14 @@ class GuardianshipApplication extends Model
     use HasFactory;
 
     protected $fillable = [
-        // Ward Details
+        // Application
         'application_id',
+        'created_by',
+        'officer_region',
+        'officer_district',
+        'officer_county',
+
+        // Ward Details
         'ward_name',
         'ward_gender',
         'ward_dob',
@@ -71,4 +77,9 @@ class GuardianshipApplication extends Model
         'guardian_dob' => 'date',
         'powers_granted' => 'array',
     ];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

@@ -108,7 +108,7 @@
 
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white py-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3"
-                    style="background: linear-gradient(90deg, #ffffff 0%, #f8fafc 100%); border-bottom: 1px solid #e2e8f0;">
+                    style="background: #ffffff; border-bottom: 1px solid #e2e8f0;">
                     <div>
                         <h5 class="mb-0 fw-bold" style="color: #1e293b;">Recent Inheritance Applications</h5>
                         <div class="d-flex align-items-center gap-2 mt-1">
@@ -210,6 +210,11 @@
                         </tbody>
                     </table>
 
+@include('layouts.views.inheritance-actions-modals')
+@include('layouts.views.shared-status-modal')
+@include('layouts.views.case-modal-styles')
+
+
                     <div class="mt-4 me-4">
                         {{ $applications->links('pagination::bootstrap-5') }}
                     </div>
@@ -217,6 +222,28 @@
             </div>
         </div>
 
+        <div class="row g-4 mt-1">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                            <div class="d-flex align-items-center">
+                                <div class="p-3 rounded-circle me-3" style="background: #00580f;">
+                                    <i class="bx bx-file text-white fs-4"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Report Exports</h6>
+                                    <p class="text-muted small mb-0">Filter Inheritance records and export a certified report</p>
+                                </div>
+                            </div>
+                            <a href="{{ url('reports/inheritance') }}" class="btn fw-bold" style="background: #00580f; color: white;">
+                                <i class="bx bxs-file-pdf me-1"></i> Open Reports
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
     </div>

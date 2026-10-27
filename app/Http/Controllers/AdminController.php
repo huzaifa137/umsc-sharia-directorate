@@ -12,62 +12,61 @@ use App\Models\password_reset_table;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 use App\Models\DivorceApplication;
 use App\Models\NikkahApplication;
 use App\Models\ConvertApplication;
 use App\Models\GuardianshipApplication;
 use App\Models\InheritanceApplication;
+use App\Services\AccessControl;
 
 class AdminController extends Controller
 {
     public function adminDashboard()
     {
         // INHERITANCE
-        $totalInheritance = InheritanceApplication::count();
-        $pendingInheritance = InheritanceApplication::where('status', 'submitted')->count();
-        $thisMonthInheritance = InheritanceApplication::whereMonth('created_at', now()->month)
+        $totalInheritance = AccessControl::scopeApplications(InheritanceApplication::query())->count();
+        $pendingInheritance = AccessControl::scopeApplications(InheritanceApplication::query())->where('status', 'submitted')->count();
+        $thisMonthInheritance = AccessControl::scopeApplications(InheritanceApplication::query())
+            ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->count();
 
         // NIKAH
-        $totalNikah = NikkahApplication::count();
-        $pendingNikah = NikkahApplication::where('status', 'submitted')->count();
-        $approvedTodayNikah = NikkahApplication::whereDate('updated_at', now())->where('status', 'approved')->count();
+        $totalNikah = AccessControl::scopeApplications(NikkahApplication::query())->count();
+        $pendingNikah = AccessControl::scopeApplications(NikkahApplication::query())->where('status', 'submitted')->count();
+        $approvedTodayNikah = AccessControl::scopeApplications(NikkahApplication::query())->whereDate('updated_at', now())->where('status', 'approved')->count();
 
         // DIVORCE (if needed for right-side card later)
-        $totalDivorce = DivorceApplication::count();
-        $pendingDivorce = DivorceApplication::where('status', 'submitted')->count();
-        $approvedTodayDivorce = DivorceApplication::whereDate('updated_at', now())->where('status', 'approved')->count();
-
-        $totalInheritance = InheritanceApplication::count();
+        $totalDivorce = AccessControl::scopeApplications(DivorceApplication::query())->count();
+        $pendingDivorce = AccessControl::scopeApplications(DivorceApplication::query())->where('status', 'submitted')->count();
+        $approvedTodayDivorce = AccessControl::scopeApplications(DivorceApplication::query())->whereDate('updated_at', now())->where('status', 'approved')->count();
 
         // Optional: Current period (this month)
-        $currentMonthInheritance = InheritanceApplication::whereMonth('created_at', now()->month)
+        $currentMonthInheritance = AccessControl::scopeApplications(InheritanceApplication::query())
+            ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->count();
 
         // Previous cards
-        $totalNikah = NikkahApplication::count();
-        $currentMonthNikah = NikkahApplication::whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
-            ->count();
-
-        $thisMonthInheritance = InheritanceApplication::whereMonth('created_at', now()->month)
+        $currentMonthNikah = AccessControl::scopeApplications(NikkahApplication::query())
+            ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->count();
 
         $currentMonthCases = $currentMonthNikah;
 
-        $totalConverts = ConvertApplication::count();
-        $pendingConverts = ConvertApplication::where('status', 'pending')->count();
-        $thisMonthConverts = ConvertApplication::whereMonth('created_at', now()->month)
+        $totalConverts = AccessControl::scopeApplications(ConvertApplication::query())->count();
+        $pendingConverts = AccessControl::scopeApplications(ConvertApplication::query())->where('status', 'pending')->count();
+        $thisMonthConverts = AccessControl::scopeApplications(ConvertApplication::query())
+            ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->count();
 
-        $totalGuardianships = GuardianshipApplication::count();
-        $pendingGuardianships = GuardianshipApplication::where('status', 'pending')->count();
-        $activeGuardianships = GuardianshipApplication::where('status', 'active')->count();
+        $totalGuardianships = AccessControl::scopeApplications(GuardianshipApplication::query())->count();
+        $pendingGuardianships = AccessControl::scopeApplications(GuardianshipApplication::query())->where('status', 'pending')->count();
+        $activeGuardianships = AccessControl::scopeApplications(GuardianshipApplication::query())->where('status', 'active')->count();
 
 
         return view('admin.dashboard', compact(
@@ -239,28 +238,30 @@ class AdminController extends Controller
             ]);
         }
 
-        // Role-based redirection
-        $url1 = '/users/dashboard';
-
-        if ($userInfo->user_role == 1) {
-
-            Helper::auditTrail('Login Successful', 'User', Session::get('LoggedAdmin'), 'success', ['status' => 'Login Successful'], ['status' => 'Approved'], 'User Login Successful.');
-
-            // Admin login basing on role
-            $request->session()->put('LoggedAdmin', $userInfo->id);
+        // Only accounts holding a valid, recognised role on the system
+        // (Imaam, County Sheikh, District Khadhi, Director for Sharia, or a
+        // custom role created from Roles & Privileges) may log in. A
+        // "normal person" with no role assigned is rejected here.
+        if (!$userInfo->role_id) {
+            Helper::auditTrail('Login Failed', 'User', $userInfo->id, 'fail', ['status' => 'Failed Login'], ['status' => 'Failed'], 'Account has no assigned role.');
 
             return response()->json([
-                'status' => true,
-                'message' => 'Login successful',
-                'redirect_url' => $url1,
+                'status' => false,
+                'message' => 'Your account does not have system access. Please contact the Directorate for Sharia.',
             ]);
-
         }
 
-        // Fallback
+        Session::put('LoggedAdmin', $userInfo->id);
+        $userInfo->forceFill(['last_login_at' => now()])->save();
+
+        Helper::auditTrail('Login Successful', 'User', $userInfo->id, 'success', ['status' => 'Login Successful'], ['status' => 'Approved'], 'User Login Successful.');
+
+        $redirectUrl = '/users/dashboard';
+
         return response()->json([
-            'status' => false,
-            'message' => 'User role not recognized.',
+            'status' => true,
+            'message' => 'Login successful',
+            'redirect_url' => $redirectUrl,
         ]);
     }
 
@@ -355,11 +356,96 @@ class AdminController extends Controller
         }
 
         $user->password = Hash::make($request->newPassword);
+        $user->must_change_password = false;
         $user->save();
+
+        Helper::auditTrail('Password Changed', 'User', $user->id, 'success', null, null, "{$user->full_name} changed their password.");
 
         return response()->json([
             'status' => true,
-            'message' => 'Password changed successfully.'
+            'message' => 'Password changed successfully.',
+            'redirect_url' => '/users/dashboard',
+        ]);
+    }
+
+    /**
+     * Forced password-change screen shown to accounts created via Bulk
+     * Import (or reset by an administrator) before they can use the rest
+     * of the system.
+     */
+    public function forcePasswordChange()
+    {
+        $user = User::find(session('LoggedAdmin'));
+
+        if (!$user || !$user->must_change_password) {
+            return redirect('/users/dashboard');
+        }
+
+        return view('admin.force-password-change', compact('user'));
+    }
+
+    /**
+     * Used by the "Update Your Login Credentials" popup shown on the
+     * dashboard to any account still using a system-generated password
+     * (e.g. created via Bulk Import). Lets the user pick their own username
+     * and password in one step; clears the plain-text generated_password
+     * so Manage Users now shows "Updated" instead of the old password.
+     */
+    public function updateCredentials(Request $request)
+    {
+        $userId = session('LoggedAdmin');
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json(['status' => false, 'message' => 'User not found.'], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'username' => [
+                'required',
+                'string',
+                'min:3',
+                'max:50',
+                'alpha_dash',
+                Rule::unique('users', 'username')->ignore($user->id),
+            ],
+            'newPassword' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[A-Z]/',
+                'regex:/[^a-zA-Z0-9]/',
+            ],
+            'confirmPassword' => 'required|same:newPassword',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $user->username = $request->username;
+        $user->password = Hash::make($request->newPassword);
+        $user->must_change_password = false;
+        $user->generated_password = null;
+        $user->save();
+
+        Helper::auditTrail(
+            'Credentials Updated',
+            'User',
+            $user->id,
+            'success',
+            null,
+            ['username' => $user->username],
+            "{$user->full_name} updated their login credentials."
+        );
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Your login credentials have been updated successfully.',
         ]);
     }
 

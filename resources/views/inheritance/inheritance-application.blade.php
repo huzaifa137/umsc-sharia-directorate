@@ -46,6 +46,7 @@
 
     const translations = {
         en: {
+            select_property_type_option: "-- Select Type --",
             prev_btn: "Previous",
             next_step_btn: "Next Step",
             submit_btn: "Submit Application",
@@ -203,6 +204,7 @@
 
         },
         ar: {
+            select_property_type_option: "-- اختر النوع --",
             prev_btn: "السابق",
             next_step_btn: "الخطوة التالية",
             submit_btn: "إرسال الطلب",
@@ -352,6 +354,7 @@
 
         },
         sw: {
+            select_property_type_option: "-- Chagua Aina --",
             prev_btn: "Iliyopita",
             next_step_btn: "Hatua Ifuatayo",
             submit_btn: "Tuma Maombi",
@@ -506,7 +509,7 @@
 <div style="display: flex; min-height: 100vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
     <!-- Left Side: Step Navigation -->
     <div
-        style="flex: 0.4; background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); padding: 40px; overflow-y: auto; border-right: 1px solid #e2e8f0;">
+        style="flex: 0.4; background: #f8fafc; padding: 40px; overflow-y: auto; border-right: 1px solid #e2e8f0;">
         <div style="position: sticky; top: 0; background: transparent; padding-bottom: 20px; z-index: 10;">
             <h1 data-i18n="inheritance_title"
                 style="color: #2C5C36; margin-bottom: 5px; font-size: 2rem; font-weight: 800; text-align:center;">
@@ -534,12 +537,12 @@
                 <div
                     style="height: 10px; background: #f3f4f6; border-radius: 5px; overflow: hidden; margin-bottom: 8px;">
                     <div id="progressBar"
-                        style="height: 100%; background: linear-gradient(90deg, #2C5C36, #2C5C36); width: 0%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
+                        style="height: 100%; background: #2C5C36; width: 0%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
                     </div>
                 </div>
                 <p id="completedSteps"
                     style="font-size: 13px; color: #9ca3af; margin-top: 10px; text-align: center; font-weight: 500;"
-                    data-i18n="[text]completed_steps_text">
+                    data-i18n="completed_steps_text">
                     0 of 4 sections completed
                 </p>
 
@@ -617,7 +620,7 @@
 
             <!-- Instructions -->
             <div
-                style="margin-top: 40px; background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%); padding: 24px; border-radius: 14px; border-left: 4px solid #2C5C36;">
+                style="margin-top: 40px; background: #e0f2fe; padding: 24px; border-radius: 14px; border-left: 4px solid #2C5C36;">
 
                 <!-- Header -->
                 <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
@@ -663,9 +666,9 @@
 
     <!-- Right Side: Form Content -->
     <div
-        style="flex: 1; background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%); padding: 40px; overflow-y: auto;">
+        style="flex: 1; background: #ffffff; padding: 40px; overflow-y: auto;">
         <div
-            style="position: sticky; top: 0; background: linear-gradient(180deg, #ffffff 0%, #ffffff 70%); padding-bottom: 20px; z-index: 10; border-bottom: 1px solid #e5e7eb; margin-bottom: 30px; backdrop-filter: blur(10px);">
+            style="position: sticky; top: 0; background: #ffffff; padding-bottom: 20px; z-index: 10; border-bottom: 1px solid #e5e7eb; margin-bottom: 30px; backdrop-filter: blur(10px);">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2 id="currentStepTitle"
                     style="color: #2C5C36; margin: 0; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px;"
@@ -673,7 +676,7 @@
                     Deceased Person Details
                 </h2>
                 <div id="stepCompletionStatus"
-                    style="background: linear-gradient(135deg, #2C5C36, #2C5C36); padding: 8px 20px; border-radius: 20px; font-size: 14px; color: white; font-weight: 600; box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2);">
+                    style="background: #2C5C36; padding: 8px 20px; border-radius: 20px; font-size: 14px; color: white; font-weight: 600; box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2);">
                     Step <span id="currentStepNumber" style="font-weight: 800;">1</span> of 4
                 </div>
             </div>
@@ -699,7 +702,7 @@
             <!-- Step 1: Deceased Person Details -->
             <div class="form-step active" id="step1">
                 <div
-                    style="background: linear-gradient(135deg, #2C5C36 0%, #2C5C36 100%); border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(30, 58, 138, 0.15);">
+                    style="background: #2C5C36; border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(30, 58, 138, 0.15);">
                     <!-- Background Patterns -->
                     <div
                         style="position: absolute; top: -100px; right: -100px; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; filter: blur(20px);">
@@ -739,7 +742,7 @@
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Full
                                 Name of Deceased *</label>
                             <input type="text" name="deceased_name" placeholder=""
-                                data-i18n="[placeholder]deceased_name_placeholder" style="{{ $fieldStyle }}"
+                                data-i18n="deceased_name_placeholder" style="{{ $fieldStyle }}"
                                 data-required="true">
                         </div>
 
@@ -773,7 +776,7 @@
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Place
                                 of Death *</label>
                             <input type="text" name="place_of_death" placeholder=""
-                                data-i18n="[placeholder]place_of_death_placeholder" style="{{ $fieldStyle }}"
+                                data-i18n="place_of_death_placeholder" style="{{ $fieldStyle }}"
                                 data-required="true">
                         </div>
 
@@ -784,7 +787,7 @@
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Cause
                                 of Death</label>
                             <input type="text" name="cause_of_death" placeholder=""
-                                data-i18n="[placeholder]cause_of_death_placeholder" style="{{ $fieldStyle }}"
+                                data-i18n="cause_of_death_placeholder" style="{{ $fieldStyle }}"
                                 data-required="false">
                         </div>
 
@@ -795,7 +798,7 @@
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">National
                                 ID (NIN) *</label>
                             <input type="text" name="deceased_nin" placeholder=""
-                                data-i18n="[placeholder]nin_placeholder" style="{{ $fieldStyle }}"
+                                data-i18n="nin_placeholder" style="{{ $fieldStyle }}"
                                 data-required="true" maxlength="14">
                         </div>
 
@@ -820,7 +823,7 @@
                             <label data-i18n="occupation_label"
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Occupation/Profession</label>
                             <input type="text" name="occupation" placeholder=""
-                                data-i18n="[placeholder]occupation_placeholder" style="{{ $fieldStyle }}"
+                                data-i18n="occupation_placeholder" style="{{ $fieldStyle }}"
                                 data-required="false">
                         </div>
 
@@ -830,7 +833,7 @@
                             <label data-i18n="last_residence_label"
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Last
                                 Residence Address *</label>
-                            <textarea name="last_residence" rows="2" placeholder="" data-i18n="[placeholder]last_residence_placeholder"
+                            <textarea name="last_residence" rows="2" placeholder="" data-i18n="last_residence_placeholder"
                                 style="{{ $fieldStyle }} min-height: 80px;" data-required="true"></textarea>
                         </div>
 
@@ -881,7 +884,7 @@
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Applicant
                                 Name</label>
                             <input type="text" name="applicant_name" placeholder=""
-                                data-i18n="[placeholder]applicant_name_placeholder" style="{{ $fieldStyle }}"
+                                data-i18n="applicant_name_placeholder" style="{{ $fieldStyle }}"
                                 data-required="true">
                         </div>
 
@@ -911,7 +914,7 @@
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Applicant
                                 NIN *</label>
                             <input type="text" name="applicant_nin" placeholder=""
-                                data-i18n="[placeholder]applicant_nin_placeholder" style="{{ $fieldStyle }}"
+                                data-i18n="applicant_nin_placeholder" style="{{ $fieldStyle }}"
                                 data-required="true" maxlength="14">
                         </div>
 
@@ -922,7 +925,7 @@
                                 style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px;">Telephone
                                 Number *</label>
                             <input type="tel" name="applicant_phone" placeholder=""
-                                data-i18n="[placeholder]applicant_phone_placeholder" style="{{ $fieldStyle }}"
+                                data-i18n="applicant_phone_placeholder" style="{{ $fieldStyle }}"
                                 data-required="true">
                         </div>
 
@@ -933,7 +936,7 @@
             <!-- Step 2: Estate Inventory & Valuation -->
             <div class="form-step" id="step2" style="display: none;">
                 <div
-                    style="background: linear-gradient(135deg, #2C5C36 0%, #2C5C36 100%); border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(5, 150, 105, 0.15);">
+                    style="background: #2C5C36; border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(5, 150, 105, 0.15);">
                     <!-- Background Pattern -->
                     <div
                         style="position: absolute; top: -100px; right: -100px; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; filter: blur(20px);">
@@ -962,7 +965,7 @@
                             data-i18n="total_estate_value_label">Total Estimated Estate Value (UGX) *
                         </h4>
                         <input type="number" name="total_estate_value" placeholder=""
-                            data-i18n="[placeholder]total_estate_value_placeholder"
+                            data-i18n="total_estate_value_placeholder"
                             style="width: 100%; padding: 18px 24px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.95); color: #111827; font-size: 20px; font-weight: 700; text-align: center; outline: none;"
                             data-required="true">
                         <p style="color: rgba(255,255,255,0.7); font-size: 13px; text-align: center; margin-top: 12px;"
@@ -1075,7 +1078,7 @@
                                         </label>
                                         <select name="property_type[]" class="property-type"
                                             style="{{ $selectStyle }}" data-required="true">
-                                            <option value="" data-i18n="-- Select Type --">-- Select Type --
+                                            <option value="" data-i18n="select_property_type_option">-- Select Type --
                                             </option>
                                             <option value="land" data-i18n="property_type_options.land">Land
                                             </option>
@@ -1108,7 +1111,7 @@
                                             Description *
                                         </label>
                                         <input type="text" name="property_description[]" placeholder=""
-                                            data-i18n="[placeholder]property_description_placeholder"
+                                            data-i18n="property_description_placeholder"
                                             style="{{ $fieldStyle }}" data-required="true">
                                     </div>
 
@@ -1119,7 +1122,7 @@
                                             Value (UGX) *
                                         </label>
                                         <input type="number" name="property_value[]" placeholder=""
-                                            data-i18n="[placeholder]property_value_placeholder"
+                                            data-i18n="property_value_placeholder"
                                             style="{{ $fieldStyle }}" data-required="true">
                                     </div>
 
@@ -1130,7 +1133,7 @@
                                             Location
                                         </label>
                                         <input type="text" name="property_location[]" placeholder=""
-                                            data-i18n="[placeholder]property_location_placeholder"
+                                            data-i18n="property_location_placeholder"
                                             style="{{ $fieldStyle }}" data-required="false">
                                     </div>
                                 </div>
@@ -1156,7 +1159,7 @@
             <!-- Step 3: Heirs Information -->
             <div class="form-step" id="step3" style="display: none;">
                 <div
-                    style="background: linear-gradient(135deg, #2C5C36 0%, #2C5C36 100%); border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(124, 58, 237, 0.15);">
+                    style="background: #2C5C36; border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(124, 58, 237, 0.15);">
 
                     <!-- Background Pattern -->
                     <div
@@ -1185,14 +1188,14 @@
                     <!-- SPOUSE Section -->
                     <div
                         style="background: rgba(255,255,255,0.08); padding: 30px; border-radius: 16px; margin-bottom: 40px; border: 1px solid rgba(255,255,255,0.1);">
-                        <h4 data-i18n="heirs_spouse_title"
+                        <h4
                             style="color: white; font-size: 18px; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 12px;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2" style="opacity: 0.8;">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
-                            SPOUSE
+                            <span data-i18n="heirs_spouse_title">SPOUSE</span>
                         </h4>
 
                         <div
@@ -1507,7 +1510,7 @@
         <button type="button" id="previewBtn" onclick="showPreview()"
             style="
                 padding: 16px 30px;
-                background: linear-gradient(135deg, #f59e0b, #d97706);
+                background: #f59e0b;
                 color: white;
                 border: none;
                 border-radius: 12px;
@@ -1531,7 +1534,7 @@
         </button>
 
         <button type="button" id="nextBtn" onclick="nextStep()"
-            style="padding: 16px 40px; background: linear-gradient(135deg, #2C5C36, #2C5C36); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);">
+            style="padding: 16px 40px; background: #2C5C36; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);">
             Next Step
             <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M9 18l6-6-6-6" />
@@ -1539,7 +1542,7 @@
         </button>
 
         <button type="submit" id="submitBtn"
-            style="padding: 16px 40px; background: linear-gradient(135deg, #2C5C36, #10b981); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: none; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
+            style="padding: 16px 40px; background: #2C5C36; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: none; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
             Submit Application
             <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M20 6L9 17l-5-5" />
@@ -1680,7 +1683,7 @@
     }
 
     .step-indicator.active .step-icon {
-        background: linear-gradient(135deg, #2C5C36, #2C5C36) !important;
+        background: #2C5C36 !important;
         color: white !important;
         transform: scale(1.1);
     }
@@ -1897,7 +1900,7 @@
         }
 
         /* Left navigation panel */
-        div[style*="flex: 0.4; background: linear-gradient"] {
+        div[style*="flex: 0.4; background:"] {
             flex: none;
             width: 100%;
             max-width: 100%;
@@ -1908,7 +1911,7 @@
         }
 
         /* Right form content */
-        div[style*="flex: 1; background: linear-gradient"] {
+        div[style*="flex: 1; background:"] {
             padding: 30px !important;
         }
     }
@@ -1917,12 +1920,12 @@
     @media (max-width: 768px) {
 
         /* Header section adjustments */
-        div[style*="position: sticky; top: 0; background: linear-gradient"] {
+        div[style*="position: sticky; top: 0; background:"] {
             padding-bottom: 15px !important;
             margin-bottom: 20px !important;
         }
 
-        div[style*="position: sticky; top: 0; background: linear-gradient"]>div {
+        div[style*="position: sticky; top: 0; background:"]>div {
             flex-direction: column;
             align-items: flex-start;
             gap: 15px;
@@ -1934,7 +1937,7 @@
         }
 
         /* Form step containers */
-        .form-step>div[style*="background: linear-gradient"] {
+        .form-step>div[style*="background:"] {
             padding: 25px !important;
             border-radius: 16px !important;
         }
@@ -2046,15 +2049,15 @@
     @media (max-width: 480px) {
 
         /* Even smaller screens */
-        div[style*="flex: 1; background: linear-gradient"] {
+        div[style*="flex: 1; background:"] {
             padding: 20px !important;
         }
 
-        div[style*="flex: 0.4; background: linear-gradient"] {
+        div[style*="flex: 0.4; background:"] {
             padding: 20px !important;
         }
 
-        .form-step>div[style*="background: linear-gradient"] {
+        .form-step>div[style*="background:"] {
             padding: 20px !important;
             border-radius: 12px !important;
         }
@@ -2102,7 +2105,7 @@
         }
 
         /* Instructions in left panel */
-        div[style*="margin-top: 40px; background: linear-gradient"] {
+        div[style*="margin-top: 40px; background:"] {
             padding: 20px !important;
         }
 
@@ -2121,7 +2124,7 @@
 
     /* Very small devices (360px) */
     @media (max-width: 360px) {
-        .form-step>div[style*="background: linear-gradient"] {
+        .form-step>div[style*="background:"] {
             padding: 15px !important;
         }
 
@@ -2247,7 +2250,7 @@
 
     /* Prevent horizontal overflow on the entire step 2 container */
     @media (max-width: 640px) {
-        #step2>div[style*="background: linear-gradient(135deg, #2C5C36 0%, #2C5C36 100%)"] {
+        #step2>div[style*="background: #2C5C36"] {
             padding: 25px 15px !important;
             overflow-x: hidden !important;
         }
@@ -2261,7 +2264,7 @@
 
     /* Responsive Container */
     .verification-container {
-        background: linear-gradient(135deg, #2C5C36 0%, #2C5C36 100%);
+        background: #2C5C36;
         border-radius: 20px;
         padding: 30px;
         position: relative;
@@ -2882,40 +2885,46 @@
             </div>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                 <div style="display: flex; flex-direction: column;">
-                    <label style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; margin-bottom: 8px;">Type *</label>
+                    <label data-i18n="property_type_label" style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; margin-bottom: 8px;">Type *</label>
                     <select name="property_type[]" class="property-type" style="${document.querySelector('.property-type').style.cssText}" data-required="true">
-                        <option value="">-- Select Type --</option>
-                        <option value="land">Land</option>
-                        <option value="house">House/Apartment</option>
-                        <option value="commercial">Commercial Building</option>
-                        <option value="agricultural">Agricultural Land</option>
-                        <option value="vehicle">Vehicle</option>
-                        <option value="bank_account">Bank Account</option>
-                        <option value="investment">Investment</option>
-                        <option value="jewelry">Jewelry/Gold</option>
-                        <option value="livestock">Livestock</option>
-                        <option value="other">Other</option>
+                        <option value="" data-i18n="select_property_type_option">-- Select Type --</option>
+                        <option value="land" data-i18n="property_type_options.land">Land</option>
+                        <option value="house" data-i18n="property_type_options.house">House/Apartment</option>
+                        <option value="commercial" data-i18n="property_type_options.commercial">Commercial Building</option>
+                        <option value="agricultural" data-i18n="property_type_options.agricultural">Agricultural Land</option>
+                        <option value="vehicle" data-i18n="property_type_options.vehicle">Vehicle</option>
+                        <option value="bank_account" data-i18n="property_type_options.bank_account">Bank Account</option>
+                        <option value="investment" data-i18n="property_type_options.investment">Investment</option>
+                        <option value="jewelry" data-i18n="property_type_options.jewelry">Jewelry/Gold</option>
+                        <option value="livestock" data-i18n="property_type_options.livestock">Livestock</option>
+                        <option value="other" data-i18n="property_type_options.other">Other</option>
                     </select>
                 </div>
                 <div style="display: flex; flex-direction: column;">
-                    <label style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; margin-bottom: 8px;">Description *</label>
-                    <input type="text" name="property_description[]" placeholder="e.g., 3-bedroom house, Toyota Premio" 
+                    <label data-i18n="property_description_label" style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; margin-bottom: 8px;">Description *</label>
+                    <input type="text" name="property_description[]" placeholder="e.g., 3-bedroom house, Toyota Premio" data-i18n="property_description_placeholder"
                            style="${document.querySelector('input[name="property_description[]"]').style.cssText}" data-required="true">
                 </div>
                 <div style="display: flex; flex-direction: column;">
-                    <label style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; margin-bottom: 8px;">Value (UGX) *</label>
-                    <input type="number" name="property_value[]" placeholder="e.g., 50000000" 
+                    <label data-i18n="property_value_label" style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; margin-bottom: 8px;">Value (UGX) *</label>
+                    <input type="number" name="property_value[]" placeholder="e.g., 50000000" data-i18n="property_value_placeholder"
                            style="${document.querySelector('input[name="property_value[]"]').style.cssText}" data-required="true" class="property-value">
                 </div>
                 <div style="display: flex; flex-direction: column;">
-                    <label style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; margin-bottom: 8px;">Location</label>
-                    <input type="text" name="property_location[]" placeholder="e.g., Kampala, Kololo" 
+                    <label data-i18n="property_location_label" style="font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; margin-bottom: 8px;">Location</label>
+                    <input type="text" name="property_location[]" placeholder="e.g., Kampala, Kololo" data-i18n="property_location_placeholder"
                            style="${document.querySelector('input[name="property_location[]"]').style.cssText}" data-required="false">
                 </div>
             </div>
         `;
 
         propertiesContainer.appendChild(newProperty);
+
+        // Re-apply the current language to the row we just inserted
+        // (data-i18n elements added after page load aren't translated automatically)
+        if (typeof changeLanguage === 'function' && typeof currentLanguage !== 'undefined') {
+            changeLanguage(currentLanguage);
+        }
 
         // Add event listener to new property value field
         newProperty.querySelector('.property-value').addEventListener('input', updatePropertyTotal);
@@ -3610,7 +3619,7 @@ function showPreview() {
         <div style="
             margin-top: 30px;
             padding: 20px;
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            background: #f0f9ff;
             border-radius: 12px;
             border-left: 4px solid #2C5C36;
         ">

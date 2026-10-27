@@ -249,6 +249,11 @@
                         </tbody>
                     </table>
 
+@include('layouts.views.inheritance-actions-modals')
+@include('layouts.views.shared-status-modal')
+@include('layouts.views.case-modal-styles')
+
+
                     <div class="mt-4 me-4">
                         {{ $applications->links('pagination::bootstrap-5') }}
                     </div>

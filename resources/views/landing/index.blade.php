@@ -198,6 +198,12 @@
                             </li>
 
                             <li>
+                                <a href="{{ route('fatwa.public.index') }}">
+                                    <span style="color: black;">Fatwa</span>
+                                </a>
+                            </li>
+
+                            <li>
                                 <a href="{{ url('users/login') }}" class="login-btn"
                                     style="border: 2px solid #4CAF50; color: #4CAF50 !important; padding: 6px 18px; border-radius: 5px; font-weight: 600; text-decoration: none; margin-left: 15px; display: inline-flex; align-items: center; justify-content: center; height: 40px;">
                                     {{ __('ui.nav.login') }}
@@ -614,6 +620,15 @@
                                 position: relative;
                             }
 
+                            .feature-card-2 .thumb img {
+                                width: 100%;
+                                height: 220px;
+                                object-fit: cover;
+                                display: block;
+                                border-top-left-radius: 12px;
+                                border-top-right-radius: 12px;
+                            }
+
                             .feature-card-2 .down-content {
                                 flex-grow: 1;
                                 /* Pushes button to bottom if content varies */
@@ -681,7 +696,7 @@
 
                             <div class="col-lg-12" style="margin-bottom: 30px;">
                                 <div class="item"
-                                    style="background: linear-gradient(135deg, #A41E1E 0%, #7a1616 100%); padding: 35px; border-radius: 20px; box-shadow: 0 10px 30px rgba(164, 30, 30, 0.2); position: relative; overflow: hidden;">
+                                    style="background: #A41E1E; padding: 35px; border-radius: 20px; box-shadow: 0 10px 30px rgba(164, 30, 30, 0.2); position: relative; overflow: hidden;">
                                     <div
                                         style="position: absolute; right: -20px; top: -20px; opacity: 0.1; font-size: 100px; color: #fff;">
                                         <i class="fa fa-users"></i>

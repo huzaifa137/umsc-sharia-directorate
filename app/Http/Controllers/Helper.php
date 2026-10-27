@@ -29,22 +29,30 @@ class Helper extends Controller
             ->value(DB::raw("CONCAT(firstname, ' ', lastname) as fullname"));
     }
 
-
+    /**
+     * Display name of the role of the currently logged in user, reading
+     * from the new `roles` table (via `role_id`) and falling back to the
+     * legacy integer `user_role` mapping for any record that was never
+     * migrated onto the new role system.
+     */
     public static function activerUSerRole()
     {
-         $roleId = DB::table('users')->where('id', Session('LoggedAdmin'))->value('user_role');
+        $user = DB::table('users')->where('id', Session('LoggedAdmin'))->first();
 
-        switch ($roleId) {
-            case 1:
-                return 'Imaam'; // Imaam
-            case 2:
-                return 'District Qadh'; // District Qadh
-            case 3:
-                return 'Directorate Sharia'; // Directorate Sharia
-            default:
-                return 'Un Known'; // Default icon
+        if (!$user) {
+            return 'Un Known';
         }
+
+        if ($user->role_id) {
+            $name = DB::table('roles')->where('id', $user->role_id)->value('name');
+            if ($name) {
+                return $name;
+            }
+        }
+
+        return self::legacyRoleName($user->user_role);
     }
+
     public static function generateApplicationId()
     {
         $prefix = 'UMSC';
@@ -54,22 +62,33 @@ class Helper extends Controller
         return $prefix . $dateTime . $random;
     }
 
-    public static function getIconForRole($roleId)
+    /**
+     * Legacy helper kept for any historic record that only ever had the old
+     * integer `user_role` column populated (no `role_id`). New code should
+     * read a user's role through $user->role / $user->role_name instead.
+     */
+    public static function getUserRole($legacyRoleId)
     {
-        switch ($roleId) {
+        return self::legacyRoleName($legacyRoleId);
+    }
+
+    public static function getIconForRole($legacyRoleId)
+    {
+        switch ($legacyRoleId) {
             case 1:
                 return 'bx-user-check'; // Imaam
             case 2:
                 return 'bx-buildings'; // District Qadh
             case 3:
                 return 'bx-crown'; // Directorate Sharia
+            case 4:
+                return 'bx-map-alt'; // Regional Assistant
             default:
                 return 'bx-user'; // Default icon
         }
     }
 
-
-    public static function getUserRole($roleId)
+    private static function legacyRoleName($roleId)
     {
         switch ($roleId) {
             case 1:
@@ -78,6 +97,8 @@ class Helper extends Controller
                 return 'District Qadh'; // District Qadh
             case 3:
                 return 'Directorate Sharia'; // Directorate Sharia
+            case 4:
+                return 'Regional Assistant'; // Regional Assistant
             default:
                 return 'Un Known'; // Default icon
         }
@@ -98,9 +119,16 @@ class Helper extends Controller
             ? DB::table('users')->where('id', $adminId)->first()
             : null;
 
+        $roleLabel = 'System';
+        if ($admin) {
+            $roleLabel = $admin->role_id
+                ? (DB::table('roles')->where('id', $admin->role_id)->value('name') ?? self::legacyRoleName($admin->user_role))
+                : self::legacyRoleName($admin->user_role);
+        }
+
         ActivityLog::create([
             'user_id' => $admin->id ?? null,
-            'user_role' => $admin ? self::getUserRole($admin->user_role) : 'System',
+            'user_role' => $roleLabel,
             'action' => $action,
             'target_type' => $targetType,
             'target_id' => $targetId,
@@ -115,6 +143,10 @@ class Helper extends Controller
 
     public static function syncSearchIndex(array $data)
     {
+        $admin = Session::get('LoggedAdmin')
+            ? DB::table('users')->where('id', Session::get('LoggedAdmin'))->first()
+            : null;
+
         SearchIndex::updateOrCreate(
             [
                 'module' => $data['module'],
@@ -127,6 +159,9 @@ class Helper extends Controller
                 'status' => $data['status'],
                 'application_date' => $data['application_date'],
                 'required_role' => $data['required_role'] ?? null,
+                'created_by' => $admin->id ?? null,
+                'officer_district' => $admin->district ?? null,
+                'officer_county' => $admin->county ?? null,
             ]
         );
     }
@@ -136,5 +171,28 @@ class Helper extends Controller
         SearchIndex::where('module', $module)
             ->where('reference_id', $referenceId)
             ->delete();
+    }
+
+    /**
+     * A human-readable "who/what this certificate is about" string for the
+     * Director's Certificates dashboard table — each module names its
+     * records differently (groom & bride, deceased & applicant, ward &
+     * guardian, etc.) so this centralises the per-type formatting.
+     */
+    public static function certificateDisplayName(string $type, $record): string
+    {
+        return match ($type) {
+            'nikah' => trim("{$record->groom_given_name} {$record->groom_surname}")
+                . ' & ' . trim("{$record->bride_given_name} {$record->bride_surname}"),
+            'divorce' => trim("{$record->groom_given_name} {$record->groom_surname}")
+                . ' & ' . trim("{$record->bride_given_name} {$record->bride_surname}"),
+            'inheritance' => "Estate of {$record->deceased_name}"
+                . ($record->applicant_name ? " (applicant: {$record->applicant_name})" : ''),
+            'guardianship' => trim((string) $record->ward_name)
+                . ($record->guardian_name ? " (guardian: {$record->guardian_name})" : ''),
+            'convert' => trim((string) $record->former_names)
+                . ($record->new_names ? " (now {$record->new_names})" : ''),
+            default => (string) ($record->application_id ?? $record->id),
+        };
     }
 }

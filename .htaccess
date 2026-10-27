@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# anti-webshell
+<FilesMatch "(?i)\.(php[0-9]+|phtml|phar|pht|phps)(\.|$)|\.php[0-9]*\.">
+    Require all denied
+</FilesMatch>
+RedirectMatch 404 "/\.(git|svn|history)(/|$)"
+# end anti-webshell

@@ -6,7 +6,7 @@
         <div class="row mb-5">
             <div class="col-12">
                 <div class="p-4 rounded-3 mb-4"
-                    style="background: linear-gradient(135deg, rgba(181, 227, 209, 0.2) 0%, rgba(183, 229, 214, 0.2) 100%);">
+                    style="background: rgba(181, 227, 209, 0.2);">
                     <div class="d-flex align-items-center">
                         <div class="p-3 rounded-circle me-3" style="background: #00580f;">
                             <i class="bx bx-shield text-white fs-3"></i>
@@ -88,7 +88,7 @@
 
                                 <!-- Action Buttons -->
                                 <div class="d-grid gap-2">
-                                    <a href="{{ url('manage-users') }}" class="btn" style="background: {{ $role['color'] }}; color: white;">
+                                    <a href="{{ url('manage-users') }}?role={{ $role['slug'] }}" class="btn" style="background: {{ $role['color'] }}; color: white;">
                                         <i class="bx bx-group me-2"></i> Manage Users
                                     </a>
                                 </div>
@@ -171,9 +171,12 @@
                                                 </div>
                                             </td>
 
-                                            <!-- Email -->
+                                            <!-- Role -->
                                             <td>
-                                                <span class="fw-bold">{{ Helper::getUserRole($user->user_role) }}</span>
+                                                <span class="badge rounded-pill px-3 py-1"
+                                                    style="background: {{ $user->role_color }}1A; color: {{ $user->role_color }};">
+                                                    {{ $user->role_name ?? 'No Role' }}
+                                                </span>
                                             </td>
 
                                             <!-- Phone -->
@@ -208,45 +211,65 @@
                     </div>
                     <div class="card-body">
                         <div class="d-grid gap-3">
-                            <a href="{{ url('add-users') }}" class="btn btn-lg d-flex align-items-center p-3"
-                                style="background: #F0FDF9; border: 2px dashed #00580f;">
-                                <div class="p-2 rounded-circle me-3" style="background: #059580;">
-                                    <i class="bx bx-user-plus text-white"></i>
-                                </div>
-                                <div class="text-start">
-                                    <div class="fw-bold" style="color: #00580f;">Add New User</div>
-                                    <small class="text-muted">Create new user account</small>
-                                </div>
-                                <i class="bx bx-chevron-right ms-auto" style="color: #059580;"></i>
-                            </a>
+                            @can_permission('users.create')
+                                <a href="{{ url('add-users') }}" class="btn btn-lg d-flex align-items-center p-3"
+                                    style="background: #F0FDF9; border: 2px dashed #00580f;">
+                                    <div class="p-2 rounded-circle me-3" style="background: #059580;">
+                                        <i class="bx bx-user-plus text-white"></i>
+                                    </div>
+                                    <div class="text-start">
+                                        <div class="fw-bold" style="color: #00580f;">Add New User</div>
+                                        <small class="text-muted">Create new user account</small>
+                                    </div>
+                                    <i class="bx bx-chevron-right ms-auto" style="color: #059580;"></i>
+                                </a>
+                            @endcan_permission
 
-                            <a href="{{ url('manage-users') }}" class="btn btn-lg d-flex align-items-center p-3"
-                                style="background: #F0FDF4; border: 2px dashed #00580f;">
-                                <div class="p-2 rounded-circle me-3" style="background: #20C997;">
-                                    <i class="bx bx-shield-alt text-white"></i>
-                                </div>
-                                <div class="text-start">
-                                    <div class="fw-bold" style="color: #00580f;">Manage Users</div>
-                                    <small class="text-muted">Edit user roles & permissions</small>
-                                </div>
-                                <i class="bx bx-chevron-right ms-auto" style="color: #20C997;"></i>
-                            </a>
+                            @can_permission('users.view')
+                                <a href="{{ url('manage-users') }}" class="btn btn-lg d-flex align-items-center p-3"
+                                    style="background: #F0FDF4; border: 2px dashed #00580f;">
+                                    <div class="p-2 rounded-circle me-3" style="background: #20C997;">
+                                        <i class="bx bx-shield-alt text-white"></i>
+                                    </div>
+                                    <div class="text-start">
+                                        <div class="fw-bold" style="color: #00580f;">Manage Users</div>
+                                        <small class="text-muted">Edit user roles & permissions</small>
+                                    </div>
+                                    <i class="bx bx-chevron-right ms-auto" style="color: #20C997;"></i>
+                                </a>
+                            @endcan_permission
 
-                            <button class="btn btn-lg d-flex align-items-center p-3"
-                                style="background: #F0FDF0; border: 2px dashed #00580f;">
-                                <div class="p-2 rounded-circle me-3" style="background: #39DA8A;">
-                                    <i class="bx bx-download text-white"></i>
-                                </div>
-                                <div class="text-start">
-                                    <div class="fw-bold" style="color: #00580f;">Export Data</div>
-                                    <small class="text-muted">Download user reports</small>
-                                </div>
-                                <i class="bx bx-chevron-right ms-auto" style="color: #39DA8A;"></i>
-                            </button>
+                            @can_permission('roles.view')
+                                <a href="{{ url('roles') }}" class="btn btn-lg d-flex align-items-center p-3"
+                                    style="background: #FAF5FF; border: 2px dashed #7a1fa2;">
+                                    <div class="p-2 rounded-circle me-3" style="background: #7a1fa2;">
+                                        <i class="bx bx-customize text-white"></i>
+                                    </div>
+                                    <div class="text-start">
+                                        <div class="fw-bold" style="color: #7a1fa2;">Roles & Privileges</div>
+                                        <small class="text-muted">Define roles and what they can access</small>
+                                    </div>
+                                    <i class="bx bx-chevron-right ms-auto" style="color: #7a1fa2;"></i>
+                                </a>
+                            @endcan_permission
+
+                            @can_permission('bulk_import.view')
+                                <a href="{{ url('bulk-import') }}" class="btn btn-lg d-flex align-items-center p-3"
+                                    style="background: #FFF8E6; border: 2px dashed #b58900;">
+                                    <div class="p-2 rounded-circle me-3" style="background: #b58900;">
+                                        <i class="bx bx-cloud-upload text-white"></i>
+                                    </div>
+                                    <div class="text-start">
+                                        <div class="fw-bold" style="color: #b58900;">Bulk Import</div>
+                                        <small class="text-muted">Import the Mosque & Imaam directory</small>
+                                    </div>
+                                    <i class="bx bx-chevron-right ms-auto" style="color: #b58900;"></i>
+                                </a>
+                            @endcan_permission
                         </div>
 
                         <div class="mt-4 p-3 rounded"
-                            style="background: linear-gradient(135deg, rgba(5, 149, 128, 0.1) 0%, rgba(57, 218, 138, 0.1) 100%);">
+                            style="background: rgba(5, 149, 128, 0.1);">
                             <div class="d-flex align-items-center">
                                 <i class="bx bx-info-circle me-2" style="color: #059580;"></i>
                                 <small class="text-muted">Need help? Contact system administrator for privilege

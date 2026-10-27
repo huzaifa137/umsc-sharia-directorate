@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -13,17 +14,31 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'firstname' => 'Test',
-            'lastname' => 'User',
-            'email' => 'test@example.com',
-            'username' => 'testuser',
-            'password' => Hash::make('Pa$$w0rd!'), 
-            'user_role' => 1,
-            'account_status' => 10,
-            'registration_status' => 1,
-            'phonenumber' => '1234567890',
-            'country' => 'Kenya',
+        $this->call([
+            CountriesSeeder::class,
+            RolesAndPermissionsSeeder::class,
         ]);
+
+        $directorRole = Role::where('slug', 'director')->first();
+
+        // Default Director for Sharia account. Change this password immediately
+        // after first login — the account is also flagged must_change_password.
+        User::firstOrCreate(
+            ['username' => 'director'],
+            [
+                'firstname' => 'Director',
+                'lastname' => 'Sharia',
+                'email' => 'director@umsc-sharia.test',
+                'password' => Hash::make('Director@2026'),
+                'user_role' => 3,
+                'role_id' => $directorRole?->id,
+                'account_status' => 10,
+                'registration_status' => 1,
+                'phonenumber' => '+256700000000',
+                'country' => 'Uganda',
+                'gender' => 'male',
+                'must_change_password' => true,
+            ]
+        );
     }
 }

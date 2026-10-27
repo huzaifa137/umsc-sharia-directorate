@@ -3,9 +3,9 @@
 <script>
     const translations = {
         en: {
+            // Shell / navigation
             application_id_label: "Application ID:",
             back_to_dashboard: "Back to Dashboard",
-            husband_personal_details: "Husband's Personal Details",
             current_step_subtitle: "Step 1 of 4: Primary Identification",
             current_step_title: "Husband's Personal Details",
             complete_all_sections: "Complete all 8 sections in order",
@@ -27,12 +27,99 @@
             divorce_application_title: "Divorce Application",
             previous_button: "Previous",
             next_step_button: "Next Step",
-            submit_application_button: "Submit Application"
+            preview_application_button: "Preview Application",
+            submit_application_button: "Submit Application",
+            application_preview_heading: "Application Preview",
+            close_button: "Close",
+
+            // Step 1 - Husband's Personal Details
+            husband_personal_details: "Husband's Personal Details",
+            groom_surname: "Surname *",
+            groom_given_name: "Given Name *",
+            groom_nin: "NIN",
+            groom_phone: "Telephone *",
+            groom_email: "Email Address *",
+            groom_tribe: "Tribe *",
+
+            // Step 2 - Husband's Residential Address
+            groom_district: "Groom District *",
+            groom_municipality: "County / Municipality *",
+            groom_sub_county: "Sub County *",
+            groom_parish: "Parish / Ward *",
+            groom_village: "Village (LC1 Zone) *",
+            groom_plot_number: "Plot Number",
+
+            // Step 3 - Wife's Personal Details
+            bride_surname: "Surname *",
+            bride_given_name: "Given Name *",
+            bride_nin: "NIN *",
+            bride_phone: "Telephone *",
+            bride_email: "Email Address *",
+            bride_tribe: "Tribe *",
+
+            // Step 4 - Wife's Residential Address
+            bride_district: "Bride District *",
+            bride_municipality: "County / Municipality *",
+            bride_sub_county: "Sub County *",
+            bride_parish: "Parish / Ward *",
+            bride_village: "Village (LC1 Zone) *",
+            bride_plot_number: "Plot Number",
+
+            // Step 5 - Divorce Details
+            divorce_type_label: "Type of Divorce *",
+            select_type_option: "Select Type",
+            talaq_count_label: "Number of Talaq Pronounced *",
+            select_number_option: "Select Number",
+            divorce_initiated_by_label: "Divorce Initiated By *",
+            select_initiator_option: "Select Initiator",
+            initiator_husband: "Husband",
+            initiator_wife: "Wife",
+            initiator_court: "Court",
+            divorce_place_label: "Place of Divorce Pronouncement *",
+            divorce_place_placeholder: "e.g., UMSC Sharia Court, Kampala",
+            divorce_reason_label: "Reason for Divorce *",
+            divorce_reason_placeholder: "Provide a brief explanation...",
+
+            // Step 6 - Witnesses & Authority
+            witness_01_heading: "Witness 01",
+            witness_02_heading: "Witness 02",
+            w1_given_name_label: "Given Name *",
+            w1_given_name_placeholder: "Enter Given Name",
+            w1_surname_label: "Surname *",
+            w1_surname_placeholder: "Enter Surname",
+            w1_nin_label: "NIN *",
+            w1_nin_placeholder: "Enter NIN",
+            w1_phone_label: "Telephone *",
+            w1_address_label: "Address *",
+            w2_given_name_label: "Given Name *",
+            w2_given_name_placeholder: "Enter Given Name",
+            w2_surname_label: "Surname *",
+            w2_surname_placeholder: "Enter Surname",
+            w2_nin_label: "NIN *",
+            w2_nin_placeholder: "Enter NIN",
+            w2_phone_label: "Telephone *",
+            w2_address_label: "Address *",
+            code_option: "Code",
+            enter_phone_number_placeholder: "Enter Phone Number",
+            enter_address_placeholder: "Enter Address",
+
+            // Step 7 - Children & Iddah
+            children_involved_label: "Children Involved? *",
+            option_no: "No",
+            option_yes: "Yes",
+            num_children_label: "Number of Children *",
+            custody_arrangement_label: "Custody Arrangement *",
+
+            // Step 8 - Passport Photographs
+            husband_photograph_heading: "Husband's Photograph *",
+            wife_photograph_heading: "Wife's Photograph *",
+            click_to_upload: "Click to Upload",
+            max_size_note: "Max size 2MB (JPG, PNG)"
         },
         ar: {
+            // Shell / navigation
             application_id_label: "رقم الطلب:",
             back_to_dashboard: "العودة إلى لوحة التحكم",
-            husband_personal_details: "البيانات الشخصية للزوج",
             current_step_subtitle: "الخطوة 1 من 4: التعريف الأساسي",
             current_step_title: "البيانات الشخصية للزوج",
             complete_all_sections: "أكمل جميع الأقسام الثمانية بالترتيب",
@@ -54,12 +141,99 @@
             divorce_application_title: "طلب الطلاق",
             previous_button: "السابق",
             next_step_button: "الخطوة التالية",
-            submit_application_button: "إرسال الطلب"
+            preview_application_button: "معاينة الطلب",
+            submit_application_button: "إرسال الطلب",
+            application_preview_heading: "معاينة الطلب",
+            close_button: "إغلاق",
+
+            // Step 1
+            husband_personal_details: "البيانات الشخصية للزوج",
+            groom_surname: "اسم العائلة *",
+            groom_given_name: "الاسم الأول *",
+            groom_nin: "رقم الهوية الوطنية",
+            groom_phone: "رقم الهاتف *",
+            groom_email: "البريد الإلكتروني *",
+            groom_tribe: "القبيلة *",
+
+            // Step 2
+            groom_district: "منطقة الزوج *",
+            groom_municipality: "المقاطعة / البلدية *",
+            groom_sub_county: "المقاطعة الفرعية *",
+            groom_parish: "الأبرشية / الجناح *",
+            groom_village: "القرية (منطقة LC1) *",
+            groom_plot_number: "رقم القطعة",
+
+            // Step 3
+            bride_surname: "اسم العائلة *",
+            bride_given_name: "الاسم الأول *",
+            bride_nin: "رقم الهوية الوطنية *",
+            bride_phone: "رقم الهاتف *",
+            bride_email: "البريد الإلكتروني *",
+            bride_tribe: "القبيلة *",
+
+            // Step 4
+            bride_district: "منطقة الزوجة *",
+            bride_municipality: "المقاطعة / البلدية *",
+            bride_sub_county: "المقاطعة الفرعية *",
+            bride_parish: "الأبرشية / الجناح *",
+            bride_village: "القرية (منطقة LC1) *",
+            bride_plot_number: "رقم القطعة",
+
+            // Step 5
+            divorce_type_label: "نوع الطلاق *",
+            select_type_option: "اختر النوع",
+            talaq_count_label: "عدد مرات الطلاق الملفوظة *",
+            select_number_option: "اختر العدد",
+            divorce_initiated_by_label: "الطلاق بمبادرة من *",
+            select_initiator_option: "اختر المُبادر",
+            initiator_husband: "الزوج",
+            initiator_wife: "الزوجة",
+            initiator_court: "المحكمة",
+            divorce_place_label: "مكان النطق بالطلاق *",
+            divorce_place_placeholder: "مثال: محكمة UMSC الشرعية، كمبالا",
+            divorce_reason_label: "سبب الطلاق *",
+            divorce_reason_placeholder: "قدم شرحًا موجزًا...",
+
+            // Step 6
+            witness_01_heading: "الشاهد الأول",
+            witness_02_heading: "الشاهد الثاني",
+            w1_given_name_label: "الاسم الأول *",
+            w1_given_name_placeholder: "أدخل الاسم الأول",
+            w1_surname_label: "اسم العائلة *",
+            w1_surname_placeholder: "أدخل اسم العائلة",
+            w1_nin_label: "رقم الهوية الوطنية *",
+            w1_nin_placeholder: "أدخل رقم الهوية الوطنية",
+            w1_phone_label: "رقم الهاتف *",
+            w1_address_label: "العنوان *",
+            w2_given_name_label: "الاسم الأول *",
+            w2_given_name_placeholder: "أدخل الاسم الأول",
+            w2_surname_label: "اسم العائلة *",
+            w2_surname_placeholder: "أدخل اسم العائلة",
+            w2_nin_label: "رقم الهوية الوطنية *",
+            w2_nin_placeholder: "أدخل رقم الهوية الوطنية",
+            w2_phone_label: "رقم الهاتف *",
+            w2_address_label: "العنوان *",
+            code_option: "الرمز",
+            enter_phone_number_placeholder: "أدخل رقم الهاتف",
+            enter_address_placeholder: "أدخل العنوان",
+
+            // Step 7
+            children_involved_label: "هل يوجد أطفال؟ *",
+            option_no: "لا",
+            option_yes: "نعم",
+            num_children_label: "عدد الأطفال *",
+            custody_arrangement_label: "ترتيبات الحضانة *",
+
+            // Step 8
+            husband_photograph_heading: "صورة الزوج *",
+            wife_photograph_heading: "صورة الزوجة *",
+            click_to_upload: "انقر للتحميل",
+            max_size_note: "الحد الأقصى للحجم 2 ميجابايت (JPG، PNG)"
         },
         sw: {
+            // Shell / navigation
             application_id_label: "Nambari ya Ombi:",
             back_to_dashboard: "Rudi kwenye Dashibodi",
-            husband_personal_details: "Taarifa Binafsi za Mume",
             current_step_subtitle: "Hatua ya 1 kati ya 4: Utambulisho wa Msingi",
             current_step_title: "Taarifa Binafsi za Mume",
             complete_all_sections: "Kamilisha sehemu zote 8 kwa mpangilio",
@@ -81,7 +255,94 @@
             divorce_application_title: "Ombi la Talaka",
             previous_button: "Iliyotangulia",
             next_step_button: "Hatua Inayofuata",
-            submit_application_button: "Wasilisha Ombi"
+            preview_application_button: "Hakiki Ombi",
+            submit_application_button: "Wasilisha Ombi",
+            application_preview_heading: "Hakiki ya Ombi",
+            close_button: "Funga",
+
+            // Step 1
+            husband_personal_details: "Taarifa Binafsi za Mume",
+            groom_surname: "Jina la Ukoo *",
+            groom_given_name: "Jina la Kwanza *",
+            groom_nin: "Namba ya Utambulisho wa Taifa",
+            groom_phone: "Simu *",
+            groom_email: "Barua Pepe *",
+            groom_tribe: "Kabila *",
+
+            // Step 2
+            groom_district: "Wilaya ya Mume *",
+            groom_municipality: "Kaunti / Manispaa *",
+            groom_sub_county: "Kaunti Ndogo *",
+            groom_parish: "Parokia / Kata *",
+            groom_village: "Kijiji (Eneo la LC1) *",
+            groom_plot_number: "Namba ya Kiwanja",
+
+            // Step 3
+            bride_surname: "Jina la Ukoo *",
+            bride_given_name: "Jina la Kwanza *",
+            bride_nin: "Namba ya Utambulisho wa Taifa *",
+            bride_phone: "Simu *",
+            bride_email: "Barua Pepe *",
+            bride_tribe: "Kabila *",
+
+            // Step 4
+            bride_district: "Wilaya ya Mke *",
+            bride_municipality: "Kaunti / Manispaa *",
+            bride_sub_county: "Kaunti Ndogo *",
+            bride_parish: "Parokia / Kata *",
+            bride_village: "Kijiji (Eneo la LC1) *",
+            bride_plot_number: "Namba ya Kiwanja",
+
+            // Step 5
+            divorce_type_label: "Aina ya Talaka *",
+            select_type_option: "Chagua Aina",
+            talaq_count_label: "Idadi ya Talaka Zilizotamkwa *",
+            select_number_option: "Chagua Namba",
+            divorce_initiated_by_label: "Talaka Ilianzishwa na *",
+            select_initiator_option: "Chagua Aliyeanzisha",
+            initiator_husband: "Mume",
+            initiator_wife: "Mke",
+            initiator_court: "Mahakama",
+            divorce_place_label: "Mahali pa Kutamkwa Talaka *",
+            divorce_place_placeholder: "mfano, Mahakama ya Sheria ya UMSC, Kampala",
+            divorce_reason_label: "Sababu ya Talaka *",
+            divorce_reason_placeholder: "Toa maelezo mafupi...",
+
+            // Step 6
+            witness_01_heading: "Shahidi wa 01",
+            witness_02_heading: "Shahidi wa 02",
+            w1_given_name_label: "Jina la Kwanza *",
+            w1_given_name_placeholder: "Weka Jina la Kwanza",
+            w1_surname_label: "Jina la Ukoo *",
+            w1_surname_placeholder: "Weka Jina la Ukoo",
+            w1_nin_label: "Namba ya Utambulisho wa Taifa *",
+            w1_nin_placeholder: "Weka Namba ya Utambulisho",
+            w1_phone_label: "Simu *",
+            w1_address_label: "Anwani *",
+            w2_given_name_label: "Jina la Kwanza *",
+            w2_given_name_placeholder: "Weka Jina la Kwanza",
+            w2_surname_label: "Jina la Ukoo *",
+            w2_surname_placeholder: "Weka Jina la Ukoo",
+            w2_nin_label: "Namba ya Utambulisho wa Taifa *",
+            w2_nin_placeholder: "Weka Namba ya Utambulisho",
+            w2_phone_label: "Simu *",
+            w2_address_label: "Anwani *",
+            code_option: "Msimbo",
+            enter_phone_number_placeholder: "Weka Namba ya Simu",
+            enter_address_placeholder: "Weka Anwani",
+
+            // Step 7
+            children_involved_label: "Je, kuna Watoto Waliohusika? *",
+            option_no: "Hapana",
+            option_yes: "Ndiyo",
+            num_children_label: "Idadi ya Watoto *",
+            custody_arrangement_label: "Mpangilio wa Ulezi *",
+
+            // Step 8
+            husband_photograph_heading: "Picha ya Mume *",
+            wife_photograph_heading: "Picha ya Mke *",
+            click_to_upload: "Bofya Kupakia",
+            max_size_note: "Ukubwa wa juu 2MB (JPG, PNG)"
         }
     };
 </script>
@@ -273,7 +534,7 @@
                                 border: 1px solid rgba(255, 255, 255, 0.08);">
 
                                 <label style="font-size: 12px; color: rgba(255, 255, 255, 0.9);
-                                    font-weight: 600; letter-spacing: 0.3px;">
+                                    font-weight: 600; letter-spacing: 0.3px;" data-i18n="{{ $name }}">
                                     {{ $label }}
                                 </label>
 
@@ -461,7 +722,7 @@
                             @foreach ($addressFields as $name => $field)
                                 <div
                                     style="display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-                                    <label style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600;">
+                                    <label style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600;" data-i18n="{{ $name }}">
                                         {{ $field['label'] }}
                                     </label>
 
@@ -527,7 +788,7 @@
                                 style="display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
 
                                 <label
-                                    style="font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 600; letter-spacing: 0.3px;">
+                                    style="font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 600; letter-spacing: 0.3px;" data-i18n="{{ $name }}">
                                     {{ $label }}
                                 </label>
 
@@ -691,7 +952,7 @@
                                 style="display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
 
                                 <label
-                                    style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; letter-spacing: 0.3px;">
+                                    style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; letter-spacing: 0.3px;" data-i18n="{{ $name }}">
                                     {{ $field['label'] }}
                                 </label>
 
@@ -751,13 +1012,13 @@
                         <div
                             style="display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
                             <label
-                                style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; letter-spacing: 0.3px;">Type
+                                style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; letter-spacing: 0.3px;" data-i18n="divorce_type_label">Type
                                 of Divorce *</label>
                             <div style="position: relative;">
                                 <select name="divorce_type" style="{{ $selectStyle }}" data-required="true"
                                     onfocus="this.style.borderColor='#ffffff'; this.style.boxShadow='0 0 0 4px rgba(255,255,255,0.15)';"
                                     onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';">
-                                    <option value="">Select Type</option>
+                                    <option value="" data-i18n="select_type_option">Select Type</option>
                                     <option value="talaq">Talaq</option>
                                     <option value="khul">Khul</option>
                                     <option value="faskh">Faskh</option>
@@ -772,13 +1033,13 @@
                         <div
                             style="display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
                             <label
-                                style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; letter-spacing: 0.3px;">Number
+                                style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; letter-spacing: 0.3px;" data-i18n="talaq_count_label">Number
                                 of Talaq Pronounced *</label>
                             <div style="position: relative;">
                                 <select name="talaq_count" style="{{ $selectStyle }}" data-required="true"
                                     onfocus="this.style.borderColor='#ffffff'; this.style.boxShadow='0 0 0 4px rgba(255,255,255,0.15)';"
                                     onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';">
-                                    <option value="">Select Number</option>
+                                    <option value="" data-i18n="select_number_option">Select Number</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -793,16 +1054,16 @@
                         <div
                             style="display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
                             <label
-                                style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; letter-spacing: 0.3px;">Divorce
+                                style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; letter-spacing: 0.3px;" data-i18n="divorce_initiated_by_label">Divorce
                                 Initiated By *</label>
                             <div style="position: relative;">
                                 <select name="divorce_initiated_by" style="{{ $selectStyle }}" data-required="true"
                                     onfocus="this.style.borderColor='#ffffff'; this.style.boxShadow='0 0 0 4px rgba(255,255,255,0.15)';"
                                     onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';">
-                                    <option value="">Select Initiator</option>
-                                    <option value="husband">Husband</option>
-                                    <option value="wife">Wife</option>
-                                    <option value="court">Court</option>
+                                    <option value="" data-i18n="select_initiator_option">Select Initiator</option>
+                                    <option value="husband" data-i18n="initiator_husband">Husband</option>
+                                    <option value="wife" data-i18n="initiator_wife">Wife</option>
+                                    <option value="court" data-i18n="initiator_court">Court</option>
                                 </select>
                                 <div
                                     style="position: absolute; right: 15px; top: 22px; pointer-events: none; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #1e293b;">
@@ -814,10 +1075,10 @@
                         <div
                             style="display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
                             <label
-                                style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; letter-spacing: 0.3px;">Place
+                                style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; letter-spacing: 0.3px;" data-i18n="divorce_place_label">Place
                                 of Divorce Pronouncement *</label>
                             <input type="text" name="divorce_place" placeholder="e.g., UMSC Sharia Court, Kampala"
-                                style="{{ $fieldStyle }}" data-required="true"
+                                style="{{ $fieldStyle }}" data-required="true" data-i18n="divorce_place_placeholder"
                                 onfocus="this.style.borderColor='#ffffff'; this.style.boxShadow='0 0 0 4px rgba(255,255,255,0.15)';"
                                 onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';">
                         </div>
@@ -826,10 +1087,10 @@
                         <div
                             style="display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); grid-column: 1 / -1;">
                             <label
-                                style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; letter-spacing: 0.3px;">Reason
+                                style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; letter-spacing: 0.3px;" data-i18n="divorce_reason_label">Reason
                                 for Divorce *</label>
                             <textarea name="divorce_reason" rows="3" placeholder="Provide a brief explanation..."
-                                style="{{ $fieldStyle }} resize: vertical; min-height: 80px;" data-required="true"
+                                style="{{ $fieldStyle }} resize: vertical; min-height: 80px;" data-required="true" data-i18n="divorce_reason_placeholder"
                                 onfocus="this.style.borderColor='#ffffff'; this.style.boxShadow='0 0 0 4px rgba(255,255,255,0.15)';"
                                 onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';"></textarea>
                         </div>
@@ -886,7 +1147,7 @@
 
                         <!-- ====================== Witness 01 ====================== -->
                         <h4 style="color:#fff; font-size:0.9rem; text-transform:uppercase;
-                        letter-spacing:1px; margin-bottom:15px; opacity:0.8;">
+                        letter-spacing:1px; margin-bottom:15px; opacity:0.8;" data-i18n="witness_01_heading">
                             Witness 01
                         </h4>
 
@@ -901,7 +1162,7 @@
                                 padding:12px; border-radius:10px;
                                 border:1px solid rgba(255,255,255,0.08);">
 
-                                    <label style="font-size:11px; color:rgba(255,255,255,0.9); font-weight:600;">
+                                    <label style="font-size:11px; color:rgba(255,255,255,0.9); font-weight:600;" data-i18n="{{ $field }}_label">
                                         {{ ucfirst(str_replace('_',' ',$field)) }} *
                                     </label>
 
@@ -909,7 +1170,8 @@
                                         name="{{ $field }}"
                                         placeholder="{{ $placeholdersW1[$field] }}"
                                         style="{{ $fieldStyle }}"
-                                        data-required="true">
+                                        data-required="true"
+                                        data-i18n="{{ $field }}_placeholder">
                                 </div>
                             @endforeach
                         </div>
@@ -926,7 +1188,7 @@
                                 padding:12px; border-radius:10px;
                                 border:1px solid rgba(255,255,255,0.08);">
 
-                                    <label style="font-size:11px; color:rgba(255,255,255,0.9); font-weight:600;">
+                                    <label style="font-size:11px; color:rgba(255,255,255,0.9); font-weight:600;" data-i18n="{{ $field }}_label">
                                         {{ ucfirst(str_replace('_',' ',$field)) }} *
                                     </label>
 
@@ -941,7 +1203,7 @@
                                                 border:1px solid #cbd5e1;
                                                 background:#fff;
                                                 font-size:14px;">
-                                                <option value="">Code</option>
+                                                <option value="" data-i18n="code_option">Code</option>
                                                 @foreach ($countries as $country)
                                                     <option value="{{ $country->calling_code }}">
                                                         +{{ $country->calling_code }}
@@ -958,7 +1220,8 @@
                                                 border:1px solid #cbd5e1;
                                                 font-size:14px;"
                                                 maxlength="15"
-                                                data-required="true">
+                                                data-required="true"
+                                                data-i18n="enter_phone_number_placeholder">
                                         </div>
                                     @else
                                         <!-- ✅ Address Full Width -->
@@ -966,7 +1229,8 @@
                                             name="w1_address"
                                             placeholder="Enter Address"
                                             style="{{ $fieldStyle }}"
-                                            data-required="true">
+                                            data-required="true"
+                                            data-i18n="enter_address_placeholder">
                                     @endif
                                 </div>
                             @endforeach
@@ -976,7 +1240,7 @@
 
                         <!-- ====================== Witness 02 ====================== -->
                         <h4 style="color:#fff; font-size:0.9rem; text-transform:uppercase;
-                        letter-spacing:1px; margin-bottom:15px; opacity:0.8;">
+                        letter-spacing:1px; margin-bottom:15px; opacity:0.8;" data-i18n="witness_02_heading">
                             Witness 02
                         </h4>
 
@@ -991,7 +1255,7 @@
                                 padding:12px; border-radius:10px;
                                 border:1px solid rgba(255,255,255,0.08);">
 
-                                    <label style="font-size:11px; color:rgba(255,255,255,0.9); font-weight:600;">
+                                    <label style="font-size:11px; color:rgba(255,255,255,0.9); font-weight:600;" data-i18n="{{ $field }}_label">
                                         {{ ucfirst(str_replace('_',' ',$field)) }} *
                                     </label>
 
@@ -999,7 +1263,8 @@
                                         name="{{ $field }}"
                                         placeholder="{{ $placeholdersW2[$field] }}"
                                         style="{{ $fieldStyle }}"
-                                        data-required="true">
+                                        data-required="true"
+                                        data-i18n="{{ $field }}_placeholder">
                                 </div>
                             @endforeach
                         </div>
@@ -1016,7 +1281,7 @@
                                 padding:12px; border-radius:10px;
                                 border:1px solid rgba(255,255,255,0.08);">
 
-                                    <label style="font-size:11px; color:rgba(255,255,255,0.9); font-weight:600;">
+                                    <label style="font-size:11px; color:rgba(255,255,255,0.9); font-weight:600;" data-i18n="{{ $field }}_label">
                                         {{ ucfirst(str_replace('_',' ',$field)) }} *
                                     </label>
 
@@ -1030,7 +1295,7 @@
                                                 border:1px solid #cbd5e1;
                                                 background:#fff;
                                                 font-size:14px;">
-                                                <option value="">Code</option>
+                                                <option value="" data-i18n="code_option">Code</option>
                                                 @foreach ($countries as $country)
                                                     <option value="{{ $country->calling_code }}">
                                                         +{{ $country->calling_code }}
@@ -1047,14 +1312,16 @@
                                                 border:1px solid #cbd5e1;
                                                 font-size:14px;"
                                                 maxlength="15"
-                                                data-required="true">
+                                                data-required="true"
+                                                data-i18n="enter_phone_number_placeholder">
                                         </div>
                                     @else
                                         <input type="text"
                                             name="w2_address"
                                             placeholder="Enter Address"
                                             style="{{ $fieldStyle }}"
-                                            data-required="true">
+                                            data-required="true"
+                                            data-i18n="enter_address_placeholder">
                                     @endif
                                 </div>
                             @endforeach
@@ -1123,20 +1390,20 @@
                         <!-- Children Involved -->
                         <div
                             style="display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                            <label style="font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 600;">Children
+                            <label style="font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 600;" data-i18n="children_involved_label">Children
                                 Involved? *</label>
                             <select name="children_involved" style="{{ $fieldStyle }} appearance: none;"
                                 data-required="true">
                                 <option value="">{{ $placeholders['children_involved'] }}</option>
-                                <option value="No">No</option>
-                                <option value="Yes">Yes</option>
+                                <option value="No" data-i18n="option_no">No</option>
+                                <option value="Yes" data-i18n="option_yes">Yes</option>
                             </select>
                         </div>
 
                         <!-- Number of Children -->
                         <div
                             style="display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                            <label style="font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 600;">Number
+                            <label style="font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 600;" data-i18n="num_children_label">Number
                                 of Children *</label>
                             <input type="number" name="num_children" min="0"
                                 placeholder="{{ $placeholders['num_children'] }}" style="{{ $fieldStyle }}"
@@ -1146,7 +1413,7 @@
                         <!-- Custody Arrangement -->
                         <div
                             style="display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); grid-column: 1 / -1;">
-                            <label style="font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 600;">Custody
+                            <label style="font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 600;" data-i18n="custody_arrangement_label">Custody
                                 Arrangement *</label>
                             <input type="text" name="custody_arrangement"
                                 placeholder="{{ $placeholders['custody_arrangement'] }}" style="{{ $fieldStyle }}"
@@ -1183,7 +1450,7 @@
                         <!-- Husband Photo -->
                         <div
                             style="background: rgba(255,255,255,0.05); border: 2px dashed rgba(255,255,255,0.2); border-radius: 16px; padding: 30px; text-align: center; transition: all 0.3s ease; position: relative;">
-                            <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin-bottom: 20px;">
+                            <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin-bottom: 20px;" data-i18n="husband_photograph_heading">
                                 Husband's Photograph *</h4>
 
                             <div onclick="document.getElementById('groomPhoto').click()" style="cursor: pointer;">
@@ -1199,7 +1466,7 @@
                                             <circle cx="8.5" cy="8.5" r="1.5" />
                                             <path d="M21 15l-5-5L5 21" />
                                         </svg>
-                                        <p style="font-size: 11px; margin-top: 10px; opacity: 0.7;">Click to Upload</p>
+                                        <p style="font-size: 11px; margin-top: 10px; opacity: 0.7;" data-i18n="click_to_upload">Click to Upload</p>
                                     </div>
                                 @endif
                                 <img id="groomPhotoPreview"
@@ -1209,13 +1476,13 @@
                             <input type="file" id="groomPhoto" name="groomPhoto" accept="image/*" style="display: none;"
                                 data-required="true"
                                 onchange="previewImage(this, 'groomPhotoPreview', 'groomPlaceholder')">
-                            <p style="color: rgba(255,255,255,0.5); font-size: 11px;">Max size 2MB (JPG, PNG)</p>
+                            <p style="color: rgba(255,255,255,0.5); font-size: 11px;" data-i18n="max_size_note">Max size 2MB (JPG, PNG)</p>
                         </div>
 
                         <!-- Wife Photo -->
                         <div
                             style="background: rgba(255,255,255,0.05); border: 2px dashed rgba(255,255,255,0.2); border-radius: 16px; padding: 30px; text-align: center; transition: all 0.3s ease; position: relative;">
-                            <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin-bottom: 20px;">Wife's
+                            <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin-bottom: 20px;" data-i18n="wife_photograph_heading">Wife's
                                 Photograph *</h4>
 
                             <div onclick="document.getElementById('bridePhoto').click()" style="cursor: pointer;">
@@ -1231,7 +1498,7 @@
                                             <circle cx="8.5" cy="8.5" r="1.5" />
                                             <path d="M21 15l-5-5L5 21" />
                                         </svg>
-                                        <p style="font-size: 11px; margin-top: 10px; opacity: 0.7;">Click to Upload</p>
+                                        <p style="font-size: 11px; margin-top: 10px; opacity: 0.7;" data-i18n="click_to_upload">Click to Upload</p>
                                     </div>
                                 @endif
                                 <img id="bridePhotoPreview"
@@ -1241,7 +1508,7 @@
                             <input type="file" id="bridePhoto" name="bridePhoto" accept="image/*" style="display: none;"
                                 data-required="true"
                                 onchange="previewImage(this, 'bridePhotoPreview', 'bridePlaceholder')">
-                            <p style="color: rgba(255,255,255,0.5); font-size: 11px;">Max size 2MB (JPG, PNG)</p>
+                            <p style="color: rgba(255,255,255,0.5); font-size: 11px;" data-i18n="max_size_note">Max size 2MB (JPG, PNG)</p>
                         </div>
 
                     </div>
@@ -1268,7 +1535,7 @@
             <!-- Navigation Buttons -->
             <div
                 style="display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 1px solid #e2e8f0;">
-                <button type="button" id="prevBtn" data-i18n="previous_button" onclick="previousStep()"
+                <button type="button" id="prevBtn" onclick="previousStep()"
                     style="padding: 14px 30px; background: #64748b; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 15px; display: none; align-items: center; gap: 8px;">
 
                     <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1276,15 +1543,15 @@
                         <path d="M15 18l-6-6 6-6" />
                     </svg>
 
-                    Previous
+                    <span data-i18n="previous_button">Previous</span>
                 </button>
 
 
                 <div></div> <!-- Spacer -->
 
-                <button type="button" id="nextBtn" data-i18n="next_step_button" onclick="nextStep()"
+                <button type="button" id="nextBtn" onclick="nextStep()"
                     style="padding: 14px 40px; background: #21532B; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 8px;">
-                    Next Step
+                    <span data-i18n="next_step_button">Next Step</span>
                     <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2">
                         <path d="M9 18l6-6-6-6" />
@@ -1305,13 +1572,13 @@
                         align-items: center;
                         gap: 8px;">
 
-                    Preview Application
+                    <span data-i18n="preview_application_button">Preview Application</span>
                 </button>
 
 
-                <button type="submit" id="submitBtn" data-i18n="submit_application_button" data-required="true"
+                <button type="submit" id="submitBtn" data-required="true"
                     style="padding: 14px 40px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 15px; display: none; align-items: center; gap: 8px;">
-                    Submit Application
+                    <span data-i18n="submit_application_button">Submit Application</span>
                     <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2">
                         <path d="M20 6L9 17l-5-5" />
@@ -1358,7 +1625,7 @@
             align-items: center;
             border-radius: 16px 16px 0 0;
         ">
-            <h2 style="margin: 0; font-size: 20px;">
+            <h2 style="margin: 0; font-size: 20px;" data-i18n="application_preview_heading">
                 Application Preview
             </h2>
 
@@ -1394,7 +1661,7 @@
                     border-radius: 8px;
                     cursor: pointer;
                     font-weight: 600;
-                ">
+                " data-i18n="close_button">
                 Close
             </button>
         </div>

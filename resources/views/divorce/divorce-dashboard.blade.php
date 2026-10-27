@@ -153,19 +153,19 @@
                         }
 
                         .stat-glass-danger::before {
-                            background: linear-gradient(90deg, #ff6b6b, #ee5a52);
+                            background: #ff6b6b;
                         }
 
                         .stat-glass-warning::before {
-                            background: linear-gradient(90deg, #ffd93d, #ff9f43);
+                            background: #ffd93d;
                         }
 
                         .stat-glass-success::before {
-                            background: linear-gradient(90deg, #6bcf7f, #4cd964);
+                            background: #6bcf7f;
                         }
 
                         .stat-glass-info::before {
-                            background: linear-gradient(90deg, #5ac8fa, #007aff);
+                            background: #5ac8fa;
                         }
 
                         .stat-glass:hover {
@@ -191,22 +191,22 @@
                         }
 
                         .stat-glass-danger .icon-wrapper {
-                            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+                            background: #ff6b6b;
                             color: white;
                         }
 
                         .stat-glass-warning .icon-wrapper {
-                            background: linear-gradient(135deg, #ffd93d, #ff9f43);
+                            background: #ffd93d;
                             color: white;
                         }
 
                         .stat-glass-success .icon-wrapper {
-                            background: linear-gradient(135deg, #6bcf7f, #4cd964);
+                            background: #6bcf7f;
                             color: white;
                         }
 
                         .stat-glass-info .icon-wrapper {
-                            background: linear-gradient(135deg, #5ac8fa, #007aff);
+                            background: #5ac8fa;
                             color: white;
                         }
 
@@ -381,8 +381,8 @@
                         </div>
                         <div class="row g-2 mt-3">
                             <div class="col-6">
-                                <button
-                                    class="btn w-100 d-flex flex-column align-items-center justify-content-center py-3 position-relative"
+                                <a href="{{ url('reports/divorce') }}"
+                                    class="btn w-100 d-flex flex-column align-items-center justify-content-center py-3 position-relative text-decoration-none"
                                     style="
                             background: rgba(5, 149, 104, 0.1);
                             color: #059568;
@@ -399,11 +399,11 @@
                                             style="font-size: 0.6rem; padding: 2px 6px; border: 1px solid rgba(5, 149, 104, 0.3);">.pdf</span>
                                     </div>
                                     <small class="text-muted">Download</small>
-                                </button>
+                                </a>
                             </div>
                             <div class="col-6">
-                                <button
-                                    class="btn w-100 d-flex flex-column align-items-center justify-content-center py-3 position-relative"
+                                <a href="{{ url('reports/divorce') }}"
+                                    class="btn w-100 d-flex flex-column align-items-center justify-content-center py-3 position-relative text-decoration-none"
                                     style="
                             background: rgba(37, 99, 235, 0.1);
                             color: #2563eb;
@@ -420,7 +420,7 @@
                                             style="font-size: 0.6rem; padding: 2px 6px; border: 1px solid rgba(37, 99, 235, 0.3);">.xlsx</span>
                                     </div>
                                     <small class="text-muted">Download</small>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -437,7 +437,7 @@
         }
 
         .bg-gradient-danger {
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            background: #dc2626;
         }
 
         .border-start {

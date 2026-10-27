@@ -4,6 +4,38 @@
     const translations = {
         en: {
 
+            preview_former_names_label: "Former Names",
+            preview_former_religion_label: "Former Religion",
+            preview_dob_label: "Date of Birth",
+            preview_occupation_label: "Occupation",
+            preview_current_residence_label: "Current Residence",
+            preview_contact_label: "Contact Information",
+            preview_father_name_label: "Father's Name",
+            preview_mother_name_label: "Mother's Name",
+            preview_home_address_label: "Home Address",
+            preview_district_label: "District",
+            preview_county_label: "County",
+            preview_new_names_label: "New Muslim Names",
+            preview_conversion_date_label: "Date of Conversion",
+            preview_conversion_place_label: "Place of Entry to Islam",
+            preview_guardian_name_label: "Guardian's Name",
+            preview_guardian_occupation_label: "Guardian's Occupation",
+            preview_guardian_declaration_date_label: "Guardian's Declaration Date",
+            preview_conversion_reasons_label: "Reasons for Joining Islam",
+            preview_guardian_declaration_label: "Guardian's Declaration",
+            preview_declaration_agreement_label: "Declaration Agreement",
+            preview_officer_name_label: "Verifying Officer's Name",
+            preview_officer_position_label: "Officer's Position",
+            preview_registration_number_label: "Registration Number",
+            preview_verification_date_label: "Date of Verification",
+            preview_officer_remarks_label: "Remarks/Additional Notes",
+            section_a_heading: "SECTION A: CONVERT'S DECLARATION",
+            section_b_heading: "SECTION B: UPON CONVERSION",
+            section_c_heading: "SECTION C: DECLARATION OF FAITH",
+            section_d_heading: "OFFICER VERIFICATION",
+            declaration_accepted_text: "✓ Accepted",
+
+            preview_btn: "Preview Declaration",
             prev_btn: "Previous",
             next_btn: "Next Step",
             submit_btn: "Submit Application",
@@ -125,6 +157,38 @@
         },
         ar: {
 
+            preview_former_names_label: "الأسماء السابقة",
+            preview_former_religion_label: "الدين السابق",
+            preview_dob_label: "تاريخ الميلاد",
+            preview_occupation_label: "المهنة",
+            preview_current_residence_label: "محل الإقامة الحالي",
+            preview_contact_label: "معلومات الاتصال",
+            preview_father_name_label: "اسم الوالد",
+            preview_mother_name_label: "اسم الوالدة",
+            preview_home_address_label: "عنوان المنزل",
+            preview_district_label: "المنطقة",
+            preview_county_label: "المقاطعة",
+            preview_new_names_label: "الأسماء الإسلامية الجديدة",
+            preview_conversion_date_label: "تاريخ اعتناق الإسلام",
+            preview_conversion_place_label: "مكان الدخول في الإسلام",
+            preview_guardian_name_label: "اسم الوصي",
+            preview_guardian_occupation_label: "مهنة الوصي",
+            preview_guardian_declaration_date_label: "تاريخ إقرار الوصي",
+            preview_conversion_reasons_label: "أسباب اعتناق الإسلام",
+            preview_guardian_declaration_label: "إقرار الوصي",
+            preview_declaration_agreement_label: "الموافقة على الإقرار",
+            preview_officer_name_label: "اسم الموظف المُحقِّق",
+            preview_officer_position_label: "منصب الموظف",
+            preview_registration_number_label: "رقم التسجيل",
+            preview_verification_date_label: "تاريخ التحقق",
+            preview_officer_remarks_label: "ملاحظات إضافية",
+            section_a_heading: "القسم أ: إقرار المعتنق",
+            section_b_heading: "القسم ب: بعد اعتناق الإسلام",
+            section_c_heading: "القسم ج: الشهادتان",
+            section_d_heading: "تحقق الموظف",
+            declaration_accepted_text: "✓ مقبول",
+
+            preview_btn: "معاينة الإقرار",
             prev_btn: "السابق",
             next_btn: "الخطوة التالية",
             submit_btn: "إرسال الطلب",
@@ -247,6 +311,38 @@
         },
         sw: {
 
+            preview_former_names_label: "Majina ya Awali",
+            preview_former_religion_label: "Dini ya Awali",
+            preview_dob_label: "Tarehe ya Kuzaliwa",
+            preview_occupation_label: "Kazi",
+            preview_current_residence_label: "Makazi ya Sasa",
+            preview_contact_label: "Taarifa za Mawasiliano",
+            preview_father_name_label: "Jina la Baba",
+            preview_mother_name_label: "Jina la Mama",
+            preview_home_address_label: "Anwani ya Nyumbani",
+            preview_district_label: "Wilaya",
+            preview_county_label: "Kaunti",
+            preview_new_names_label: "Majina Mapya ya Kiislamu",
+            preview_conversion_date_label: "Tarehe ya Kusilimu",
+            preview_conversion_place_label: "Mahali pa Kuingia Uislamu",
+            preview_guardian_name_label: "Jina la Mlezi",
+            preview_guardian_occupation_label: "Kazi ya Mlezi",
+            preview_guardian_declaration_date_label: "Tarehe ya Tamko la Mlezi",
+            preview_conversion_reasons_label: "Sababu za Kujiunga na Uislamu",
+            preview_guardian_declaration_label: "Tamko la Mlezi",
+            preview_declaration_agreement_label: "Kukubali Tamko",
+            preview_officer_name_label: "Jina la Afisa Aliyethibitisha",
+            preview_officer_position_label: "Wadhifa wa Afisa",
+            preview_registration_number_label: "Namba ya Usajili",
+            preview_verification_date_label: "Tarehe ya Uthibitisho",
+            preview_officer_remarks_label: "Maelezo ya Ziada",
+            section_a_heading: "SEHEMU A: TAMKO LA MSILIMU",
+            section_b_heading: "SEHEMU B: BAADA YA KUSILIMU",
+            section_c_heading: "SEHEMU C: SHAHADA",
+            section_d_heading: "UTHIBITISHO WA AFISA",
+            declaration_accepted_text: "✓ Imekubaliwa",
+
+            preview_btn: "Hakiki Tamko",
             prev_btn: "Iliyopita",
             next_btn: "Hatua Inayofuata",
             submit_btn: "Wasilisha Maombi",
@@ -372,7 +468,7 @@
 <div style="display: flex; min-height: 100vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
     <!-- Left Side: Step Navigation -->
     <div
-        style="flex: 0.4; background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); padding: 40px; overflow-y: auto; border-right: 1px solid #e2e8f0;">
+        style="flex: 0.4; background: #f8fafc; padding: 40px; overflow-y: auto; border-right: 1px solid #e2e8f0;">
         <div style="position: sticky; top: 0; background: transparent; padding-bottom: 20px; z-index: 10;">
             <h1 data-i18n="convert_title"
                 style="color: #2C5C36; margin-bottom: 5px; font-size: 2rem; font-weight: 800;">
@@ -395,7 +491,7 @@
                 <div
                     style="height: 10px; background: #f3f4f6; border-radius: 5px; overflow: hidden; margin-bottom: 8px;">
                     <div id="progressBar"
-                        style="height: 100%; background: linear-gradient(90deg, #2C5C36, #2C5C36); width: 0%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
+                        style="height: 100%; background: #2C5C36; width: 0%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
                     </div>
                 </div>
                 <p id="completedSteps"
@@ -459,7 +555,7 @@
 
             <!-- Instructions -->
             <div
-                style="margin-top: 40px; background: linear-gradient(135deg, #f3e8ff 0%, #faf5ff 100%); padding: 24px; border-radius: 14px; border-left: 4px solid #2C5C36;">
+                style="margin-top: 40px; background: #f3e8ff; padding: 24px; border-radius: 14px; border-left: 4px solid #2C5C36;">
                 <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
                     <div
                         style="width: 32px; height: 32px; background: #2C5C36; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
@@ -491,15 +587,15 @@
 
     <!-- Right Side: Form Content -->
     <div
-        style="flex: 1; background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%); padding: 40px; overflow-y: auto;">
+        style="flex: 1; background: #ffffff; padding: 40px; overflow-y: auto;">
         <div
-            style="position: sticky; top: 0; background: linear-gradient(180deg, #ffffff 0%, #ffffff 70%); padding-bottom: 20px; z-index: 10; border-bottom: 1px solid #e5e7eb; margin-bottom: 30px; backdrop-filter: blur(10px);">
+            style="position: sticky; top: 0; background: #ffffff; padding-bottom: 20px; z-index: 10; border-bottom: 1px solid #e5e7eb; margin-bottom: 30px; backdrop-filter: blur(10px);">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2 id="currentStepTitle" data-i18n="convert_step1_title"
                     style="color: #2C5C36; margin: 0; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px;">
                     Section A: Convert's Declaration</h2>
                 <div id="stepCompletionStatus"
-                    style="background: linear-gradient(135deg, #2C5C36, #2C5C36); padding: 8px 20px; border-radius: 20px; font-size: 14px; color: white; font-weight: 600; box-shadow: 0 2px 8px rgba(124, 58, 237, 0.2);">
+                    style="background: #2C5C36; padding: 8px 20px; border-radius: 20px; font-size: 14px; color: white; font-weight: 600; box-shadow: 0 2px 8px rgba(124, 58, 237, 0.2);">
                     <span data-i18n="step_text">Step</span> <span id="currentStepNumber"
                         style="font-weight: 800;">1</span> <span data-i18n="of_text">of</span> 4
                 </div>
@@ -516,7 +612,7 @@
             <!-- Step 1: Section A - Convert's Declaration -->
             <div class="form-step active" id="step1">
                 <div
-                    style="background: linear-gradient(135deg, #2C5C36 0%, #2C5C36 100%); border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(124, 58, 237, 0.15);">
+                    style="background: #2C5C36; border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(124, 58, 237, 0.15);">
                     <!-- Background Pattern -->
                     <div
                         style="position: absolute; top: -100px; right: -100px; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; filter: blur(20px);">
@@ -741,7 +837,7 @@
             <!-- Step 2: Section B - Upon Conversion -->
             <div class="form-step" id="step2" style="display: none;">
                 <div
-                    style="background: linear-gradient(135deg, #2C5C36 0%, #2C5C36 100%); border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(5, 150, 105, 0.15);">
+                    style="background: #2C5C36; border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(5, 150, 105, 0.15);">
                     <!-- Background Pattern -->
                     <div
                         style="position: absolute; top: -100px; left: -100px; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; filter: blur(20px);">
@@ -855,7 +951,7 @@
             <!-- Step 3: Section C - Declaration -->
             <div class="form-step" id="step3" style="display: none;">
                 <div
-                    style="background: linear-gradient(135deg, #2C5C36 0%, #2C5C36 100%); border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(79, 70, 229, 0.15);">
+                    style="background: #2C5C36; border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(79, 70, 229, 0.15);">
                     <!-- Background Pattern -->
                     <div
                         style="position: absolute; top: -100px; right: -100px; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; filter: blur(20px);">
@@ -952,7 +1048,7 @@
                                         <div style="display: flex; align-items: center; gap: 15px;">
                                             <input type="file" name="signature" accept="image/*" style="display: none;"
                                                 id="signatureUpload" data-required="true">
-                                            <button type="button" data-i18n="upload_signature_btn"
+                                            <button type="button"
                                                 onclick="document.getElementById('signatureUpload').click()"
                                                 style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 12px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
                                                 <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none"
@@ -962,7 +1058,7 @@
                                                     <line x1="12" y1="3" x2="12" y2="15">
                                                     </line>
                                                 </svg>
-                                                Upload Signature
+                                                <span data-i18n="upload_signature_btn">Upload Signature</span>
                                             </button>
                                             <span id="signatureFileName" data-i18n="no_file_chosen"
                                                 style="color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500;">No
@@ -1020,7 +1116,7 @@
             <!-- Step 4: Officer Verification -->
             <div class="form-step" id="step4" style="display: none;">
                 <div
-                    style="background: linear-gradient(135deg, #2C5C36 0%, #2C5C36 100%); border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(220, 38, 38, 0.15);">
+                    style="background: #2C5C36; border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(220, 38, 38, 0.15);">
                     <!-- Background Pattern -->
                     <div
                         style="position: absolute; top: -100px; left: -100px; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; filter: blur(20px);">
@@ -1175,7 +1271,7 @@
         <!-- Preview Button Container -->
         <div id="previewButtonContainer" style="display: none;">
             <button type="button" id="previewBtn"
-                style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; padding: 14px 30px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 15px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2); display: flex; align-items: center; gap: 8px;"
+                style="background: #3b82f6; color: white; border: none; padding: 14px 30px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 15px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2); display: flex; align-items: center; gap: 8px;"
                 onclick="showPreview()">
                 <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     stroke-width="2">
@@ -1189,7 +1285,7 @@
         <!-- Next/Submit Button Container -->
         <div style="display: flex; gap: 10px;">
             <button type="button" id="nextBtn"
-                style="background: linear-gradient(135deg, #2C5C36, #2C5C36); color: white; border: none; padding: 14px 40px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 15px; box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2); display: flex; align-items: center; gap: 8px;"
+                style="background: #2C5C36; color: white; border: none; padding: 14px 40px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 15px; box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2); display: flex; align-items: center; gap: 8px;"
                 onclick="nextStep()">
                 <span data-i18n="next_btn">Next Step</span>
                 <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1200,7 +1296,7 @@
             </button>
 
             <button type="submit" id="submitBtn"
-                style="display: none; background: linear-gradient(135deg, #2C5C36, #2C5C36); color: white; border: none; padding: 14px 40px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 15px; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.2);">
+                style="display: none; background: #2C5C36; color: white; border: none; padding: 14px 40px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 15px; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.2);">
                 <span data-i18n="submit_declaration_btn">Submit Declaration</span>
             </button>
         </div>
@@ -1212,19 +1308,19 @@
     <div id="previewModal"
         style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 9999; overflow-y: auto; padding: 20px; backdrop-filter: blur(5px);">
         <div
-            style="max-width: 1200px; margin: 40px auto; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 24px; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); overflow: hidden; position: relative;">
+            style="max-width: 1200px; margin: 40px auto; background: #1a1a2e; border-radius: 24px; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); overflow: hidden; position: relative;">
 
             <!-- Decorative Elements -->
             <div
-                style="position: absolute; top: 0; right: 0; width: 300px; height: 300px; background: radial-gradient(circle, rgba(44, 92, 54, 0.15) 0%, transparent 70%);">
+                style="position: absolute; top: 0; right: 0; width: 300px; height: 300px; background: rgba(44, 92, 54, 0.15);">
             </div>
             <div
-                style="position: absolute; bottom: 0; left: 0; width: 400px; height: 400px; background: radial-gradient(circle, rgba(44, 92, 54, 0.1) 0%, transparent 70%);">
+                style="position: absolute; bottom: 0; left: 0; width: 400px; height: 400px; background: rgba(44, 92, 54, 0.1);">
             </div>
 
             <!-- Modal Header -->
             <div
-                style="background: linear-gradient(135deg, #2C5C36 0%, #1e3a29 100%); padding: 35px 40px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative;">
+                style="background: #2C5C36; padding: 35px 40px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <div style="display: flex; align-items: center; gap: 20px;">
                         <div
@@ -1274,56 +1370,56 @@
                     <div
                         style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid rgba(44, 92, 54, 0.3);">
                         <div
-                            style="width: 50px; height: 50px; background: linear-gradient(135deg, #2C5C36, #1e3a29); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 22px; box-shadow: 0 8px 20px rgba(44, 92, 54, 0.3);">
+                            style="width: 50px; height: 50px; background: #2C5C36; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 22px; box-shadow: 0 8px 20px rgba(44, 92, 54, 0.3);">
                             A
                         </div>
-                        <h3 style="color: white; font-size: 1.5rem; font-weight: 700; margin: 0;">SECTION A: CONVERT'S
+                        <h3 style="color: white; font-size: 1.5rem; font-weight: 700; margin: 0;" data-i18n="section_a_heading">SECTION A: CONVERT'S
                             DECLARATION</h3>
                     </div>
 
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
                         <div class="preview-field">
-                            <label>Former Names</label>
+                            <label data-i18n="preview_former_names_label">Former Names</label>
                             <div id="preview-former_names" class="preview-value">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>Former Religion</label>
+                            <label data-i18n="preview_former_religion_label">Former Religion</label>
                             <div id="preview-former_religion" class="preview-value">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>Date of Birth</label>
+                            <label data-i18n="preview_dob_label">Date of Birth</label>
                             <div id="preview-date_of_birth" class="preview-value">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>Occupation</label>
+                            <label data-i18n="preview_occupation_label">Occupation</label>
                             <div id="preview-occupation" class="preview-value">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>Current Residence</label>
+                            <label data-i18n="preview_current_residence_label">Current Residence</label>
                             <div id="preview-current_residence" class="preview-value">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>Contact Information</label>
+                            <label data-i18n="preview_contact_label">Contact Information</label>
                             <div id="preview-contact" class="preview-value">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>Father's Name</label>
+                            <label data-i18n="preview_father_name_label">Father's Name</label>
                             <div id="preview-father_name" class="preview-value">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>Mother's Name</label>
+                            <label data-i18n="preview_mother_name_label">Mother's Name</label>
                             <div id="preview-mother_name" class="preview-value">-</div>
                         </div>
                         <div class="preview-field" style="grid-column: span 2;">
-                            <label>Home Address</label>
+                            <label data-i18n="preview_home_address_label">Home Address</label>
                             <div id="preview-home_address" class="preview-value">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>District</label>
+                            <label data-i18n="preview_district_label">District</label>
                             <div id="preview-county" class="preview-value">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>County</label>
+                            <label data-i18n="preview_county_label">County</label>
                             <div id="preview-district" class="preview-value">-</div>
                         </div>
                     </div>
@@ -1334,44 +1430,44 @@
                     <div
                         style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid rgba(44, 92, 54, 0.3);">
                         <div
-                            style="width: 50px; height: 50px; background: linear-gradient(135deg, #2C5C36, #1e3a29); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 22px; box-shadow: 0 8px 20px rgba(44, 92, 54, 0.3);">
+                            style="width: 50px; height: 50px; background: #2C5C36; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 22px; box-shadow: 0 8px 20px rgba(44, 92, 54, 0.3);">
                             B
                         </div>
-                        <h3 style="color: white; font-size: 1.5rem; font-weight: 700; margin: 0;">SECTION B: UPON
+                        <h3 style="color: white; font-size: 1.5rem; font-weight: 700; margin: 0;" data-i18n="section_b_heading">SECTION B: UPON
                             CONVERSION</h3>
                     </div>
 
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
                         <div class="preview-field">
-                            <label>New Muslim Names</label>
+                            <label data-i18n="preview_new_names_label">New Muslim Names</label>
                             <div id="preview-new_names" class="preview-value highlight">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>Date of Conversion</label>
+                            <label data-i18n="preview_conversion_date_label">Date of Conversion</label>
                             <div id="preview-conversion_date" class="preview-value highlight">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>Place of Entry to Islam</label>
+                            <label data-i18n="preview_conversion_place_label">Place of Entry to Islam</label>
                             <div id="preview-conversion_place" class="preview-value highlight">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>Guardian's Name</label>
+                            <label data-i18n="preview_guardian_name_label">Guardian's Name</label>
                             <div id="preview-guardian_name" class="preview-value">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>Guardian's Occupation</label>
+                            <label data-i18n="preview_guardian_occupation_label">Guardian's Occupation</label>
                             <div id="preview-guardian_occupation" class="preview-value">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>Guardian's Declaration Date</label>
+                            <label data-i18n="preview_guardian_declaration_date_label">Guardian's Declaration Date</label>
                             <div id="preview-guardian_declaration_date" class="preview-value">-</div>
                         </div>
                         <div class="preview-field" style="grid-column: span 2;">
-                            <label>Reasons for Joining Islam</label>
+                            <label data-i18n="preview_conversion_reasons_label">Reasons for Joining Islam</label>
                             <div id="preview-conversion_reasons" class="preview-value">-</div>
                         </div>
                         <div class="preview-field" style="grid-column: span 2;">
-                            <label>Guardian's Declaration</label>
+                            <label data-i18n="preview_guardian_declaration_label">Guardian's Declaration</label>
                             <div id="preview-guardian_declaration" class="preview-value">-</div>
                         </div>
                     </div>
@@ -1382,10 +1478,10 @@
                     <div
                         style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid rgba(44, 92, 54, 0.3);">
                         <div
-                            style="width: 50px; height: 50px; background: linear-gradient(135deg, #2C5C36, #1e3a29); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 22px; box-shadow: 0 8px 20px rgba(44, 92, 54, 0.3);">
+                            style="width: 50px; height: 50px; background: #2C5C36; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 22px; box-shadow: 0 8px 20px rgba(44, 92, 54, 0.3);">
                             C
                         </div>
-                        <h3 style="color: white; font-size: 1.5rem; font-weight: 700; margin: 0;">SECTION C: DECLARATION
+                        <h3 style="color: white; font-size: 1.5rem; font-weight: 700; margin: 0;" data-i18n="section_c_heading">SECTION C: DECLARATION
                             OF FAITH</h3>
                     </div>
 
@@ -1411,9 +1507,9 @@
                         </div>
 
                         <div class="preview-field">
-                            <label>Declaration Agreement</label>
+                            <label data-i18n="preview_declaration_agreement_label">Declaration Agreement</label>
                             <div id="preview-declaration_agreement" class="preview-value highlight">
-                                <span style="color: #4ade80;">✓ Accepted</span>
+                                <span style="color: #4ade80;" data-i18n="declaration_accepted_text">✓ Accepted</span>
                             </div>
                         </div>
                     </div>
@@ -1424,32 +1520,32 @@
                     <div
                         style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid rgba(44, 92, 54, 0.3);">
                         <div
-                            style="width: 50px; height: 50px; background: linear-gradient(135deg, #2C5C36, #1e3a29); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 22px; box-shadow: 0 8px 20px rgba(44, 92, 54, 0.3);">
+                            style="width: 50px; height: 50px; background: #2C5C36; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 22px; box-shadow: 0 8px 20px rgba(44, 92, 54, 0.3);">
                             D
                         </div>
-                        <h3 style="color: white; font-size: 1.5rem; font-weight: 700; margin: 0;">OFFICER VERIFICATION
+                        <h3 style="color: white; font-size: 1.5rem; font-weight: 700; margin: 0;" data-i18n="section_d_heading">OFFICER VERIFICATION
                         </h3>
                     </div>
 
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
                         <div class="preview-field">
-                            <label>Verifying Officer's Name</label>
+                            <label data-i18n="preview_officer_name_label">Verifying Officer's Name</label>
                             <div id="preview-officer_name" class="preview-value">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>Officer's Position</label>
+                            <label data-i18n="preview_officer_position_label">Officer's Position</label>
                             <div id="preview-officer_position" class="preview-value">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>Registration Number</label>
+                            <label data-i18n="preview_registration_number_label">Registration Number</label>
                             <div id="preview-registration_number" class="preview-value">-</div>
                         </div>
                         <div class="preview-field">
-                            <label>Date of Verification</label>
+                            <label data-i18n="preview_verification_date_label">Date of Verification</label>
                             <div id="preview-verification_date" class="preview-value">-</div>
                         </div>
                         <div class="preview-field" style="grid-column: span 2;">
-                            <label>Remarks/Additional Notes</label>
+                            <label data-i18n="preview_officer_remarks_label">Remarks/Additional Notes</label>
                             <div id="preview-officer_remarks" class="preview-value">-</div>
                         </div>
                     </div>
@@ -1484,7 +1580,7 @@
                         Close Preview
                     </button>
                     <button onclick="closePreview(); document.querySelector('#submitBtn').click();"
-                        style="background: linear-gradient(135deg, #2C5C36, #1e3a29); color: white; border: none; padding: 12px 40px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 15px; box-shadow: 0 4px 15px rgba(44, 92, 54, 0.3);">
+                        style="background: #2C5C36; color: white; border: none; padding: 12px 40px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 15px; box-shadow: 0 4px 15px rgba(44, 92, 54, 0.3);">
                         Submit Declaration
                     </button>
                 </div>
@@ -2317,7 +2413,7 @@ function updateStepIndicators() {
 
 <style>
     #previewBtn:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af) !important;
+        background: #2563eb !important;
         transform: translateY(-2px) !important;
         box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3) !important;
     }
@@ -2372,7 +2468,7 @@ function updateStepIndicators() {
     }
 
     #submitBtn:hover {
-        background: linear-gradient(135deg, #2C5C36, #065f46) !important;
+        background: #2C5C36 !important;
         box-shadow: 0 6px 20px rgba(5, 150, 105, 0.25) !important;
     }
 
@@ -2450,7 +2546,7 @@ function updateStepIndicators() {
         }
 
         /* Hide the desktop left sidebar on mobile */
-        div[style*="flex: 0.4; background: linear-gradient(180deg, #f8fafc"] {
+        div[style*="flex: 0.4; background:"] {
             display: none !important;
         }
 
@@ -2465,7 +2561,7 @@ function updateStepIndicators() {
         }
 
         /* Right side form content - full width on mobile */
-        div[style*="flex: 1; background: linear-gradient(180deg, #ffffff 0%"] {
+        div[style*="flex: 1; background:"] {
             flex: 1 0 auto !important;
             width: 100% !important;
             padding: 16px !important;
@@ -2473,7 +2569,7 @@ function updateStepIndicators() {
         }
 
         /* Mobile header styling */
-        div[style*="position: sticky; top: 0; background: linear-gradient(180deg, #ffffff 0%"] {
+        div[style*="position: sticky; top: 0; background:"] {
             padding-bottom: 15px !important;
             margin-bottom: 20px !important;
         }
@@ -2485,7 +2581,7 @@ function updateStepIndicators() {
         }
 
         /* Step completion status - smaller on mobile */
-        div#stepCompletionStatus[style*="background: linear-gradient(135deg, #2C5C36"] {
+        div#stepCompletionStatus[style*="background:"] {
             padding: 6px 12px !important;
             font-size: 12px !important;
             white-space: nowrap !important;
@@ -2498,7 +2594,7 @@ function updateStepIndicators() {
         }
 
         /* Form sections - adjust padding and margins for mobile */
-        div.form-step[style*="background: linear-gradient(135deg, #2C5C36 0%"] {
+        div.form-step[style*="background:"] {
             padding: 20px !important;
             border-radius: 16px !important;
             margin-bottom: 20px !important;
@@ -2658,8 +2754,8 @@ function updateStepIndicators() {
 
         /* Previous/Next buttons - full width on mobile */
         button#prevBtn[style*="background: #f3f4f6; color: #2C5C36"],
-        button#nextBtn[style*="background: linear-gradient(135deg, #2C5C36"],
-        button#submitBtn[style*="background: linear-gradient(135deg, #2C5C36"] {
+        button#nextBtn[style*="background:"],
+        button#submitBtn[style*="background:"] {
             width: 100% !important;
             justify-content: center !important;
             padding: 14px !important;
@@ -2690,7 +2786,7 @@ function updateStepIndicators() {
     @media screen and (max-width: 374px) {
 
         /* Even smaller padding */
-        div[style*="flex: 1; background: linear-gradient(180deg, #ffffff 0%"] {
+        div[style*="flex: 1; background:"] {
             padding: 12px !important;
         }
 
@@ -2737,13 +2833,13 @@ function updateStepIndicators() {
     @media screen and (min-width: 768px) and (max-width: 1024px) {
 
         /* Show sidebar on tablets */
-        div[style*="flex: 0.4; background: linear-gradient(180deg, #f8fafc"] {
+        div[style*="flex: 0.4; background:"] {
             flex: 0 0 35% !important;
             padding: 25px !important;
         }
 
         /* Adjust form padding */
-        div[style*="flex: 1; background: linear-gradient(180deg, #ffffff 0%"] {
+        div[style*="flex: 1; background:"] {
             padding: 25px !important;
         }
 
@@ -2766,7 +2862,7 @@ function updateStepIndicators() {
         }
 
         /* Show desktop sidebar */
-        div[style*="flex: 0.4; background: linear-gradient(180deg, #f8fafc"] {
+        div[style*="flex: 0.4; background:"] {
             display: block !important;
             flex: 0 0 35% !important;
         }

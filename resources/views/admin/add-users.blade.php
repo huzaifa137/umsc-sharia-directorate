@@ -38,10 +38,10 @@
                     <!-- Login Credentials Section -->
                     <div class="col-12">
                         <div class="p-4 rounded-4"
-                            style="background: linear-gradient(135deg, rgba(5, 88, 15, 0.08) 0%, rgba(5, 149, 128, 0.08) 100%); border: 1px solid rgba(5, 88, 15, 0.1);">
+                            style="background: rgba(5, 88, 15, 0.08); border: 1px solid rgba(5, 88, 15, 0.1);">
                             <div class="d-flex align-items-center mb-4">
                                 <div class="p-3 rounded-circle me-3"
-                                    style="background: linear-gradient(135deg, #00580f 0%, #059580 100%);">
+                                    style="background: #00580f;">
                                     <i class="bx bx-lock-alt text-white fs-5"></i>
                                 </div>
                                 <div>
@@ -113,10 +113,10 @@
                     <!-- Profile Information -->
                     <div class="col-12">
                         <div class="p-4 rounded-4"
-                            style="background: linear-gradient(135deg, rgba(5, 88, 15, 0.08) 0%, rgba(5, 149, 128, 0.08) 100%); border: 1px solid rgba(5, 88, 15, 0.1);">
+                            style="background: rgba(5, 88, 15, 0.08); border: 1px solid rgba(5, 88, 15, 0.1);">
                             <div class="d-flex align-items-center mb-4">
                                 <div class="p-3 rounded-circle me-3"
-                                    style="background: linear-gradient(135deg, #00580f 0%, #059580 100%);">
+                                    style="background: #00580f;">
                                     <i class="bx bx-user-circle text-white fs-5"></i>
                                 </div>
                                 <div>
@@ -222,85 +222,97 @@
                         </div>
                     </div>
 
-                    <!-- Account Settings -->
+                    <!-- Role & Jurisdiction -->
                     <div class="col-12">
                         <div class="p-4 rounded-4"
-                            style="background: linear-gradient(135deg, rgba(5, 88, 15, 0.08) 0%, rgba(5, 149, 128, 0.08) 100%); border: 1px solid rgba(5, 88, 15, 0.1);">
+                            style="background: rgba(5, 88, 15, 0.08); border: 1px solid rgba(5, 88, 15, 0.1);">
                             <div class="d-flex align-items-center mb-4">
                                 <div class="p-3 rounded-circle me-3"
-                                    style="background: linear-gradient(135deg, #00580f 0%, #059580 100%);">
-                                    <i class="bx bx-cog text-white fs-5"></i>
+                                    style="background: #00580f;">
+                                    <i class="bx bx-shield text-white fs-5"></i>
                                 </div>
                                 <div>
-                                    <h6 class="fw-bold mb-1" style="color: #00580f;">Account Settings</h6>
-                                    <p class="text-muted mb-0 small">Configure role and status</p>
+                                    <h6 class="fw-bold mb-1" style="color: #00580f;">Role & Jurisdiction</h6>
+                                    <p class="text-muted mb-0 small">Choose what this account is responsible for on the system</p>
                                 </div>
                             </div>
 
                             <div class="row g-3">
-                                <div class="col-md-4">
-                                    <label for="user_role" class="form-label fw-bold" style="color: #00580f;">User Role
-                                        *</label>
+                                <div class="col-md-12">
+                                    <label for="role_id" class="form-label fw-bold" style="color: #00580f;">User Role *</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-white border-end-0"
                                             style="border-color: rgba(5, 88, 15, 0.2);">
-                                            <i class="bx bx-shield" style="color: #00580f;"></i>
+                                            <i class="bx bx-id-card" style="color: #00580f;"></i>
                                         </span>
-                                        <select name="user_role" class="form-select border-start-0"
+                                        <select name="role_id" id="role_id" class="form-select border-start-0"
                                             style="border-color: rgba(5, 88, 15, 0.2); border-radius: 0 10px 10px 0;"
                                             required>
-                                            <option value="">Select role</option>
-                                            <option value="1">Imaam</option>
-                                            <option value="2">District Qadh</option>
-                                            <option value="3">Directorate Sharia</option>
+                                            <option value="">Select a role</option>
+                                            @forelse ($assignableRoles as $role)
+                                                <option value="{{ $role->id }}" data-scope="{{ $role->data_scope }}">
+                                                    {{ $role->name }} — {{ $role->visibilityLabel() }}
+                                                </option>
+                                            @empty
+                                                <option value="" disabled>No roles available for you to assign</option>
+                                            @endforelse
                                         </select>
                                         <div class="invalid-feedback">
                                             Please select a user role.
                                         </div>
                                     </div>
+                                    <small class="text-muted d-block mt-1" id="role_description"></small>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <label for="account_status" class="form-label fw-bold" style="color: #00580f;">Account
-                                        Status *</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-white border-end-0"
-                                            style="border-color: rgba(5, 88, 15, 0.2);">
-                                            <i class="bx bx-check-circle" style="color: #00580f;"></i>
-                                        </span>
-                                        <select name="account_status" class="form-select border-start-0"
-                                            style="border-color: rgba(5, 88, 15, 0.2); border-radius: 0 10px 10px 0;"
-                                            required>
-                                            <option value="">Select status</option>
-                                            <option value="10">Active</option>
-                                            <option value="0">Banned</option>
-                                            <option value="5">Pending</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            Please select account status.
-                                        </div>
-                                    </div>
+                                @php($me = \App\Services\AccessControl::user())
+                                @php($lockJurisdiction = !\App\Services\AccessControl::hasFullAccess())
+                                @php($myScope = $me?->role?->data_scope)
+
+                                <div class="col-md-3 jurisdiction-field" data-needs="county,district,global">
+                                    <label class="form-label fw-bold" style="color: #00580f;">Region</label>
+                                    <input type="text" name="region" id="region" class="form-control"
+                                        style="border-color: rgba(5, 88, 15, 0.2);"
+                                        value="{{ $lockJurisdiction ? $me?->region : '' }}"
+                                        {{ $lockJurisdiction ? 'readonly' : '' }}
+                                        placeholder="e.g. Busoga Muslim Region" list="regionList">
+                                    <datalist id="regionList"></datalist>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <label for="registration_status" class="form-label fw-bold"
-                                        style="color: #00580f;">Registration Status *</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-white border-end-0"
-                                            style="border-color: rgba(5, 88, 15, 0.2);">
-                                            <i class="bx bx-clipboard" style="color: #00580f;"></i>
-                                        </span>
-                                        <select name="registration_status" class="form-select border-start-0"
-                                            style="border-color: rgba(5, 88, 15, 0.2); border-radius: 0 10px 10px 0;"
-                                            required>
-                                            <option value="">Select status</option>
-                                            <option value="0">Incomplete</option>
-                                            <option value="1">Complete</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            Please select registration status.
-                                        </div>
-                                    </div>
+                                <div class="col-md-3 jurisdiction-field" data-needs="county,district">
+                                    <label class="form-label fw-bold" style="color: #00580f;">District</label>
+                                    <input type="text" name="district" id="district" class="form-control"
+                                        style="border-color: rgba(5, 88, 15, 0.2);"
+                                        value="{{ ($lockJurisdiction && in_array($myScope, ['district', 'county'], true)) ? $me?->district : '' }}"
+                                        {{ ($lockJurisdiction && in_array($myScope, ['district', 'county'], true)) ? 'readonly' : '' }}
+                                        placeholder="e.g. Bugweri M D" list="districtList">
+                                    <datalist id="districtList"></datalist>
+                                </div>
+
+                                <div class="col-md-3 jurisdiction-field" data-needs="county">
+                                    <label class="form-label fw-bold" style="color: #00580f;">County</label>
+                                    <input type="text" name="county" id="county" class="form-control"
+                                        style="border-color: rgba(5, 88, 15, 0.2);"
+                                        value="{{ ($lockJurisdiction && $myScope === 'county') ? $me?->county : '' }}"
+                                        placeholder="e.g. Namalemba County" list="countyList">
+                                    <datalist id="countyList"></datalist>
+                                </div>
+
+                                <div class="col-md-3 jurisdiction-field" data-needs="">
+                                    <label class="form-label fw-bold" style="color: #00580f;">Mosque</label>
+                                    <input type="text" name="mosque_name" id="mosque_name" class="form-control"
+                                        style="border-color: rgba(5, 88, 15, 0.2);"
+                                        placeholder="e.g. Ar-Rahmah Mosque" list="mosqueList">
+                                    <datalist id="mosqueList"></datalist>
+                                </div>
+
+                                <div class="col-12">
+                                    <small class="text-muted">
+                                        <i class="bx bx-info-circle me-1" style="color: #00580f;"></i>
+                                        The jurisdiction fields shown above change automatically based on the role
+                                        selected — a Director needs none, a Regional Assistant only needs a Region, a
+                                        District Khadhi only needs a District, a County Sheikh needs a District and
+                                        County, and an Imaam needs all four.
+                                    </small>
                                 </div>
                             </div>
                         </div>
@@ -316,7 +328,7 @@
                                 </small>
                             </div>
                             <button type="submit" class="btn px-4 py-3 fw-bold"
-                                style="background: linear-gradient(135deg, #00580f 0%, #059580 100%); color: white; border-radius: 12px;">
+                                style="background: #00580f; color: white; border-radius: 12px;">
                                 <i class="bx bx-user-plus me-2"></i> Create User Account
                             </button>
                         </div>
@@ -328,17 +340,116 @@
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
             <script>
+                /* ============== ROLE / JURISDICTION DYNAMIC FIELDS ============== */
+                document.addEventListener('DOMContentLoaded', function () {
+                    const roleSelect = document.getElementById('role_id');
+                    const roleDescription = document.getElementById('role_description');
+                    const fields = document.querySelectorAll('.jurisdiction-field');
+                    const districtInput = document.getElementById('district');
+                    const countyInput = document.getElementById('county');
+                    const mosqueInput = document.getElementById('mosque_name');
+
+                    const scopeNeeds = {
+                        self: ['region', 'district', 'county', 'mosque'],
+                        county: ['region', 'district', 'county'],
+                        district: ['region', 'district'],
+                        region: ['region'],
+                        global: [],
+                    };
+
+                    function applyScope(scope) {
+                        const needs = scopeNeeds[scope] || [];
+
+                        fields.forEach(field => {
+                            const key = field.querySelector('input').id === 'mosque_name' ? 'mosque' : field.querySelector('input').id;
+                            const shouldShow = needs.includes(key);
+                            field.style.display = shouldShow ? '' : 'none';
+                            // Region is required whenever shown (i.e. for every role except
+                            // a global/Director one) — it's what every scope below Director
+                            // rolls up into, so a blank region silently breaks the Regional
+                            // Assistant's and Director's visibility into this account's records.
+                            field.querySelector('input').required = shouldShow;
+                        });
+                    }
+
+                    roleSelect?.addEventListener('change', function () {
+                        const opt = this.options[this.selectedIndex];
+                        const scope = opt?.dataset?.scope || '';
+                        const descriptions = {
+                            self: 'Sees and registers cases only for records they personally create.',
+                            county: 'Sees their own records plus everything registered by Imaams in their county.',
+                            district: 'Sees their own records plus everything registered in their entire district.',
+                            region: 'Sees their own records plus everything registered by District Khadhis, County Sheikhs, and Imaams across their region.',
+                            global: 'Full, unrestricted access to every record and account on the system.',
+                        };
+                        roleDescription.textContent = descriptions[scope] || '';
+                        applyScope(scope);
+                    });
+
+                    // Trigger once on load in case a role is pre-selected
+                    if (roleSelect && roleSelect.value) {
+                        roleSelect.dispatchEvent(new Event('change'));
+                    } else {
+                        applyScope('');
+                    }
+
+                    /* ============== CASCADING LOCATION SUGGESTIONS ============== */
+                    fetch('{{ route("locations.regions") }}')
+                        .then(r => r.json())
+                        .then(list => {
+                            document.getElementById('regionList').innerHTML =
+                                list.map(r => `<option value="${r}">`).join('');
+                        });
+
+                    fetch('{{ route("locations.districts") }}')
+                        .then(r => r.json())
+                        .then(list => {
+                            document.getElementById('districtList').innerHTML =
+                                list.map(d => `<option value="${d}">`).join('');
+                        }).catch(() => {});
+
+                    function loadCounties(district) {
+                        if (!district) return;
+                        fetch(`{{ route('locations.counties') }}?district=${encodeURIComponent(district)}`)
+                            .then(r => r.json())
+                            .then(list => {
+                                document.getElementById('countyList').innerHTML =
+                                    list.map(c => `<option value="${c}">`).join('');
+                            }).catch(() => {});
+                    }
+
+                    function loadMosques(district, county) {
+                        if (!district || !county) return;
+                        fetch(`{{ route('locations.mosques') }}?district=${encodeURIComponent(district)}&county=${encodeURIComponent(county)}`)
+                            .then(r => r.json())
+                            .then(list => {
+                                document.getElementById('mosqueList').innerHTML =
+                                    list.map(m => `<option value="${m.name}">`).join('');
+                            }).catch(() => {});
+                    }
+
+                    districtInput?.addEventListener('change', () => loadCounties(districtInput.value));
+                    countyInput?.addEventListener('change', () => loadMosques(districtInput.value, countyInput.value));
+
+                    if (districtInput?.value) loadCounties(districtInput.value);
+                    if (districtInput?.value && countyInput?.value) loadMosques(districtInput.value, countyInput.value);
+                });
+            </script>
+
+            <script>
                 document.addEventListener('DOMContentLoaded', function () {
                     const form = document.getElementById('createUserForm');
-                    const requiredFields = form.querySelectorAll('[required]');
+                    // Jurisdiction inputs become required dynamically once a role is chosen,
+                    // so we listen on them too even before they're marked required.
+                    const watchedFields = form.querySelectorAll('[required], .jurisdiction-field input');
 
                     // Input validation on blur and input events
-                    requiredFields.forEach(field => {
+                    watchedFields.forEach(field => {
                         field.addEventListener('blur', function () {
-                            if (!this.value) {
+                            if (this.required && !this.value) {
                                 this.classList.add('is-invalid');
                                 this.classList.remove('is-valid');
-                            } else {
+                            } else if (this.value) {
                                 this.classList.remove('is-invalid');
                                 this.classList.add('is-valid');
                             }
@@ -358,8 +469,13 @@
                         let isValid = true;
                         const invalidFields = [];
 
-                        // Check required fields
+                        // Re-check required fields fresh — the jurisdiction fields'
+                        // required state changes based on the role selected above.
+                        const requiredFields = form.querySelectorAll('[required]');
+
                         requiredFields.forEach(field => {
+                            if (field.offsetParent === null) return; // skip hidden fields
+
                             if (!field.value.trim()) {
                                 field.classList.add('is-invalid');
                                 isValid = false;

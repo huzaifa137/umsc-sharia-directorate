@@ -168,7 +168,7 @@
                     <div class="card-body p-4 d-flex flex-column">
                         <div class="d-flex align-items-start mb-3">
                             <div class="icon-wrapper me-3"
-                                style="background: linear-gradient(100deg, #0bd2f5 0%, #0967b4 100%); border-radius: 12px; padding: 12px;">
+                                style="background: #0bd2f5; border-radius: 12px; padding: 12px;">
                                 <i class="bx bx-user-plus text-white fs-4"></i>
                             </div>
                             <div>
@@ -181,7 +181,7 @@
                         <div class="mt-auto pt-3">
                             <div class="d-grid">
                                 <a href="{{ route('convert.application') }}" class="btn btn-lg text-white fw-semibold"
-                                    style="background: linear-gradient(100deg, #0bd2f5 0%, #0967b4 100%); border: none; border-radius: 12px; padding: 12px;">
+                                    style="background: #0bd2f5; border: none; border-radius: 12px; padding: 12px;">
                                     <i class="bx bx-plus me-2"></i>New Registration
                                 </a>
                             </div>
@@ -196,7 +196,7 @@
                     <div class="card-body p-4 d-flex flex-column">
                         <div class="d-flex align-items-start mb-3">
                             <div class="icon-wrapper me-3"
-                                style="background: linear-gradient(135deg, #155a15 0%, #b7e5b7 100%); border-radius: 12px; padding: 12px;">
+                                style="background: #155a15; border-radius: 12px; padding: 12px;">
                                 <i class="bx bx-search-alt text-white fs-4"></i>
                             </div>
                             <div>
@@ -209,7 +209,7 @@
                             <div class="d-grid">
                                 <a href="{{ route('convert.status.applications', ['statusId' => 100]) }}"
                                     class="btn btn-lg text-white fw-semibold"
-                                    style="background: linear-gradient(135deg, #155a15 0%, #b7e5b7 100%); border: none; border-radius: 12px; padding: 12px;">
+                                    style="background: #155a15; border: none; border-radius: 12px; padding: 12px;">
                                     <i class="bx bx-search me-2"></i>Search Records
                                 </a>
                             </div>
@@ -430,6 +430,11 @@
                                 </tbody>
                             </table>
 
+@include('layouts.views.converts-action-modals')
+@include('layouts.views.shared-status-modal')
+@include('layouts.views.case-modal-styles')
+
+
                             <div class="mt-4 me-4">
                                 {{ $applications->links('pagination::bootstrap-5') }}
                             </div>
@@ -481,11 +486,34 @@
         </div>
 
     </div>
+
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                        <div class="d-flex align-items-center">
+                            <div class="p-3 rounded-circle me-3" style="background: #00580f;">
+                                <i class="bx bx-file text-white fs-4"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Report Exports</h6>
+                                <p class="text-muted small mb-0">Filter Convert records and export a certified report</p>
+                            </div>
+                        </div>
+                        <a href="{{ url('reports/convert') }}" class="btn fw-bold" style="background: #00580f; color: white;">
+                            <i class="bx bxs-file-pdf me-1"></i> Open Reports
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
     <style>
         .dashboard-header {
-            background: linear-gradient(180deg, #155a15 0%, #263b26 100%);
+            background: #155a15;
             border-radius: 16px;
             padding: 2rem;
             color: white;
@@ -540,15 +568,15 @@
         }
 
         .action-card:nth-child(1) .action-icon {
-            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            background: #3b82f6;
         }
 
         .action-card:nth-child(2) .action-icon {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: #10b981;
         }
 
         .action-card:nth-child(3) .action-icon {
-            background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
+            background: #0ea5e9;
         }
 
         .field-card {
@@ -570,7 +598,7 @@
             width: 48px;
             height: 48px;
             border-radius: 12px;
-            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            background: #3b82f6;
             display: flex;
             align-items: center;
             justify-content: center;

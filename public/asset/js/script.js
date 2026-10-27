@@ -80731,6 +80731,73 @@ const formData = {}
 // Multi-language translations object
 const translations = {
   en: {
+    "groom_nin_label": "NIN/Passport No./Refugee ID",
+    "groom_telephone_label": "Telephone Number",
+    "new_tribe_label": "Or add a new tribe",
+    "bride_surname_label": "Surname",
+    "bride_given_name_label": "Given Name",
+    "bride_nin_label": "NIN/Passport No./Refugee ID",
+    "bride_telephone_label": "Telephone Number",
+    "bride_email_label": "Email Address",
+    "bride_tribe_label": "Tribe",
+    "new_bride_tribe_label": "Or add a new tribe",
+    "bride_district_label": "District",
+    "bride_county_label": "County/Municipality",
+    "bride_sub_county_label": "Sub County",
+    "bride_parish_label": "Parish/Ward",
+    "bride_village_label": "Village (LC1/Zone)",
+    "bride_plot_label": "Plot Number",
+    "groom_father_status_label": "Status",
+    "groom_father_surname_label": "Surname",
+    "groom_father_given_name_label": "Given Name",
+    "groom_father_nin_label": "NIN/Passport No./Refugee ID",
+    "groom_father_district_label": "District of Residence",
+    "groom_father_tribe_label": "Tribe",
+    "new_groom_father_tribe_label": "Or add a new tribe",
+    "groom_mother_status_label": "Status",
+    "groom_mother_surname_label": "Surname",
+    "groom_mother_given_name_label": "Given Name",
+    "groom_mother_maiden_name_label": "Maiden Name",
+    "groom_mother_nin_label": "NIN/Passport No./Refugee ID",
+    "groom_mother_district_label": "District of Residence",
+    "bride_father_status_label": "Status",
+    "bride_father_surname_label": "Surname",
+    "bride_father_given_name_label": "Given Name",
+    "bride_father_nin_label": "NIN/Passport No./Refugee ID",
+    "bride_father_district_label": "District of Residence",
+    "bride_father_tribe_label": "Tribe",
+    "new_bride_father_tribe_label": "Or add a new tribe",
+    "bride_mother_status_label": "Status",
+    "bride_mother_surname_label": "Surname",
+    "bride_mother_given_name_label": "Given Name",
+    "bride_mother_maiden_name_label": "Maiden Name",
+    "bride_mother_nin_label": "NIN/Passport No./Refugee ID",
+    "bride_mother_district_label": "District of Residence",
+    "dowery_type_label": "Dowery Type",
+    "dowery_specify_label": "Specify",
+    "imam_name_label": "Imam in Charge (Name)",
+    "masjid_name_label": "Masjid Name",
+    "witness1_surname_label": "Surname",
+    "witness1_given_name_label": "Given Name",
+    "witness1_nin_label": "NIN/Passport No./Refugee ID",
+    "witness1_phone_label": "Phone Number",
+    "witness1_address_label": "Physical Address",
+    "witness1_district_label": "District",
+    "witness2_surname_label": "Surname",
+    "witness2_given_name_label": "Given Name",
+    "witness2_nin_label": "NIN/Passport No./Refugee ID",
+    "witness2_phone_label": "Phone Number",
+    "witness2_address_label": "Physical Address",
+    "witness2_district_label": "District",
+    "groom_country_label": "Groom Country",
+    "bride_country_label": "Bride Country",
+    "please_select_option": "--please select--",
+    "day_placeholder": "Day",
+    "year_placeholder": "Year",
+    "phone_number_placeholder": "Phone number",
+    "type_tribe_placeholder": "Type your tribe here",
+    "select_dowery_type_first_placeholder": "Select a Dowery Type first",
+    "imam_full_name_placeholder": "Imam's Full Name",
     "header.title": "Uganda Muslim Supreme Council",
     "header.subtitle": "Directorate of Sharia Marriage Certificate",
     "header.appId": "Application ID:",
@@ -80806,6 +80873,73 @@ const translations = {
 
   },
   ar: {
+    "groom_nin_label": "رقم الهوية الوطنية/رقم الجواز/هوية اللاجئ",
+    "groom_telephone_label": "رقم الهاتف",
+    "new_tribe_label": "أو أضف قبيلة جديدة",
+    "bride_surname_label": "اسم العائلة",
+    "bride_given_name_label": "الاسم الأول",
+    "bride_nin_label": "رقم الهوية الوطنية/رقم الجواز/هوية اللاجئ",
+    "bride_telephone_label": "رقم الهاتف",
+    "bride_email_label": "البريد الإلكتروني",
+    "bride_tribe_label": "القبيلة",
+    "new_bride_tribe_label": "أو أضف قبيلة جديدة",
+    "bride_district_label": "المنطقة",
+    "bride_county_label": "المقاطعة/البلدية",
+    "bride_sub_county_label": "المقاطعة الفرعية",
+    "bride_parish_label": "الأبرشية/الجناح",
+    "bride_village_label": "القرية (منطقة LC1)",
+    "bride_plot_label": "رقم القطعة",
+    "groom_father_status_label": "الحالة",
+    "groom_father_surname_label": "اسم العائلة",
+    "groom_father_given_name_label": "الاسم الأول",
+    "groom_father_nin_label": "رقم الهوية الوطنية/رقم الجواز/هوية اللاجئ",
+    "groom_father_district_label": "منطقة السكن",
+    "groom_father_tribe_label": "القبيلة",
+    "new_groom_father_tribe_label": "أو أضف قبيلة جديدة",
+    "groom_mother_status_label": "الحالة",
+    "groom_mother_surname_label": "اسم العائلة",
+    "groom_mother_given_name_label": "الاسم الأول",
+    "groom_mother_maiden_name_label": "اسم العائلة قبل الزواج",
+    "groom_mother_nin_label": "رقم الهوية الوطنية/رقم الجواز/هوية اللاجئ",
+    "groom_mother_district_label": "منطقة السكن",
+    "bride_father_status_label": "الحالة",
+    "bride_father_surname_label": "اسم العائلة",
+    "bride_father_given_name_label": "الاسم الأول",
+    "bride_father_nin_label": "رقم الهوية الوطنية/رقم الجواز/هوية اللاجئ",
+    "bride_father_district_label": "منطقة السكن",
+    "bride_father_tribe_label": "القبيلة",
+    "new_bride_father_tribe_label": "أو أضف قبيلة جديدة",
+    "bride_mother_status_label": "الحالة",
+    "bride_mother_surname_label": "اسم العائلة",
+    "bride_mother_given_name_label": "الاسم الأول",
+    "bride_mother_maiden_name_label": "اسم العائلة قبل الزواج",
+    "bride_mother_nin_label": "رقم الهوية الوطنية/رقم الجواز/هوية اللاجئ",
+    "bride_mother_district_label": "منطقة السكن",
+    "dowery_type_label": "نوع المهر",
+    "dowery_specify_label": "حدد",
+    "imam_name_label": "الإمام المسؤول (الاسم)",
+    "masjid_name_label": "اسم المسجد",
+    "witness1_surname_label": "اسم العائلة",
+    "witness1_given_name_label": "الاسم الأول",
+    "witness1_nin_label": "رقم الهوية الوطنية/رقم الجواز/هوية اللاجئ",
+    "witness1_phone_label": "رقم الهاتف",
+    "witness1_address_label": "العنوان الفعلي",
+    "witness1_district_label": "المنطقة",
+    "witness2_surname_label": "اسم العائلة",
+    "witness2_given_name_label": "الاسم الأول",
+    "witness2_nin_label": "رقم الهوية الوطنية/رقم الجواز/هوية اللاجئ",
+    "witness2_phone_label": "رقم الهاتف",
+    "witness2_address_label": "العنوان الفعلي",
+    "witness2_district_label": "المنطقة",
+    "groom_country_label": "بلد العريس",
+    "bride_country_label": "بلد العروس",
+    "please_select_option": "--الرجاء الاختيار--",
+    "day_placeholder": "اليوم",
+    "year_placeholder": "السنة",
+    "phone_number_placeholder": "رقم الهاتف",
+    "type_tribe_placeholder": "اكتب قبيلتك هنا",
+    "select_dowery_type_first_placeholder": "اختر نوع المهر أولاً",
+    "imam_full_name_placeholder": "الاسم الكامل للإمام",
     "header.title": "المجلس الأعلى الإسلامي الأوغندي",
     "header.subtitle": "مديرية شهادة الزواج الشرعي",
     "header.appId": "رقم الطلب:",
@@ -80881,6 +81015,73 @@ const translations = {
 
   },
   sw: {
+    "groom_nin_label": "Namba ya Utambulisho/Nambari ya Pasipoti/Kitambulisho cha Mkimbizi",
+    "groom_telephone_label": "Namba ya Simu",
+    "new_tribe_label": "Au ongeza kabila jipya",
+    "bride_surname_label": "Jina la Ukoo",
+    "bride_given_name_label": "Jina la Kwanza",
+    "bride_nin_label": "Namba ya Utambulisho/Nambari ya Pasipoti/Kitambulisho cha Mkimbizi",
+    "bride_telephone_label": "Namba ya Simu",
+    "bride_email_label": "Barua Pepe",
+    "bride_tribe_label": "Kabila",
+    "new_bride_tribe_label": "Au ongeza kabila jipya",
+    "bride_district_label": "Wilaya",
+    "bride_county_label": "Kaunti/Manispaa",
+    "bride_sub_county_label": "Kaunti Ndogo",
+    "bride_parish_label": "Parokia/Kata",
+    "bride_village_label": "Kijiji (Eneo la LC1)",
+    "bride_plot_label": "Namba ya Kiwanja",
+    "groom_father_status_label": "Hali",
+    "groom_father_surname_label": "Jina la Ukoo",
+    "groom_father_given_name_label": "Jina la Kwanza",
+    "groom_father_nin_label": "Namba ya Utambulisho/Nambari ya Pasipoti/Kitambulisho cha Mkimbizi",
+    "groom_father_district_label": "Wilaya ya Makazi",
+    "groom_father_tribe_label": "Kabila",
+    "new_groom_father_tribe_label": "Au ongeza kabila jipya",
+    "groom_mother_status_label": "Hali",
+    "groom_mother_surname_label": "Jina la Ukoo",
+    "groom_mother_given_name_label": "Jina la Kwanza",
+    "groom_mother_maiden_name_label": "Jina la Ukoo Kabla ya Ndoa",
+    "groom_mother_nin_label": "Namba ya Utambulisho/Nambari ya Pasipoti/Kitambulisho cha Mkimbizi",
+    "groom_mother_district_label": "Wilaya ya Makazi",
+    "bride_father_status_label": "Hali",
+    "bride_father_surname_label": "Jina la Ukoo",
+    "bride_father_given_name_label": "Jina la Kwanza",
+    "bride_father_nin_label": "Namba ya Utambulisho/Nambari ya Pasipoti/Kitambulisho cha Mkimbizi",
+    "bride_father_district_label": "Wilaya ya Makazi",
+    "bride_father_tribe_label": "Kabila",
+    "new_bride_father_tribe_label": "Au ongeza kabila jipya",
+    "bride_mother_status_label": "Hali",
+    "bride_mother_surname_label": "Jina la Ukoo",
+    "bride_mother_given_name_label": "Jina la Kwanza",
+    "bride_mother_maiden_name_label": "Jina la Ukoo Kabla ya Ndoa",
+    "bride_mother_nin_label": "Namba ya Utambulisho/Nambari ya Pasipoti/Kitambulisho cha Mkimbizi",
+    "bride_mother_district_label": "Wilaya ya Makazi",
+    "dowery_type_label": "Aina ya Mahari",
+    "dowery_specify_label": "Bainisha",
+    "imam_name_label": "Imamu Msimamizi (Jina)",
+    "masjid_name_label": "Jina la Msikiti",
+    "witness1_surname_label": "Jina la Ukoo",
+    "witness1_given_name_label": "Jina la Kwanza",
+    "witness1_nin_label": "Namba ya Utambulisho/Nambari ya Pasipoti/Kitambulisho cha Mkimbizi",
+    "witness1_phone_label": "Namba ya Simu",
+    "witness1_address_label": "Anwani ya Makazi",
+    "witness1_district_label": "Wilaya",
+    "witness2_surname_label": "Jina la Ukoo",
+    "witness2_given_name_label": "Jina la Kwanza",
+    "witness2_nin_label": "Namba ya Utambulisho/Nambari ya Pasipoti/Kitambulisho cha Mkimbizi",
+    "witness2_phone_label": "Namba ya Simu",
+    "witness2_address_label": "Anwani ya Makazi",
+    "witness2_district_label": "Wilaya",
+    "groom_country_label": "Nchi ya Bwana Harusi",
+    "bride_country_label": "Nchi ya Bibi Harusi",
+    "please_select_option": "--tafadhali chagua--",
+    "day_placeholder": "Siku",
+    "year_placeholder": "Mwaka",
+    "phone_number_placeholder": "Namba ya simu",
+    "type_tribe_placeholder": "Andika kabila lako hapa",
+    "select_dowery_type_first_placeholder": "Chagua Aina ya Mahari kwanza",
+    "imam_full_name_placeholder": "Jina Kamili la Imamu",
     "header.title": "Baraza Kuu la Waislamu Uganda",
     "header.subtitle": "Idara ya Cheti cha Ndoa ya Sharia",
     "header.appId": "Nambari ya Maombi:",
@@ -80994,18 +81195,31 @@ translations.sw["divorce.imam"] = "Jina la Imam / Qadhi"
 
 
 // Current language
-let currentLanguage = "en"
+let currentLanguage = localStorage.getItem("app_language") || "en"
 
 // Language switching functionality
 function changeLanguage(lang) {
   currentLanguage = lang
+  localStorage.setItem("app_language", lang)
   document.documentElement.lang = lang
 
   // Update all elements with data-i18n attribute
   document.querySelectorAll("[data-i18n]").forEach((element) => {
     const key = element.getAttribute("data-i18n")
-    if (translations[lang][key]) {
+    if (translations[lang][key] === undefined) return
+
+    if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+      element.setAttribute("placeholder", translations[lang][key])
+    } else {
       element.textContent = translations[lang][key]
+    }
+  })
+
+  // Update all elements with data-i18n-placeholder attribute
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+    const key = element.getAttribute("data-i18n-placeholder")
+    if (translations[lang][key] !== undefined) {
+      element.setAttribute("placeholder", translations[lang][key])
     }
   })
 
@@ -81951,11 +82165,11 @@ function initializeLanguageSelector() {
 
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
-  // Set current language from server if present
+  // Prefer an explicit server-provided locale; otherwise use the stored preference
   if (window.appLocale) {
     currentLanguage = window.appLocale
-    changeLanguage(currentLanguage)
   }
+  changeLanguage(currentLanguage)
 
   initializeDistricts()
   initializeNavigation()

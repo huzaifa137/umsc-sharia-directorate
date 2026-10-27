@@ -290,13 +290,13 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="groomSurname" data-i18n="labels.surname">Surname<span
-                                        class="required">*</span></label>
+                                <label for="groomSurname"><span data-i18n="labels.surname">Surname<span
+                                        class="required">*</span></span></label>
                                 <input type="text" id="groomSurname" name="groom_surname" required>
                             </div>
                             <div class="form-group">
-                                <label for="groomGivenName" data-i18n="labels.givenName">Given Name<span
-                                        class="required">*</span></label>
+                                <label for="groomGivenName"><span data-i18n="labels.givenName">Given Name<span
+                                        class="required">*</span></span></label>
                                 <input type="text" id="groomGivenName" name="groom_given_name" required>
                             </div>
                         </div>
@@ -304,10 +304,9 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label data-i18n="labels.dob">Date of Birth (DD/MM/YYYY)<span
-                                        class="required">*</span></label>
+                                <label><span data-i18n="labels.dob">Date of Birth (DD/MM/YYYY)</span><span class="required">*</span></label>
                                 <div class="date-inputs">
-                                    <input type="number" placeholder="Day" min="1" max="31"
+                                    <input type="number" placeholder="Day" data-i18n-placeholder="day_placeholder" min="1" max="31"
                                         name="groom_day_date_of_birth" required>
                                     <select class="select2" name="groom_month_date_of_birth" required>
                                         <option value="">Select Month</option>
@@ -324,13 +323,13 @@
                                         <option value="11">November</option>
                                         <option value="12">December</option>
                                     </select>
-                                    <input type="number" name="groom_year_date_of_birth" placeholder="Year" min="1900"
+                                    <input type="number" name="groom_year_date_of_birth" placeholder="Year" data-i18n-placeholder="year_placeholder" min="1900"
                                         max="2010" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label>Groom Country <span class="required">*</span></label>
+                                <label><span data-i18n="groom_country_label">Groom Country</span> <span class="required">*</span></label>
                                 <select class="form-control select2" name="groom_country" id="groomCountry" required>
                                     <option value="">Select Country</option>
                                     @foreach ($countries as $country)
@@ -345,16 +344,14 @@
                         <div class="form-row">
                             <!-- Groom NIN -->
                             <div class="form-group">
-                                <label for="groomNIN" id="ninLabel">
-                                    National Identity Number (NIN)<span class="required"></span>
-                                </label>
+                                <label for="groomNIN" id="ninLabel" data-i18n-wrap="1"><span data-i18n="groom_nin_label">NIN/Passport No./Refugee ID</span><span class="required"></span></label>
                                 <input type="text" name="groomNIN" id="groomNIN" class="form-control">
                             </div>
 
 
                             <!-- Groom Telephone -->
                             <div class="form-group">
-                                <label for="groomTelephone">Telephone Number<span class="required">*</span></label>
+                                <label for="groomTelephone" data-i18n-wrap="1"><span data-i18n="groom_telephone_label">Telephone Number</span><span class="required">*</span></label>
 
                                 <div class="input-group phone-input-group">
                                     <select id="groomCountryCode" class="form-control country-code select2">
@@ -367,7 +364,7 @@
                                     </select>
 
                                     <input type="tel" id="groomTelephone" name="bride_telephone"
-                                        class="form-control phone-number" placeholder="Phone number" required
+                                        class="form-control phone-number" placeholder="Phone number" data-i18n-placeholder="phone_number_placeholder" required
                                         maxlength="15">
                                 </div>
                             </div>
@@ -376,14 +373,14 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="groomEmail" data-i18n="labels.email">Email Address</label>
+                                <label for="groomEmail"><span data-i18n="labels.email">Email Address</span></label>
                                 <input type="email" id="groomEmail" name="groom_email">
                             </div>
                             <div class="form-group">
-                                <label for="groomTribe" data-i18n="labels.tribe">Tribe<span
-                                        class="required">*</span></label>
+                                <label for="groomTribe"><span data-i18n="labels.tribe">Tribe<span
+                                        class="required">*</span></span></label>
                                 <select class="select2" id="groomTribe" name="groom_tribe">
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                     <option value="Acholi">Acholi</option>
                                     <option value="Aliba">Aliba</option>
                                     <option value="Alur">Alur</option>
@@ -453,8 +450,8 @@
                                 </select>
 
                                 <div id="newTribeWrapper" style="display:none; margin-top:10px;">
-                                    <label for="newTribe">Or add a new tribe</label><br>
-                                    <input type="text" id="newTribe" placeholder="Type your tribe here"
+                                    <label for="newTribe" data-i18n-wrap="1"><span data-i18n="new_tribe_label">Or add a new tribe</span></label><br>
+                                    <input type="text" id="newTribe" placeholder="Type your tribe here" data-i18n-placeholder="type_tribe_placeholder"
                                         style="width:100%;">
                                 </div>
                             </div>
@@ -500,49 +497,49 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="groomDistrict" data-i18n="labels.district">District<span
-                                        class="required">*</span></label>
+                                <label for="groomDistrict"><span data-i18n="labels.district">District<span
+                                        class="required">*</span></span></label>
                                 <select id="groomDistrict" name="groom_district" class="district-select" required>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="groomCounty" data-i18n="labels.county">County/Municipality<span
-                                        class="required">*</span></label>
+                                <label for="groomCounty"><span data-i18n="labels.county">County/Municipality<span
+                                        class="required">*</span></span></label>
                                 <select id="groomCounty" name="groom_county" class="county-select" required disabled>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="groomSubCounty" data-i18n="labels.subCounty">Sub County<span
-                                        class="required">*</span></label>
+                                <label for="groomSubCounty"><span data-i18n="labels.subCounty">Sub County<span
+                                        class="required">*</span></span></label>
                                 <select id="groomSubCounty" name="groom_sub_county" class="subcounty-select" required
                                     disabled>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="groomParish" data-i18n="labels.parish">Parish/Ward<span
-                                        class="required">*</span></label>
+                                <label for="groomParish"><span data-i18n="labels.parish">Parish/Ward<span
+                                        class="required">*</span></span></label>
                                 <select id="groomParish" name="groom_parish" class="parish-select" required disabled>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="groomVillage" data-i18n="labels.village">Village (LC1/Zone)<span
-                                        class="required">*</span></label>
+                                <label for="groomVillage"><span data-i18n="labels.village">Village (LC1/Zone)<span
+                                        class="required">*</span></span></label>
                                 <select id="groomVillage" name="groom_village" class="village-select" required disabled>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="groomPlot" data-i18n="labels.plot">Plot Number</label>
+                                <label for="groomPlot"><span data-i18n="labels.plot">Plot Number</span></label>
                                 <input type="text" id="groomPlot" name="groom_plot">
                             </div>
                         </div>
@@ -554,21 +551,20 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="brideSurname">Surname<span class="required">*</span></label>
+                                <label for="brideSurname" data-i18n-wrap="1"><span data-i18n="bride_surname_label">Surname</span><span class="required">*</span></label>
                                 <input type="text" id="brideSurname" name="bride_surname" required>
                             </div>
                             <div class="form-group">
-                                <label for="brideGivenName">Given Name<span class="required">*</span></label>
+                                <label for="brideGivenName" data-i18n-wrap="1"><span data-i18n="bride_given_name_label">Given Name</span><span class="required">*</span></label>
                                 <input type="text" id="brideGivenName" name="bride_given_name" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label data-i18n="labels.dob">Date of Birth (DD/MM/YYYY)<span
-                                        class="required">*</span></label>
+                                <label><span data-i18n="labels.dob">Date of Birth (DD/MM/YYYY)</span><span class="required">*</span></label>
                                 <div class="date-inputs">
-                                    <input type="number" placeholder="Day" min="1" max="31"
+                                    <input type="number" placeholder="Day" data-i18n-placeholder="day_placeholder" min="1" max="31"
                                         name="bride_day_date_of_birth" required>
                                     <select class="select2" name="bride_month_date_of_birth" required>
                                         <option value="">Month</option>
@@ -585,13 +581,13 @@
                                         <option value="11">November</option>
                                         <option value="12">December</option>
                                     </select>
-                                    <input type="number" name="bride_year_date_of_birth" placeholder="Year" min="1900"
+                                    <input type="number" name="bride_year_date_of_birth" placeholder="Year" data-i18n-placeholder="year_placeholder" min="1900"
                                         max="2010" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label>Bride Country <span class="required">*</span></label>
+                                <label><span data-i18n="bride_country_label">Bride Country</span> <span class="required">*</span></label>
                                 <select class="form-control select2" name="bride_country" id="brideCountry" required>
                                     <option value="">Select Country</option>
                                     @foreach ($countries as $country)
@@ -607,15 +603,13 @@
                         <div class="form-row">
                             <!-- Bride NIN -->
                             <div class="form-group">
-                                <label for="brideNIN" id="brideNiNLabel">
-                                    National Identity Number (NIN)<span class="required"></span>
-                                </label>
+                                <label for="brideNIN" id="brideNiNLabel" data-i18n-wrap="1"><span data-i18n="bride_nin_label">NIN/Passport No./Refugee ID</span><span class="required"></span></label>
                                 <input type="text" id="brideNIN" name="brideNIN">
                             </div>
 
                             <!-- Bride Telephone -->
                             <div class="form-group">
-                                <label for="brideTelephone">Telephone Number<span class="required">*</span></label>
+                                <label for="brideTelephone" data-i18n-wrap="1"><span data-i18n="bride_telephone_label">Telephone Number</span><span class="required">*</span></label>
 
                                 <div class="input-group phone-input-group">
                                     <select id="brideCountryCode" class="form-control country-code select2">
@@ -628,7 +622,7 @@
                                     </select>
 
                                     <input type="tel" id="brideTelephone" name="bride_telephone"
-                                        class="form-control phone-number" placeholder="Phone number" required
+                                        class="form-control phone-number" placeholder="Phone number" data-i18n-placeholder="phone_number_placeholder" required
                                         maxlength="15">
                                 </div>
                             </div>
@@ -657,14 +651,14 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="brideEmail">Email Address</label>
+                                <label for="brideEmail" data-i18n-wrap="1"><span data-i18n="bride_email_label">Email Address</span></label>
                                 <input type="email" id="brideEmail" name="bride_email">
                             </div>
 
                             <div class="form-group">
-                                <label for="brideTribe">Tribe<span class="required">*</span></label>
+                                <label for="brideTribe" data-i18n-wrap="1"><span data-i18n="bride_tribe_label">Tribe</span><span class="required">*</span></label>
                                 <select id="brideTribe" class="select2" name="bride_tribe">
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                     <option value="Acholi">Acholi</option>
                                     <option value="Aliba">Aliba</option>
                                     <option value="Alur">Alur</option>
@@ -735,8 +729,8 @@
 
                                 <!-- Hidden label + input for new tribe -->
                                 <div id="newBrideTribeWrapper" style="display:none; margin-top:10px;">
-                                    <label for="newBrideTribe">Or add a new tribe</label><br>
-                                    <input type="text" id="newBrideTribe" placeholder="Type your tribe here"
+                                    <label for="newBrideTribe" data-i18n-wrap="1"><span data-i18n="new_bride_tribe_label">Or add a new tribe</span></label><br>
+                                    <input type="text" id="newBrideTribe" placeholder="Type your tribe here" data-i18n-placeholder="type_tribe_placeholder"
                                         style="width:100%;">
                                 </div>
                             </div>
@@ -786,44 +780,44 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="brideDistrict">District<span class="required">*</span></label>
+                                <label for="brideDistrict" data-i18n-wrap="1"><span data-i18n="bride_district_label">District</span><span class="required">*</span></label>
                                 <select id="brideDistrict" name="bride_district" class="district-select" required>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="brideCounty">County/Municipality<span class="required">*</span></label>
+                                <label for="brideCounty" data-i18n-wrap="1"><span data-i18n="bride_county_label">County/Municipality</span><span class="required">*</span></label>
                                 <select id="brideCounty" name="bride_county" class="county-select" required disabled>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="brideSubCounty">Sub County<span class="required">*</span></label>
+                                <label for="brideSubCounty" data-i18n-wrap="1"><span data-i18n="bride_sub_county_label">Sub County</span><span class="required">*</span></label>
                                 <select id="brideSubCounty" name="bride_sub_county" class="subcounty-select" required
                                     disabled>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="brideParish">Parish/Ward<span class="required">*</span></label>
+                                <label for="brideParish" data-i18n-wrap="1"><span data-i18n="bride_parish_label">Parish/Ward</span><span class="required">*</span></label>
                                 <select id="brideParish" name="bride_parish" class="parish-select" required disabled>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="brideVillage">Village (LC1/Zone)<span class="required">*</span></label>
+                                <label for="brideVillage" data-i18n-wrap="1"><span data-i18n="bride_village_label">Village (LC1/Zone)</span><span class="required">*</span></label>
                                 <select id="brideVillage" name="bride_village" class="village-select" required disabled>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="bridePlot">Plot Number</label>
+                                <label for="bridePlot" data-i18n-wrap="1"><span data-i18n="bride_plot_label">Plot Number</span></label>
                                 <input type="text" id="bridePlot" name="bride_plot">
                             </div>
                         </div>
@@ -835,43 +829,42 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="groomFatherStatus">Status<span class="required">*</span></label>
+                                <label for="groomFatherStatus" data-i18n-wrap="1"><span data-i18n="groom_father_status_label">Status</span><span class="required">*</span></label>
                                 <select id="groomFatherStatus" name="groomFatherStatus" required>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                     <option value="Alive">Alive</option>
                                     <option value="Deceased">Deceased</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="groomFatherSurname">Surname<span class="required">*</span></label>
+                                <label for="groomFatherSurname" data-i18n-wrap="1"><span data-i18n="groom_father_surname_label">Surname</span><span class="required">*</span></label>
                                 <input type="text" id="groomFatherSurname" name="groom_father_surname" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="groomFatherGivenName">Given Name<span class="required">*</span></label>
+                                <label for="groomFatherGivenName" data-i18n-wrap="1"><span data-i18n="groom_father_given_name_label">Given Name</span><span class="required">*</span></label>
                                 <input type="text" id="groomFatherGivenName" name="groom_father_given_name" required>
                             </div>
                             <div class="form-group">
-                                <label for="groomFatherNIN">National Identity Number (NIN)</label>
-                                <input type="text" id="groomFatherNIN" name="groom_father_nin">
+                                <label for="groomFatherNIN" data-i18n-wrap="1"><span data-i18n="groom_father_nin_label">NIN/Passport No./Refugee ID</span><span class="required">*</span></label>
+                                <input type="text" id="groomFatherNIN" name="groom_father_nin" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="groomFatherDistrict">District of Residence<span
-                                        class="required">*</span></label>
+                                <label for="groomFatherDistrict" data-i18n-wrap="1"><span data-i18n="groom_father_district_label">District of Residence</span><span class="required">*</span></label>
                                 <select id="groomFatherDistrict" name="groomFatherDistrict"
                                     class="district-select select2" required>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="groomFatherTribe">Tribe<span class="required">*</span></label>
+                                <label for="groomFatherTribe" data-i18n-wrap="1"><span data-i18n="groom_father_tribe_label">Tribe</span><span class="required">*</span></label>
                                 <select id="groomFatherTribe" name="groomFatherTribe" class="select2" required>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                     <option value="Acholi">Acholi</option>
                                     <option value="Aliba">Aliba</option>
                                     <option value="Alur">Alur</option>
@@ -941,8 +934,8 @@
                                 </select>
 
                                 <div id="newGroomFatherTribeWrapper" style="display:none; margin-top:10px;">
-                                    <label for="newGroomFatherTribe">Or add a new tribe</label><br>
-                                    <input type="text" id="newGroomFatherTribe" placeholder="Type your tribe here"
+                                    <label for="newGroomFatherTribe" data-i18n-wrap="1"><span data-i18n="new_groom_father_tribe_label">Or add a new tribe</span></label><br>
+                                    <input type="text" id="newGroomFatherTribe" placeholder="Type your tribe here" data-i18n-placeholder="type_tribe_placeholder"
                                         style="width:100%;">
                                 </div>
 
@@ -991,42 +984,40 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="groomMotherStatus">Status<span class="required">*</span></label>
+                                <label for="groomMotherStatus" data-i18n-wrap="1"><span data-i18n="groom_mother_status_label">Status</span><span class="required">*</span></label>
                                 <select id="groomMotherStatus" name="groomMotherStatus" required>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                     <option value="Alive">Alive</option>
                                     <option value="Deceased">Deceased</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="groomMotherSurname">Surname<span class="required">*</span></label>
+                                <label for="groomMotherSurname" data-i18n-wrap="1"><span data-i18n="groom_mother_surname_label">Surname</span><span class="required">*</span></label>
                                 <input type="text" id="groomMotherSurname" name="groom_mother_surname" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="groomMotherGivenName">Given Name<span class="required">*</span></label>
+                                <label for="groomMotherGivenName" data-i18n-wrap="1"><span data-i18n="groom_mother_given_name_label">Given Name</span><span class="required">*</span></label>
                                 <input type="text" id="groomMotherGivenName" name="groom_mother_given_name" required>
                             </div>
                             <div class="form-group" style="display: none;">
-                                <label for="groomMotherMaidenName">Maiden Name<span
-                                        class="text-muted">(Optional)</span></label>
+                                <label for="groomMotherMaidenName" data-i18n-wrap="1"><span data-i18n="groom_mother_maiden_name_label">Maiden Name</span><span class="text-muted">(Optional)</span></label>
                                 <input type="text" id="groomMotherMaidenName" name="groomMotherMaidenName">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="groomMotherNIN">National Identity Number (NIN)</label>
-                                <input type="text" id="groomMotherNIN" name="groomMotherNIN">
+                                <label for="groomMotherNIN" data-i18n-wrap="1"><span data-i18n="groom_mother_nin_label">NIN/Passport No./Refugee ID</span><span class="required">*</span></label>
+                                <input type="text" id="groomMotherNIN" name="groomMotherNIN" required>
                             </div>
                             <div class="form-group">
-                                <label for="groomMotherDistrict">District of Residence<span
-                                        class="required">*</span></label>
+                                <label for="groomMotherDistrict" data-i18n-wrap="1"><span data-i18n="groom_mother_district_label">District of Residence</span><span class="required">*</span></label>
                                 <select id="groomMotherDistrict" name="groomMotherDistrict"
                                     class="district-select select2" required>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                         </div>
@@ -1035,43 +1026,42 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="brideFatherStatus">Status<span class="required">*</span></label>
+                                <label for="brideFatherStatus" data-i18n-wrap="1"><span data-i18n="bride_father_status_label">Status</span><span class="required">*</span></label>
                                 <select id="brideFatherStatus" name="brideFatherStatus" required>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                     <option value="Alive">Alive</option>
                                     <option value="Deceased">Deceased</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="brideFatherSurname">Surname<span class="required">*</span></label>
+                                <label for="brideFatherSurname" data-i18n-wrap="1"><span data-i18n="bride_father_surname_label">Surname</span><span class="required">*</span></label>
                                 <input type="text" id="brideFatherSurname" name="bride_father_surname" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="brideFatherGivenName">Given Name<span class="required">*</span></label>
+                                <label for="brideFatherGivenName" data-i18n-wrap="1"><span data-i18n="bride_father_given_name_label">Given Name</span><span class="required">*</span></label>
                                 <input type="text" id="brideFatherGivenName" name="bride_father_given_name" required>
                             </div>
                             <div class="form-group">
-                                <label for="brideFatherNIN">National Identity Number (NIN)<span></span></label>
-                                <input type="text" id="brideFatherNIN" name="brideFatherNIN">
+                                <label for="brideFatherNIN" data-i18n-wrap="1"><span data-i18n="bride_father_nin_label">NIN/Passport No./Refugee ID</span><span class="required">*</span></label>
+                                <input type="text" id="brideFatherNIN" name="brideFatherNIN" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="brideFatherDistrict">District of Residence<span
-                                        class="required">*</span></label>
+                                <label for="brideFatherDistrict" data-i18n-wrap="1"><span data-i18n="bride_father_district_label">District of Residence</span><span class="required">*</span></label>
                                 <select id="brideFatherDistrict" name="brideFatherDistrict"
                                     class="district-select select2" required>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="brideFatherTribe">Tribe<span class="required">*</span></label>
+                                <label for="brideFatherTribe" data-i18n-wrap="1"><span data-i18n="bride_father_tribe_label">Tribe</span><span class="required">*</span></label>
                                 <select id="brideFatherTribe" class="select2" name="brideFatherTribe" required>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                     <option value="Acholi">Acholi</option>
                                     <option value="Aliba">Aliba</option>
                                     <option value="Alur">Alur</option>
@@ -1143,8 +1133,8 @@
 
                                 <!-- Hidden input for adding a new tribe -->
                                 <div id="newBrideFatherTribeWrapper" style="display:none; margin-top:10px;">
-                                    <label for="newBrideFatherTribe">Or add a new tribe</label><br>
-                                    <input type="text" id="newBrideFatherTribe" placeholder="Type your tribe here"
+                                    <label for="newBrideFatherTribe" data-i18n-wrap="1"><span data-i18n="new_bride_father_tribe_label">Or add a new tribe</span></label><br>
+                                    <input type="text" id="newBrideFatherTribe" placeholder="Type your tribe here" data-i18n-placeholder="type_tribe_placeholder"
                                         style="width:100%;">
                                 </div>
 
@@ -1193,55 +1183,51 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="brideMotherStatus">Status<span class="required">*</span></label>
+                                <label for="brideMotherStatus" data-i18n-wrap="1"><span data-i18n="bride_mother_status_label">Status</span><span class="required">*</span></label>
                                 <select id="brideMotherStatus" name="brideMotherStatus" required>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                     <option value="Alive">Alive</option>
                                     <option value="Deceased">Deceased</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="brideMotherSurname">Surname<span class="required">*</span></label>
+                                <label for="brideMotherSurname" data-i18n-wrap="1"><span data-i18n="bride_mother_surname_label">Surname</span><span class="required">*</span></label>
                                 <input type="text" id="brideMotherSurname" name="bride_mother_surname" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="brideMotherGivenName">Given Name<span class="required">*</span></label>
+                                <label for="brideMotherGivenName" data-i18n-wrap="1"><span data-i18n="bride_mother_given_name_label">Given Name</span><span class="required">*</span></label>
                                 <input type="text" id="brideMotherGivenName" name="bride_mother_given_name" required>
                             </div>
                             <div class="form-group" style="display: none;">
-                                <label for="brideMotherMaidenName">Maiden Name<span
-                                        class="text-muted">(Optional)</span></label>
+                                <label for="brideMotherMaidenName" data-i18n-wrap="1"><span data-i18n="bride_mother_maiden_name_label">Maiden Name</span><span class="text-muted">(Optional)</span></label>
                                 <input type="text" id="brideMotherMaidenName" name="brideMotherMaidenName">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="brideMotherNIN">National Identity Number (NIN)<span></span></label>
-                                <input type="text" id="brideMotherNIN" name="brideMotherNIN">
+                                <label for="brideMotherNIN" data-i18n-wrap="1"><span data-i18n="bride_mother_nin_label">NIN/Passport No./Refugee ID</span><span class="required">*</span></label>
+                                <input type="text" id="brideMotherNIN" name="brideMotherNIN" required>
                             </div>
                             <div class="form-group">
-                                <label for="brideMotherDistrict">District of Residence<span
-                                        class="required">*</span></label>
+                                <label for="brideMotherDistrict" data-i18n-wrap="1"><span data-i18n="bride_mother_district_label">District of Residence</span><span class="required">*</span></label>
                                 <select id="brideMotherDistrict" name="brideMotherDistrict"
                                     class="district-select select2" required>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                         </div>
 
                         <h3 class="section-title" style="margin-top: 30px;">DOWERY DETAILS</h3>
 
-                        <!-- Dowery Fields -->
+                        <!-- Dowery Type & Specify -->
                         <div class="form-row mt-4">
-                            <!-- Dowery Type -->
-                            <div class="col-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="doweryType" class="d-block">Dowery Type<span
-                                            class="required">*</span></label>
+                                    <label for="doweryType" class="d-block" data-i18n-wrap="1"><span data-i18n="dowery_type_label">Dowery Type</span><span class="required">*</span></label>
                                     <select id="doweryType" name="dowery_type" class="form-control" required>
                                         <option value="">-- Select Dowery Type --</option>
                                         <option value="cash">Cash</option>
@@ -1250,33 +1236,54 @@
                                 </div>
                             </div>
 
-                            <!-- Specify -->
-                            <div class="col-12">
-                                <div class="form-group" id="dowerySpecifyWrapper" style="display:none;">
-                                    <label for="dowerySpecify" class="d-block">Specify</label>
-                                    <input type="text" id="dowerySpecify" name="dowery_specify" class="form-control"
-                                        placeholder="" required>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dowery_specify" id="dowery_specify_label" class="d-block" data-i18n-wrap="1"><span data-i18n="dowery_specify_label">Specify</span></label>
+                                    <input type="text" name="dowery_specify" id="dowery_specify" class="form-control"
+                                        placeholder="Select a Dowery Type first" data-i18n-placeholder="select_dowery_type_first_placeholder">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Imam Name & Masjid Name -->
+                        <div class="form-row mt-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="imam_name" class="d-block" data-i18n-wrap="1"><span data-i18n="imam_name_label">Imam Name</span></label>
+                                    <input type="text" name="imam_name" id="imam_name" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="masjid_name" class="d-block" data-i18n-wrap="1"><span data-i18n="masjid_name_label">Masjid Name</span></label>
+                                    <input type="text" name="masjid_name" id="masjid_name" class="form-control">
                                 </div>
                             </div>
                         </div>
 
                         <script>
-                            $(document).ready(function () {
-                                $('#doweryType').on('change', function () {
-                                    let type = $(this).val();
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const doweryType = document.getElementById('doweryType');
+                            const specifyInput = document.getElementById('dowery_specify');
+                            const specifyLabel = document.getElementById('dowery_specify_label');
 
-                                    if (type === 'cash') {
-                                        $('#dowerySpecifyWrapper').slideDown();
-                                        $('#dowerySpecify').attr('placeholder', 'Enter cash amount').attr('required', true);
-                                    } else if (type === 'asset') {
-                                        $('#dowerySpecifyWrapper').slideDown();
-                                        $('#dowerySpecify').attr('placeholder', 'Specify asset details').attr('required', true);
-                                    } else {
-                                        $('#dowerySpecifyWrapper').slideUp();
-                                        $('#dowerySpecify').val('').removeAttr('required');
-                                    }
-                                });
+                            doweryType.addEventListener('change', function () {
+                                if (this.value === 'cash') {
+                                    specifyLabel.textContent = 'Specify';
+                                    specifyInput.placeholder = 'Enter cash amount';
+                                    specifyInput.type = 'number';
+                                } else if (this.value === 'asset') {
+                                    specifyLabel.textContent = 'Specify';
+                                    specifyInput.placeholder = 'Specify asset details';
+                                    specifyInput.type = 'text';
+                                } else {
+                                    specifyInput.placeholder = 'Select a Dowery Type first';
+                                    specifyInput.type = 'text';
+                                }
+                                specifyInput.value = '';
                             });
+                        });
                         </script>
 
                     </section>
@@ -1291,23 +1298,22 @@
                         <h4 class="subsection-title">MALE WITNESS 1 (GROOM'S SIDE)</h4>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="witness1Surname">Surname<span class="required">*</span></label>
+                                <label for="witness1Surname" data-i18n-wrap="1"><span data-i18n="witness1_surname_label">Surname</span><span class="required">*</span></label>
                                 <input type="text" id="witness1Surname" name="witness1_surname" required>
                             </div>
                             <div class="form-group">
-                                <label for="witness1GivenName">Given Name<span class="required">*</span></label>
+                                <label for="witness1GivenName" data-i18n-wrap="1"><span data-i18n="witness1_given_name_label">Given Name</span><span class="required">*</span></label>
                                 <input type="text" id="witness1GivenName" name="witness1_given_name" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="witness1NIN">National Identity Number (NIN)<span
-                                        class="required"></span></label>
-                                <input type="text" id="witness1NIN" name="witness1_nin">
+                                <label for="witness1NIN" data-i18n-wrap="1"><span data-i18n="witness1_nin_label">NIN/Passport No./Refugee ID</span><span class="required">*</span></label>
+                                <input type="text" id="witness1NIN" name="witness1_nin" required>
                             </div>
                             <!-- Witness 1 Telephone -->
                             <div class="form-group">
-                                <label for="witness1Phone">Phone Number<span class="required">*</span></label>
+                                <label for="witness1Phone" data-i18n-wrap="1"><span data-i18n="witness1_phone_label">Phone Number</span><span class="required">*</span></label>
 
                                 <div class="input-group phone-input-group">
                                     <!-- Country code dropdown -->
@@ -1321,7 +1327,7 @@
 
                                     <!-- Phone number input -->
                                     <input type="tel" id="witness1Phone" name="witness1_telephone"
-                                        class="form-control phone-number" placeholder="Phone number" required
+                                        class="form-control phone-number" placeholder="Phone number" data-i18n-placeholder="phone_number_placeholder" required
                                         maxlength="15">
                                 </div>
                             </div>
@@ -1338,14 +1344,14 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="witness1Address">Physical Address<span class="required">*</span></label>
+                                <label for="witness1Address" data-i18n-wrap="1"><span data-i18n="witness1_address_label">Physical Address</span><span class="required">*</span></label>
                                 <input type="text" id="witness1Address" name="witness1_address" required>
                             </div>
                             <div class="form-group">
-                                <label for="witness1District">District<span class="required">*</span></label>
+                                <label for="witness1District" data-i18n-wrap="1"><span data-i18n="witness1_district_label">District</span><span class="required">*</span></label>
                                 <select id="witness1District" name="witness1District" class="district-select select2"
                                     required>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                         </div>
@@ -1354,23 +1360,22 @@
                         <h4 class="subsection-title">MALE WITNESS 2 (BRIDES'S SIDE)</h4>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="witness2Surname">Surname<span class="required">*</span></label>
+                                <label for="witness2Surname" data-i18n-wrap="1"><span data-i18n="witness2_surname_label">Surname</span><span class="required">*</span></label>
                                 <input type="text" id="witness2Surname" name="witness2_surname" required>
                             </div>
                             <div class="form-group">
-                                <label for="witness2GivenName">Given Name<span class="required">*</span></label>
+                                <label for="witness2GivenName" data-i18n-wrap="1"><span data-i18n="witness2_given_name_label">Given Name</span><span class="required">*</span></label>
                                 <input type="text" id="witness2GivenName" name="witness2_given_name" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="witness2NIN">National Identity Number (NIN)<span
-                                        class="required"></span></label>
-                                <input type="text" id="witness2NIN" name="witness2_nin">
+                                <label for="witness2NIN" data-i18n-wrap="1"><span data-i18n="witness2_nin_label">NIN/Passport No./Refugee ID</span><span class="required">*</span></label>
+                                <input type="text" id="witness2NIN" name="witness2_nin" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="witness1Phone">Phone Number<span class="required">*</span></label>
+                                <label for="witness2Phone" data-i18n-wrap="1"><span data-i18n="witness2_phone_label">Phone Number</span><span class="required">*</span></label>
 
                                 <div class="input-group phone-input-group">
                                     <!-- Country code dropdown -->
@@ -1384,24 +1389,27 @@
 
                                     <!-- Phone number input -->
                                     <input type="tel" id="witness2Phone" name="witness2_telephone"
-                                        class="form-control phone-number" placeholder="Phone number" required
+                                        class="form-control phone-number" placeholder="Phone number" data-i18n-placeholder="phone_number_placeholder" required
                                         maxlength="15">
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="witness2Address">Physical Address<span class="required">*</span></label>
+                                <label for="witness2Address" data-i18n-wrap="1"><span data-i18n="witness2_address_label">Physical Address</span><span class="required">*</span></label>
                                 <input type="text" id="witness2Address" name="witness2_address" required>
                             </div>
                             <div class="form-group">
-                                <label for="witness2District">District<span class="required">*</span></label>
+                                <label for="witness2District" data-i18n-wrap="1"><span data-i18n="witness2_district_label">District</span><span class="required">*</span></label>
                                 <select id="witness2District" name="witness2District" class="district-select select2"
                                     required>
-                                    <option value="">--please select--</option>
+                                    <option value="" data-i18n="please_select_option">--please select--</option>
                                 </select>
                             </div>
                         </div>
+
+                       
+
                     </section>
 
                     <!-- Step 5: Photos -->
@@ -1465,9 +1473,9 @@
                         <div class="form-row mt-4" style="display: none;">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label for="imamName" class="d-block">Imam in Charge (Name)</label>
+                                    <label for="imamName" class="d-block" data-i18n-wrap="1"><span data-i18n="imam_name_label">Imam in Charge (Name)</span></label>
                                     <input type="text" id="imamName" name="imam_name" class="form-control"
-                                        placeholder="Imam's Full Name" value="{{ Helper::fullname() }}" disabled
+                                        placeholder="Imam's Full Name" data-i18n-placeholder="imam_full_name_placeholder" value="{{ Helper::fullname() }}" disabled
                                         required>
                                 </div>
                             </div>

@@ -26,7 +26,7 @@
                         'value' => $stats['total'],
                         'statusId' => 100,
                         'color' => '#3b82f6',
-                        'gradient' => 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+                        'gradient' => '#3b82f6',
                         'icon' => 'bx bx-folder-open',
                         'sub' => 'All Submitted Applications',
                         'trend' => '100%',
@@ -37,7 +37,7 @@
                         'value' => $stats['pending'],
                         'color' => '#f59e0b',
                         'statusId' => 0,
-                        'gradient' => 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                        'gradient' => '#f59e0b',
                         'icon' => 'bx bx-time-five',
                         'sub' => 'Awaiting Processing',
                         'trend' => '100%',
@@ -48,7 +48,7 @@
                         'statusId' => 10,
                         'value' => $stats['approved'],
                         'color' => '#10b981',
-                        'gradient' => 'linear-gradient(135deg, #10b981 0%, #059668 100%)',
+                        'gradient' => '#10b981',
                         'icon' => 'bx bx-check-circle',
                         'sub' => 'Successfully Approved',
                         'trend' => '100%',
@@ -59,7 +59,7 @@
                         'statusId' => -10,
                         'value' => $stats['rejected'],
                         'color' => '#ef4444',
-                        'gradient' => 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                        'gradient' => '#ef4444',
                         'icon' => 'bx bx-x-circle',
                         'sub' => 'Declined Applications',
                         'trend' => '100%',
@@ -94,7 +94,7 @@
                                     <div class="position-absolute top-0 start-0 w-100 h-100 border-animation"
                                         style="border-radius: 20px; padding: 2px;">
                                         <div class="w-100 h-100"
-                                            style="background: linear-gradient(45deg, transparent, {{ $stat['color'] }}, transparent);
+                                            style="background: {{ $stat['color'] }};
                                         border-radius: 20px;
                                         animation: rotate 3s linear infinite;
                                         opacity: 0.5;">
@@ -103,7 +103,7 @@
 
                                     <!-- Blurred background shape -->
                                     <div class="position-absolute bottom-0 end-0 w-50 h-50 rounded-circle"
-                                        style="background: radial-gradient(circle, {{ $stat['color'] }}20 0%, transparent 70%);
+                                        style="background: {{ $stat['color'] }};
                                     filter: blur(40px);
                                     transform: translate(30%, 30%);
                                     z-index: 0;">
@@ -229,9 +229,9 @@
             }
 
             .border-animation {
-                mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+                mask: #fff content-box, #fff;
                 mask-composite: exclude;
-                -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+                -webkit-mask: #fff content-box, #fff;
                 -webkit-mask-composite: xor;
             }
 
@@ -247,8 +247,7 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-                        rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+                background: rgba(255, 255, 255, 0.1);
                 border-radius: 20px;
                 opacity: 0;
                 transition: opacity 0.3s ease;
@@ -537,6 +536,29 @@
                 </div>
             </div>
         @endif
+
+        <div class="row g-4 mt-1">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                            <div class="d-flex align-items-center">
+                                <div class="p-3 rounded-circle me-3" style="background: #00580f;">
+                                    <i class="bx bx-file text-white fs-4"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Report Exports</h6>
+                                    <p class="text-muted small mb-0">Filter Guardianship records and export a certified report</p>
+                                </div>
+                            </div>
+                            <a href="{{ url('reports/guardianship') }}" class="btn fw-bold" style="background: #00580f; color: white;">
+                                <i class="bx bxs-file-pdf me-1"></i> Open Reports
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- / Content -->
 

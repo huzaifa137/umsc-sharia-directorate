@@ -56,7 +56,7 @@
 
 </head>
 
-<body style="background: linear-gradient(to bottom, #28a745, #ffffff);">
+<body style="background: #28a745;">
     <!-- Content -->
 
     <div class="container-xxl">

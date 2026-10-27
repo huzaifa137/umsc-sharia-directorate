@@ -3,6 +3,7 @@
 <script>
     const translations = {
         en: {
+            select_relationship_type: "-- Select Relationship --",
             back_to_dashboard: "Back to Dashboard",
             application_progress_label: "Application Progress",
             completed_steps_text: "0 of 4 sections completed",
@@ -182,6 +183,7 @@
             submit_btn: "Submit Application"
         },
         ar: {
+            select_relationship_type: "-- اختر العلاقة --",
             back_to_dashboard: "العودة إلى لوحة التحكم",
             application_progress_label: "تقدم الطلب",
             completed_steps_text: "0 من 4 أقسام مكتملة",
@@ -360,6 +362,9 @@
             submit_btn: "إرسال الطلب"
         },
         sw: {
+            select_relationship_type: "-- Chagua Uhusiano --",
+            upload_photo_text: "Pakia Picha ya Mlezwa",
+            upload_photo_note: "Pakia picha wazi ya pasipoti ya mlezwa (JPG, PNG, upeo 2MB)",
             back_to_dashboard: "Rudi kwenye Dashibodi",
             application_progress_label: "Maendeleo ya Maombi",
             completed_steps_text: "0 kati ya sehemu 4 zimekamilika",
@@ -560,7 +565,7 @@
 <div style="display: flex; min-height: 100vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
     <!-- Left Side: Step Navigation -->
     <div
-        style="flex: 0.4; background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); padding: 40px; overflow-y: auto; border-right: 1px solid #e2e8f0;">
+        style="flex: 0.4; background: #f8fafc; padding: 40px; overflow-y: auto; border-right: 1px solid #e2e8f0;">
 
         <!-- Header: Title & Subtitle -->
         <div style="position: sticky; top: 0; background: #FFF; padding-bottom: 20px; z-index: 10;">
@@ -591,7 +596,7 @@
                 <div
                     style="height: 10px; background: #f3f4f6; border-radius: 5px; overflow: hidden; margin-bottom: 8px;">
                     <div id="progressBar"
-                        style="height: 100%; background: linear-gradient(90deg, #2C5C36, #2C5C36); width: 0%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
+                        style="height: 100%; background: #2C5C36; width: 0%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
                     </div>
                 </div>
 
@@ -652,7 +657,7 @@
 
         <!-- Instructions -->
         <div
-            style="margin-top: 40px; background: linear-gradient(135deg, #e0e7ff 0%, #eef2ff 100%); padding: 24px; border-radius: 14px; border-left: 4px solid #2C5C36;">
+            style="margin-top: 40px; background: #e0e7ff; padding: 24px; border-radius: 14px; border-left: 4px solid #2C5C36;">
             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
                 <div
                     style="width: 32px; height: 32px; background: #2C5C36; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
@@ -686,16 +691,16 @@
 
     <!-- Right Side: Form Content -->
     <div
-        style="flex: 1; background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%); padding: 40px; overflow-y: auto;">
+        style="flex: 1; background: #ffffff; padding: 40px; overflow-y: auto;">
         <div
-            style="position: sticky; top: 0; background: linear-gradient(180deg, #ffffff 0%, #ffffff 70%); padding-bottom: 20px; z-index: 10; border-bottom: 1px solid #e5e7eb; margin-bottom: 30px; backdrop-filter: blur(10px);">
+            style="position: sticky; top: 0; background: #ffffff; padding-bottom: 20px; z-index: 10; border-bottom: 1px solid #e5e7eb; margin-bottom: 30px; backdrop-filter: blur(10px);">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2 id="currentStepTitle" data-i18n="ward_step_title"
                     style="color: #2C5C36; margin: 0; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px;">
                     Ward (Majhour) Details
                 </h2>
                 <div id="stepCompletionStatus"
-                    style="background: linear-gradient(135deg, #2C5C36, #2C5C36); padding: 8px 20px; border-radius: 20px; font-size: 14px; color: white; font-weight: 600; box-shadow: 0 2px 8px rgba(79, 70, 229, 0.2);">
+                    style="background: #2C5C36; padding: 8px 20px; border-radius: 20px; font-size: 14px; color: white; font-weight: 600; box-shadow: 0 2px 8px rgba(79, 70, 229, 0.2);">
                     <span data-i18n="step_text">Step</span>
                     <span id="currentStepNumber" style="font-weight: 800;">1</span>
                     <span data-i18n="of_text">of</span> 4
@@ -715,7 +720,7 @@
             <!-- Step 1: Ward Details -->
             <div class="form-step active" id="step1">
                 <div
-                    style="background: linear-gradient(135deg, #2C5C36 0%, #2C5C36 100%); border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(79, 70, 229, 0.15);">
+                    style="background: #2C5C36; border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(79, 70, 229, 0.15);">
                     <!-- Background Pattern -->
                     <div
                         style="position: absolute; top: -100px; right: -100px; width: 300px; height: 300px; background: #2C5C36; border-radius: 50%; filter: blur(20px);">
@@ -946,7 +951,7 @@
             <!-- Step 2: Parental Information -->
             <div class="form-step" id="step2" style="display: none;">
                 <div
-                    style="background: linear-gradient(135deg, #2C5C36 0%, #047857 100%); border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(5, 150, 105, 0.15);">
+                    style="background: #2C5C36; border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(5, 150, 105, 0.15);">
                     <!-- Background Pattern -->
                     <div
                         style="position: absolute; top: -100px; left: -100px; width: 300px; height: 300px; background: #2C5C36; border-radius: 50%; filter: blur(20px);">
@@ -1002,14 +1007,14 @@
                     <!-- Father's Information -->
                     <div
                         style="background: rgba(255,255,255,0.08); padding: 30px; border-radius: 16px; margin-bottom: 40px; border: 1px solid #2C5C36; backdrop-filter: blur(10px);">
-                        <h4 data-i18n="father_info"
+                        <h4
                             style="color: white; font-size: 18px; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 12px;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" style="opacity: 0.8;">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
-                            FATHER'S INFORMATION
+                            <span data-i18n="father_info">FATHER'S INFORMATION</span>
                         </h4>
 
                         <div
@@ -1044,14 +1049,14 @@
                     <!-- Mother's Information -->
                     <div
                         style="background: rgba(255,255,255,0.08); padding: clamp(15px, 5vw, 30px); border-radius: 16px; margin-bottom: 40px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
-                        <h4 data-i18n="mother_info"
+                        <h4
                             style="color: white; font-size: 18px; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" style="opacity: 0.8; flex-shrink: 0;">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
-                            <span>MOTHER'S INFORMATION</span>
+                            <span data-i18n="mother_info"><span>MOTHER'S INFORMATION</span></span>
                         </h4>
 
                         <div
@@ -1088,7 +1093,7 @@
                     <div
                         style="background: rgba(255,255,255,0.08); padding: clamp(15px, 5vw, 30px); border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px;">
 
-                        <h4 data-i18n="birth_certificate_title"
+                        <h4
                             style="color: white; font-size: clamp(16px, 4vw, 18px); font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" style="opacity: 0.8; flex-shrink: 0;">
@@ -1098,7 +1103,7 @@
                                 <line x1="16" y1="17" x2="8" y2="17"></line>
                                 <polyline points="10 9 9 9 8 9"></polyline>
                             </svg>
-                            <span style="text-align: center;">BIRTH CERTIFICATE</span>
+                            <span data-i18n="birth_certificate_title"><span style="text-align: center;">BIRTH CERTIFICATE</span></span>
                         </h4>
 
                         <div
@@ -1145,7 +1150,7 @@
             <!-- Step 3: Guardian Applicant Details -->
             <div class="form-step" id="step3" style="display: none;">
                 <div
-                    style="background: linear-gradient(135deg, #2C5C36 0%, #2C5C36 100%); border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px #2C5C36;">
+                    style="background: #2C5C36; border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px #2C5C36;">
                     <!-- Background Pattern -->
                     <div
                         style="position: absolute; top: -100px; right: -100px; width: 300px; height: 300px; background: #2C5C36; border-radius: 50%; filter: blur(20px);">
@@ -1171,14 +1176,14 @@
                     <div
                         style="background: rgba(255,255,255,0.08); padding: 15px 10px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); width: 100%; box-sizing: border-box;">
 
-                        <h4 data-i18n="personal_info_title"
+                        <h4
                             style="color: white; font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-left: 5px;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" style="opacity: 0.8; flex-shrink: 0;">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
-                            <span style="letter-spacing: 0.5px;">PERSONAL INFORMATION</span>
+                            <span data-i18n="personal_info_title"><span style="letter-spacing: 0.5px;">PERSONAL INFORMATION</span></span>
                         </h4>
 
                         <div style="display: flex; flex-direction: column; gap: 15px;">
@@ -1308,14 +1313,14 @@
                     <!-- Guardian Assessment -->
                     <div
                         style="background: rgba(255,255,255,0.08); padding: 30px; border-radius: 16px; margin-bottom: 40px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
-                        <h4 data-i18n="assessment_title"
+                        <h4
                             style="color: white; font-size: 18px; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 12px;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" style="opacity: 0.8;">
                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
                             </svg>
-                            GUARDIAN ASSESSMENT
+                            <span data-i18n="assessment_title">GUARDIAN ASSESSMENT</span>
                         </h4>
 
                         <div
@@ -1381,7 +1386,7 @@
                     <!-- Guardian Photograph -->
                     <div
                         style="background: rgba(255,255,255,0.08); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
-                        <h4 data-i18n="guardian_photo_title"
+                        <h4
                             style="color: white; font-size: 18px; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 12px;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" style="opacity: 0.8;">
@@ -1390,7 +1395,7 @@
                                 <circle cx="8.5" cy="8.5" r="1.5"></circle>
                                 <polyline points="21 15 16 10 5 21"></polyline>
                             </svg>
-                            GUARDIAN PHOTOGRAPH *
+                            <span data-i18n="guardian_photo_title">GUARDIAN PHOTOGRAPH *</span>
                         </h4>
 
                         <div
@@ -1424,7 +1429,7 @@
             <!-- Step 4: Guardianship Terms -->
             <div class="form-step" id="step4" style="display: none;">
                 <div
-                    style="background: linear-gradient(135deg, #2C5C36 0%, #2C5C36 100%); border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(234, 88, 12, 0.15);">
+                    style="background: #2C5C36; border-radius: 20px; padding: 45px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(234, 88, 12, 0.15);">
                     <!-- Background Pattern -->
                     <div
                         style="position: absolute; bottom: -100px; right: -100px; width: 300px; height: 300px; background: #2C5C36; border-radius: 50%; filter: blur(20px);">
@@ -1450,14 +1455,14 @@
                     <div
                         style="background: rgba(255,255,255,0.08); padding: 15px 10px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); width: 100%; box-sizing: border-box;">
 
-                        <h4 data-i18n="duration_title"
+                        <h4
                             style="color: white; font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-left: 5px;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" style="opacity: 0.8; flex-shrink: 0;">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <polyline points="12 6 12 12 16 14"></polyline>
                             </svg>
-                            <span style="letter-spacing: 0.5px;">DURATION</span>
+                            <span data-i18n="duration_title"><span style="letter-spacing: 0.5px;">DURATION</span></span>
                         </h4>
 
                         <div
@@ -1504,7 +1509,7 @@
 
                     <div
                         style="background: rgba(255,255,255,0.08); padding: 15px 10px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); width: 100%; box-sizing: border-box;">
-                        <h4 data-i18n="powers_title"
+                        <h4
                             style="color: white; font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-left: 5px;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" style="opacity: 0.8; flex-shrink: 0;">
@@ -1513,7 +1518,7 @@
                                 <line x1="12" y1="19" x2="12" y2="23"></line>
                                 <line x1="8" y1="23" x2="16" y2="23"></line>
                             </svg>
-                            <span style="letter-spacing: 0.5px;">POWERS GRANTED *</span>
+                            <span data-i18n="powers_title"><span style="letter-spacing: 0.5px;">POWERS GRANTED *</span></span>
                         </h4>
 
                         <div
@@ -1534,7 +1539,7 @@
                                         style="display: flex; align-items: flex-start; gap: 12px; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; box-sizing: border-box;">
                                         <input type="checkbox" name="powers_granted[]" value="{{ $value }}"
                                             style="width: 18px; height: 18px; accent-color: #ffffff; margin-top: 2px; flex-shrink: 0;">
-                                        <span
+                                        <span data-i18n="{{ $value }}_power"
                                             style="color: white; font-size: 13px; font-weight: 500; line-height: 1.4;">{{ $label }}</span>
                                     </label>
                                 @endforeach
@@ -1556,7 +1561,7 @@
                                 <line x1="12" y1="8" x2="12" y2="12"></line>
                                 <line x1="12" y1="16" x2="12.01" y2="16"></line>
                             </svg>
-                            <span>RESTRICTIONS</span>
+                            <span data-i18n="restrictions_title">RESTRICTIONS</span>
                         </h4>
                         <div style="background: #2C5C36; padding: 15px; border-radius: 10px;">
                             <textarea name="restrictions" rows="3"
@@ -1647,7 +1652,7 @@
             <!-- Navigation Buttons -->
 <div style="display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 1px solid #e5e7eb;">
     <button type="button" id="prevBtn" onclick="previousStep()"
-        style="padding: 16px 32px; background: linear-gradient(135deg, #6b7280, #4b5563); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: none; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(107, 114, 128, 0.2);">
+        style="padding: 16px 32px; background: #6b7280; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: none; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(107, 114, 128, 0.2);">
         <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2.5">
             <path d="M15 18l-6-6 6-6" />
@@ -1662,7 +1667,7 @@
         <button type="button" id="previewBtn" onclick="showPreview()"
             style="
                 padding: 16px 30px;
-                background: linear-gradient(135deg, #f59e0b, #d97706);
+                background: #f59e0b;
                 color: white;
                 border: none;
                 border-radius: 12px;
@@ -1685,7 +1690,7 @@
         </button>
 
         <button type="button" id="nextBtn" onclick="nextStep()"
-            style="padding: 16px 40px; background: linear-gradient(135deg, #2C5C36, #2C5C36); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);">
+            style="padding: 16px 40px; background: #2C5C36; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);">
             <span data-i18n="next_btn">Next Step</span>
             <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2.5">
@@ -1694,7 +1699,7 @@
         </button>
 
         <button type="submit" id="submitBtn"
-            style="padding: 16px 40px; background: linear-gradient(135deg, #2C5C36, #2C5C36); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: none; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
+            style="padding: 16px 40px; background: #2C5C36; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 16px; display: none; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
             <span data-i18n="submit_btn">Submit Application</span>
             <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2.5">
@@ -1836,7 +1841,7 @@
     }
 
     .step-indicator.active .step-icon {
-        background: linear-gradient(135deg, #2C5C36, #2C5C36) !important;
+        background: #2C5C36 !important;
         color: white !important;
         transform: scale(1.1);
     }
@@ -3418,7 +3423,7 @@ function showPreview() {
             grid-column: 1 / -1;
             margin-top: 30px;
             padding: 20px;
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            background: #f0f9ff;
             border-radius: 12px;
             border-left: 4px solid #2C5C36;
         ">

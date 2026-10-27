@@ -243,6 +243,11 @@
                         </tbody>
                     </table>
 
+@include('layouts.views.guardianship-actions-modals')
+@include('layouts.views.shared-status-modal')
+@include('layouts.views.case-modal-styles')
+
+
                 </div>
             </div>
         </div>

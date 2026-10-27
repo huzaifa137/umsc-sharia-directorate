@@ -40,6 +40,12 @@ class AdminAuth
             return redirect('/users/dashboard');
         }
 
+        // Accounts created through Bulk Import (or reset by an administrator)
+        // still have must_change_password = true. Rather than hijacking
+        // every request with a redirect, the main layout shows a
+        // non-dismissible "Update Your Login Credentials" popup on the
+        // dashboard itself (see layouts/views/credentials-warning-modal).
+
 
         $response = $next($request);
 

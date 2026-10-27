@@ -241,6 +241,11 @@
                         </tbody>
                     </table>
 
+@include('layouts.views.converts-action-modals')
+@include('layouts.views.shared-status-modal')
+@include('layouts.views.case-modal-styles')
+
+
                 </div>
             </div>
         </div>

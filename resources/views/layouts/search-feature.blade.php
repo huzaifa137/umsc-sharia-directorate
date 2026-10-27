@@ -1,7 +1,7 @@
 <div class="row mt-4 mb-4">
     <div class="col-12">
         <div class="card border-0 shadow-lg text-white"
-            style="border-radius: 18px; background: linear-gradient(135deg, #0c5f45 0%, #43f5c0 100%);">
+            style="border-radius: 18px; background: #0c5f45;">
 
             <div class="card-body p-4">
                 <div class="d-flex align-items-center justify-content-between mb-3">

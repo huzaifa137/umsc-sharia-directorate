@@ -11,6 +11,10 @@ class ConvertApplication extends Model
 
     protected $fillable = [
         'application_id',
+        'created_by',
+        'officer_region',
+        'officer_district',
+        'officer_county',
         'former_names',
         'former_religion',
         'date_of_birth',
@@ -42,4 +46,9 @@ class ConvertApplication extends Model
         'official_stamp',
         'status',
     ];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

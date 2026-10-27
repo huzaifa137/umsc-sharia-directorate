@@ -1,5 +1,6 @@
 @include('layouts.header')
 
+
 <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
         <!-- Sidebar -->
@@ -31,3 +32,4 @@
 </div>
 
 @include('layouts.footer')
+@include('layouts.views.credentials-warning-modal')

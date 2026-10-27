@@ -9,7 +9,7 @@
         }
 
         .modal-header {
-            background: linear-gradient(135deg, #008F4C 0%, #39DA8A 100%);
+            background: #008F4C;
             color: white;
             border-radius: 20px 20px 0 0 !important;
             padding: 1.5rem 2rem;
@@ -520,7 +520,7 @@
         }
 
         .bg-gradient-danger {
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            background: #dc2626;
         }
 
         .border-start {

@@ -17,6 +17,9 @@ class SearchIndex extends Model
         'status',
         'application_date',
         'required_role',
+        'created_by',
+        'officer_district',
+        'officer_county',
     ];
 }
 

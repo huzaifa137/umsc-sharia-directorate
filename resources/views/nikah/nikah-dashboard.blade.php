@@ -134,7 +134,7 @@
             <!-- LEFT CARD: Nikah Records Management -->
             <div class="col-xl-6 col-lg-6 d-flex">
                 <div class="card border-0 shadow-sm overflow-hidden w-100 d-flex flex-column"
-                    style="border-radius:16px; background: linear-gradient(to bottom right, #ffffff, #f9fafb);">
+                    style="border-radius:16px; background: #ffffff;">
 
                     <div class="card-body p-4 d-flex flex-column flex-fill">
                         <!-- Header -->
@@ -178,7 +178,7 @@
                             <div class="col-12">
                                 <a href="{{ url('nikah-applications') }}"
                                     class="btn btn-sm w-100 py-2 text-white fw-bold d-flex align-items-center justify-content-center text-decoration-none"
-                                    style="background: linear-gradient(90deg, #059568 0%, #10b981 100%);
+                                    style="background: #059568;
                       border-radius:8px; border: none; transition: all 0.3s ease;"
                                     onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(5, 149, 104, 0.3)'"
                                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
@@ -208,20 +208,20 @@
 
                         <div class="row g-3">
                             <div class="col-6">
-                                <div class="text-center p-3"
+                                <a href="{{ url('reports/nikah') }}" class="text-decoration-none d-block text-center p-3"
                                     style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; cursor: pointer;">
                                     <i class="bx bxs-file-pdf mb-2" style="color: #ff4d4d; font-size: 2.5rem;"></i>
                                     <p class="text-white mb-0 fw-bold" style="font-size: 0.8rem;">PDF</p>
-                                    <small class="text-white-50" style="font-size: 0.65rem;">Summary</small>
-                                </div>
+                                    <small class="text-white-50" style="font-size: 0.65rem;">Filter & Export</small>
+                                </a>
                             </div>
                             <div class="col-6">
-                                <div class="text-center p-3"
+                                <a href="{{ url('reports/nikah') }}" class="text-decoration-none d-block text-center p-3"
                                     style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; cursor: pointer;">
                                     <i class="bx bxs-file-export mb-2" style="color: #059568; font-size: 2.5rem;"></i>
-                                    <p class="text-white mb-0 fw-bold" style="font-size: 0.8rem;">EXCEL</p>
-                                    <small class="text-white-50" style="font-size: 0.65rem;">Summary</small>
-                                </div>
+                                    <p class="text-white mb-0 fw-bold" style="font-size: 0.8rem;">REPORTS</p>
+                                    <small class="text-white-50" style="font-size: 0.65rem;">View All Formats</small>
+                                </a>
                             </div>
                         </div>
 

@@ -10,6 +10,10 @@ class InheritanceApplication extends Model
     protected $fillable = [
         'application_id',
         'status',
+        'created_by',
+        'officer_region',
+        'officer_district',
+        'officer_county',
         'deceased_name',
         'gender',
         'date_of_death',
@@ -30,6 +34,11 @@ class InheritanceApplication extends Model
         'other_liabilities',
         'death_certificate_path',
     ];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 
     public function properties()
     {
