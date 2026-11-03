@@ -14,7 +14,7 @@
             <!-- / Navbar -->
 
             <!-- Content wrapper -->
-            <div class="content-wrapper">
+            <div class="content-wrapper" id="main-content" tabindex="-1">
                 @yield('content')
 
                 <div class="content-backdrop fade"></div>

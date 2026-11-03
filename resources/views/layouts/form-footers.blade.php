@@ -1,3 +1,6 @@
+        </main>
+    </div>{{-- /.uf-page --}}
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
@@ -73,24 +76,31 @@
     const backToDashboardBtn = document.getElementById('backToDashboard');
     if (backToDashboardBtn) {
         backToDashboardBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        const url = this.href;
+            e.preventDefault();
+            const url = this.href;
 
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'Any unsaved changes may be lost.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, continue',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = url;
-            }
-        });
+            Swal.fire({
+                title: 'Leave this application?',
+                text: 'Anything you have entered on this form will be lost.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Leave',
+                cancelButtonText: 'Keep editing',
+                reverseButtons: true,
+                focusCancel: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.__ufLeaving = true;
+                    window.location.href = url;
+                }
+            });
         });
     }
 </script>
+
+{{-- Form skin: loaded last so it wins over the page-level <style> blocks inside each form --}}
+<link rel="stylesheet" href="{{ asset('css/umsc-forms.css') }}">
+<script src="{{ asset('js/umsc-forms.js') }}"></script>
 
 </body>
 

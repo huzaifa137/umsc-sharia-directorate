@@ -10,11 +10,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+        content="width=device-width, initial-scale=1.0" />
 
     <title>{{ Helper::app_name() }} - SHARIA</title>
 
     <meta name="description" content="" />
+    <meta name="theme-color" content="#0a3320" />
+    <meta name="robots" content="noindex" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
@@ -23,7 +25,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Amiri:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap"
         rel="stylesheet" />
 
     <!-- Icons -->
@@ -48,6 +50,12 @@
 
     <!-- Page CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/custom-admin.css') }}">
+    <!-- UMSC staff shell (design system, loaded last so it wins over the template) -->
+    <link rel="stylesheet" href="{{ asset('css/umsc-app.css') }}">
+    <!-- UMSC shared components: calmer canvas, tables, badges, empty states, toasts -->
+    <link rel="stylesheet" href="{{ asset('css/umsc-ui.css') }}">
+    <!-- UMSC admin area: users, roles, import, activity log -->
+    <link rel="stylesheet" href="{{ asset('css/umsc-admin.css') }}">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -91,3 +99,6 @@
         window.appLocale = "{{ app()->getLocale() }}";
     </script>
 </head>
+
+<body class="umsc-app">
+    <a href="#main-content" class="s-skip">Skip to content</a>

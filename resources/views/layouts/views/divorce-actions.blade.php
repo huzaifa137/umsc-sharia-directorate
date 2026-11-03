@@ -3,6 +3,11 @@
     <div class="btn-group shadow-sm action-group" role="group"
         style="border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
 
+        <!-- Full record -->
+        <a href="{{ url('records/divorce/' . $application->id) }}" class="btn btn-white btn-sm px-2 border-end" title="Open full record">
+            <i class="bx bx-folder-open fs-5" style="color:#136a3b;"></i>
+        </a>
+
         <!-- View -->
         <button type="button" class="btn btn-white btn-sm px-2 border-end view-application"
             data-id="{{ $application->id }}" title="View Application">

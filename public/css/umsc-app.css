@@ -1,0 +1,285 @@
+/* ==========================================================================
+   UMSC Directorate of Sharia: staff app shell
+   Same tokens as umsc-public.css (green and gold from the crest, paper tones,
+   serif headings, square-ish corners). This file restyles the Sneat shell
+   (sidebar, top bar, footer) and gently "bridges" the content pages so they
+   no longer clash with the new shell. Page markup is untouched.
+   Scoped to body.umsc-app so nothing leaks onto public or auth pages.
+   ========================================================================== */
+
+body.umsc-app {
+    --green-950: #072617;
+    --green-900: #0a3320;
+    --green-800: #0d4a2c;
+    --green-700: #136a3b;
+    --green-600: #178a4a;
+    --gold: #c9a500;
+    --gold-soft: #e6c93a;
+    --paper: #f6f3ea;
+    --paper-2: #ece7d8;
+    --ink: #12261b;
+    --text: #2a3a30;
+    --muted: #5d6b62;
+    --line: #dcd7c8;
+    --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --arabic: 'Amiri', 'Noto Naskh Arabic', serif;
+    --r: 4px;
+
+    /* Re-point Bootstrap/Sneat primary so existing buttons, links, badges,
+       pagination and form focus rings turn green without touching pages. */
+    --bs-primary: #136a3b;
+    --bs-primary-rgb: 19, 106, 59;
+    --bs-link-color: #136a3b;
+    --bs-link-hover-color: #0d4a2c;
+    --bs-body-font-family: var(--sans);
+    --bs-body-color: var(--text);
+
+    font-family: var(--sans);
+    color: var(--text);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+}
+[dir="rtl"] body.umsc-app { font-family: var(--arabic), var(--sans); }
+
+/* ---------- Skip link + focus ---------- */
+.umsc-app .s-skip { position: absolute; inset-inline-start: 12px; top: -60px; background: var(--ink); color: #fff !important; padding: 10px 16px; border-radius: var(--r); z-index: 3000; }
+.umsc-app .s-skip:focus { top: 12px; }
+.umsc-app :focus-visible { outline: 3px solid var(--gold-soft); outline-offset: 2px; }
+
+/* ---------- Page canvas ---------- */
+.umsc-app .layout-page { background: var(--paper); }
+.umsc-app .content-wrapper { background: var(--paper); }
+.umsc-app .container-xxl.container-p-y,
+.umsc-app .container-fluid.container-p-y { padding-top: 1.75rem !important; padding-bottom: 1.75rem !important; }
+.umsc-app h1, .umsc-app h2, .umsc-app h3, .umsc-app h4, .umsc-app .h1, .umsc-app .h2, .umsc-app .h3, .umsc-app .h4 { font-family: var(--serif); color: var(--ink); letter-spacing: -.01em; }
+[dir="rtl"] .umsc-app h1, [dir="rtl"] .umsc-app h2, [dir="rtl"] .umsc-app h3, [dir="rtl"] .umsc-app h4 { font-family: var(--arabic); letter-spacing: 0; }
+
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+.umsc-app .layout-menu.bg-menu-theme {
+    background: var(--green-900) !important;
+    color: #c4d6cb;
+    box-shadow: none !important;
+    border-inline-end: 1px solid rgba(255, 255, 255, .06);
+}
+.umsc-app .layout-menu .app-brand { padding: 0 !important; height: auto !important; min-height: 0 !important; overflow: visible !important; display: block !important; }
+
+.s-brand { display: flex; align-items: center; gap: 12px; padding: 18px 18px 16px; position: relative; }
+.s-brand-badge { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; background: #fff; display: grid; place-items: center; box-shadow: 0 0 0 2px rgba(230, 201, 58, .55); }
+.s-brand-badge img { max-width: 30px; max-height: 34px; width: auto; height: auto; display: block; }
+.s-brand-text { min-width: 0; line-height: 1.15; padding-inline-end: 26px; }
+.s-brand-text strong { display: block; font: 600 1rem/1.15 var(--serif); color: #fff; }
+.s-brand-text span { display: block; margin-top: 4px; font: 500 .7rem/1.2 var(--sans); color: #8fb09d; letter-spacing: .03em; }
+[dir="rtl"] .s-brand-text strong { font-family: var(--arabic); font-size: 1.15rem; }
+.s-brand-toggle { position: absolute; inset-inline-end: 8px; top: 8px; color: #8fb09d !important; }
+.s-brand-toggle:hover { color: #fff !important; }
+.s-brand-rule { height: 3px; margin: 0 18px 6px; background: linear-gradient(90deg, var(--gold-soft), transparent); opacity: .7; border: 0; }
+
+.umsc-app .layout-menu .menu-inner { padding: 6px 12px 18px !important; margin: 0 !important; }
+.umsc-app .layout-menu .menu-inner-shadow { display: none !important; }
+
+.umsc-app .layout-menu .menu-header { margin: 18px 0 6px !important; padding: 0 10px !important; }
+.umsc-app .layout-menu .menu-header::before { display: none !important; }
+.umsc-app .layout-menu .menu-header-text { color: #7fa08d !important; font: 600 .68rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
+[dir="rtl"] .umsc-app .layout-menu .menu-header-text { letter-spacing: 0; font-size: .8rem; }
+
+.umsc-app .layout-menu .menu-link { color: #c4d6cb !important; border-radius: var(--r) !important; padding: .55rem .75rem !important; margin-bottom: 2px; font-size: .92rem; font-weight: 500; transition: background .15s, color .15s; }
+.umsc-app .layout-menu .menu-link:hover { background: rgba(255, 255, 255, .07) !important; color: #fff !important; }
+.umsc-app .layout-menu .menu-icon { color: #8fb09d !important; font-size: 1.25rem; margin-inline-end: .7rem !important; }
+.umsc-app .layout-menu .menu-link:hover .menu-icon { color: #fff !important; }
+
+.umsc-app .layout-menu .menu-item.active > .menu-link:not(.menu-toggle),
+.umsc-app .layout-menu .menu-sub .menu-item.active > .menu-link {
+    background: rgba(230, 201, 58, .13) !important;
+    color: #fff !important;
+    font-weight: 600;
+    box-shadow: inset 3px 0 0 var(--gold-soft);
+}
+[dir="rtl"] .umsc-app .layout-menu .menu-item.active > .menu-link:not(.menu-toggle),
+[dir="rtl"] .umsc-app .layout-menu .menu-sub .menu-item.active > .menu-link { box-shadow: inset -3px 0 0 var(--gold-soft); }
+.umsc-app .layout-menu .menu-item.active > .menu-link .menu-icon { color: var(--gold-soft) !important; }
+.umsc-app .layout-menu .menu-item.open > .menu-link.menu-toggle,
+.umsc-app .layout-menu .menu-item.active > .menu-link.menu-toggle { background: rgba(255, 255, 255, .05) !important; color: #fff !important; }
+.umsc-app .layout-menu .menu-toggle::after { color: #7fa08d !important; }
+
+.umsc-app .layout-menu .menu-sub { padding-top: 2px; }
+.umsc-app .layout-menu .menu-sub .menu-link { font-size: .88rem; font-weight: 400; padding-inline-start: 3.1rem !important; }
+.umsc-app .layout-menu .menu-sub .menu-link::before { display: none !important; }
+.umsc-app .layout-menu .menu-sub .menu-item.active > .menu-link { font-weight: 600; }
+
+.umsc-app .layout-menu .badge { font-size: .68rem; }
+
+.s-side-foot { list-style: none; margin: 14px 0 0; padding: 14px 10px 4px; border-top: 1px solid rgba(255, 255, 255, .08); font-size: .74rem; line-height: 1.5; color: #7fa08d; }
+.s-side-foot .s-motto { display: block; font: 400 1.05rem/1.4 var(--arabic); color: var(--gold-soft); margin-bottom: 4px; }
+
+/* collapsed (icon only) sidebar */
+html.layout-menu-collapsed:not(.layout-menu-hover) .s-brand-text,
+html.layout-menu-collapsed:not(.layout-menu-hover) .s-side-foot,
+html.layout-menu-collapsed:not(.layout-menu-hover) .s-brand-rule,
+html.layout-menu-collapsed:not(.layout-menu-hover) .s-brand-toggle { display: none !important; }
+html.layout-menu-collapsed:not(.layout-menu-hover) .s-brand { justify-content: center; padding-inline: 0; }
+
+/* ==========================================================================
+   TOP BAR
+   ========================================================================== */
+.umsc-app .layout-navbar.bg-navbar-theme {
+    background: #fff !important;
+    color: var(--text);
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid var(--line);
+    height: 64px;
+    padding-top: 0; padding-bottom: 0;
+}
+.umsc-app .layout-navbar .container-fluid { padding-inline: 20px; gap: 12px; }
+.umsc-app .layout-navbar .bx-menu { color: var(--green-900); }
+
+.s-search { display: flex; align-items: center; gap: 10px; width: min(460px, 100%); height: 42px; padding: 0 12px; border: 1.5px solid var(--line); border-radius: var(--r); background: var(--paper); color: var(--muted); font: 400 .92rem var(--sans); cursor: pointer; text-align: start; transition: border-color .15s, background .15s; }
+.s-search:hover { border-color: var(--green-700); background: #fff; }
+.s-search i { font-size: 1.2rem; color: var(--green-700); }
+.s-search span { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.s-search kbd { font: 600 .7rem var(--sans); text-transform: none; padding: 3px 7px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 3px; background: #fff; color: var(--muted); }
+.s-iconbtn.s-search-icon { display: none; }
+
+.s-actions { display: flex; align-items: center; gap: 6px; margin-inline-start: auto; }
+.s-iconbtn { position: relative; display: inline-grid; place-items: center; width: 40px; height: 40px; border: 1px solid transparent; border-radius: var(--r); background: transparent; color: var(--green-900); font-size: 1.35rem; cursor: pointer; transition: background .15s, border-color .15s; }
+.s-iconbtn:hover { background: var(--paper); border-color: var(--line); color: var(--green-800); }
+.s-dot { position: absolute; top: 4px; inset-inline-end: 2px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: #b3261e; color: #fff; font: 700 .66rem/18px var(--sans); text-align: center; border: 2px solid #fff; box-sizing: content-box; }
+.s-dot.d-none { display: none !important; }
+
+.s-langbtn { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 10px; border: 1px solid transparent; border-radius: var(--r); background: transparent; color: var(--green-900); font: 600 .8rem var(--sans); cursor: pointer; }
+.s-langbtn:hover { background: var(--paper); border-color: var(--line); }
+.s-langbtn i { font-size: 1.2rem; }
+
+.umsc-app .layout-navbar .dropdown-menu { border: 1px solid var(--line); border-radius: var(--r); box-shadow: 0 12px 30px rgba(10, 51, 32, .14); padding: 6px; min-width: 200px; }
+.umsc-app .layout-navbar .dropdown-item { border-radius: 3px; padding: .5rem .75rem; font-size: .92rem; color: var(--text); display: flex; align-items: center; gap: 10px; }
+.umsc-app .layout-navbar .dropdown-item:hover,
+.umsc-app .layout-navbar .dropdown-item:focus { background: var(--paper); color: var(--green-800); }
+.umsc-app .layout-navbar .dropdown-item.is-active { background: var(--paper-2); font-weight: 600; color: var(--ink); }
+.umsc-app .layout-navbar .dropdown-item.is-active::after { content: "\2713"; margin-inline-start: auto; color: var(--green-700); }
+.umsc-app .layout-navbar .dropdown-divider { border-color: var(--line); margin: 6px 0; }
+.umsc-app .layout-navbar .dropdown-item small { color: var(--muted); }
+
+.s-user { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 6px; border: 1px solid transparent; border-radius: var(--r); background: transparent; cursor: pointer; text-align: start; }
+.s-user:hover { background: var(--paper); border-color: var(--line); }
+.s-avatar { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%; background: var(--green-700); color: #fff; display: grid; place-items: center; font: 600 .95rem var(--sans); box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--gold-soft); }
+.s-user-meta { line-height: 1.2; max-width: 150px; }
+.s-user-meta strong { display: block; font: 600 .86rem var(--sans); color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.s-user-meta span { display: block; font: 500 .72rem var(--sans); color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.s-menu-head { display: flex; align-items: center; gap: 12px; padding: 8px 10px 10px; }
+.s-menu-head .s-avatar { width: 42px; height: 42px; }
+.s-menu-head strong { display: block; font: 600 .95rem var(--sans); color: var(--ink); }
+.s-menu-head span { font: 500 .78rem var(--sans); color: var(--muted); }
+
+.s-notes { width: 320px; padding: 0 !important; }
+.s-notes-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--line); font: 600 .9rem var(--sans); color: var(--ink); }
+.s-notes-body { padding: 8px; max-height: 340px; overflow: auto; }
+.s-notes-empty { padding: 26px 14px; text-align: center; color: var(--muted); font-size: .88rem; }
+.s-notes-empty i { display: block; font-size: 1.8rem; color: var(--green-700); margin-bottom: 6px; }
+
+/* ==========================================================================
+   COMMAND PALETTE (global search)
+   ========================================================================== */
+.s-pal { position: fixed; inset: 0; z-index: 2500; display: none; align-items: flex-start; justify-content: center; padding: 10vh 16px 16px; background: rgba(7, 38, 23, .55); backdrop-filter: blur(2px); }
+.s-pal.is-open { display: flex; }
+.s-pal-box { width: min(680px, 100%); max-height: 78vh; display: flex; flex-direction: column; background: #fff; border-radius: var(--r); border-top: 4px solid var(--gold-soft); box-shadow: 0 24px 70px rgba(0, 0, 0, .35); overflow: hidden; }
+.s-pal-input { display: flex; align-items: center; gap: 12px; padding: 0 16px; border-bottom: 1px solid var(--line); }
+.s-pal-input i { font-size: 1.4rem; color: var(--green-700); }
+.s-pal-input input { flex: 1; height: 58px; border: 0; outline: 0; font: 400 1.05rem var(--sans); color: var(--ink); background: transparent; }
+.s-pal-input kbd { font: 600 .7rem var(--sans); padding: 3px 7px; border: 1px solid var(--line); border-radius: 3px; color: var(--muted); background: #fff; }
+.s-pal-input input:focus, .s-pal-input input:focus-visible { outline: none !important; box-shadow: none !important; }
+.s-pal-scopes { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--paper); }
+.s-chip { border: 1px solid var(--line); background: #fff; color: var(--text); border-radius: 999px; padding: 4px 12px; font: 500 .8rem var(--sans); cursor: pointer; }
+.s-chip:hover { border-color: var(--green-700); }
+.s-chip.is-on { background: var(--green-700); border-color: var(--green-700); color: #fff; }
+.s-pal-list { list-style: none; margin: 0; padding: 6px; overflow: auto; flex: 1; }
+.s-pal-title { padding: 10px 12px 4px; font: 600 .68rem var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.s-pal-item a { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: var(--r); color: var(--text); text-decoration: none; }
+.s-pal-item a:hover, .s-pal-item a.is-sel { background: var(--paper); color: var(--ink); }
+.s-pal-item a.is-sel { box-shadow: inset 3px 0 0 var(--green-700); }
+[dir="rtl"] .s-pal-item a.is-sel { box-shadow: inset -3px 0 0 var(--green-700); }
+.s-pal-item i { font-size: 1.15rem; color: var(--green-700); flex: 0 0 auto; }
+.s-pal-main { flex: 1; min-width: 0; }
+.s-pal-main strong { display: block; font: 600 .92rem var(--sans); color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.s-pal-main span { display: block; font-size: .8rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.s-tag { flex: 0 0 auto; font: 600 .66rem var(--sans); letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; background: var(--paper-2); color: var(--green-800); }
+.s-pal-msg { padding: 30px 16px; text-align: center; color: var(--muted); font-size: .92rem; }
+.s-pal-foot { display: flex; gap: 16px; padding: 9px 16px; border-top: 1px solid var(--line); background: var(--paper); font-size: .74rem; color: var(--muted); }
+.s-pal-foot kbd { font: 600 .68rem var(--sans); padding: 2px 6px; border: 1px solid var(--line); border-radius: 3px; background: #fff; color: var(--muted); }
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.umsc-app .content-footer.footer { background: #fff !important; border-top: 1px solid var(--line); box-shadow: none !important; font-size: .82rem; color: var(--muted); }
+
+/* ==========================================================================
+   CONTENT BRIDGE: light touch so existing pages match the new shell.
+   Deliberately conservative; Patch 6 replaces these with shared components.
+   ========================================================================== */
+.umsc-app .btn { border-radius: var(--r); font-weight: 600; }
+.umsc-app .btn-primary { background-color: var(--green-700); border-color: var(--green-700); color: #fff; }
+.umsc-app .btn-primary:hover, .umsc-app .btn-primary:focus, .umsc-app .btn-primary:active { background-color: var(--green-800) !important; border-color: var(--green-800) !important; color: #fff; }
+.umsc-app .btn-outline-primary { color: var(--green-700); border-color: var(--green-700); }
+.umsc-app .btn-outline-primary:hover { background-color: var(--green-700); border-color: var(--green-700); color: #fff; }
+.umsc-app .btn-label-primary { color: var(--green-700); background: rgba(19, 106, 59, .12); }
+.umsc-app .bg-primary { background-color: var(--green-700) !important; }
+.umsc-app .text-primary { color: var(--green-700) !important; }
+.umsc-app .bg-label-primary { background-color: rgba(19, 106, 59, .12) !important; color: var(--green-700) !important; }
+.umsc-app .form-control, .umsc-app .form-select, .umsc-app .input-group-text { border-radius: var(--r); }
+.umsc-app .form-control:focus, .umsc-app .form-select:focus { border-color: var(--green-700); box-shadow: 0 0 0 3px rgba(23, 138, 74, .18); }
+.umsc-app .form-check-input:checked { background-color: var(--green-700); border-color: var(--green-700); }
+.umsc-app .page-item.active .page-link { background-color: var(--green-700); border-color: var(--green-700); }
+.umsc-app .page-link { color: var(--green-700); }
+.umsc-app .nav-pills .nav-link.active, .umsc-app .nav-pills .show > .nav-link { background-color: var(--green-700); }
+
+.umsc-app .card { border: 1px solid var(--line); border-radius: 6px; box-shadow: none; }
+.umsc-app .card-header { background: transparent; border-bottom: 1px solid var(--line); }
+.umsc-app .card-title, .umsc-app .card-header h5, .umsc-app .card-header h4 { font-family: var(--serif); color: var(--ink); }
+[dir="rtl"] .umsc-app .card-title, [dir="rtl"] .umsc-app .card-header h5 { font-family: var(--arabic); }
+
+.umsc-app .table > :not(caption) > * > * { border-bottom-color: var(--line); }
+.umsc-app .table thead th { background: var(--paper-2); color: var(--green-900); font: 600 .74rem var(--sans); letter-spacing: .06em; text-transform: uppercase; border-bottom: 2px solid var(--line); }
+[dir="rtl"] .umsc-app .table thead th { letter-spacing: 0; font-size: .85rem; }
+.umsc-app .table-hover tbody tr:hover { background: #faf8f1; transform: none; }
+.umsc-app .modal-content { border-radius: 6px; border: 0; }
+.umsc-app .alert { border-radius: var(--r); }
+
+/* Forced-credentials modals (restyled here, markup unchanged) */
+.umsc-app #credentialsWarningModal .modal-content,
+.umsc-app #updateCredentialsFormModal .modal-content { border-radius: 6px !important; border-top: 4px solid var(--gold-soft) !important; }
+.umsc-app #updateCredentialsFormModal .modal-header { background: var(--green-900) !important; border-radius: 0 !important; }
+.umsc-app #credentialsWarningModal .btn,
+.umsc-app #updateCredentialsFormModal .btn { background: var(--green-700) !important; border-radius: var(--r) !important; }
+.umsc-app #credentialsWarningModal .btn:hover,
+.umsc-app #updateCredentialsFormModal .btn:hover { background: var(--green-800) !important; }
+
+/* SweetAlert2 to match */
+.umsc-app .swal2-popup { border-radius: 6px; font-family: var(--sans); }
+.umsc-app .swal2-title { font-family: var(--serif); color: var(--ink); }
+.umsc-app .swal2-styled.swal2-confirm { border-radius: var(--r); }
+.umsc-app .swal2-styled.swal2-cancel { border-radius: var(--r); }
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 1199.98px) {
+    .s-search { display: none; }
+    .s-iconbtn.s-search-icon { display: inline-grid; }
+    .layout-menu .s-brand { padding-top: 22px; }
+}
+@media (max-width: 575.98px) {
+    .umsc-app .layout-navbar .container-fluid { padding-inline: 12px; }
+    .s-user-meta { display: none; }
+    .s-langbtn .s-lang-label { display: none; }
+    .s-notes { width: min(320px, 92vw); }
+    .s-pal { padding-top: 4vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .umsc-app * { transition: none !important; animation: none !important; }
+}
+@media print {
+    .umsc-app .layout-menu, .umsc-app .layout-navbar, .umsc-app .content-footer, .s-pal { display: none !important; }
+    .umsc-app .layout-page { padding: 0 !important; }
+}

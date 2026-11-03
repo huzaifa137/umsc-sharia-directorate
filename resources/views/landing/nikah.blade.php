@@ -174,7 +174,7 @@
     </style>
 </head>
 
-<body>
+<body class="umsc-form umsc-nikah">
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Add this in the <head> section of your HTML to use Font Awesome icons -->
@@ -1987,6 +1987,9 @@ document.addEventListener("DOMContentLoaded", () => {
     </script>
 
     <script src="{{ asset('asset/js/script.js') }}"></script>
+    {{-- Form skin: loaded last so it wins over the page-level <style> block in the head --}}
+    <link rel="stylesheet" href="{{ asset('css/umsc-forms.css') }}">
+    <script src="{{ asset('js/umsc-forms.js') }}"></script>
 </body>
 
 </html>

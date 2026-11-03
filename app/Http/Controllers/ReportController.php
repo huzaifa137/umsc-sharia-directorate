@@ -11,6 +11,35 @@ class ReportController extends Controller
 {
     private const MAX_EXPORT_ROWS = 3000;
 
+    /**
+     * Landing page for /reports: one row per module the officer may report on.
+     */
+    public function hub()
+    {
+        $rows = [];
+
+        foreach (ReportDefinitions::modules() as $slug => $label) {
+            $definition = ReportDefinitions::for($slug);
+
+            if (!AccessControl::can($definition['permission'])) {
+                continue;
+            }
+
+            $query = AccessControl::scopeApplications($definition['model']::query());
+
+            $rows[] = [
+                'slug' => $slug,
+                'label' => $label,
+                'title' => $definition['title'],
+                'total' => (clone $query)->count(),
+                'month' => (clone $query)->where('created_at', '>=', now()->startOfMonth())->count(),
+                'latest' => (clone $query)->max('created_at'),
+            ];
+        }
+
+        return view('reports.hub', ['rows' => $rows]);
+    }
+
     public function index(string $module, Request $request)
     {
         $definition = $this->resolveDefinition($module);

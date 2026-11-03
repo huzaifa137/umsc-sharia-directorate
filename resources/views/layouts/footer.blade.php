@@ -47,6 +47,10 @@
 <!-- Main JS -->
 <script src="{{ asset('assets/js/main.js') }}"></script>
 
+<!-- UMSC staff shell behaviour: search palette, language, notifications, logout -->
+<script src="{{ asset('js/umsc-app.js') }}"></script>
+<script src="{{ asset('js/umsc-ui.js') }}"></script>
+
 <!-- Page JS -->
 <script src="{{ asset('assets/js/dashboards-ecommerce.js') }}"></script>
 </body>

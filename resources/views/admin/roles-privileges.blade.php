@@ -1,755 +1,338 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $actionOrder = ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'approve' => 'Approve', 'delete' => 'Delete', 'suspend' => 'Suspend', 'ban' => 'Ban', 'manage' => 'Manage', 'run' => 'Run'];
+        $usedActions = collect($permissions)->flatten()->pluck('action')->unique();
+        $columns = collect($actionOrder)->filter(fn ($l, $k) => $usedActions->contains($k));
+        $granted = function ($role, $perm) {
+            return $role->full_access || $role->permissions->contains('id', $perm->id);
+        };
+        $first = $roles->first();
+        $maxLevel = \App\Services\AccessControl::hasFullAccess() ? 99 : max(1, (\App\Services\AccessControl::role()?->level ?? 1) - 1);
+    @endphp
+
     <div class="container-xxl flex-grow-1 container-p-y">
+        <x-ui.page-header title="Roles & privileges" subtitle="What each role can see and do. Visibility of records is set by the role's scope."
+            :crumbs="['Users' => route('users.dashboard'), 'Roles & privileges' => null]">
+            @can_permission('roles.manage')
+                <button type="button" class="ui-btn ui-btn--primary" id="openCreateRoleBtn"><i class="bx bx-plus"></i> New role</button>
+            @endcan_permission
+        </x-ui.page-header>
 
-        <!-- Header -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="p-4 rounded-3" style="background: linear-gradient(135deg, rgba(122, 31, 162, 0.08) 0%, rgba(122, 31, 162, 0.02) 100%); border: 1px solid rgba(122, 31, 162, 0.1);">
-                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-                        <div class="d-flex align-items-center">
-                            <div class="p-3 rounded-circle me-3" style="background: linear-gradient(135deg, #7a1fa2, #9b4dca);">
-                                <i class="bx bx-customize text-white fs-3"></i>
-                            </div>
-                            <div>
-                                <h1 class="fw-bold mb-1" style="color: #111827; font-size: 1.6rem;">Roles & Privileges</h1>
-                                <p class="text-muted mb-0">Define what each role on the system can see and do</p>
-                            </div>
-                        </div>
+        @if ($roles->isEmpty())
+            <section class="card"><x-ui.empty-state icon="bx-customize" title="No roles to display" text="There are no roles in your scope." /></section>
+        @else
+            <ul class="adm-tabs" role="tablist">
+                <li><button type="button" class="adm-tab is-active" data-view="detail" role="tab">By role</button></li>
+                <li><button type="button" class="adm-tab" data-view="compare" role="tab">Compare all roles</button></li>
+            </ul>
 
-                        @can_permission('roles.manage')
-                            <button class="btn fw-bold px-4 py-2" id="openCreateRoleBtn"
-                                style="background: linear-gradient(135deg, #7a1fa2, #9b4dca); color: white; border-radius: 12px; border: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(122, 31, 162, 0.3);">
-                                <i class="bx bx-plus me-2"></i> Create New Role
-                            </button>
-                        @endcan_permission
-                    </div>
+            {{-- ===== By role ===== --}}
+            <div class="adm-split" id="view-detail">
+                <section class="card">
+                    <ul class="adm-rolelist">
+                        @foreach ($roles as $role)
+                            <li>
+                                <button type="button" class="adm-roleitem {{ $role->id === $first->id ? 'is-active' : '' }}" data-role="{{ $role->id }}" style="--role: {{ $role->color }}">
+                                    <strong>{{ $role->name }} @if ($role->is_system)<span class="adm-chip">System</span>@endif</strong>
+                                    <small>{{ $role->visibilityLabel() }} · {{ number_format($role->users_count) }} {{ \Illuminate\Support\Str::plural('account', $role->users_count) }}</small>
+                                </button>
+                            </li>
+                        @endforeach
+                    </ul>
+                </section>
+
+                <div>
+                    @foreach ($roles as $role)
+                        <section class="card adm-pane" data-pane="{{ $role->id }}" style="--role: {{ $role->color }}" @if ($role->id !== $first->id) hidden @endif>
+                            <div class="adm-role-head">
+                                <div>
+                                    <h2>{{ $role->name }}</h2>
+                                    <p>{{ $role->description ?: 'No description provided.' }}</p>
+                                </div>
+                                @can_permission('roles.manage')
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="ui-btn edit-role-btn" data-id="{{ $role->id }}"><i class="bx bx-edit-alt"></i> Edit</button>
+                                        @unless ($role->is_system)
+                                            <button type="button" class="ui-btn delete-role-btn" data-id="{{ $role->id }}" data-name="{{ $role->name }}" aria-label="Delete {{ $role->name }}"><i class="bx bx-trash-alt"></i></button>
+                                        @endunless
+                                    </div>
+                                @endcan_permission
+                            </div>
+                            <div class="adm-role-facts">
+                                <dl class="adm-kv">
+                                    <div><dt>Sees</dt><dd>{{ $role->visibilityLabel() }}</dd></div>
+                                    <div><dt>Rank</dt><dd class="adm-num">Level {{ $role->level }}</dd></div>
+                                    <div><dt>Accounts</dt><dd class="adm-num">{{ number_format($role->users_count) }}</dd></div>
+                                    <div><dt>Privileges</dt><dd class="adm-num">{{ $role->full_access ? 'All' : $role->permissions->count() . ' of ' . collect($permissions)->flatten()->count() }}</dd></div>
+                                </dl>
+                            </div>
+                            @if ($role->full_access)
+                                <p class="adm-note">This role has full, unrestricted access. Every privilege below is granted automatically.</p>
+                            @elseif ($role->is_system)
+                                <p class="adm-note">Built-in role. Its name, scope and rank are fixed, but its privileges can be adjusted.</p>
+                            @endif
+                            <div class="adm-matrix-wrap">
+                                <table class="adm-matrix">
+                                    <thead>
+                                        <tr>
+                                            <th>Area</th>
+                                            @foreach ($columns as $k => $l)<th>{{ $l }}</th>@endforeach
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($permissions as $module => $list)
+                                            <tr>
+                                                <td>{{ $module }}</td>
+                                                @foreach ($columns as $k => $l)
+                                                    @php $perm = $list->firstWhere('action', $k); @endphp
+                                                    <td>
+                                                        @if (!$perm)
+                                                            <span class="adm-mark adm-mark--na" aria-label="Not applicable">·</span>
+                                                        @elseif ($granted($role, $perm))
+                                                            <span class="adm-mark adm-mark--on" title="{{ $perm->name }}" aria-label="Granted: {{ $perm->name }}"><i class="bx bx-check"></i></span>
+                                                        @else
+                                                            <span class="adm-mark adm-mark--off" title="{{ $perm->name }}" aria-label="Not granted: {{ $perm->name }}"></span>
+                                                        @endif
+                                                    </td>
+                                                @endforeach
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    @endforeach
                 </div>
             </div>
-        </div>
 
-        <!-- Role Cards -->
-        <div class="row g-4">
-            @forelse ($roles as $role)
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
-                    <div class="card border-0 h-100 role-card" style="border-radius: 20px; overflow: hidden; transition: all 0.3s ease; box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
-                        <div class="card-body p-0 d-flex flex-column">
-                            <!-- Card Header -->
-                            <div class="p-3 p-md-4 position-relative" style="background: {{ $role->color }}08; border-bottom: 3px solid {{ $role->color }};">
-                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                                    <div class="d-flex align-items-center min-w-0">
-                                        <div class="p-2 rounded-circle me-2 me-md-3 flex-shrink-0" style="background: {{ $role->color }};">
-                                            <i class="bx {{ $role->icon }} text-white fs-4"></i>
-                                        </div>
-                                        <div class="min-w-0">
-                                            <h5 class="fw-bold mb-0 text-truncate" style="color: {{ $role->color }}; max-width: 150px;">{{ $role->name }}</h5>
-                                            <small class="text-muted d-block text-truncate" style="max-width: 150px;">
-                                                <i class="bx bx-show me-1"></i>{{ $role->visibilityLabel() }}
-                                            </small>
-                                        </div>
-                                    </div>
-
-                                    @if ($role->is_system)
-                                        <span class="badge rounded-pill px-2 px-md-3 py-2 flex-shrink-0" style="background: rgba(108,117,125,.12); color:#6c757d; font-weight: 500; font-size: 0.7rem;">
-                                            <i class="bx bx-lock-alt me-1"></i>System
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="p-3 p-md-4 flex-grow-1 d-flex flex-column">
-                                <p class="text-muted small mb-3" style="min-height: 38px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
-                                    {{ $role->description ?: 'No description provided.' }}
-                                </p>
-
-                                <!-- Stats Row -->
-                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-                                    <span class="badge rounded-pill px-2 px-md-3 py-2" style="background: rgba(5,88,15,.08); color:#00580f; font-weight: 500; font-size: 0.7rem;">
-                                        <i class="bx bx-user me-1"></i> {{ $role->users_count }} {{ \Illuminate\Support\Str::plural('account', $role->users_count) }}
-                                    </span>
-                                    <span class="badge rounded-pill px-2 px-md-3 py-2" style="background: rgba(5,149,128,.08); color:#059580; font-weight: 500; font-size: 0.7rem;">
-                                        <i class="bx bx-key me-1"></i>
-                                        {{ $role->full_access ? 'Full Access' : $role->permissions->count() . ' perms' }}
-                                    </span>
-                                    <span class="badge rounded-pill px-2 px-md-3 py-2" style="background: rgba(13,110,253,.08); color:#0d6efd; font-weight: 500; font-size: 0.7rem;">
-                                        <i class="bx bx-trending-up me-1"></i>Lv {{ $role->level }}
-                                    </span>
-                                </div>
-
-                                <!-- Action Buttons -->
-                                <div class="d-flex gap-2 flex-wrap mt-auto">
-                                    <button class="btn flex-grow-1 view-role-btn" data-id="{{ $role->id }}"
-                                        style="background: rgba(13,110,253,.08); color:#0d6efd; border-radius: 10px; border: none; font-weight: 500; transition: all 0.2s ease; padding: 0.4rem 0.8rem; font-size: 0.85rem;">
-                                        <i class="bx bx-show me-1"></i> View
-                                    </button>
-
-                                    @can_permission('roles.manage')
-                                        <button class="btn flex-grow-1 edit-role-btn" data-id="{{ $role->id }}"
-                                            style="background: {{ $role->color }}15; color: {{ $role->color }}; border-radius: 10px; border: none; font-weight: 500; transition: all 0.2s ease; padding: 0.4rem 0.8rem; font-size: 0.85rem;">
-                                            <i class="bx bx-edit me-1"></i> Edit
-                                        </button>
-
-                                        @if (!$role->is_system)
-                                            <button class="btn delete-role-btn flex-shrink-0" data-id="{{ $role->id }}" data-name="{{ $role->name }}"
-                                                style="background: rgba(220,53,69,.08); color:#dc3545; border-radius: 10px; border: none; transition: all 0.2s ease; padding: 0.4rem 0.8rem;">
-                                                <i class="bx bx-trash"></i>
-                                            </button>
-                                        @endif
-                                    @endcan_permission
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            {{-- ===== Compare ===== --}}
+            <section class="card" id="view-compare" hidden>
+                <div class="adm-matrix-wrap">
+                    <table class="adm-matrix adm-compare">
+                        <thead>
+                            <tr>
+                                <th>Privilege</th>
+                                @foreach ($roles as $role)
+                                    <th class="role-col" style="--role: {{ $role->color }}"><i></i>{{ $role->name }}</th>
+                                @endforeach
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($permissions as $module => $list)
+                                <tr class="adm-group"><th colspan="{{ $roles->count() + 1 }}">{{ $module }}</th></tr>
+                                @foreach ($list as $perm)
+                                    <tr>
+                                        <td>{{ $perm->name }}</td>
+                                        @foreach ($roles as $role)
+                                            <td>
+                                                @if ($granted($role, $perm))
+                                                    <span class="adm-mark adm-mark--on" aria-label="Granted"><i class="bx bx-check"></i></span>
+                                                @else
+                                                    <span class="adm-mark adm-mark--off" aria-label="Not granted"></span>
+                                                @endif
+                                            </td>
+                                        @endforeach
+                                    </tr>
+                                @endforeach
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-            @empty
-                <div class="col-12">
-                    <div class="text-center py-5 text-muted">
-                        <i class="bx bx-customize fs-1 mb-2" style="color: #7a1fa2;"></i>
-                        <p class="mb-0">No roles to display.</p>
-                    </div>
-                </div>
-            @endforelse
-        </div>
+            </section>
+        @endif
     </div>
 
-    <!-- ============== CREATE / EDIT ROLE MODAL ============== -->
-    <div class="modal fade" id="roleModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    {{-- ===== Create / edit role ===== --}}
+    <div class="modal fade adm-modal" id="roleModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="roleModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,0.15); max-height: 95vh;">
-
-                <div class="modal-header" style="border-bottom: none; padding: 1.5rem 2rem; flex-shrink: 0;">
-                    <h5 class="modal-title fw-bold" id="roleModalTitle" style="color:#7a1fa2;">
-                        <i class="bx bx-customize me-2"></i>Create New Role
-                    </h5>
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="roleModalTitle">New role</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
-                <form id="roleForm">
+                <form id="roleForm" novalidate>
                     @csrf
                     <input type="hidden" id="roleId" name="role_id">
-
-                    <div class="modal-body" style="padding: 0 2rem 1.5rem 2rem; overflow-y: auto; max-height: calc(95vh - 180px);">
-
-                        <!-- Basic Information -->
-                        <div class="card mb-4" style="border-radius: 16px; border: 1px solid rgba(122, 31, 162, 0.1);">
-                            <div class="card-header bg-transparent" style="border-bottom: 1px solid rgba(122, 31, 162, 0.08);">
-                                <h6 class="fw-bold mb-0" style="color: #7a1fa2;">
-                                    <i class="bx bx-info-circle me-2"></i>Basic Information
-                                </h6>
-                            </div>
+                    <div class="modal-body">
+                        <div class="card mb-3">
                             <div class="card-body">
                                 <div class="row g-3">
                                     <div class="col-md-6">
-                                        <label class="form-label fw-bold">Role Name <span class="text-danger">*</span></label>
-                                        <input type="text" id="roleName" name="name" class="form-control" required
-                                            style="border-radius: 10px; border: 2px solid #e9ecef; padding: 0.6rem 1rem;">
+                                        <label class="form-label" for="roleName">Role name <span class="ui-req">*</span></label>
+                                        <input type="text" id="roleName" name="name" class="form-control" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label fw-bold">Visibility Scope <span class="text-danger">*</span></label>
-                                        <select id="roleDataScope" name="data_scope" class="form-select" required
-                                            style="border-radius: 10px; border: 2px solid #e9ecef; padding: 0.6rem 1rem;">
-                                            <option value="self">🔒 Own records only (e.g. an Imaam)</option>
-                                            <option value="county">🏛️ County-wide (e.g. a County Sheikh)</option>
-                                            <option value="district">🏢 District-wide (e.g. a District Khadhi)</option>
-                                            <option value="region">🌍 Region-wide (e.g. a Regional Assistant)</option>
+                                        <label class="form-label" for="roleDataScope">Visibility scope <span class="ui-req">*</span></label>
+                                        <select id="roleDataScope" name="data_scope" class="form-select" required>
+                                            <option value="self">Own records only (e.g. an Imaam)</option>
+                                            <option value="county">County-wide (e.g. a County Sheikh)</option>
+                                            <option value="district">District-wide (e.g. a District Khadhi)</option>
+                                            <option value="region">Region-wide (e.g. a Regional Assistant)</option>
                                             @full_access
-                                                <option value="global" id="globalScopeOption">⭐ Entire system (Director only)</option>
+                                                <option value="global" id="globalScopeOption">Entire system (Director only)</option>
                                             @endfull_access
                                         </select>
                                     </div>
-
                                     <div class="col-md-6">
-                                        <label class="form-label fw-bold">Description</label>
-                                        <input type="text" id="roleDescription" name="description" class="form-control"
-                                            placeholder="What is this role responsible for?"
-                                            style="border-radius: 10px; border: 2px solid #e9ecef; padding: 0.6rem 1rem;">
+                                        <label class="form-label" for="roleDescription">Description</label>
+                                        <input type="text" id="roleDescription" name="description" class="form-control" placeholder="What is this role responsible for?">
                                     </div>
                                     <div class="col-md-3">
-                                        <label class="form-label fw-bold">Badge Color</label>
-                                        <input type="color" id="roleColor" name="color" class="form-control form-control-color w-100"
-                                            value="#7a1fa2" style="border-radius: 10px; border: 2px solid #e9ecef; height: 48px;">
+                                        <label class="form-label" for="roleColor">Marker colour</label>
+                                        <input type="color" id="roleColor" name="color" class="form-control form-control-color w-100" value="#136a3b">
                                     </div>
                                     <div class="col-md-3">
-                                        <label class="form-label fw-bold">Rank Level <span class="text-danger">*</span></label>
-                                        @php($maxLevel = \App\Services\AccessControl::hasFullAccess() ? 99 : max(1, (\App\Services\AccessControl::role()?->level ?? 1) - 1))
-                                        <input type="number" id="roleLevel" name="level" class="form-control"
-                                            min="1" max="{{ $maxLevel }}" value="{{ min(15, $maxLevel) }}" required
-                                            style="border-radius: 10px; border: 2px solid #e9ecef; padding: 0.6rem 1rem;">
-                                        <small class="text-muted">Higher ranks can manage lower ones (max {{ $maxLevel }} for you)</small>
+                                        <label class="form-label" for="roleLevel">Rank level <span class="ui-req">*</span></label>
+                                        <input type="number" id="roleLevel" name="level" class="form-control" min="1" max="{{ $maxLevel }}" value="{{ min(15, $maxLevel) }}" required>
+                                        <p class="ui-hint mb-0">Higher ranks manage lower ones. Your maximum is {{ $maxLevel }}.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- System Role Notice -->
-                        <div id="systemRoleNotice" class="alert d-none" style="background: rgba(108,117,125,.06); color:#6c757d; border-radius:12px; border-left: 4px solid #6c757d;">
-                            <div class="d-flex align-items-center">
-                                <i class="bx bx-info-circle fs-5 me-2"></i>
-                                <div>
-                                    <strong>System Role</strong> — its name, scope and rank are fixed. You can still
-                                    fine-tune which privileges it carries below.
-                                </div>
-                            </div>
-                        </div>
+                        <p id="systemRoleNotice" class="adm-hintbox d-none mb-3"><b>Built-in role.</b> Its name, scope and rank are fixed. You can still adjust its privileges below.</p>
 
-                        <!-- Privileges Section -->
-                        <div class="card" style="border-radius: 16px; border: 1px solid rgba(122, 31, 162, 0.1);">
-                            <div class="card-header bg-transparent d-flex align-items-center justify-content-between flex-wrap gap-2" style="border-bottom: 1px solid rgba(122, 31, 162, 0.08);">
-                                <h6 class="fw-bold mb-0" style="color: #7a1fa2;">
-                                    <i class="bx bx-key me-2"></i>Privileges
-                                </h6>
-                                <div class="d-flex gap-2 flex-wrap">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="selectAllPerms" style="border-radius: 8px; font-size: 0.8rem;">
-                                        <i class="bx bx-check-all me-1"></i>Select All
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="deselectAllPerms" style="border-radius: 8px; font-size: 0.8rem;">
-                                        <i class="bx bx-x me-1"></i>Deselect All
-                                    </button>
+                        <div class="card">
+                            <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                <h3 class="h6 mb-0">Privileges</h3>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="ui-btn" id="selectAllPerms">Select all</button>
+                                    <button type="button" class="ui-btn" id="deselectAllPerms">Clear</button>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <p class="text-muted small mb-3">
-                                    <i class="bx bx-info-circle me-1"></i>
-                                    Tick everything this role should be able to do. Visibility of records is controlled by the Visibility Scope above.
-                                </p>
-
-                                <div class="row g-3" id="permissionGroups">
+                                <div class="adm-perm-grid" id="permissionGroups">
                                     @foreach ($permissions as $module => $modulePermissions)
-                                        <div class="col-lg-4 col-md-6 col-sm-12">
-                                            <div class="p-3 rounded-3 h-100 permission-group" style="background: rgba(122, 31, 162, 0.03); border: 1px solid rgba(122, 31, 162, 0.08); transition: all 0.2s ease;">
-                                                <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-1">
-                                                    <span class="fw-bold small" style="color:#7a1fa2;">
-                                                        <i class="bx bx-folder-open me-1"></i>{{ $module }}
-                                                    </span>
-                                                    <a href="#" class="small text-decoration-none select-all-link" data-module="{{ $module }}" style="color: #7a1fa2; font-size: 0.75rem;">
-                                                        <i class="bx bx-check-circle me-1"></i>Select all
-                                                    </a>
+                                        <div class="adm-perm-group">
+                                            <header>
+                                                <strong>{{ $module }}</strong>
+                                                <a href="#" class="select-all-link" data-module="{{ $module }}">Toggle all</a>
+                                            </header>
+                                            @foreach ($modulePermissions as $permission)
+                                                <div class="form-check">
+                                                    <input class="form-check-input permission-checkbox" type="checkbox" value="{{ $permission->id }}"
+                                                        data-module="{{ $module }}" id="perm-{{ $permission->id }}" name="permissions[]">
+                                                    <label class="form-check-label" for="perm-{{ $permission->id }}">{{ $permission->name }}</label>
                                                 </div>
-                                                @foreach ($modulePermissions as $permission)
-                                                    <div class="form-check mb-1">
-                                                        <input class="form-check-input permission-checkbox" type="checkbox"
-                                                            value="{{ $permission->id }}" data-module="{{ $module }}"
-                                                            id="perm-{{ $permission->id }}" name="permissions[]"
-                                                            style="border-radius: 4px; border: 2px solid #ced4da; cursor: pointer; flex-shrink: 0;">
-                                                        <label class="form-check-label small" for="perm-{{ $permission->id }}" style="cursor: pointer; word-break: break-word;">
-                                                            {{ $permission->name }}
-                                                        </label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
+                                            @endforeach
                                         </div>
                                     @endforeach
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
-                    <div class="modal-footer" style="border-top: 1px solid rgba(122, 31, 162, 0.08); padding: 1.5rem 2rem; flex-shrink: 0;">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal" style="border-radius: 10px; padding: 0.6rem 1.5rem;">Cancel</button>
-                        <button type="submit" class="btn fw-bold text-white" id="roleSubmitBtn"
-                            style="background: linear-gradient(135deg, #7a1fa2, #9b4dca); border: none; border-radius: 10px; padding: 0.6rem 2rem; box-shadow: 0 4px 15px rgba(122, 31, 162, 0.3);">
-                            <i class="bx bx-save me-1"></i> Save Role
-                        </button>
+                    <div class="modal-footer">
+                        <button type="button" class="ui-btn" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="ui-btn ui-btn--primary" id="roleSubmitBtn"><i class="bx bx-save"></i> Save role</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- ============== VIEW ROLE MODAL ============== -->
-    <div class="modal fade" id="viewRoleModal" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,0.15); max-height: 95vh;">
-
-                <div class="modal-header" style="border-bottom: none; padding: 1.5rem 2rem; flex-shrink: 0;">
-                    <h5 class="modal-title fw-bold" style="color:#7a1fa2;">
-                        <i class="bx bx-show me-2"></i>Role Details
-                    </h5>
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <div class="modal-body" style="padding: 0 2rem 1.5rem 2rem; overflow-y: auto; max-height: calc(95vh - 140px);" id="viewRoleBody">
-                    <!-- populated by JS -->
-                </div>
-
-                <div class="modal-footer" style="border-top: 1px solid rgba(122, 31, 162, 0.08); padding: 1.5rem 2rem; flex-shrink: 0;">
-                    <button class="btn btn-light" data-bs-dismiss="modal" style="border-radius: 10px; padding: 0.6rem 1.5rem;">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- SweetAlert CSS/JS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <style>
-        /* Role Card Hover Effect */
-        .role-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.1) !important;
-        }
-
-        /* Permission Group Hover */
-        .permission-group:hover {
-            background: rgba(122, 31, 162, 0.06) !important;
-            border-color: rgba(122, 31, 162, 0.2) !important;
-        }
-
-        /* Custom Checkbox Styling */
-        .permission-checkbox:checked {
-            background-color: #7a1fa2 !important;
-            border-color: #7a1fa2 !important;
-        }
-
-        .permission-checkbox:focus {
-            box-shadow: 0 0 0 0.25rem rgba(122, 31, 162, 0.25) !important;
-        }
-
-        /* Modal Animation */
-        .modal-content {
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Modal Scrolling Fix - ensure modal body scrolls */
-        .modal-dialog-scrollable .modal-content {
-            max-height: 95vh !important;
-            overflow: hidden !important;
-        }
-
-        .modal-dialog-scrollable .modal-body {
-            overflow-y: auto !important;
-            -webkit-overflow-scrolling: touch !important;
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .modal-dialog {
-                margin: 0.5rem;
-            }
-
-            .modal-body {
-                padding: 0 1rem 1rem 1rem !important;
-                max-height: calc(90vh - 160px) !important;
-            }
-
-            .modal-header,
-            .modal-footer {
-                padding: 1rem !important;
-            }
-
-            .permission-group {
-                padding: 1rem !important;
-            }
-
-            .role-card {
-                margin-bottom: 0.5rem;
-            }
-
-            /* Fix text truncation on mobile */
-            .role-card .text-truncate {
-                max-width: 100px !important;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .role-card .d-flex {
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-
-            .role-card .badge {
-                font-size: 0.6rem !important;
-                padding: 0.25rem 0.5rem !important;
-            }
-
-            .role-card .btn {
-                font-size: 0.75rem !important;
-                padding: 0.3rem 0.6rem !important;
-            }
-
-            .role-card .text-truncate {
-                max-width: 80px !important;
-            }
-
-            .role-card h5 {
-                font-size: 0.95rem !important;
-            }
-
-            /* Modal on very small screens */
-            .modal-body {
-                max-height: calc(85vh - 150px) !important;
-                padding: 0 0.75rem 0.75rem 0.75rem !important;
-            }
-
-            #permissionGroups .col-sm-12 {
-                padding: 0 0.25rem;
-            }
-
-            .form-check-label {
-                font-size: 0.75rem !important;
-            }
-        }
-
-        /* Button hover effects */
-        .view-role-btn:hover {
-            background: rgba(13,110,253,0.15) !important;
-            transform: scale(1.02);
-        }
-
-        .edit-role-btn:hover {
-            transform: scale(1.02);
-        }
-
-        .delete-role-btn:hover {
-            background: rgba(220,53,69,0.15) !important;
-            transform: scale(1.02);
-        }
-
-        /* Responsive stats badges */
-        .badge {
-            font-size: 0.7rem;
-        }
-
-        @media (max-width: 576px) {
-            .badge {
-                font-size: 0.6rem !important;
-                padding: 0.3rem 0.6rem !important;
-            }
-
-            .modal-title {
-                font-size: 1rem !important;
-            }
-
-            .card-header h6 {
-                font-size: 0.9rem !important;
-            }
-        }
-
-        /* Ensure text doesn't overflow on small cards */
-        .min-w-0 {
-            min-width: 0;
-        }
-
-        .text-truncate {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Fix for permission checkbox labels wrapping */
-        .form-check {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-        }
-
-        .form-check-input {
-            margin-top: 0.15rem;
-            flex-shrink: 0;
-        }
-
-        .form-check-label {
-            word-break: break-word;
-            line-height: 1.4;
-        }
-
-        /* Fix modal scroll on all browsers */
-        .modal {
-            overflow-y: auto !important;
-        }
-
-        .modal-dialog {
-            margin: 1.75rem auto !important;
-        }
-
-        @media (max-width: 576px) {
-            .modal-dialog {
-                margin: 0.5rem !important;
-            }
-        }
-    </style>
-
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const rolesData = @json($roles->keyBy('id'));
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        document.addEventListener('DOMContentLoaded', function () {
+            var rolesData = @json($roles->keyBy('id'));
+            var csrf = document.querySelector('meta[name="csrf-token"]').content;
+            var $ = function (id) { return document.getElementById(id); };
 
-        const roleModalEl = document.getElementById('roleModal');
-        const roleModal = bootstrap.Modal.getOrCreateInstance(roleModalEl);
-        const viewRoleModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('viewRoleModal'));
-
-        const roleForm = document.getElementById('roleForm');
-        const roleIdInput = document.getElementById('roleId');
-        const roleModalTitle = document.getElementById('roleModalTitle');
-        const systemRoleNotice = document.getElementById('systemRoleNotice');
-        const roleNameInput = document.getElementById('roleName');
-        const roleDataScope = document.getElementById('roleDataScope');
-        const roleDescription = document.getElementById('roleDescription');
-        const roleColor = document.getElementById('roleColor');
-        const roleLevel = document.getElementById('roleLevel');
-
-        // Select/Deselect All Permissions
-        document.getElementById('selectAllPerms')?.addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelectorAll('.permission-checkbox').forEach(cb => cb.checked = true);
-        });
-
-        document.getElementById('deselectAllPerms')?.addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelectorAll('.permission-checkbox').forEach(cb => cb.checked = false);
-        });
-
-        function resetForm() {
-            roleForm.reset();
-            roleIdInput.value = '';
-            roleModalTitle.innerHTML = '<i class="bx bx-customize me-2"></i>Create New Role';
-            systemRoleNotice.classList.add('d-none');
-            [roleNameInput, roleDataScope, roleLevel].forEach(el => el.disabled = false);
-            document.querySelectorAll('.permission-checkbox').forEach(cb => cb.checked = false);
-        }
-
-        document.getElementById('openCreateRoleBtn')?.addEventListener('click', () => {
-            resetForm();
-            roleModal.show();
-        });
-
-        function populateForm(role) {
-            roleIdInput.value = role.id;
-            roleNameInput.value = role.name;
-            roleDataScope.value = role.data_scope;
-            roleDescription.value = role.description ?? '';
-            roleColor.value = role.color ?? '#7a1fa2';
-            roleLevel.value = role.level;
-
-            document.querySelectorAll('.permission-checkbox').forEach(cb => {
-                cb.checked = role.full_access || (role.permissions || []).some(p => p.id == cb.value);
+            // View switch and role selection
+            document.querySelectorAll('.adm-tab[data-view]').forEach(function (t) {
+                t.addEventListener('click', function () {
+                    document.querySelectorAll('.adm-tab[data-view]').forEach(function (x) { x.classList.toggle('is-active', x === t); });
+                    var detail = t.dataset.view === 'detail';
+                    var d = $('view-detail'), c = $('view-compare');
+                    if (d) d.hidden = !detail;
+                    if (c) c.hidden = detail;
+                });
+            });
+            document.querySelectorAll('.adm-roleitem').forEach(function (b) {
+                b.addEventListener('click', function () {
+                    document.querySelectorAll('.adm-roleitem').forEach(function (x) { x.classList.toggle('is-active', x === b); });
+                    document.querySelectorAll('.adm-pane').forEach(function (p) { p.hidden = p.dataset.pane !== b.dataset.role; });
+                });
             });
 
-            if (role.is_system) {
-                systemRoleNotice.classList.remove('d-none');
-                [roleNameInput, roleDataScope, roleLevel].forEach(el => el.disabled = true);
-            } else {
-                systemRoleNotice.classList.add('d-none');
-                [roleNameInput, roleDataScope, roleLevel].forEach(el => el.disabled = false);
+            // Role editor
+            var modalEl = $('roleModal');
+            var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            var f = { id: $('roleId'), name: $('roleName'), scope: $('roleDataScope'), desc: $('roleDescription'), color: $('roleColor'), level: $('roleLevel') };
+            var fixed = [f.name, f.scope, f.level];
+
+            function reset() {
+                $('roleForm').reset();
+                f.id.value = '';
+                $('roleModalTitle').textContent = 'New role';
+                $('systemRoleNotice').classList.add('d-none');
+                fixed.forEach(function (el) { el.disabled = false; });
+                document.querySelectorAll('.permission-checkbox').forEach(function (c) { c.checked = false; });
             }
-        }
-
-        document.querySelectorAll('.edit-role-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const role = rolesData[btn.dataset.id];
-                resetForm();
-                roleModalTitle.innerHTML = '<i class="bx bx-edit me-2"></i>Edit Role';
-                populateForm(role);
-                roleModal.show();
-
-                // Ensure modal body scrolls to top when opened
-                setTimeout(() => {
-                    const modalBody = document.querySelector('#roleModal .modal-body');
-                    if (modalBody) {
-                        modalBody.scrollTop = 0;
-                    }
-                }, 100);
-            });
-        });
-
-        document.querySelectorAll('.view-role-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const role = rolesData[btn.dataset.id];
-                const perms = role.full_access
-                    ? '<span class="badge" style="background:rgba(122,31,162,.12); color:#7a1fa2; padding: 0.5rem 1rem; border-radius: 8px;">⭐ Full, unrestricted access</span>'
-                    : (role.permissions && role.permissions.length
-                        ? role.permissions.map(p => `<span class="badge me-1 mb-1" style="background:rgba(5,88,15,.08); color:#00580f; padding: 0.4rem 0.8rem; border-radius: 6px;">${p.name}</span>`).join('')
-                        : '<span class="text-muted">No privileges assigned yet.</span>');
-
-                const visibilityIcon = {
-                    'self': '🔒',
-                    'county': '🏛️',
-                    'district': '🏢',
-                    'region': '🌍',
-                    'global': '⭐'
-                };
-
-                document.getElementById('viewRoleBody').innerHTML = `
-                    <div class="mb-4" style="background: ${role.color}08; border-radius: 16px; padding: 1.5rem; border-left: 4px solid ${role.color};">
-                        <div class="d-flex align-items-center flex-wrap gap-3">
-                            <div class="p-3 rounded-circle flex-shrink-0" style="background: ${role.color};">
-                                <i class="bx ${role.icon} text-white fs-4"></i>
-                            </div>
-                            <div>
-                                <h5 class="fw-bold mb-0" style="color:${role.color}">${role.name}</h5>
-                                <p class="text-muted mb-0">${role.description ?? 'No description provided.'}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-4 col-sm-6">
-                            <div class="p-3 rounded-3" style="background: rgba(13,110,253,.04); border: 1px solid rgba(13,110,253,.08);">
-                                <small class="text-muted d-block">Visibility Scope</small>
-                                <span class="fw-bold">${visibilityIcon[role.data_scope] || ''} ${role.data_scope}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <div class="p-3 rounded-3" style="background: rgba(13,110,253,.04); border: 1px solid rgba(13,110,253,.08);">
-                                <small class="text-muted d-block">Rank Level</small>
-                                <span class="fw-bold">Level ${role.level}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <div class="p-3 rounded-3" style="background: rgba(13,110,253,.04); border: 1px solid rgba(13,110,253,.08);">
-                                <small class="text-muted d-block">Users</small>
-                                <span class="fw-bold">${role.users_count} ${role.users_count == 1 ? 'account' : 'accounts'}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <h6 class="fw-bold mb-3" style="color:#7a1fa2;">
-                        <i class="bx bx-key me-2"></i>Privileges
-                    </h6>
-                    <div class="d-flex flex-wrap gap-1">${perms}</div>
-
-                    ${role.is_system ? `
-                        <div class="mt-3 alert" style="background: rgba(108,117,125,.06); color:#6c757d; border-radius:12px; border-left: 4px solid #6c757d;">
-                            <i class="bx bx-lock-alt me-1"></i>
-                            This is a built-in system role — its core attributes are fixed.
-                        </div>
-                    ` : ''}
-                `;
-                viewRoleModal.show();
-
-                // Ensure modal body scrolls to top when opened
-                setTimeout(() => {
-                    const modalBody = document.querySelector('#viewRoleModal .modal-body');
-                    if (modalBody) {
-                        modalBody.scrollTop = 0;
-                    }
-                }, 100);
-            });
-        });
-
-        document.querySelectorAll('.delete-role-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                Swal.fire({
-                    title: `Delete "${btn.dataset.name}"?`,
-                    html: 'This cannot be undone.<br>Accounts must be reassigned to a new role first.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#dc3545',
-                    confirmButtonText: 'Yes, delete',
-                    cancelButtonText: 'Cancel',
-                    customClass: {
-                        confirmButton: 'btn btn-danger',
-                        cancelButton: 'btn btn-light'
-                    }
-                }).then(result => {
-                    if (!result.isConfirmed) return;
-
-                    fetch(`/roles/${btn.dataset.id}`, {
-                        method: 'DELETE',
-                        headers: { 'X-CSRF-TOKEN': csrfToken }
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.status) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Deleted!',
-                                    text: data.message,
-                                    timer: 2000,
-                                    showConfirmButton: false
-                                }).then(() => location.reload());
-                            } else {
-                                Swal.fire('Error', data.message, 'error');
-                            }
-                        })
-                        .catch(() => Swal.fire('Error', 'Unable to delete role.', 'error'));
+            function populate(role) {
+                f.id.value = role.id; f.name.value = role.name; f.scope.value = role.data_scope;
+                f.desc.value = role.description || ''; f.color.value = role.color || '#136a3b'; f.level.value = role.level;
+                document.querySelectorAll('.permission-checkbox').forEach(function (c) {
+                    c.checked = !!role.full_access || (role.permissions || []).some(function (p) { return p.id == c.value; });
+                });
+                $('systemRoleNotice').classList.toggle('d-none', !role.is_system);
+                fixed.forEach(function (el) { el.disabled = !!role.is_system; });
+            }
+            var openBtn = $('openCreateRoleBtn');
+            if (openBtn) openBtn.addEventListener('click', function () { reset(); modal.show(); });
+            document.querySelectorAll('.edit-role-btn').forEach(function (b) {
+                b.addEventListener('click', function () {
+                    reset(); $('roleModalTitle').textContent = 'Edit role'; populate(rolesData[b.dataset.id]); modal.show();
+                    setTimeout(function () { var mb = modalEl.querySelector('.modal-body'); if (mb) mb.scrollTop = 0; }, 100);
                 });
             });
-        });
+            $('selectAllPerms').addEventListener('click', function () { document.querySelectorAll('.permission-checkbox').forEach(function (c) { c.checked = true; }); });
+            $('deselectAllPerms').addEventListener('click', function () { document.querySelectorAll('.permission-checkbox').forEach(function (c) { c.checked = false; }); });
+            document.querySelectorAll('.select-all-link').forEach(function (a) {
+                a.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var boxes = [].slice.call(document.querySelectorAll('.permission-checkbox')).filter(function (c) { return c.dataset.module === a.dataset.module; });
+                    var all = boxes.every(function (c) { return c.checked; });
+                    boxes.forEach(function (c) { c.checked = !all; });
+                });
+            });
 
-        document.querySelectorAll('.select-all-link').forEach(link => {
-            link.addEventListener('click', (e) => {
+            document.querySelectorAll('.delete-role-btn').forEach(function (b) {
+                b.addEventListener('click', function () {
+                    UMSC.confirm({ title: 'Delete "' + b.dataset.name + '"?', text: 'This cannot be undone. Accounts must be moved to another role first.', confirmText: 'Delete role', danger: true }).then(function (ok) {
+                        if (!ok) return;
+                        fetch('/roles/' + b.dataset.id, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' } })
+                            .then(function (r) { return r.json(); })
+                            .then(function (d) {
+                                if (d.status) { UMSC.toast('success', d.message); setTimeout(function () { location.reload(); }, 700); }
+                                else UMSC.toast('error', d.message || 'Unable to delete role.');
+                            }).catch(function () { UMSC.toast('error', 'Unable to delete role.'); });
+                    });
+                });
+            });
+
+            $('roleForm').addEventListener('submit', function (e) {
                 e.preventDefault();
-                const module = link.dataset.module;
-                const boxes = document.querySelectorAll(`.permission-checkbox[data-module="${module}"]`);
-                const allChecked = [...boxes].every(b => b.checked);
-                boxes.forEach(b => b.checked = !allChecked);
+                var id = f.id.value, btn = $('roleSubmitBtn');
+                var payload = {
+                    name: f.name.value, description: f.desc.value, data_scope: f.scope.value,
+                    level: parseInt(f.level.value, 10) || 10, color: f.color.value,
+                    permissions: [].slice.call(document.querySelectorAll('.permission-checkbox:checked')).map(function (c) { return parseInt(c.value, 10); })
+                };
+                UMSC.busy(btn, true, 'Saving…');
+                fetch(id ? '/roles/' + id : '/roles', {
+                    method: id ? 'PUT' : 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': csrf },
+                    body: JSON.stringify(payload)
+                }).then(function (r) { return r.json().then(function (d) { return { r: r, d: d }; }); })
+                  .then(function (o) {
+                    UMSC.busy(btn, false);
+                    if (o.d.status) { modal.hide(); UMSC.toast('success', o.d.message); setTimeout(function () { location.reload(); }, 700); return; }
+                    var msg = o.d.message || 'Unable to save role.';
+                    if (o.d.errors) msg = Object.values(o.d.errors)[0][0];
+                    UMSC.toast('error', msg);
+                  }).catch(function () { UMSC.busy(btn, false); UMSC.toast('error', 'Unable to save role.'); });
             });
         });
-
-        roleForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const id = roleIdInput.value;
-            const isEdit = !!id;
-
-            const payload = {
-                name: roleNameInput.value,
-                description: roleDescription.value,
-                data_scope: roleDataScope.value,
-                level: parseInt(roleLevel.value) || 10,
-                color: roleColor.value,
-                permissions: [...document.querySelectorAll('.permission-checkbox:checked')].map(cb => parseInt(cb.value)),
-            };
-
-            const url = isEdit ? `/roles/${id}` : '/roles';
-            const method = isEdit ? 'PUT' : 'POST';
-
-            // Show loading state
-            const submitBtn = document.getElementById('roleSubmitBtn');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin me-1"></i> Saving...';
-            submitBtn.disabled = true;
-
-            fetch(url, {
-                method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                },
-                body: JSON.stringify(payload)
-            })
-                .then(res => res.json())
-                .then(data => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-
-                    if (data.status) {
-                        roleModal.hide();
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Saved!',
-                            text: data.message,
-                            timer: 1500,
-                            showConfirmButton: false
-                        }).then(() => location.reload());
-                    } else {
-                        Swal.fire('Error', data.message || 'Unable to save role.', 'error');
-                    }
-                })
-                .catch(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    Swal.fire('Error', 'Unable to save role.', 'error');
-                });
-        });
-    }); // end DOMContentLoaded
     </script>
 @endsection

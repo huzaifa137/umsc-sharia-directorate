@@ -20,75 +20,15 @@ use App\Models\ConvertApplication;
 use App\Models\GuardianshipApplication;
 use App\Models\InheritanceApplication;
 use App\Services\AccessControl;
+use App\Services\DashboardData;
 
 class AdminController extends Controller
 {
     public function adminDashboard()
     {
-        // INHERITANCE
-        $totalInheritance = AccessControl::scopeApplications(InheritanceApplication::query())->count();
-        $pendingInheritance = AccessControl::scopeApplications(InheritanceApplication::query())->where('status', 'submitted')->count();
-        $thisMonthInheritance = AccessControl::scopeApplications(InheritanceApplication::query())
-            ->whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
-            ->count();
-
-        // NIKAH
-        $totalNikah = AccessControl::scopeApplications(NikkahApplication::query())->count();
-        $pendingNikah = AccessControl::scopeApplications(NikkahApplication::query())->where('status', 'submitted')->count();
-        $approvedTodayNikah = AccessControl::scopeApplications(NikkahApplication::query())->whereDate('updated_at', now())->where('status', 'approved')->count();
-
-        // DIVORCE (if needed for right-side card later)
-        $totalDivorce = AccessControl::scopeApplications(DivorceApplication::query())->count();
-        $pendingDivorce = AccessControl::scopeApplications(DivorceApplication::query())->where('status', 'submitted')->count();
-        $approvedTodayDivorce = AccessControl::scopeApplications(DivorceApplication::query())->whereDate('updated_at', now())->where('status', 'approved')->count();
-
-        // Optional: Current period (this month)
-        $currentMonthInheritance = AccessControl::scopeApplications(InheritanceApplication::query())
-            ->whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
-            ->count();
-
-        // Previous cards
-        $currentMonthNikah = AccessControl::scopeApplications(NikkahApplication::query())
-            ->whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
-            ->count();
-
-        $currentMonthCases = $currentMonthNikah;
-
-        $totalConverts = AccessControl::scopeApplications(ConvertApplication::query())->count();
-        $pendingConverts = AccessControl::scopeApplications(ConvertApplication::query())->where('status', 'pending')->count();
-        $thisMonthConverts = AccessControl::scopeApplications(ConvertApplication::query())
-            ->whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
-            ->count();
-
-        $totalGuardianships = AccessControl::scopeApplications(GuardianshipApplication::query())->count();
-        $pendingGuardianships = AccessControl::scopeApplications(GuardianshipApplication::query())->where('status', 'pending')->count();
-        $activeGuardianships = AccessControl::scopeApplications(GuardianshipApplication::query())->where('status', 'active')->count();
-
-
-        return view('admin.dashboard', compact(
-            'totalInheritance',
-            'pendingInheritance',
-            'thisMonthInheritance',
-            'totalNikah',
-            'pendingNikah',
-            'approvedTodayNikah',
-            'totalDivorce',
-            'pendingDivorce',
-            'approvedTodayDivorce',
-            'currentMonthCases',
-            'currentMonthNikah',
-            'currentMonthInheritance',
-            'totalConverts',
-            'pendingConverts',
-            'thisMonthConverts',
-            'totalGuardianships',
-            'pendingGuardianships',
-            'activeGuardianships',
-        ));
+        // All numbers are built in DashboardData, which respects the viewer's
+        // role permissions and data scope (self / county / district / region / global).
+        return view('admin.dashboard', ['dash' => DashboardData::build()]);
     }
 
     public function userProfile()

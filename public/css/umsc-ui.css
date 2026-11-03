@@ -1,0 +1,287 @@
+/* ==========================================================================
+   UMSC Directorate of Sharia: shared UI layer (Patch 6)
+   Loaded after umsc-app.css. Scoped to body.umsc-app.
+
+   1. Canvas and surfaces (calmer background, quieter cards)
+   2. Legacy bridge (tames pastel inline-styled cards and loud badges on old pages)
+   3. Tables and DataTables
+   4. Components: page header, stat strip, status badge, empty state,
+      toolbar, skeleton, toast
+   Prefix: ui-. Logical properties throughout, so Arabic (RTL) flips itself.
+   ========================================================================== */
+
+body.umsc-app {
+    /* Calmer canvas: a cool, slightly green-grey mist instead of the warm beige.
+       Surfaces stay pure white so content reads as the foreground. */
+    --paper: #f3f5f4;
+    --paper-2: #e9eeeb;
+    --line: #e1e6e3;
+    --line-soft: #edf1ef;
+    --canvas: #f3f5f4;
+    --surface: #fff;
+    --ink: #14241b;
+    --text: #2c3b33;
+    --muted: #66756c;
+
+    --ok: #136a3b;     --ok-bg: #e7f3ec;
+    --warn: #8a6100;   --warn-bg: #faf1d6;
+    --bad: #a8322a;    --bad-bg: #fbe9e7;
+    --info: #1f6283;   --info-bg: #e3eff5;
+    --idle: #55635b;   --idle-bg: #eceff0;
+
+    --shadow-1: 0 1px 2px rgba(15, 36, 27, .04);
+    --shadow-2: 0 1px 2px rgba(15, 36, 27, .05), 0 10px 28px -14px rgba(15, 36, 27, .16);
+    --radius: 8px;
+
+    background: var(--canvas);
+}
+
+/* ---------- 1. Surfaces ---------- */
+.umsc-app .layout-page,
+.umsc-app .content-wrapper { background: var(--canvas); }
+
+.umsc-app .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-1);
+}
+.umsc-app .card-header { padding: 1.1rem 1.4rem; border-bottom: 1px solid var(--line-soft); background: transparent; }
+.umsc-app .card-body { padding: 1.4rem; }
+.umsc-app .card.h-100:hover { transform: none; }
+.umsc-app .card-footer { background: transparent; border-top: 1px solid var(--line-soft); }
+
+.umsc-app .invoice-card-header { background: transparent; border-bottom: 1px solid var(--line-soft); }
+.umsc-app .text-dark { color: var(--ink) !important; }
+.umsc-app .text-muted { color: var(--muted) !important; }
+.umsc-app .fw-extra-bold { font-weight: 700; }
+.umsc-app hr { border-color: var(--line); opacity: 1; }
+
+/* ---------- 2. Legacy bridge ----------
+   Older pages hard-code pastel card backgrounds, 20px radii and gradients in
+   inline styles. These rules neutralise them until each page is rebuilt on the
+   components below (Patch 7 onward). Attribute selectors are used on purpose
+   so no page markup has to change. */
+.umsc-app .card[style*="background:#f"],
+.umsc-app .card[style*="background: #f"],
+.umsc-app .card[style*="background:#e"],
+.umsc-app .card[style*="background: #e"] {
+    background: var(--surface) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: var(--radius) !important;
+    box-shadow: var(--shadow-1) !important;
+}
+.umsc-app .card[style*="border-radius:20px"],
+.umsc-app .card[style*="border-radius: 20px"],
+.umsc-app .card[style*="border-radius:16px"],
+.umsc-app .card[style*="border-radius: 16px"],
+.umsc-app .card[style*="border-radius:14px"],
+.umsc-app .card[style*="border-radius: 14px"] { border-radius: var(--radius) !important; }
+.umsc-app .card[style*="border-radius"] .card-body { padding: 1.25rem 1.4rem !important; }
+.umsc-app .stat-card:hover,
+.umsc-app a:hover > .card { transform: none !important; box-shadow: var(--shadow-2) !important; }
+.umsc-app .icon-box { border-radius: 8px !important; background: var(--paper-2) !important; }
+.umsc-app .icon-box i { color: var(--green-700) !important; }
+.umsc-app .avatar-initial { background: var(--green-700); box-shadow: none; }
+.umsc-app .bg-gradient-primary { background: var(--green-700); }
+
+/* Badges: quiet tinted pills with dark text, instead of saturated blocks. */
+.umsc-app .badge { font: 600 .72rem/1 var(--sans); letter-spacing: .01em; padding: .42em .75em; border-radius: 99px; }
+.umsc-app .badge.bg-success, .umsc-app .badge.bg-label-success, .umsc-app .badge.bg-light-success,
+.umsc-app .badge.bg-success-subtle, .umsc-app .badge-status-approved { background: var(--ok-bg) !important; color: var(--ok) !important; }
+.umsc-app .badge.bg-warning, .umsc-app .badge.bg-label-warning, .umsc-app .badge.bg-light-warning,
+.umsc-app .badge.bg-warning-subtle { background: var(--warn-bg) !important; color: var(--warn) !important; }
+.umsc-app .badge.bg-danger, .umsc-app .badge.bg-label-danger, .umsc-app .badge.bg-light-danger { background: var(--bad-bg) !important; color: var(--bad) !important; }
+.umsc-app .badge.bg-info, .umsc-app .badge.bg-label-info, .umsc-app .badge-status-submitted { background: var(--info-bg) !important; color: var(--info) !important; }
+.umsc-app .badge.bg-primary, .umsc-app .badge.bg-label-primary, .umsc-app .badge.bg-light-primary { background: var(--ok-bg) !important; color: var(--ok) !important; }
+.umsc-app .badge.bg-secondary, .umsc-app .badge.bg-label-secondary, .umsc-app .badge-status-draft,
+.umsc-app .badge.bg-light, .umsc-app .badge.bg-soft-dark { background: var(--idle-bg) !important; color: var(--idle) !important; }
+
+.umsc-app .alert { border: 1px solid var(--line); border-inline-start-width: 3px; background: var(--surface); }
+.umsc-app .alert-success { border-inline-start-color: var(--ok); color: var(--ok); }
+.umsc-app .alert-danger { border-inline-start-color: var(--bad); color: var(--bad); }
+.umsc-app .alert-warning { border-inline-start-color: #c9a500; color: var(--warn); }
+.umsc-app .alert-info { border-inline-start-color: var(--info); color: var(--info); }
+
+.umsc-app .form-label { font: 600 .82rem var(--sans); color: var(--ink); }
+.umsc-app .form-control, .umsc-app .form-select { border-color: #cfd6d2; color: var(--ink); }
+.umsc-app .form-control::placeholder { color: #93a097; }
+.umsc-app .input-group-text { background: #f7f9f8; border-color: #cfd6d2; color: var(--muted); }
+.umsc-app .modal-header { border-bottom: 1px solid var(--line-soft); }
+.umsc-app .modal-footer { border-top: 1px solid var(--line-soft); }
+.umsc-app .modal-backdrop.show { opacity: .45; background: #072617; }
+
+/* ---------- 3. Tables and DataTables ---------- */
+.umsc-app .table { --bs-table-bg: transparent; color: var(--text); margin-bottom: 0; }
+.umsc-app .table > :not(caption) > * > * { padding: .85rem 1rem; border-bottom-color: var(--line-soft); }
+.umsc-app .table thead th { background: #f8faf9; color: var(--muted); font: 600 .7rem var(--sans); letter-spacing: .07em; text-transform: uppercase; border-top: 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.umsc-app .table tbody tr:last-child > * { border-bottom: 0; }
+.umsc-app .table-hover > tbody > tr:hover > * { background: #f8faf9; --bs-table-accent-bg: transparent; }
+.umsc-app .table-responsive { border-radius: var(--radius); }
+
+.umsc-app .dataTables_wrapper { padding: 0; font-size: .88rem; color: var(--muted); }
+.umsc-app .dataTables_wrapper .row:first-child,
+.umsc-app .dataTables_wrapper .row:last-child { padding: .9rem 1.2rem; margin: 0; align-items: center; }
+.umsc-app .dataTables_filter input, .umsc-app .dataTables_length select { border: 1.5px solid #cfd6d2; border-radius: 6px; padding: .4rem .7rem; color: var(--ink); background: #fff; }
+.umsc-app .dataTables_filter input:focus, .umsc-app .dataTables_length select:focus { outline: none; border-color: var(--green-700); box-shadow: 0 0 0 3px rgba(23, 138, 74, .15); }
+.umsc-app .dataTables_paginate .paginate_button { border-radius: 6px !important; border: 1px solid transparent !important; color: var(--text) !important; padding: .3rem .7rem !important; }
+.umsc-app .dataTables_paginate .paginate_button:hover { background: var(--paper-2) !important; border-color: var(--line) !important; color: var(--ink) !important; }
+.umsc-app .dataTables_paginate .paginate_button.current,
+.umsc-app .dataTables_paginate .paginate_button.current:hover { background: var(--green-700) !important; border-color: var(--green-700) !important; color: #fff !important; }
+.umsc-app .dataTables_paginate .paginate_button.disabled { opacity: .4; }
+.umsc-app table.dataTable thead .sorting::before, .umsc-app table.dataTable thead .sorting::after { opacity: .25; }
+
+/* ---------- 4a. Page header ---------- */
+.ui-page-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.ui-crumbs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 8px; padding: 0; list-style: none; font: 500 .78rem var(--sans); color: var(--muted); }
+.ui-crumbs a { color: var(--muted); }
+.ui-crumbs a:hover { color: var(--green-700); }
+.ui-crumbs li + li::before { content: "/"; margin-inline-end: 6px; color: #b4beb8; }
+.ui-page-title { font: 600 clamp(1.5rem, 2.2vw, 1.95rem)/1.2 var(--serif); color: var(--ink); margin: 0; letter-spacing: -.01em; }
+.ui-page-sub { margin: 6px 0 0; color: var(--muted); font-size: .92rem; max-width: 70ch; }
+.ui-page-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.ui-btn { display: inline-flex; align-items: center; gap: 8px; padding: .6rem 1rem; font: 600 .86rem/1 var(--sans); border-radius: 6px; border: 1.5px solid #cfd6d2; background: #fff; color: var(--ink) !important; cursor: pointer; transition: border-color .15s, background .15s; text-decoration: none; }
+.ui-btn:hover { border-color: var(--green-700); background: #f8faf9; }
+.ui-btn--primary { background: var(--green-700); border-color: var(--green-700); color: #fff !important; }
+.ui-btn--primary:hover { background: var(--green-800); border-color: var(--green-800); }
+.ui-btn i { font-size: 1.1rem; }
+
+/* ---------- 4b. Stat strip (one joined card, not four loose tiles) ---------- */
+.ui-stats { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-1); margin-bottom: 1.5rem; overflow: hidden; }
+.ui-stat { display: flex; flex-direction: column; gap: 6px; padding: 1.25rem 1.4rem; color: inherit; position: relative; min-width: 0; }
+a.ui-stat:hover { background: #f8faf9; }
+.ui-stat + .ui-stat { border-inline-start: 1px solid var(--line); }
+.ui-stat__label { display: flex; align-items: center; gap: 8px; font: 600 .72rem/1.2 var(--sans); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.ui-stat__label i { font-size: 1.05rem; color: var(--green-700); }
+.ui-stat__value { font: 600 2rem/1.1 var(--serif); color: var(--ink); font-variant-numeric: tabular-nums lining-nums; letter-spacing: -.02em; }
+.ui-stat__note { font-size: .82rem; color: var(--muted); }
+.ui-stat--warn .ui-stat__value::after, .ui-stat--bad .ui-stat__value::after { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-inline-start: 8px; vertical-align: middle; transform: translateY(-3px); }
+.ui-stat--warn .ui-stat__value::after { background: #c9a500; }
+.ui-stat--bad .ui-stat__value::after { background: var(--bad); }
+
+/* ---------- 4c. Status badge ---------- */
+.ui-status { display: inline-flex; align-items: center; gap: 7px; padding: .38em .8em; border-radius: 99px; font: 600 .74rem/1 var(--sans); white-space: nowrap; }
+.ui-status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.ui-status--ok { background: var(--ok-bg); color: var(--ok); }
+.ui-status--warn { background: var(--warn-bg); color: var(--warn); }
+.ui-status--bad { background: var(--bad-bg); color: var(--bad); }
+.ui-status--info { background: var(--info-bg); color: var(--info); }
+.ui-status--idle { background: var(--idle-bg); color: var(--idle); }
+
+/* ---------- 4d. Empty state ---------- */
+.ui-empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 3rem 1.5rem; }
+.ui-empty__icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--paper-2); color: var(--green-700); font-size: 1.6rem; margin-bottom: 6px; }
+.ui-empty h3 { font: 600 1.1rem var(--serif); margin: 0; color: var(--ink); }
+.ui-empty p { margin: 0 0 10px; max-width: 46ch; color: var(--muted); font-size: .92rem; }
+
+/* ---------- 4e. Toolbar (search + filters above a table) ---------- */
+.ui-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: .9rem 1.2rem; border-bottom: 1px solid var(--line-soft); }
+.ui-toolbar .ui-grow { flex: 1 1 240px; }
+.ui-field { height: 40px; width: 100%; padding: 0 .85rem; border: 1.5px solid #cfd6d2; border-radius: 6px; background: #fff; font: 400 .9rem var(--sans); color: var(--ink); }
+.ui-field:focus { outline: none; border-color: var(--green-700); box-shadow: 0 0 0 3px rgba(23, 138, 74, .15); }
+
+/* ---------- 4f. Skeleton loaders ---------- */
+.ui-skel { position: relative; overflow: hidden; background: var(--paper-2); border-radius: 4px; min-height: 12px; }
+.ui-skel::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .65), transparent); animation: ui-shimmer 1.3s infinite; }
+[dir="rtl"] .ui-skel::after { animation-direction: reverse; }
+.ui-skel--line { height: 12px; margin: 8px 0; }
+.ui-skel--title { height: 22px; width: 40%; margin-bottom: 14px; }
+.ui-skel--block { height: 120px; }
+@keyframes ui-shimmer { to { transform: translateX(100%); } }
+.ui-loading { pointer-events: none; opacity: .7; }
+
+/* ---------- 4g. Toasts (SweetAlert2 toast skin) ---------- */
+.umsc-app .swal2-popup.swal2-toast { padding: .75rem 1rem; border: 1px solid var(--line); border-inline-start: 3px solid var(--green-700); border-radius: 6px; box-shadow: var(--shadow-2); }
+.umsc-app .swal2-popup.swal2-toast.ui-toast--error { border-inline-start-color: var(--bad); }
+.umsc-app .swal2-popup.swal2-toast.ui-toast--warning { border-inline-start-color: #c9a500; }
+.umsc-app .swal2-popup.swal2-toast.ui-toast--info { border-inline-start-color: var(--info); }
+.umsc-app .swal2-toast .swal2-title { font: 500 .9rem var(--sans); color: var(--ink); margin: 0 .6rem; }
+.umsc-app .swal2-toast .swal2-icon { width: 1.6em; height: 1.6em; margin: 0; min-width: 1.6em; }
+.umsc-app .swal2-toast .swal2-icon .swal2-icon-content { font-size: 1.1rem; }
+
+@media (max-width: 991.98px) {
+    .ui-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ui-stat:nth-child(odd) { border-inline-start: 0; }
+    .ui-stat:nth-child(n + 3) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 479.98px) {
+    .ui-stat { padding: 1rem; }
+    .ui-stat__value { font-size: 1.6rem; }
+    .ui-page-actions { width: 100%; }
+    .ui-page-actions .ui-btn { flex: 1 1 auto; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ui-skel::after { animation: none; }
+}
+@media print {
+    .ui-page-actions, .ui-toolbar { display: none !important; }
+    .ui-stats, .umsc-app .card { box-shadow: none; }
+}
+
+/* ===== Patch 7: module dashboards ===== */
+body.umsc-app .ui-breakdown{list-style:none;margin:0;padding:6px 0}
+body.umsc-app .ui-breakdown__row{display:flex;align-items:center;gap:12px;padding:11px 20px;color:inherit;text-decoration:none;border-bottom:1px solid var(--line)}
+body.umsc-app .ui-breakdown li:last-child .ui-breakdown__row{border-bottom:0}
+body.umsc-app a.ui-breakdown__row:hover{background:var(--paper)}
+body.umsc-app .ui-breakdown__label{flex:1;font-size:.9rem}
+body.umsc-app .ui-breakdown__value{font-variant-numeric:tabular-nums;font-weight:600}
+body.umsc-app .ui-dot{width:8px;height:8px;border-radius:50%;background:var(--idle);flex:none}
+body.umsc-app .ui-dot--ok{background:var(--ok)}body.umsc-app .ui-dot--warn{background:#c58a00}
+body.umsc-app .ui-dot--bad{background:var(--bad)}body.umsc-app .ui-dot--info{background:var(--info)}
+body.umsc-app .ui-link{font-weight:600;font-size:.88rem;color:var(--ok);text-decoration:none}
+body.umsc-app .ui-link:hover{text-decoration:underline}
+body.umsc-app .ui-report__icon{width:42px;height:42px;border-radius:var(--radius);background:var(--ok-bg);color:var(--ok);display:grid;place-items:center;font-size:1.4rem}
+body.umsc-app .ui-search{position:relative;width:100%;max-width:360px}
+body.umsc-app .ui-search>i{position:absolute;inset-inline-start:12px;top:50%;transform:translateY(-50%);color:#7b8a82;pointer-events:none}
+body.umsc-app .ui-search .form-control{padding-inline-start:36px}
+body.umsc-app .ui-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+body.umsc-app .ui-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+@media(max-width:991px){body.umsc-app .ui-grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:767px){body.umsc-app .ui-grid-2,body.umsc-app .ui-grid-3{grid-template-columns:1fr}}
+body.umsc-app .ui-stack{display:grid;gap:20px}
+body.umsc-app .ui-id{font-variant-numeric:tabular-nums;font-weight:600;color:var(--ok)}
+body.umsc-app .ui-sub{display:block;font-size:.78rem;color:#6b7a72}
+body.umsc-app .ui-bar{height:6px;border-radius:99px;background:var(--paper-2);overflow:hidden}
+body.umsc-app .ui-bar>span{display:block;height:100%;background:var(--ok);border-radius:99px}
+body.umsc-app .ui-meter{display:grid;gap:14px;padding:18px 20px}
+body.umsc-app .ui-meter__row{display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:6px;text-transform:capitalize}
+/* case cards (guardianship) */
+body.umsc-app .ui-case{display:flex;flex-direction:column}
+body.umsc-app .ui-case__top{display:flex;justify-content:space-between;align-items:center;padding:14px 20px 0}
+body.umsc-app .ui-case__who{display:flex;gap:14px;align-items:center;padding:14px 20px}
+body.umsc-app .ui-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;background:var(--paper-2);display:grid;place-items:center;color:var(--idle);font-size:1.3rem;flex:none}
+body.umsc-app .ui-case__who h3{font-size:1rem;margin:0}
+body.umsc-app .ui-case dl{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin:0;padding:12px 20px;border-top:1px solid var(--line)}
+body.umsc-app .ui-case dt{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:#6b7a72;font-weight:500}
+body.umsc-app .ui-case dd{margin:0;font-size:.9rem}
+body.umsc-app .ui-case__foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-top:1px solid var(--line);font-size:.82rem;color:#6b7a72}
+/* legacy action cells inside the new tables */
+body.umsc-app .ui-table td .btn-group{box-shadow:none!important;border-color:var(--line)!important}
+[dir=rtl] body.umsc-app .rtl-flip{transform:scaleX(-1)}
+
+/* ==========================================================================
+   Form sheet (Patch 8): fieldsets, grid and fields for staff-shell forms
+   ========================================================================== */
+.ui-sheet { background: var(--card, #fff); border: 1px solid var(--line, #e1e6e3); border-radius: 8px; box-shadow: 0 1px 2px rgba(15, 36, 27, .04); }
+.ui-fieldset { margin: 0; padding: 28px 32px; border: 0; border-bottom: 1px solid var(--line, #e1e6e3); min-width: 0; }
+.ui-fieldset legend { float: none; width: auto; display: flex; align-items: center; gap: 14px; margin: 0 0 20px; padding: 0; }
+.ui-fieldset legend strong { display: block; font: 600 1.05rem/1.25 var(--serif, Georgia, serif); color: var(--ink, #14241b); }
+.ui-fieldset legend small { display: block; margin-top: 1px; font-size: .8rem; color: var(--muted, #66756c); }
+.ui-fieldset__n { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--g7, #136a3b); color: var(--g7, #136a3b); font: 600 .78rem var(--sans, sans-serif); }
+.ui-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 24px; }
+.ui-field--full { grid-column: 1 / -1; }
+.ui-field label { display: block; margin: 0 0 6px; font-weight: 500; font-size: .85rem; color: var(--ink, #14241b); }
+.ui-req { color: #a8322a; }
+.ui-field .form-control, .ui-field .form-select { min-height: 42px; border: 1.5px solid #cfd6d2; border-radius: 6px; font-size: .92rem; box-shadow: none; }
+.ui-field textarea.form-control { min-height: 96px; }
+.ui-field .form-control:focus, .ui-field .form-select:focus { border-color: var(--g7, #136a3b); box-shadow: 0 0 0 3px rgba(23, 138, 74, .16); }
+.ui-field .is-invalid { border-color: #a8322a; background-image: none; }
+.ui-hint { margin: 6px 0 0; font-size: .8rem; color: var(--muted, #66756c); }
+.ui-err { margin: 6px 0 0; font-size: .8rem; font-weight: 500; color: #a8322a; }
+.ui-sheet__foot { display: flex; justify-content: flex-end; gap: 10px; padding: 18px 32px; background: #fafbfa; border-radius: 0 0 8px 8px; }
+@media (max-width: 720px) {
+    .ui-fieldset { padding: 22px 18px; }
+    .ui-grid { grid-template-columns: minmax(0, 1fr); }
+    .ui-sheet__foot { padding: 14px 18px; flex-direction: column-reverse; }
+    .ui-sheet__foot .btn { width: 100%; }
+}

@@ -1945,15 +1945,15 @@
         },
         6: {
             title: "Witnesses & Authority",
-            subtitle: "Step 6 of 8:Official Verification Details"
+            subtitle: "Step 6 of 8: Official Verification Details"
         },
         7: {
             title: "Children & Iddah",
-            subtitle: "Step 7 of 8:Family and Custody Arrangements"
+            subtitle: "Step 7 of 8: Family and Custody Arrangements"
         },
         8: {
             title: "Passport Photographs",
-            subtitle: "Step 8 of 8:Husband and Wife Identification Photos"
+            subtitle: "Step 8 of 8: Husband and Wife Identification Photos"
         }
     };
 

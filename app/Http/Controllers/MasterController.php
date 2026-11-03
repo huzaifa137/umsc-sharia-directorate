@@ -26,7 +26,28 @@ class MasterController extends Controller
 {
     public function landingHomePage()
     {
-        return view('landing.index');
+        // Public homepage figures. Cached for 10 minutes and wrapped in try/catch
+        // so the homepage never breaks if a table is missing or the DB is down.
+        $data = Cache::remember('landing.public.data', now()->addMinutes(10), function () {
+            try {
+                return [
+                    'stats' => [
+                        'nikah'   => NikkahApplication::count(),
+                        'mosques' => \App\Models\Mosque::count(),
+                        'fatwas'  => \App\Models\Fatwa::published()->count(),
+                    ],
+                    'fatwas' => \App\Models\Fatwa::published()
+                        ->latest('published_at')
+                        ->take(3)
+                        ->get(['id', 'title', 'slug', 'category', 'question', 'ruling']),
+                ];
+            } catch (\Throwable $e) {
+                report($e);
+                return ['stats' => [], 'fatwas' => collect()];
+            }
+        });
+
+        return view('landing.index', $data);
     }
 
     public function nikahRegistration()
@@ -1096,7 +1117,7 @@ class MasterController extends Controller
             9 => 'Your account is suspended.',
         ];
 
-        // Build per-role stat cards from whichever roles the logged-in
+        // Build per-role stat rows from whichever roles the logged-in
         // officer is actually allowed to see (Director sees every role,
         // a District Khadhi sees County Sheikh + Imaam, etc.)
         $visibleUsersBase = AccessControl::visibleUsersQuery();
@@ -1113,22 +1134,24 @@ class MasterController extends Controller
                     'title' => $role->name,
                     'icon' => $role->icon,
                     'color' => $role->color,
-                    'bg' => '#F0FDF0',
                     'slug' => $role->slug,
+                    'scope' => $role->visibilityLabel(),
+                    'level' => $role->level,
                     'stats' => [
                         'users' => (clone $base)->count(),
                         'active' => (clone $base)->where('account_status', 10)->count(),
-                        'pending' => (clone $base)->whereIn('account_status', [1, 0, 8, 9])->count(),
-                        'suspended' => (clone $base)->where('account_status', 9)->count(),
+                        'pending' => (clone $base)->whereNotIn('account_status', [10, 9, 8, 0])->count(),
+                        'suspended' => (clone $base)->whereIn('account_status', [9, 8, 0])->count(),
                     ],
                 ];
             })
             ->values()
             ->all();
 
-        $users = (clone $visibleUsersBase)->orderBy('id', 'desc')->paginate(7);
+        $totalUsers = (clone $visibleUsersBase)->count();
+        $recentUsers = (clone $visibleUsersBase)->orderBy('id', 'desc')->limit(8)->get();
 
-        return view('admin.user-dashboard', compact('roleStats', 'statusMessages', 'users'));
+        return view('admin.user-dashboard', compact('roleStats', 'statusMessages', 'recentUsers', 'totalUsers'));
     }
 
 
@@ -1142,6 +1165,19 @@ class MasterController extends Controller
 
     public function manageUsers(Request $request)
     {
+        $filters = [
+            'q' => trim((string) $request->query('q', '')),
+            'status' => (string) $request->query('status', ''),
+        ];
+
+        // Per-role counts are taken before any filter is applied, so the
+        // role tabs always show the true size of each group.
+        $userCounts = AccessControl::visibleUsersQuery()
+            ->toBase()
+            ->selectRaw('role_id, COUNT(*) as aggregate')
+            ->groupBy('role_id')
+            ->pluck('aggregate', 'role_id');
+
         $query = AccessControl::visibleUsersQuery();
 
         $activeRole = null;
@@ -1152,17 +1188,33 @@ class MasterController extends Controller
             }
         }
 
-        $users = $query->orderBy('id', 'desc')->paginate(7)->withQueryString();
+        $statusMap = ['active' => [10], 'suspended' => [9], 'locked' => [8], 'banned' => [0]];
+        if (isset($statusMap[$filters['status']])) {
+            $query->whereIn('account_status', $statusMap[$filters['status']]);
+        } elseif ($filters['status'] === 'pending') {
+            $query->whereNotIn('account_status', [10, 9, 8, 0]);
+        }
+
+        if ($filters['q'] !== '') {
+            $like = '%' . str_replace(['%', '_'], ['\\%', '\\_'], $filters['q']) . '%';
+            $query->where(function ($q) use ($like) {
+                foreach (['username', 'firstname', 'lastname', 'email', 'phonenumber', 'mosque_name', 'county', 'district', 'region'] as $col) {
+                    $q->orWhere($col, 'like', $like);
+                }
+            });
+        }
+
+        $users = $query->orderBy('id', 'desc')->paginate(15)->withQueryString();
         $assignableRoles = AccessControl::assignableRoles();
 
-        // Every role currently visible to this officer — powers the role
-        // filter chips at the top of the page.
+        // Every role currently visible to this officer, which powers the
+        // role tabs at the top of the page.
         $visibleRoles = Role::orderByDesc('level')->get()->filter(function ($role) {
             $me = AccessControl::user();
             return AccessControl::hasFullAccess() || $role->level < ($me->role?->level ?? 0);
         })->values();
 
-        return view('admin.manage-users', compact('users', 'assignableRoles', 'activeRole', 'visibleRoles'));
+        return view('admin.manage-users', compact('users', 'assignableRoles', 'activeRole', 'visibleRoles', 'userCounts', 'filters'));
     }
 
 

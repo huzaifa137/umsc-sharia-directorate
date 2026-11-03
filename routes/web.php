@@ -9,6 +9,7 @@ use App\Http\Controllers\FatwaAdminController;
 use App\Http\Controllers\BulkImportController;
 
 use App\Http\Controllers\ConsultancyController;
+use App\Http\Controllers\RecordController;
 
 
 use Illuminate\Support\Facades\Hash;
@@ -263,8 +264,16 @@ Route::controller(MasterController::class)->group(function () {
         // Reports Routes
 
         Route::prefix('reports')->group(function () {
+            Route::get('/', [\App\Http\Controllers\ReportController::class, 'hub'])->name('reports.hub');
             Route::get('/{module}', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
             Route::get('/{module}/export/pdf', [\App\Http\Controllers\ReportController::class, 'exportPdf'])->name('reports.export.pdf');
+        });
+
+        // Activity Logs (audit trail)
+
+        Route::prefix('activity-logs')->middleware('permission:activity_logs.view')->group(function () {
+            Route::get('/', [\App\Http\Controllers\ActivityLogController::class, 'index'])->name('activity-logs.index');
+            Route::get('/export', [\App\Http\Controllers\ActivityLogController::class, 'exportCsv'])->name('activity-logs.export');
         });
 
         // Cascading Location Routes (Region/District/County/Mosque)
@@ -297,6 +306,15 @@ Route::controller(MasterController::class)->group(function () {
         Route::get('/convert/view/{id}', 'viewConvertRecords')->middleware('permission:convert.view');
 
     });
+});
+
+// Record detail pages (Nikah, Divorce, Inheritance, Guardianship, Convert).
+// Access and jurisdiction are checked inside RecordController.
+Route::middleware(['AdminAuth'])->group(function () {
+    Route::get('/records/{module}/{id}', [RecordController::class, 'show'])
+        ->where('module', 'nikah|divorce|inheritance|guardianship|convert')
+        ->where('id', '[0-9]+')
+        ->name('records.show');
 });
 
 Route::get('/test1', function () {

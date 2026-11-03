@@ -1,0 +1,80 @@
+/* ==========================================================================
+   UMSC Directorate of Sharia: sign-in screens
+   Builds on umsc-public.css (tokens, buttons, fonts).
+   ========================================================================== */
+
+body.umsc-auth { min-height: 100vh; }
+.a-shell { display: grid; grid-template-columns: minmax(360px, 44%) 1fr; min-height: 100vh; }
+
+/* ---------- Left panel ---------- */
+.a-aside { position: relative; background: var(--green-900); color: #b8cdc0; display: flex; flex-direction: column; justify-content: space-between; padding: 44px 52px; overflow: hidden; }
+.a-aside::before { content: ""; position: absolute; inset: 0; opacity: .55; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23e6c93a' stroke-opacity='.2' stroke-width='1'%3E%3Crect x='16' y='16' width='40' height='40'/%3E%3Crect x='16' y='16' width='40' height='40' transform='rotate(45 36 36)'/%3E%3C/g%3E%3C/svg%3E");
+    -webkit-mask-image: linear-gradient(to bottom, transparent 10%, #000 90%); mask-image: linear-gradient(to bottom, transparent 10%, #000 90%); }
+.a-aside > * { position: relative; }
+.a-brand { display: flex; align-items: center; gap: 14px; color: #fff; }
+.a-brand-badge { width: 64px; height: 64px; border-radius: 50%; background: #fff; display: grid; place-items: center; flex: none; box-shadow: 0 0 0 5px rgba(255,255,255,.08); }
+.a-brand-badge img { width: 40px; height: auto; }
+.a-brand strong { display: block; font: 600 1.2rem/1.15 var(--serif); }
+.a-brand span { font-size: .82rem; color: #9db8a8; }
+.a-aside-body h2 { color: #fff; font-size: clamp(1.7rem, 2.6vw, 2.35rem); max-width: 14ch; margin-bottom: 16px; }
+.a-aside-body p { max-width: 36ch; margin: 0; font-size: 1.02rem; }
+.a-aside-foot { font-size: .84rem; color: #8aa898; border-top: 1px solid rgba(255,255,255,.12); padding-top: 18px; }
+.a-motto { font: 400 1.3rem var(--arabic); color: var(--gold-soft); display: block; margin-bottom: 8px; }
+
+/* ---------- Right panel ---------- */
+.a-main { display: flex; flex-direction: column; background: #fff; min-width: 0; }
+.a-top { display: flex; justify-content: space-between; align-items: center; padding: 26px 44px; font-size: .9rem; }
+.a-top a { color: var(--muted); }
+.a-top a:hover { color: var(--green-700); }
+.a-lang { display: flex; gap: 2px; }
+.a-lang a { padding: 3px 9px; border-radius: 3px; font-size: .82rem; }
+.a-lang a.is-active { background: var(--paper-2); color: var(--ink); }
+.a-center { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px 44px 60px; }
+.a-form { width: 100%; max-width: 410px; }
+.a-form h1 { font-size: 2.1rem; margin-bottom: 8px; }
+.a-form > .a-sub { color: var(--muted); margin-bottom: 30px; }
+
+.a-field { margin-bottom: 20px; }
+.a-field label { display: flex; justify-content: space-between; align-items: baseline; font-size: .9rem; font-weight: 600; color: var(--ink); margin-bottom: 7px; }
+.a-field label a { font-weight: 500; font-size: .86rem; color: var(--green-700); }
+.a-field label a:hover { text-decoration: underline; }
+.a-input { width: 100%; height: 50px; padding: 0 14px; border: 1.5px solid #c9c4b3; border-radius: var(--r); font: 400 1rem var(--sans); color: var(--ink); background: #fff; transition: border-color .15s, box-shadow .15s; }
+.a-input:focus { outline: none; border-color: var(--green-700); box-shadow: 0 0 0 3px rgba(23,138,74,.18); }
+.a-input.is-invalid { border-color: #b3261e; box-shadow: 0 0 0 3px rgba(179,38,30,.12); }
+.a-pass { position: relative; }
+.a-pass .a-input { padding-inline-end: 72px; }
+.a-pass button { position: absolute; inset-block: 6px; inset-inline-end: 6px; padding: 0 12px; border: 0; background: transparent; font: 600 .82rem var(--sans); color: var(--green-700); cursor: pointer; border-radius: 3px; }
+.a-pass button:hover { background: var(--paper); }
+.a-error { display: block; min-height: 0; margin-top: 6px; font-size: .86rem; color: #b3261e; }
+.a-error:empty { display: none; }
+.a-hint { display: none; margin-top: 6px; font-size: .84rem; color: #8a6d00; }
+.a-hint.is-on { display: block; }
+
+.a-alert { padding: 12px 14px; border-radius: var(--r); font-size: .93rem; margin-bottom: 22px; border: 1px solid; }
+.a-alert--error { background: #fdf0ef; border-color: #ecc3c0; color: #8c1d18; }
+.a-alert--ok { background: #eaf6ee; border-color: #bcdcc7; color: #115c2f; }
+
+.a-submit { width: 100%; justify-content: center; height: 52px; padding-top: 0; padding-bottom: 0; font-size: 1rem; }
+.a-submit[disabled] { opacity: .65; cursor: progress; }
+.a-links { margin-top: 24px; font-size: .92rem; color: var(--muted); }
+.a-links a { color: var(--green-700); font-weight: 600; }
+.a-links a:hover { text-decoration: underline; }
+
+.a-rules { list-style: none; margin: -6px 0 22px; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; font-size: .86rem; color: var(--muted); }
+.a-rules li { display: flex; align-items: center; gap: 8px; }
+.a-rules li::before { content: ""; width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid #c9c4b3; flex: none; }
+.a-rules li.is-ok { color: var(--green-800); }
+.a-rules li.is-ok::before { background: var(--green-600) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3.5 7.2l2.3 2.3 4.7-4.8' fill='none' stroke='%23fff' stroke-width='1.8'/%3E%3C/svg%3E") center/100% no-repeat; border-color: var(--green-600); }
+
+@media (max-width: 900px) {
+    .a-shell { grid-template-columns: 1fr; }
+    .a-aside { padding: 22px 24px; flex-direction: row; align-items: center; }
+    .a-aside-body, .a-aside-foot { display: none; }
+    .a-brand-badge { width: 48px; height: 48px; }
+    .a-brand-badge img { width: 30px; }
+    .a-top { padding: 18px 24px; }
+    .a-center { padding: 16px 24px 48px; align-items: flex-start; }
+    .a-form h1 { font-size: 1.8rem; }
+}
+@media (max-width: 420px) { .a-rules { grid-template-columns: 1fr; } }

@@ -1,0 +1,512 @@
+/* ==========================================================================
+   UMSC Directorate of Sharia: application forms (Patch 8)
+
+   Used by the six application forms. Loaded after the form markup, so it wins
+   over the page-level <style> blocks that still sit inside each form.
+   The forms keep their own step logic and submit handlers; this sheet only
+   changes how they look. Hooks added by umsc-forms.js:
+     .uf-wrap .uf-rail .uf-pane .uf-pane__head .uf-panel .uf-actions
+     .uf-steps .uf-progress .uf-note .uf-field, [data-uf] on .step-indicator
+
+   Same tokens as umsc-app.css and umsc-ui.css. Logical properties throughout,
+   so Arabic (RTL) mirrors without a second stylesheet.
+   ========================================================================== */
+
+body.umsc-form {
+    --g9: #0a3320;
+    --g8: #0d4a2c;
+    --g7: #136a3b;
+    --g6: #178a4a;
+    --gold: #c9a500;
+    --gold-soft: #e6c93a;
+    --ink: #14241b;
+    --text: #2c3b33;
+    --muted: #66756c;
+    --line: #e1e6e3;
+    --line-2: #cfd6d2;
+    --canvas: #f3f5f4;
+    --ok-bg: #e7f3ec;
+    --bad: #a8322a;
+    --bad-bg: #fbe9e7;
+    --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --arabic: 'Amiri', 'Noto Naskh Arabic', serif;
+    --bar-h: 62px;
+
+    margin: 0;
+    background: var(--canvas);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+[dir="rtl"] body.umsc-form { font-family: var(--arabic), var(--sans); }
+body.umsc-form :focus-visible { outline: 3px solid var(--gold-soft); outline-offset: 2px; }
+
+.uf-skip { position: absolute; inset-inline-start: 12px; top: -64px; z-index: 200; padding: 9px 14px; background: #fff; color: var(--ink); border-radius: 6px; font: 600 .85rem var(--sans); text-decoration: none; }
+.uf-skip:focus { top: 10px; }
+
+/* ---------- Top bar ---------- */
+.uf-page { min-height: 100vh; }
+.uf-bar {
+    position: sticky; top: 0; z-index: 60;
+    display: flex; align-items: center; gap: 20px;
+    min-height: var(--bar-h); padding: 0 clamp(16px, 3vw, 32px);
+    background: var(--g9); color: #fff;
+    box-shadow: inset 0 -2px 0 rgba(230, 201, 58, .55);
+}
+.uf-bar__brand { display: flex; align-items: center; gap: 12px; color: #fff; text-decoration: none; min-width: 0; }
+.uf-bar__crest { width: 36px; height: 36px; padding: 3px; border-radius: 8px; background: #fff; object-fit: contain; flex: none; }
+.uf-bar__name { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+.uf-bar__name strong { font: 600 1rem var(--serif); color: #fff; white-space: nowrap; }
+.uf-bar__name span { font: 400 .74rem var(--sans); color: #9fc0ad; margin-top: 2px; }
+[dir="rtl"] .uf-bar__name strong { font-family: var(--arabic); font-size: 1.1rem; }
+
+.uf-bar__docket { margin-inline: auto; display: flex; align-items: baseline; gap: 10px; padding: 6px 14px; border: 1px solid rgba(255, 255, 255, .2); border-radius: 6px; white-space: nowrap; }
+.uf-bar__docket span { font: 400 .74rem var(--sans); color: #9fc0ad; }
+.uf-bar__docket b { font: 600 .92rem var(--sans); letter-spacing: .02em; color: #fff; font-variant-numeric: tabular-nums; }
+
+.uf-bar__tools { display: flex; align-items: center; gap: 16px; flex: none; }
+body.umsc-form .language-selector { display: inline-flex; gap: 0; padding: 2px; border: 1px solid rgba(255, 255, 255, .25); border-radius: 7px; direction: ltr; flex-direction: row !important; }
+body.umsc-form .lang-btn {
+    all: unset; box-sizing: border-box; cursor: pointer;
+    padding: 5px 11px; border-radius: 5px;
+    font: 500 .8rem/1.2 var(--sans); color: #cfe3d7; white-space: nowrap;
+}
+body.umsc-form .lang-btn[lang="ar"] { font-family: var(--arabic), var(--sans); font-size: .95rem; line-height: 1.1; }
+body.umsc-form .lang-btn:hover { color: #fff; background: rgba(255, 255, 255, .1); }
+body.umsc-form .lang-btn.active { background: #fff; color: var(--g9); font-weight: 600; }
+body.umsc-form .lang-btn:focus-visible { outline: 3px solid var(--gold-soft); outline-offset: 1px; }
+.uf-exit { display: inline-flex; align-items: center; gap: 6px; color: #cfe3d7; font: 500 .85rem var(--sans); text-decoration: none; white-space: nowrap; }
+.uf-exit:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.uf-exit i { font-size: 1.1rem; }
+[dir="rtl"] .uf-exit i { transform: scaleX(-1); }
+
+/* ---------- Two-pane workspace (Divorce, Guardianship, Inheritance, Convert) ---------- */
+body.umsc-form .uf-wrap {
+    display: grid !important;
+    grid-template-columns: minmax(290px, 350px) minmax(0, 1fr);
+    gap: clamp(20px, 3vw, 44px);
+    max-width: 1340px; margin: 0 auto;
+    padding: 0 clamp(16px, 3vw, 32px);
+    min-height: calc(100vh - var(--bar-h)) !important;
+    background: transparent !important;
+    font-family: var(--sans) !important;
+}
+
+/* Left rail */
+body.umsc-form .uf-rail {
+    flex: none !important; position: sticky; top: var(--bar-h); align-self: start;
+    max-height: calc(100vh - var(--bar-h));
+    padding: 34px 0 32px !important; overflow-y: auto;
+    background: transparent !important; border: 0 !important;
+}
+body.umsc-form .uf-rail__head { position: static !important; padding: 0 !important; background: transparent !important; }
+body.umsc-form .uf-rail h1 {
+    margin: 0 0 6px !important; font: 600 1.5rem/1.2 var(--serif) !important;
+    letter-spacing: -.01em !important; color: var(--ink) !important;
+}
+[dir="rtl"] body.umsc-form .uf-rail h1 { font-family: var(--arabic) !important; letter-spacing: 0 !important; font-size: 1.7rem !important; }
+body.umsc-form .uf-rail__head > p {
+    margin: 0 0 24px !important; font: 400 .88rem/1.5 var(--sans) !important; color: var(--muted) !important;
+}
+
+/* Progress: a thin line and one sentence, not a card */
+body.umsc-form .uf-progress {
+    margin: 0 0 28px !important; padding: 0 !important; background: transparent !important;
+    border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+}
+body.umsc-form .uf-progress > div:first-child { margin: 0 0 10px !important; align-items: baseline !important; }
+body.umsc-form .uf-progress span {
+    font: 500 .82rem var(--sans) !important; color: var(--muted) !important;
+    text-transform: none !important; letter-spacing: 0 !important;
+}
+body.umsc-form .uf-progress #progressPercentage {
+    font: 600 .95rem var(--sans) !important; color: var(--ink) !important; font-variant-numeric: tabular-nums;
+}
+body.umsc-form .uf-progress div:has(> #progressBar) {
+    height: 4px !important; margin: 0 !important; border-radius: 99px !important; background: var(--line) !important; overflow: hidden;
+}
+body.umsc-form .uf-progress #progressBar { background: var(--g7) !important; border-radius: 99px !important; }
+body.umsc-form .uf-progress #completedSteps {
+    margin: 9px 0 0 !important; text-align: start !important;
+    font: 400 .8rem var(--sans) !important; color: var(--muted) !important;
+}
+
+/* Step list: a vertical register with a connecting rule */
+body.umsc-form .uf-steps { position: relative; display: flex !important; flex-direction: column; gap: 0 !important; }
+body.umsc-form .uf-steps::before {
+    content: ""; position: absolute; inset-inline-start: 13px; top: 26px; bottom: 26px; width: 2px;
+    background: var(--line); z-index: 0;
+}
+body.umsc-form .uf-steps .step-indicator {
+    position: relative; z-index: 1;
+    display: flex !important; align-items: center; gap: 14px !important;
+    padding: 10px 0 !important; margin: 0;
+    background: transparent !important; border: 0 !important; border-radius: 0 !important;
+    box-shadow: none !important; transform: none !important; opacity: 1 !important;
+    transition: none !important; min-height: 0;
+}
+body.umsc-form .uf-steps .step-indicator > .step-number,
+body.umsc-form .uf-steps .step-indicator > .step-icon,
+body.umsc-form .uf-steps .step-indicator > .step-status { display: none !important; }
+body.umsc-form .uf-steps .step-indicator::before {
+    content: attr(data-step);
+    flex: none; width: 28px; height: 28px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: #fff; border: 2px solid var(--line-2); color: var(--muted);
+    font: 600 .76rem var(--sans); font-variant-numeric: tabular-nums;
+}
+body.umsc-form .uf-steps .step-indicator > div:not(.step-number):not(.step-icon):not(.step-status) {
+    display: flex !important; flex-direction: column; flex: 1; min-width: 0;
+}
+body.umsc-form .uf-steps .step-indicator > div > div:first-child {
+    order: 2; margin: 1px 0 0 !important; font: 400 .74rem/1.3 var(--sans) !important; color: var(--muted) !important;
+}
+body.umsc-form .uf-steps .step-indicator > div > div:nth-child(2) {
+    order: 1; margin: 0 !important; font: 500 .9rem/1.3 var(--sans) !important; color: var(--text) !important;
+}
+body.umsc-form .uf-steps .step-indicator[data-uf="current"]::before { background: var(--g7); border-color: var(--g7); color: #fff; }
+body.umsc-form .uf-steps .step-indicator[data-uf="current"] > div > div:nth-child(2) { color: var(--ink) !important; font-weight: 600 !important; }
+body.umsc-form .uf-steps .step-indicator[data-uf="done"]::before { content: "\2713"; background: var(--ok-bg); border-color: var(--g7); color: var(--g7); font-size: .85rem; }
+body.umsc-form .uf-steps .step-indicator[data-uf="todo"] > div > div:nth-child(2) { color: #87958c !important; }
+body.umsc-form .uf-steps .step-indicator:hover > div > div:nth-child(2) { color: var(--ink) !important; }
+body.umsc-form .uf-steps .step-indicator:hover { background: transparent !important; }
+body.umsc-form .uf-steps .step-indicator:focus-visible { outline-offset: 4px; }
+
+/* Instructions: a quiet note under the list */
+body.umsc-form .uf-note {
+    margin: 26px 0 0 !important; padding: 18px 0 0 !important;
+    background: transparent !important; border: 0 !important; border-top: 1px solid var(--line) !important; border-radius: 0 !important;
+}
+body.umsc-form .uf-note > div:first-child > div { display: none !important; }
+body.umsc-form .uf-note h4 { margin: 0 0 8px !important; font: 600 .84rem var(--sans) !important; color: var(--ink) !important; }
+body.umsc-form .uf-note > div:first-child { margin: 0 !important; display: block !important; }
+body.umsc-form .uf-note ul { margin: 0 !important; padding: 0 !important; list-style: none !important; }
+body.umsc-form .uf-note li { margin: 0 0 6px !important; padding: 0 !important; font: 400 .8rem/1.5 var(--sans) !important; color: var(--muted) !important; }
+
+/* ---------- Right pane: the sheet ---------- */
+body.umsc-form .uf-pane {
+    flex: none !important; align-self: start; min-width: 0;
+    margin: 28px 0 48px; padding: 0 !important; overflow: visible !important;
+    background: #fff !important; border: 1px solid var(--line); border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(15, 36, 27, .04);
+}
+body.umsc-form .uf-pane__head {
+    position: sticky !important; top: var(--bar-h); z-index: 20;
+    margin: 0 !important; padding: 22px 36px 18px !important;
+    background: #fff !important; backdrop-filter: none !important;
+    border: 0 !important; border-bottom: 1px solid var(--line) !important; border-radius: 8px 8px 0 0;
+}
+body.umsc-form .uf-pane__head::after {
+    content: ""; position: absolute; inset-inline-start: 0; bottom: -1px; height: 2px;
+    width: calc(var(--uf-step, 1) / var(--uf-steps, 1) * 100%);
+    background: var(--g7); transition: width .3s ease;
+}
+body.umsc-form .uf-pane__head > div:first-child { align-items: baseline !important; gap: 16px; }
+body.umsc-form .uf-pane__head #currentStepTitle {
+    margin: 0 !important; font: 600 1.5rem/1.25 var(--serif) !important; letter-spacing: -.01em !important; color: var(--ink) !important;
+}
+[dir="rtl"] body.umsc-form .uf-pane__head #currentStepTitle { font-family: var(--arabic) !important; letter-spacing: 0 !important; font-size: 1.7rem !important; }
+body.umsc-form .uf-pane__head #stepCompletionStatus {
+    padding: 0 !important; background: transparent !important; border-radius: 0 !important; box-shadow: none !important;
+    font: 500 .84rem var(--sans) !important; color: var(--muted) !important; white-space: nowrap;
+}
+body.umsc-form .uf-pane__head #stepCompletionStatus * { font: inherit !important; color: inherit !important; }
+body.umsc-form .uf-pane__head #currentStepSubtitle {
+    margin: 6px 0 0 !important; font: 400 .9rem/1.4 var(--sans) !important; color: var(--muted) !important;
+}
+body.umsc-form .uf-pane form { padding: 30px 36px 0; }
+
+/* Step panel: the old dark green block becomes plain paper */
+body.umsc-form .uf-panel {
+    margin: 0 !important; padding: 0 !important; background: transparent !important; border: 0 !important; border-radius: 0 !important;
+    box-shadow: none !important; overflow: visible !important; font-family: var(--sans) !important;
+}
+body.umsc-form .uf-panel > div[style*="position: absolute"] { display: none !important; }
+body.umsc-form .uf-panel > .uf-panel__head { display: none !important; }
+body.umsc-form .form-step { animation: uf-in .22s ease-out !important; }
+@keyframes uf-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* Text that used to be white on green */
+body.umsc-form .uf-panel :is([style*="color: #fff"], [style*="color:#fff"], [style*="color: white"], [style*="color:white"], [style*="color: rgba(255"], [style*="color:rgba(255"]):not(button):not(.uf-keep) {
+    color: var(--text) !important;
+}
+body.umsc-form .uf-panel h3, body.umsc-form .uf-panel h4, body.umsc-form .uf-panel h5 {
+    margin: 0 0 4px !important; font-family: var(--serif) !important; font-weight: 600 !important; color: var(--ink) !important; letter-spacing: -.005em !important;
+}
+body.umsc-form .uf-panel h4 { font-size: 1.1rem !important; }
+body.umsc-form .uf-panel h5 { font-size: 1rem !important; }
+[dir="rtl"] body.umsc-form .uf-panel :is(h3, h4, h5) { font-family: var(--arabic) !important; letter-spacing: 0 !important; }
+
+/* Fields. The inline grids already say how many columns fit (minmax in the markup),
+   so only the spacing is normalised here. */
+body.umsc-form .uf-panel :is(div[style*="display: grid"], div[style*="display:grid"]) {
+    gap: 22px 24px !important; position: static !important;
+}
+body.umsc-form .uf-panel :is(div[style*="display: grid"], div[style*="display:grid"]) { margin-bottom: 22px !important; }
+body.umsc-form .uf-panel :is(div[style*="rgba(255, 255, 255, 0.0"], div[style*="rgba(255,255,255,0.0"], div[style*="rgba(255, 255, 255, 0.1"], div[style*="rgba(255,255,255,0.1"]) {
+    padding: 0 !important; background: transparent !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+}
+/* Sub-section headings inside a step (Witness 01, Authority details, ...) */
+body.umsc-form .uf-panel :is(h4, h5)[style] {
+    margin: 0 0 14px !important; font-size: 1.08rem !important; text-transform: none !important; letter-spacing: 0 !important; opacity: 1 !important;
+}
+body.umsc-form .uf-panel h4 ~ h4, body.umsc-form .uf-panel div ~ h4 {
+    margin-top: 10px !important; padding-top: 22px; border-top: 1px solid var(--line);
+}
+body.umsc-form .uf-panel > h4:first-of-type { margin-top: 0 !important; padding-top: 0; border-top: 0; }
+body.umsc-form .uf-panel label {
+    display: block; margin: 0 !important;
+    font: 500 .85rem/1.35 var(--sans) !important; color: var(--ink) !important;
+    letter-spacing: 0 !important; text-transform: none !important;
+}
+body.umsc-form .uf-panel :is(input, select, textarea):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="range"]) {
+    box-sizing: border-box; width: 100% !important; height: auto !important; min-height: 42px;
+    margin-top: 6px !important; padding: 9px 12px !important;
+    background: #fff !important; color: var(--ink) !important;
+    border: 1.5px solid var(--line-2) !important; border-radius: 6px !important; box-shadow: none !important;
+    font: 400 .92rem/1.4 var(--sans) !important; outline: none; transition: border-color .15s, box-shadow .15s;
+}
+[dir="rtl"] body.umsc-form .uf-panel :is(input, select, textarea) { font-family: var(--arabic), var(--sans) !important; }
+body.umsc-form .uf-panel textarea { min-height: 96px; resize: vertical; }
+body.umsc-form .uf-panel :is(input, select, textarea)::placeholder { color: #8b9890 !important; opacity: 1; }
+body.umsc-form .uf-panel :is(input, select, textarea):hover { border-color: #aab6af !important; }
+body.umsc-form .uf-panel :is(input, select, textarea):focus {
+    border-color: var(--g7) !important; box-shadow: 0 0 0 3px rgba(23, 138, 74, .16) !important; background: #fff !important;
+}
+body.umsc-form .uf-panel :is(input, select, textarea).is-invalid {
+    border-color: var(--bad) !important; box-shadow: 0 0 0 3px rgba(168, 50, 42, .12) !important; background: #fffafa !important;
+}
+body.umsc-form .uf-panel :is(input, select, textarea):is(:disabled, [readonly]) {
+    background: var(--canvas) !important; color: var(--muted) !important; cursor: not-allowed;
+}
+body.umsc-form .uf-panel :is(div[style*="display: flex"], div[style*="display:flex"]) > :is(input, select) { margin-top: 0 !important; }
+body.umsc-form .uf-panel :is(div[style*="gap: 8px; margin-top: 8px"], div[style*="gap:8px; margin-top:8px"]) { margin-top: 6px !important; }
+body.umsc-form .uf-panel div:not(.uf-field):has(> select):has(> input) > select { flex: 0 0 auto; width: auto !important; min-width: 96px; max-width: 42% !important; }
+body.umsc-form .uf-panel div:not(.uf-field):has(> select):has(> input) > input { flex: 1 1 0; min-width: 0; }
+body.umsc-form .uf-panel select { padding-inline-end: 30px !important; }
+body.umsc-form .uf-panel input[type="checkbox"], body.umsc-form .uf-panel input[type="radio"] { accent-color: var(--g7); width: 16px; height: 16px; }
+
+.uf-err { margin: 6px 0 0; font: 500 .8rem/1.3 var(--sans); color: var(--bad); }
+
+/* Upload tiles (photographs, documents) */
+body.umsc-form .uf-panel :is(div,label)[style*="dashed"] {
+    border: 1.5px dashed var(--line-2) !important; border-radius: 8px !important; background: #fafbfa !important; box-shadow: none !important; transition: border-color .15s, background .15s;
+}
+body.umsc-form .uf-panel :is(div,label)[style*="dashed"]:hover { border-color: var(--g7) !important; background: var(--ok-bg) !important; }
+body.umsc-form .uf-panel :is(div,label)[style*="dashed"] :is(svg, i) { color: var(--g7) !important; opacity: .85; }
+
+/* Select2 (tribe, region, district, ...) */
+body.umsc-form .uf-panel .select2-container { width: 100% !important; margin-top: 6px; display: block; }
+body.umsc-form .select2-container--default .select2-selection--single {
+    box-sizing: border-box; display: flex; align-items: center; height: auto; min-height: 42px;
+    padding: 0 12px !important; background: #fff !important;
+    border: 1.5px solid var(--line-2) !important; border-radius: 6px !important; box-shadow: none !important;
+}
+body.umsc-form .select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding: 0 !important; line-height: 1.4 !important; color: var(--ink) !important; font: 400 .92rem var(--sans) !important; flex: 1;
+}
+body.umsc-form .select2-container--default .select2-selection--single .select2-selection__placeholder { color: #8b9890 !important; }
+body.umsc-form .select2-container--default .select2-selection--single .select2-selection__arrow { height: 100% !important; inset-inline-end: 6px; }
+body.umsc-form .select2-container--default .select2-selection--single .select2-selection__clear { margin-inline-end: 22px; color: var(--muted); font-weight: 400; }
+body.umsc-form .select2-container--default.select2-container--focus .select2-selection--single,
+body.umsc-form .select2-container--default.select2-container--open .select2-selection--single {
+    border-color: var(--g7) !important; box-shadow: 0 0 0 3px rgba(23, 138, 74, .16) !important;
+}
+body.umsc-form .select2-dropdown { border: 1.5px solid var(--g7); border-radius: 6px; box-shadow: 0 12px 28px -12px rgba(15, 36, 27, .3); overflow: hidden; font-family: var(--sans); }
+body.umsc-form .select2-container--default .select2-search--dropdown .select2-search__field { border: 1.5px solid var(--line-2); border-radius: 5px; padding: 7px 10px; font: 400 .9rem var(--sans); }
+body.umsc-form .select2-container--default .select2-results__option { padding: 8px 12px; font-size: .9rem; }
+body.umsc-form .select2-container--default .select2-results__option--highlighted[aria-selected], 
+body.umsc-form .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable { background: var(--g7); color: #fff; }
+
+/* ---------- Action bar: sticks to the bottom of the sheet ---------- */
+body.umsc-form .uf-actions {
+    position: sticky !important; bottom: 0; z-index: 15;
+    display: flex !important; flex-direction: row !important; flex-wrap: wrap; align-items: center; justify-content: flex-start !important; gap: 10px !important;
+    margin: 36px -36px 0 !important; padding: 14px 36px !important;
+    background: rgba(255, 255, 255, .97); border-top: 1px solid var(--line) !important; border-radius: 0 0 8px 8px;
+}
+body.umsc-form .uf-actions > div:empty { flex: 1; }
+body.umsc-form .uf-actions #prevBtn, body.umsc-form .uf-actions > div:has(#prevBtn) { margin-inline-end: auto; }
+body.umsc-form .uf-actions > div:not(:empty) { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+body.umsc-form .uf-actions #stepStatus { padding: 0 !important; background: transparent !important; border: 0 !important; border-radius: 0 !important; font: 500 .84rem var(--sans) !important; color: var(--muted) !important; }
+body.umsc-form .uf-actions #previewButtonContainer { display: contents; }
+body.umsc-form .uf-actions button {
+    width: auto !important; align-items: center; justify-content: center; gap: 8px !important;
+    padding: 11px 22px !important; border-radius: 6px !important; box-shadow: none !important; transform: none !important;
+    font: 600 .9rem/1.2 var(--sans) !important; cursor: pointer; transition: background .15s, border-color .15s;
+}
+body.umsc-form .uf-actions button svg { width: 17px !important; height: 17px !important; }
+[dir="rtl"] body.umsc-form .uf-actions #prevBtn svg, [dir="rtl"] body.umsc-form .uf-actions #nextBtn svg { transform: scaleX(-1); }
+body.umsc-form .uf-actions #prevBtn { background: #fff !important; color: var(--ink) !important; border: 1.5px solid var(--line-2) !important; }
+body.umsc-form .uf-actions #prevBtn:hover { border-color: var(--g7) !important; }
+body.umsc-form .uf-actions #nextBtn,
+body.umsc-form .uf-actions #submitBtn { background: var(--g7) !important; color: #fff !important; border: 1.5px solid var(--g7) !important; }
+body.umsc-form .uf-actions #nextBtn:hover,
+body.umsc-form .uf-actions #submitBtn:hover { background: var(--g8) !important; border-color: var(--g8) !important; }
+body.umsc-form .uf-actions #previewBtn { background: #fff !important; color: var(--g7) !important; border: 1.5px solid var(--g7) !important; }
+body.umsc-form .uf-actions #previewBtn:hover { background: var(--ok-bg) !important; }
+
+/* SweetAlert2 inside the forms (validation notice, submit confirmation) */
+body.umsc-form .swal2-popup { border-radius: 8px; font-family: var(--sans); padding: 1.6rem 1.6rem 1.4rem; }
+body.umsc-form .swal2-title { font: 600 1.3rem/1.3 var(--serif); color: var(--ink); }
+body.umsc-form .swal2-html-container { font: 400 .95rem/1.5 var(--sans); color: var(--text); }
+body.umsc-form .swal2-styled { border-radius: 6px !important; font: 600 .9rem var(--sans) !important; padding: .65em 1.3em !important; box-shadow: none !important; }
+body.umsc-form .swal2-styled.swal2-confirm { background: var(--g7) !important; color: #fff !important; }
+body.umsc-form .swal2-styled.swal2-confirm:hover { background: var(--g8) !important; }
+body.umsc-form .swal2-styled.swal2-cancel { background: #fff !important; color: var(--ink) !important; border: 1.5px solid var(--line-2) !important; }
+body.umsc-form .swal2-styled:focus-visible { outline: 3px solid var(--gold-soft); outline-offset: 2px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+    body.umsc-form .uf-wrap { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 0 16px; }
+    body.umsc-form .uf-rail { position: static; max-height: none; padding: 22px 0 6px !important; overflow: visible; }
+    body.umsc-form .uf-rail__head > p { margin-bottom: 16px !important; }
+    body.umsc-form .uf-progress { margin-bottom: 14px !important; }
+    body.umsc-form .uf-note { display: none; }
+    body.umsc-form .uf-steps { flex-direction: row; gap: 4px; overflow-x: auto; padding-bottom: 6px; }
+    body.umsc-form .uf-steps::before { display: none; }
+    body.umsc-form .uf-steps .step-indicator { flex: none; padding: 4px !important; }
+    body.umsc-form .uf-steps .step-indicator > div:not(.step-number):not(.step-icon):not(.step-status) { display: none !important; }
+    body.umsc-form .uf-pane { margin: 14px 0 32px; }
+    body.umsc-form .uf-pane__head { position: static !important; padding: 18px 20px 14px !important; }
+    body.umsc-form .uf-pane__head > div:first-child { flex-direction: column !important; align-items: flex-start !important; gap: 4px; }
+    body.umsc-form .uf-pane form { padding: 22px 20px 0; }
+    body.umsc-form .uf-actions { margin: 28px -20px 0 !important; padding: 12px 20px !important; }
+}
+@media (max-width: 720px) {
+    .uf-bar { flex-wrap: wrap; gap: 8px 14px; padding-block: 8px; }
+    .uf-bar__docket { order: 3; width: 100%; margin: 0; justify-content: space-between; }
+    .uf-bar__tools { margin-inline-start: auto; gap: 10px; }
+    .uf-bar__name span { display: none; }
+    body.umsc-form { --bar-h: 100px; }
+    body.umsc-form .uf-panel :is(div[style*="display: grid"], div[style*="display:grid"]) { grid-template-columns: minmax(0, 1fr) !important; gap: 18px !important; }
+    body.umsc-form .uf-actions #nextBtn, body.umsc-form .uf-actions #submitBtn { flex: 1; }
+    body.umsc-form .uf-actions #previewBtn { flex: 1 1 100%; order: 3; }
+}
+@media (max-width: 520px) {
+    .uf-exit span { display: none; }
+    .uf-bar__name strong { font-size: .92rem; white-space: normal; }
+}
+@media (prefers-reduced-motion: reduce) {
+    body.umsc-form *, body.umsc-form *::before, body.umsc-form *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* ==========================================================================
+   Nikah application (landing/nikah.blade.php)
+   Class-based markup from asset/css/styles.css, so it is restyled by class.
+   ========================================================================== */
+body.umsc-nikah { --bar-h: 62px; }
+body.umsc-nikah .container { max-width: none !important; margin: 0 !important; padding: 0 !important; background: transparent !important; box-shadow: none !important; border-radius: 0 !important; }
+
+/* Header: same slim bar as the other forms */
+body.umsc-nikah .header {
+    position: sticky; top: 0; z-index: 60;
+    display: flex !important; align-items: center; gap: 20px;
+    min-height: var(--bar-h); margin: 0 !important; padding: 0 clamp(16px, 3vw, 32px) !important;
+    background: var(--g9) !important; color: #fff; border-radius: 0 !important;
+    box-shadow: inset 0 -2px 0 rgba(230, 201, 58, .55) !important;
+}
+body.umsc-nikah .header::before, body.umsc-nikah .header::after { display: none !important; }
+body.umsc-nikah .header-top, body.umsc-nikah .app-id-bar { display: contents !important; }
+body.umsc-nikah .header-branding { order: 1; display: flex; align-items: center; gap: 12px; }
+body.umsc-nikah .header .logo { width: 36px !important; height: 36px !important; padding: 3px; border-radius: 8px !important; background: #fff; object-fit: contain; box-shadow: none !important; }
+body.umsc-nikah .header-text h1 { margin: 0 !important; font: 600 1rem/1.2 var(--serif) !important; color: #fff !important; }
+body.umsc-nikah .header-text h2 { margin: 2px 0 0 !important; font: 400 .74rem var(--sans) !important; color: #9fc0ad !important; }
+body.umsc-nikah .app-id-left {
+    order: 2; margin-inline: auto; display: flex; align-items: baseline; gap: 10px;
+    padding: 6px 14px; border: 1px solid rgba(255, 255, 255, .2); border-radius: 6px; white-space: nowrap;
+    font: 400 .74rem var(--sans); color: #9fc0ad;
+}
+body.umsc-nikah .app-id-left #applicationId { font: 600 .92rem var(--sans); letter-spacing: .02em; color: #fff; font-variant-numeric: tabular-nums; }
+body.umsc-nikah .language-selector { order: 3; }
+body.umsc-nikah .lang-btn .flag-icon { display: none; }
+body.umsc-nikah .lang-btn .lang-text { text-transform: capitalize !important; font: inherit !important; letter-spacing: 0 !important; }
+body.umsc-nikah .header .btn-dashboard {
+    order: 4; background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 0 !important;
+    color: #cfe3d7 !important; font: 500 .85rem var(--sans) !important; width: auto;
+}
+body.umsc-nikah .header .btn-dashboard:hover { color: #fff !important; text-decoration: underline !important; text-underline-offset: 3px; }
+
+/* Progress strip + workspace form one sheet */
+body.umsc-nikah .progress-container,
+body.umsc-nikah .main-content { width: calc(100% - 2 * clamp(16px, 3vw, 32px)); max-width: 1276px; margin-inline: auto !important; background: #fff !important; border: 1px solid var(--line); box-shadow: none !important; }
+body.umsc-nikah .progress-container { margin-top: 28px !important; padding: 22px 32px 18px !important; border-radius: 8px 8px 0 0 !important; border-bottom: 1px solid var(--line); }
+body.umsc-nikah .progress-bar { height: 4px !important; border-radius: 99px !important; background: var(--line) !important; overflow: hidden; margin-bottom: 18px !important; }
+body.umsc-nikah .progress-fill { background: var(--g7) !important; border-radius: 99px !important; }
+body.umsc-nikah .step { opacity: 1 !important; }
+body.umsc-nikah .step-number {
+    width: 28px !important; height: 28px !important; display: grid !important; place-items: center; border-radius: 50% !important;
+    background: #fff !important; border: 2px solid var(--line-2) !important; color: var(--muted) !important; box-shadow: none !important; transform: none !important;
+    font: 600 .76rem var(--sans) !important;
+}
+body.umsc-nikah .step-label { margin-top: 8px !important; font: 400 .78rem var(--sans) !important; color: var(--muted) !important; text-transform: none !important; letter-spacing: 0 !important; }
+body.umsc-nikah .step.active .step-number { background: var(--g7) !important; border-color: var(--g7) !important; color: #fff !important; }
+body.umsc-nikah .step.active .step-label { color: var(--ink) !important; font-weight: 600 !important; }
+body.umsc-nikah .step.completed .step-number { background: var(--ok-bg) !important; border-color: var(--g7) !important; color: var(--g7) !important; font-size: 0 !important; }
+body.umsc-nikah .step.completed .step-number::after { content: "\2713"; font-size: .85rem; }
+body.umsc-nikah .step.completed .step-label { color: var(--text) !important; }
+
+body.umsc-nikah .main-content { display: grid !important; grid-template-columns: 230px minmax(0, 1fr); margin-bottom: 48px !important; border-top: 0; border-radius: 0 0 8px 8px !important; overflow: visible !important; }
+body.umsc-nikah .sidebar { background: #fafbfa !important; border: 0 !important; border-inline-end: 1px solid var(--line) !important; padding: 18px 0 !important; border-radius: 0 0 0 8px; }
+body.umsc-nikah .nav-item {
+    display: block; padding: 11px 22px !important; background: transparent !important; border: 0 !important; border-inline-start: 3px solid transparent !important;
+    border-radius: 0 !important; color: var(--muted) !important; text-decoration: none; box-shadow: none !important; transform: none !important;
+}
+body.umsc-nikah .nav-item .nav-text { display: inline-block; font: 500 .9rem var(--sans) !important; text-transform: lowercase !important; letter-spacing: 0 !important; }
+body.umsc-nikah .nav-item .nav-text::first-letter { text-transform: uppercase; }
+body.umsc-nikah .nav-item:hover { color: var(--ink) !important; }
+body.umsc-nikah .nav-item.active { color: var(--ink) !important; background: var(--ok-bg) !important; border-inline-start-color: var(--g7) !important; }
+body.umsc-nikah .nav-item.active .nav-text { font-weight: 600 !important; }
+
+body.umsc-nikah .form-content { padding: 32px 40px 0 !important; background: #fff !important; min-width: 0; }
+body.umsc-nikah .section-title {
+    margin: 0 0 24px !important; padding: 0 0 14px !important; border: 0 !important; border-bottom: 1px solid var(--line) !important;
+    font: 600 1.45rem/1.25 var(--serif) !important; letter-spacing: -.01em !important; text-transform: none !important; color: var(--ink) !important;
+}
+[dir="rtl"] body.umsc-nikah .section-title { font-family: var(--arabic) !important; letter-spacing: 0 !important; }
+body.umsc-nikah .form-section h4, body.umsc-nikah .form-section h5 { font: 600 1.05rem var(--serif); color: var(--ink); text-transform: none; letter-spacing: 0; }
+body.umsc-nikah .form-row { gap: 22px 24px !important; margin-bottom: 22px !important; }
+body.umsc-nikah .form-group label { display: block; margin: 0 0 6px !important; font: 500 .85rem/1.35 var(--sans) !important; color: var(--ink) !important; text-transform: none !important; letter-spacing: 0 !important; }
+body.umsc-nikah .form-group .required, body.umsc-nikah .form-group label span.required { color: var(--bad) !important; }
+body.umsc-nikah .form-group :is(input, select, textarea):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]) {
+    box-sizing: border-box; width: 100%; min-height: 42px; height: auto !important; padding: 9px 12px !important;
+    background: #fff !important; color: var(--ink) !important; border: 1.5px solid var(--line-2) !important; border-radius: 6px !important;
+    box-shadow: none !important; font: 400 .92rem/1.4 var(--sans) !important; transition: border-color .15s, box-shadow .15s;
+}
+body.umsc-nikah .form-group textarea { min-height: 96px; }
+body.umsc-nikah .form-group :is(input, select, textarea):hover { border-color: #aab6af !important; }
+body.umsc-nikah .form-group :is(input, select, textarea):focus { border-color: var(--g7) !important; box-shadow: 0 0 0 3px rgba(23, 138, 74, .16) !important; outline: none; }
+body.umsc-nikah .form-group :is(input, select, textarea):is(.error, .is-invalid, [aria-invalid="true"]) { border-color: var(--bad) !important; box-shadow: 0 0 0 3px rgba(168, 50, 42, .12) !important; background: #fffafa !important; }
+body.umsc-nikah .form-group .select2-container { width: 100% !important; display: block; }
+body.umsc-nikah .form-group input::placeholder { color: #8b9890; opacity: 1; }
+body.umsc-nikah .form-group input:is(:disabled, [readonly]) { background: var(--canvas) !important; color: var(--muted) !important; }
+body.umsc-nikah :is(.upload-area, .photo-upload, .file-upload, [class*="upload"]):not(input):not(label) { border: 1.5px dashed var(--line-2) !important; border-radius: 8px !important; background: #fafbfa !important; box-shadow: none !important; }
+body.umsc-nikah :is(.upload-area, .photo-upload, .file-upload):hover { border-color: var(--g7) !important; background: var(--ok-bg) !important; }
+
+body.umsc-nikah .form-navigation {
+    position: sticky; bottom: 0; z-index: 15; margin: 36px -40px 0 !important; padding: 14px 40px !important;
+    background: rgba(255, 255, 255, .97) !important; border: 0 !important; border-top: 1px solid var(--line) !important; border-radius: 0 0 8px 0;
+    gap: 12px;
+}
+body.umsc-nikah .left-buttons { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+body.umsc-nikah .form-navigation .btn { width: auto; margin: 0 !important; padding: 11px 22px !important; border-radius: 6px !important; box-shadow: none !important; transform: none !important; font: 600 .9rem/1.2 var(--sans) !important; text-transform: none !important; letter-spacing: 0; gap: 8px; }
+body.umsc-nikah .form-navigation .btn-primary { background: var(--g7) !important; color: #fff !important; border: 1.5px solid var(--g7) !important; }
+body.umsc-nikah .form-navigation .btn-primary:hover { background: var(--g8) !important; border-color: var(--g8) !important; }
+body.umsc-nikah .form-navigation .btn-secondary { background: #fff !important; color: var(--ink) !important; border: 1.5px solid var(--line-2) !important; }
+body.umsc-nikah .form-navigation .btn-secondary:hover { border-color: var(--g7) !important; }
+body.umsc-nikah .form-navigation .btn-outline { background: transparent !important; color: var(--muted) !important; border: 0 !important; padding-inline: 8px !important; }
+body.umsc-nikah .form-navigation .btn-outline:hover { color: var(--ink) !important; text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 900px) {
+    body.umsc-nikah .main-content { grid-template-columns: minmax(0, 1fr); }
+    body.umsc-nikah .sidebar { display: none; }
+    body.umsc-nikah .progress-container { padding: 16px 16px 12px !important; overflow-x: auto; }
+    body.umsc-nikah .form-content { padding: 22px 20px 0 !important; }
+    body.umsc-nikah .form-navigation { margin: 28px -20px 0 !important; padding: 12px 20px !important; flex-wrap: wrap; }
+    body.umsc-nikah .header { flex-wrap: wrap; gap: 8px 14px; padding-block: 8px !important; }
+    body.umsc-nikah .app-id-left { order: 5; width: 100%; margin: 0; justify-content: space-between; }
+    body.umsc-nikah .header .btn-dashboard { margin-inline-start: auto; }
+}

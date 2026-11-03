@@ -1,294 +1,115 @@
-<!DOCTYPE html>
+@extends('layouts.auth')
 
-<html lang="en" class="light-style customizer-hide" dir="ltr" data-theme="theme-default"
-    data-assets-path="{{ asset('assets') }}/" data-template="vertical-menu-template">
+@section('title', 'Sign in')
+@section('aside_title', 'Staff portal')
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+@section('content')
+    <h1>Sign in</h1>
+    <p class="a-sub">Use the email or username issued to you by the Directorate.</p>
 
-    <title>Login - {{ Helper::app_name() }} </title>
+    @if (session('success'))
+        <div class="a-alert a-alert--ok" role="status">{{ session('success') }}</div>
+    @endif
+    @if (session('fail'))
+        <div class="a-alert a-alert--error" role="alert">{{ session('fail') }}</div>
+    @endif
+    <div class="a-alert a-alert--error" id="loginAlert" role="alert" hidden></div>
 
-    <meta name="description" content="" />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-        rel="stylesheet" />
-
-    <!-- Icons -->
-    <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/fontawesome.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/flag-icons.css') }}" />
-
-    <!-- Core CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/vendor/css/rtl/core.css') }}" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/css/rtl/theme-default.css') }}" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
-
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/typeahead-js/typeahead.css') }}" />
-    <!-- Vendor -->
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/formvalidation/dist/css/formValidation.min.css') }}" />
-
-    <!-- Icon CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-    <!-- Page CSS -->
-    <!-- Page -->
-    <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/page-auth.css') }}" />
-    <!-- Helpers -->
-    <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
-
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-    {{--
-  <script src="{{ asset('assets/vendor/js/template-customizer.js') }}"></script> --}}
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="{{ asset('assets/js/config.js') }}"></script>
-</head>
-
-{{--
-
-<body style="background-image: url('{{ asset('assets/img/branding/loginBackground.png') }}');"> --}}
-
-<body style="background: #28a745;">
-
-    <!-- Content -->
-
-    <div class="container-xxl">
-        <div class="authentication-wrapper authentication-basic container-p-y">
-            <div class=" py-4">
-                <!-- Register -->
-                <div class="card">
-                    <div class="card-body">
-                        <!-- Logo -->
-                        <div style="text-align: center; margin-bottom: 10px;">
-                            <img src="{{ asset('assets/img/branding/logo-png.png') }}" alt="Logo"
-                                style="width: 120px; height: auto; border-radius: 8px;">
-                        </div>
-                        <!-- /Logo -->
-
-                        <h3 class="mb-3"
-                            style="
-        text-align: center;
-        font-weight: 700;
-        letter-spacing: 1px;
-        background: #21532B;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-family: 'Algerian', sans-serif;
-    ">
-                            DIRECTORATE OF SHARIA
-                        </h3>
-
-
-                        <p class="mb-2">Log in to proceed</p>
-
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-
-                        @if (session('fail'))
-                            <div class="alert alert-danger">
-                                {{ session('fail') }}
-                            </div>
-                        @endif
-
-
-                        <form action="{{ route('auth-user-check') }}" method="POST">
-                            @csrf
-
-                            <!-- Email or Username -->
-                            <div class="input-group mb-3">
-                                <div class="input-wrapper w-100">
-                                    <input type="text" id="email" name="email" class="form-control"
-                                        placeholder="Enter your email or username" value="{{ old('email') }}">
-                                    <span class="text-danger d-block" id="email-error"></span>
-                                </div>
-                            </div>
-
-                            <div class="input-group">
-                                <input type="password" class="form-control" placeholder="Password" id="password"
-                                    name="password">
-
-                                <span class="input-group-text" style="cursor: pointer;" onclick="togglePassword()">
-                                    <i class="fa fa-eye" id="eyeIcon"></i>
-                                </span>
-                            </div>
-                            <span class="text-danger d-block" id="password-error"></span>
-                            <div class="row">
-                                <div class="col-12 d-flex justify-content-between">
-                                    <a href="{{ route('forgot-password') }}" class="btn btn-link box-shadow-0 px-0">
-                                        Forgot password?
-                                    </a>
-                                    <a href="{{ url('/') }}" class="btn btn-link box-shadow-0 px-0 ml-auto">
-                                        Return to Homepage
-                                    </a>
-                                </div>
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary btn-block" id="login_button">
-                                        <i class="fe fe-arrow-right"></i> Login
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-                <!-- /Register -->
-            </div>
+    <form id="loginForm" action="{{ route('auth-user-check') }}" method="POST" novalidate>
+        @csrf
+        <div class="a-field">
+            <label for="email">Email or username</label>
+            <input class="a-input" type="text" id="email" name="email" value="{{ old('email') }}"
+                autocomplete="username" autocapitalize="none" spellcheck="false" autofocus>
+            <span class="a-error" id="email-error"></span>
         </div>
-    </div>
 
+        <div class="a-field">
+            <label for="password">Password <a href="{{ route('forgot-password') }}">Forgot password?</a></label>
+            <div class="a-pass">
+                <input class="a-input" type="password" id="password" name="password" autocomplete="current-password">
+                <button type="button" data-toggle="#password" data-show="Show" data-hide="Hide"
+                    aria-pressed="false">Show</button>
+            </div>
+            <span class="a-hint" data-caps-for="#password">Caps Lock is on.</span>
+            <span class="a-error" id="password-error"></span>
+        </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <button type="submit" class="u-btn u-btn--solid a-submit" id="loginBtn">Sign in</button>
+    </form>
 
+    <p class="a-links">Not an officer? <a href="{{ url('/') }}">Return to the homepage</a></p>
+@endsection
+
+@push('scripts')
     <script>
-        $(document).ready(function() {
-            $('#login_button').on('click', function(e) {
+        (function() {
+            var form = document.getElementById('loginForm');
+            var btn = document.getElementById('loginBtn');
+            var alertBox = document.getElementById('loginAlert');
+            var auth = window.umscAuth;
+
+            function busy(on) {
+                btn.disabled = on;
+                btn.textContent = on ? 'Signing in…' : 'Sign in';
+            }
+
+            function showAlert(msg) {
+                alertBox.textContent = msg;
+                alertBox.hidden = !msg;
+            }
+
+            form.addEventListener('submit', function(e) {
                 e.preventDefault();
+                showAlert('');
+                auth.setError('email', '');
+                auth.setError('password', '');
 
-                var button = $(this);
-                button.prop('disabled', true).html('<i class="fe fe-arrow-right"></i> Logging in...');
+                var email = form.email.value.trim();
+                var password = form.password.value;
+                var bad = false;
 
-                let email = $('#email').val().trim();
-                let password = $('#password').val().trim();
-
-                // Clear previous validation
-                $('#email').removeClass('is-invalid is-valid');
-                $('#password').removeClass('is-invalid is-valid');
-                $('#email-error').text('');
-                $('#password-error').text('');
-
-                let hasErrors = false;
-                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-                // Email or Username logic
                 if (!email) {
-                    $('#email').addClass('is-invalid');
-                    $('#email-error').text('Email or username is required.');
-                    hasErrors = true;
-                } else if (email.includes('@') && !emailRegex.test(email)) {
-                    $('#email').addClass('is-invalid');
-                    $('#email-error').text('Please enter a valid email address.');
-                    hasErrors = true;
-                } else {
-                    $('#email').addClass('is-valid');
+                    auth.setError('email', 'Enter your email or username.');
+                    bad = true;
+                } else if (email.indexOf('@') > -1 && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+                    auth.setError('email', 'That email address does not look right.');
+                    bad = true;
                 }
-
-                // Password validation
                 if (!password) {
-                    $('#password').addClass('is-invalid');
-                    $('#password-error').text('Password is required.');
-                    hasErrors = true;
-                } else {
-                    $('#password').addClass('is-valid');
+                    auth.setError('password', 'Enter your password.');
+                    bad = true;
                 }
-
-                if (hasErrors) {
-                    button.prop('disabled', false).html('<i class="fe fe-arrow-right"></i> Login');
+                if (bad) {
+                    (form.querySelector('.is-invalid') || form.email).focus();
                     return;
                 }
 
-                // AJAX Login
-                $.ajax({
-                    url: "{{ route('auth-user-check') }}",
-                    type: "POST",
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        email: email,
-                        password: password
-                    },
-                    success: function(response) {
-                        if (response.status) {
-                            window.location.href = response.redirect_url;
-                        } else {
-                            $('#password').addClass('is-invalid');
-                            $('#password-error').text(response.message ??
-                                'Invalid credentials.');
-
-                            button.prop('disabled', false).html(
-                                '<i class="fe fe-arrow-right"></i> Login');
-                        }
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 422) {
-                            const errors = xhr.responseJSON.errors;
-                            if (errors.email) {
-                                $('#email').addClass('is-invalid');
-                                $('#email-error').text(errors.email[0]);
-                            }
-                            if (errors.password) {
-                                $('#password').addClass('is-invalid');
-                                $('#password-error').text(errors.password[0]);
-                            }
-                        } else {
-                            $('body').html(xhr.responseText); // fallback
-                        }
-
-                        button.prop('disabled', false).html(
-                            '<i class="fe fe-arrow-right"></i> Login');
+                busy(true);
+                auth.post(@json(route('auth-user-check')), {
+                    email: email,
+                    password: password
+                }).then(function(res) {
+                    var b = res.body || {};
+                    if (res.ok && b.status) {
+                        btn.textContent = 'Redirecting…';
+                        window.location.href = b.redirect_url;
+                        return;
                     }
+                    if (res.status === 422 && b.errors) {
+                        if (b.errors.email) auth.setError('email', b.errors.email[0]);
+                        if (b.errors.password) auth.setError('password', b.errors.password[0]);
+                    } else if (res.status === 419) {
+                        showAlert('Your session expired. Reload the page and try again.');
+                    } else {
+                        showAlert(b.message || 'We could not sign you in. Please try again.');
+                    }
+                    busy(false);
+                }).catch(function() {
+                    showAlert('Could not reach the server. Check your connection and try again.');
+                    busy(false);
                 });
             });
-        });
-
-
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById('eyeIcon');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeIcon.classList.remove('fa-eye');
-                eyeIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                eyeIcon.classList.remove('fa-eye-slash');
-                eyeIcon.classList.add('fa-eye');
-            }
-        }
+        })();
     </script>
-
-
-    <!-- / Content -->
-
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-    <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
-    <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/hammer/hammer.js') }}"></script>
-    {{--
-    <script src="{{ asset('assets/vendor/libs/i18n/i18n.js') }}"></script> --}}
-    <script src="{{ asset('assets/vendor/libs/typeahead-js/typeahead.js') }}"></script>
-
-    <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
-    <!-- endbuild -->
-
-    <!-- Vendors JS -->
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js') }}"></script>
-
-    <!-- Main JS -->
-    <script src="{{ asset('assets/js/main.js') }}"></script>
-
-    <!-- Page JS -->
-    <script src="{{ asset('assets/js/pages-auth.js') }}"></script>
-</body>
-
-</html>
+@endpush

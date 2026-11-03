@@ -1,0 +1,248 @@
+/* ==========================================================================
+   UMSC Directorate of Sharia: admin area (Patch 10)
+   Users, roles and privileges, bulk import, activity log, reports.
+   Loaded after umsc-ui.css. Prefix: adm-. Logical properties throughout so
+   Arabic (RTL) mirrors without a second stylesheet.
+   Design notes: hairlines instead of boxes, tabular figures, one accent
+   (the crest green). No gradients, no coloured icon discs.
+   ========================================================================== */
+
+body.umsc-app {
+    --adm-row: #f8faf9;
+    --adm-mono: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Menlo, Consolas, monospace;
+}
+
+/* ---------- Tabs (role filter, view switch) ---------- */
+body.umsc-app .adm-tabs { display: flex; gap: 2px; margin: 0 0 1.25rem; padding: 0; list-style: none; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+body.umsc-app .adm-tabs::-webkit-scrollbar { display: none; }
+body.umsc-app .adm-tab { display: inline-flex; align-items: center; gap: 8px; padding: .7rem 1rem; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent; background: transparent; font: 600 .85rem/1 var(--sans); color: var(--muted); white-space: nowrap; cursor: pointer; text-decoration: none; }
+body.umsc-app .adm-tab:hover { color: var(--ink); }
+body.umsc-app .adm-tab.is-active { color: var(--ink); border-bottom-color: var(--green-700); }
+body.umsc-app .adm-tab b { font-weight: 500; font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+body.umsc-app .adm-tab:focus-visible { outline: 2px solid var(--green-700); outline-offset: -2px; }
+
+/* ---------- People, roles, status ---------- */
+body.umsc-app .adm-person { display: flex; align-items: center; gap: 12px; min-width: 0; }
+body.umsc-app .adm-avatar { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 6px; background: var(--paper-2); color: var(--green-800); font: 600 .76rem/1 var(--sans); letter-spacing: .03em; overflow: hidden; }
+body.umsc-app .adm-avatar img { width: 100%; height: 100%; object-fit: cover; }
+body.umsc-app .adm-avatar--lg { width: 56px; height: 56px; border-radius: 8px; font-size: 1rem; }
+body.umsc-app .adm-person strong { display: block; font-weight: 600; font-size: .9rem; line-height: 1.3; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body.umsc-app .adm-person span { display: block; font-size: .78rem; line-height: 1.3; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body.umsc-app .adm-person > div { min-width: 0; }
+
+body.umsc-app .adm-role { display: inline-flex; align-items: center; gap: 9px; font-size: .84rem; font-weight: 500; color: var(--ink); white-space: nowrap; }
+body.umsc-app .adm-role::before { content: ""; width: 3px; height: 15px; border-radius: 2px; background: var(--role, var(--green-700)); }
+
+body.umsc-app .adm-muted { color: var(--muted); }
+body.umsc-app .adm-num { font-variant-numeric: tabular-nums lining-nums; }
+body.umsc-app .adm-mono { font-family: var(--adm-mono); font-size: .8rem; }
+body.umsc-app .adm-place { font-size: .85rem; line-height: 1.4; }
+body.umsc-app .adm-place small { display: block; color: var(--muted); font-size: .76rem; }
+
+/* ---------- Tables ---------- */
+body.umsc-app .adm-table th.is-num, body.umsc-app .adm-table td.is-num { text-align: end; font-variant-numeric: tabular-nums lining-nums; }
+body.umsc-app .adm-table td { vertical-align: middle; }
+body.umsc-app .adm-table .adm-actions { width: 1%; white-space: nowrap; text-align: end; }
+body.umsc-app .adm-table tr.is-self > td:first-child { box-shadow: inset 3px 0 0 var(--green-700); }
+[dir="rtl"] body.umsc-app .adm-table tr.is-self > td:first-child { box-shadow: inset -3px 0 0 var(--green-700); }
+
+body.umsc-app .adm-foot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: .85rem 1.2rem; border-top: 1px solid var(--line-soft); font-size: .84rem; color: var(--muted); }
+body.umsc-app .adm-foot .pagination { margin: 0; }
+
+body.umsc-app .adm-icon-btn { display: inline-grid; place-items: center; width: 32px; height: 32px; border: 0; border-radius: 6px; background: transparent; color: var(--muted); font-size: 1.1rem; cursor: pointer; transition: background .12s, color .12s; }
+body.umsc-app .adm-icon-btn:hover { background: var(--paper-2); color: var(--ink); }
+body.umsc-app .adm-icon-btn:focus-visible { outline: 2px solid var(--green-700); outline-offset: 1px; }
+body.umsc-app .adm-icon-btn.dropdown-toggle::after { display: none; }
+
+body.umsc-app .adm-menu { min-width: 190px; padding: 6px; border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow-2); }
+body.umsc-app .adm-menu .dropdown-item { display: flex; align-items: center; gap: 10px; padding: .5rem .65rem; border-radius: 5px; font-size: .86rem; color: var(--text); }
+body.umsc-app .adm-menu .dropdown-item i { font-size: 1.05rem; color: var(--muted); }
+body.umsc-app .adm-menu .dropdown-item:hover { background: var(--paper); color: var(--ink); }
+body.umsc-app .adm-menu .dropdown-item.is-danger, body.umsc-app .adm-menu .dropdown-item.is-danger i { color: var(--bad); }
+body.umsc-app .adm-menu .dropdown-item.is-danger:hover { background: var(--bad-bg); }
+body.umsc-app .adm-menu .dropdown-divider { margin: 5px 2px; border-color: var(--line-soft); }
+
+/* ---------- Secret (temporary password) ---------- */
+body.umsc-app .adm-secret { display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px 2px 10px; border: 1px solid var(--line); border-radius: 6px; background: #fbfcfb; font-family: var(--adm-mono); font-size: .78rem; color: var(--ink); }
+body.umsc-app .adm-secret .adm-icon-btn { width: 26px; height: 26px; font-size: .95rem; }
+body.umsc-app .adm-secret-note { display: block; margin-top: 3px; font-size: .74rem; color: var(--warn); }
+
+/* ---------- Definition lists ---------- */
+body.umsc-app .adm-kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 18px 28px; margin: 0; }
+body.umsc-app .adm-kv dt { margin: 0 0 3px; font: 600 .7rem/1.2 var(--sans); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+body.umsc-app .adm-kv dd { margin: 0; font-size: .92rem; color: var(--ink); }
+
+/* ---------- Side-by-side layout ---------- */
+body.umsc-app .adm-cols { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; }
+body.umsc-app .adm-split { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 1199.98px) { body.umsc-app .adm-cols { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 991.98px) { body.umsc-app .adm-split { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Link list (administration shortcuts) ---------- */
+body.umsc-app .adm-links { margin: 0; padding: 0; list-style: none; }
+body.umsc-app .adm-links a { display: flex; align-items: center; gap: 14px; padding: .95rem 1.4rem; border-bottom: 1px solid var(--line-soft); color: inherit; text-decoration: none; }
+body.umsc-app .adm-links li:last-child a { border-bottom: 0; }
+body.umsc-app .adm-links a:hover { background: var(--adm-row); }
+body.umsc-app .adm-links i.lead { font-size: 1.25rem; color: var(--green-700); width: 22px; text-align: center; }
+body.umsc-app .adm-links strong { display: block; font-size: .9rem; font-weight: 600; color: var(--ink); }
+body.umsc-app .adm-links small { display: block; font-size: .78rem; color: var(--muted); }
+body.umsc-app .adm-links .go { margin-inline-start: auto; color: #aab4ae; }
+[dir="rtl"] body.umsc-app .adm-links .go { transform: scaleX(-1); }
+
+/* ---------- Share bar (accounts by role) ---------- */
+body.umsc-app .adm-share { display: flex; align-items: center; gap: 10px; min-width: 120px; }
+body.umsc-app .adm-share .ui-bar { flex: 1; height: 4px; }
+body.umsc-app .adm-share .ui-bar > span { background: var(--role, var(--green-700)); }
+body.umsc-app .adm-share em { font-style: normal; font-size: .76rem; color: var(--muted); min-width: 2.6em; text-align: end; font-variant-numeric: tabular-nums; }
+
+/* ---------- Roles: list + detail + matrix ---------- */
+body.umsc-app .adm-rolelist { margin: 0; padding: 0; list-style: none; }
+body.umsc-app .adm-roleitem { position: relative; display: block; width: 100%; padding: 1rem 1.25rem 1rem 1.4rem; border: 0; border-bottom: 1px solid var(--line-soft); background: transparent; text-align: start; cursor: pointer; }
+body.umsc-app .adm-rolelist li:last-child .adm-roleitem { border-bottom: 0; }
+body.umsc-app .adm-roleitem::before { content: ""; position: absolute; inset-block: 0; inset-inline-start: 0; width: 3px; background: var(--role, var(--green-700)); opacity: 0; }
+body.umsc-app .adm-roleitem:hover { background: var(--adm-row); }
+body.umsc-app .adm-roleitem.is-active { background: var(--adm-row); }
+body.umsc-app .adm-roleitem.is-active::before { opacity: 1; }
+body.umsc-app .adm-roleitem:focus-visible { outline: 2px solid var(--green-700); outline-offset: -2px; }
+body.umsc-app .adm-roleitem strong { display: flex; align-items: center; gap: 8px; font-size: .92rem; font-weight: 600; color: var(--ink); }
+body.umsc-app .adm-roleitem small { display: block; margin-top: 3px; font-size: .78rem; color: var(--muted); }
+body.umsc-app .adm-chip { display: inline-block; padding: .18em .55em; border: 1px solid var(--line); border-radius: 4px; font: 600 .66rem/1.2 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+
+body.umsc-app .adm-role-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 1.4rem; border-bottom: 1px solid var(--line-soft); }
+body.umsc-app .adm-role-head h2 { margin: 0 0 4px; font: 600 1.35rem/1.25 var(--serif); color: var(--ink); }
+body.umsc-app .adm-role-head p { margin: 0; max-width: 62ch; font-size: .9rem; color: var(--muted); }
+body.umsc-app .adm-role-facts { padding: 1.1rem 1.4rem; border-bottom: 1px solid var(--line-soft); }
+body.umsc-app .adm-note { margin: 0; padding: .8rem 1.4rem; border-bottom: 1px solid var(--line-soft); background: #fbf8ec; font-size: .84rem; color: #6d5a00; }
+
+body.umsc-app .adm-matrix-wrap { overflow-x: auto; }
+body.umsc-app .adm-matrix { width: 100%; border-collapse: collapse; font-size: .86rem; }
+body.umsc-app .adm-matrix th, body.umsc-app .adm-matrix td { padding: .7rem .9rem; border-bottom: 1px solid var(--line-soft); text-align: center; }
+body.umsc-app .adm-matrix thead th { background: #f8faf9; font: 600 .68rem/1.2 var(--sans); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+body.umsc-app .adm-matrix th:first-child, body.umsc-app .adm-matrix td:first-child { text-align: start; position: sticky; inset-inline-start: 0; background: var(--surface); font-weight: 500; color: var(--ink); min-width: 170px; }
+body.umsc-app .adm-matrix thead th:first-child { background: #f8faf9; }
+body.umsc-app .adm-matrix tbody tr:last-child td { border-bottom: 0; }
+body.umsc-app .adm-matrix tr.adm-group th { padding: .6rem .9rem; text-align: start; background: #f3f6f4; color: var(--ink); font: 600 .72rem/1 var(--sans); letter-spacing: .06em; text-transform: uppercase; }
+body.umsc-app .adm-mark { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 5px; font-size: .9rem; line-height: 1; }
+body.umsc-app .adm-mark--on { background: var(--green-700); color: #fff; }
+body.umsc-app .adm-mark--off { border: 1.5px solid #cfd6d2; }
+body.umsc-app .adm-mark--na { color: #c9d1cc; width: auto; }
+body.umsc-app .adm-compare th.role-col { max-width: 120px; white-space: normal; line-height: 1.25; }
+body.umsc-app .adm-compare th.role-col i { display: block; width: 18px; height: 3px; margin: 0 auto 6px; border-radius: 2px; background: var(--role, var(--green-700)); }
+
+/* Role editor modal */
+body.umsc-app .adm-perm-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+body.umsc-app .adm-perm-group { padding: 14px 16px 12px; border-inline-end: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
+body.umsc-app .adm-perm-group header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+body.umsc-app .adm-perm-group header strong { font: 600 .72rem/1.2 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
+body.umsc-app .adm-perm-group header a { font-size: .76rem; font-weight: 600; color: var(--ok); text-decoration: none; }
+body.umsc-app .adm-perm-group .form-check { margin-bottom: 5px; min-height: 0; }
+body.umsc-app .adm-perm-group .form-check-label { font-size: .84rem; color: var(--text); }
+@media (max-width: 991.98px) { body.umsc-app .adm-perm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 575.98px) { body.umsc-app .adm-perm-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Activity log ---------- */
+body.umsc-app .adm-action { display: inline-block; font-family: var(--adm-mono); font-size: .76rem; color: var(--ink); }
+body.umsc-app .adm-log td { vertical-align: top; }
+body.umsc-app .adm-log tr.adm-open > td { background: var(--adm-row); border-bottom-color: transparent; }
+body.umsc-app .adm-log .adm-time { white-space: nowrap; font-variant-numeric: tabular-nums; font-size: .84rem; color: var(--ink); }
+body.umsc-app .adm-log .adm-time small { display: block; color: var(--muted); font-size: .76rem; }
+body.umsc-app .adm-log .adm-desc { max-width: 52ch; font-size: .86rem; color: var(--text); }
+body.umsc-app .adm-log tr.adm-detail > td { padding: 0 1rem 1.1rem 4.2rem; background: var(--adm-row); }
+[dir="rtl"] body.umsc-app .adm-log tr.adm-detail > td { padding: 0 4.2rem 1.1rem 1rem; }
+body.umsc-app .adm-diff { width: 100%; max-width: 760px; margin-top: 10px; border: 1px solid var(--line); border-radius: 6px; background: #fff; font-size: .8rem; border-collapse: separate; border-spacing: 0; overflow: hidden; }
+body.umsc-app .adm-diff th, body.umsc-app .adm-diff td { padding: .45rem .75rem; border-bottom: 1px solid var(--line-soft); text-align: start; vertical-align: top; word-break: break-word; }
+body.umsc-app .adm-diff tr:last-child > * { border-bottom: 0; }
+body.umsc-app .adm-diff thead th { background: #f8faf9; font: 600 .66rem/1.2 var(--sans); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+body.umsc-app .adm-diff td:first-child { font-family: var(--adm-mono); color: var(--muted); width: 28%; }
+body.umsc-app .adm-ua { margin-top: 10px; font-size: .76rem; color: var(--muted); word-break: break-all; }
+
+/* ---------- Bulk import ---------- */
+body.umsc-app .adm-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 0 1.5rem; padding: 0; list-style: none; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; counter-reset: step; overflow: hidden; }
+body.umsc-app .adm-steps li { counter-increment: step; display: flex; align-items: center; gap: 12px; padding: .95rem 1.2rem; font-size: .86rem; color: var(--muted); }
+body.umsc-app .adm-steps li + li { border-inline-start: 1px solid var(--line); }
+body.umsc-app .adm-steps li::before { content: counter(step); flex: none; display: grid; place-items: center; width: 24px; height: 24px; border: 1.5px solid #cfd6d2; border-radius: 50%; font: 600 .74rem var(--sans); color: var(--muted); }
+body.umsc-app .adm-steps li.is-current { color: var(--ink); font-weight: 600; }
+body.umsc-app .adm-steps li.is-current::before { border-color: var(--green-700); color: var(--green-700); }
+body.umsc-app .adm-steps li.is-done::before { content: "\2713"; background: var(--green-700); border-color: var(--green-700); color: #fff; }
+@media (max-width: 767.98px) { body.umsc-app .adm-steps { grid-template-columns: minmax(0, 1fr); } body.umsc-app .adm-steps li + li { border-inline-start: 0; border-top: 1px solid var(--line); } }
+
+body.umsc-app .adm-drop { display: block; padding: 2.4rem 1.5rem; border: 1.5px dashed #b9c4be; border-radius: 8px; background: #fbfcfb; text-align: center; cursor: pointer; transition: border-color .15s, background .15s; }
+body.umsc-app .adm-drop:hover, body.umsc-app .adm-drop.is-over, body.umsc-app .adm-drop:focus-visible { border-color: var(--green-700); background: #f3f8f5; outline: none; }
+body.umsc-app .adm-drop i { font-size: 1.9rem; color: var(--green-700); }
+body.umsc-app .adm-drop strong { display: block; margin: 6px 0 2px; font-size: .95rem; color: var(--ink); }
+body.umsc-app .adm-drop small { color: var(--muted); }
+body.umsc-app .adm-file { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; padding: .65rem .9rem; border: 1px solid var(--line); border-radius: 6px; background: #fff; font-size: .88rem; }
+body.umsc-app .adm-file span { display: flex; align-items: center; gap: 10px; min-width: 0; }
+body.umsc-app .adm-file em { font-style: normal; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body.umsc-app .adm-hintbox { padding: .85rem 1rem; border-inline-start: 3px solid var(--green-700); background: #f6f9f7; border-radius: 0 6px 6px 0; font-size: .85rem; color: var(--text); }
+[dir="rtl"] body.umsc-app .adm-hintbox { border-radius: 6px 0 0 6px; }
+body.umsc-app .adm-hintbox b { color: var(--ink); }
+body.umsc-app .adm-mini { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0; margin: 0 0 1rem; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+body.umsc-app .adm-mini > div { padding: .8rem 1rem; }
+body.umsc-app .adm-mini > div + div { border-inline-start: 1px solid var(--line); }
+body.umsc-app .adm-mini strong { display: block; font: 600 1.35rem/1.1 var(--serif); font-variant-numeric: tabular-nums; color: var(--ink); }
+body.umsc-app .adm-mini span { font-size: .76rem; color: var(--muted); }
+body.umsc-app .adm-scroll { max-height: 300px; overflow: auto; border: 1px solid var(--line); border-radius: 8px; }
+body.umsc-app .adm-scroll thead th { position: sticky; top: 0; z-index: 1; }
+body.umsc-app .adm-scroll tr.is-error > td { background: var(--bad-bg); color: var(--bad); }
+body.umsc-app .adm-batch { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+
+/* ---------- Add user form ---------- */
+body.umsc-app .adm-form { max-width: 980px; }
+body.umsc-app .adm-form .ui-fieldset:last-of-type { border-bottom: 0; }
+body.umsc-app .adm-form .ui-field > .form-control.is-invalid, body.umsc-app .adm-form .ui-field > .form-select.is-invalid, body.umsc-app .adm-form .adm-inline .form-control.is-invalid { border-color: var(--bad); background-image: none; }
+body.umsc-app .adm-form .ui-field > .form-control.is-valid, body.umsc-app .adm-form .adm-inline .form-control.is-valid { border-color: #cfd6d2; background-image: none; }
+body.umsc-app .adm-form .invalid-feedback { display: none; margin-top: 6px; font-size: .8rem; font-weight: 500; color: var(--bad); }
+body.umsc-app .adm-form .ui-field:has(.is-invalid) .invalid-feedback { display: block; }
+body.umsc-app .adm-inline { display: flex; gap: 8px; }
+body.umsc-app .adm-inline .form-control { flex: 1; min-width: 0; }
+body.umsc-app .adm-inline .ui-btn { flex: none; }
+body.umsc-app .adm-roledesc { min-height: 1.3em; margin: 8px 0 0; font-size: .82rem; color: var(--muted); }
+body.umsc-app .adm-form .ui-field[hidden] { display: none; }
+body.umsc-app .adm-upload { display: flex; align-items: center; gap: 14px; }
+
+/* ---------- Report hub ---------- */
+body.umsc-app .adm-hub td.adm-title strong { display: block; font-size: .94rem; font-weight: 600; color: var(--ink); }
+body.umsc-app .adm-hub td.adm-title span { font-size: .78rem; color: var(--muted); }
+
+/* ---------- Modals (user view/edit, import credentials, role editor) ---------- */
+body.umsc-app .adm-modal .modal-content, body.umsc-app .modal.adm-modal .modal-content { border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 24px 60px -20px rgba(7, 38, 23, .35); }
+body.umsc-app .adm-modal .modal-header { padding: 1.15rem 1.5rem; background: var(--surface); color: var(--ink); border-bottom: 1px solid var(--line-soft); border-radius: 10px 10px 0 0; }
+body.umsc-app .adm-modal .modal-header .modal-title { font: 600 1.15rem/1.3 var(--serif); color: var(--ink); }
+body.umsc-app .adm-modal .modal-header .modal-title i { display: none; }
+body.umsc-app .adm-modal .modal-header p { color: var(--muted); opacity: 1 !important; }
+body.umsc-app .adm-modal .modal-header .btn-close { filter: none; opacity: .55; }
+body.umsc-app .adm-modal .modal-header .btn-close:hover { opacity: 1; }
+body.umsc-app .adm-modal .modal-body { padding: 1.4rem 1.5rem; background: var(--paper); }
+body.umsc-app .adm-modal .modal-footer { padding: .95rem 1.5rem; background: var(--surface); border-top: 1px solid var(--line-soft); border-radius: 0 0 10px 10px; gap: 8px; }
+body.umsc-app .adm-modal .info-card { margin: 0 0 14px; padding: 1.1rem 1.25rem 1.2rem; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+body.umsc-app .adm-modal .info-card:last-child { margin-bottom: 0; }
+body.umsc-app .adm-modal .section-title { margin: 0 0 14px !important; padding: 0 0 10px; border: 0 !important; border-bottom: 1px solid var(--line-soft) !important; font: 600 .7rem/1.2 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+body.umsc-app .adm-modal .section-title::after { display: none; }
+body.umsc-app .adm-modal .info-item { margin-bottom: 14px; }
+body.umsc-app .adm-modal .info-item label { display: block; margin: 0 0 3px; font: 600 .68rem/1.2 var(--sans); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+body.umsc-app .adm-modal .info-item .value { font-size: .92rem; color: var(--ink); word-break: break-word; }
+body.umsc-app .adm-modal .status-badge { display: inline-flex; align-items: center; gap: 7px; padding: .38em .8em; border-radius: 99px; font: 600 .74rem/1 var(--sans); }
+body.umsc-app .adm-modal .status-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+body.umsc-app .adm-modal .status-active { background: var(--ok-bg); color: var(--ok); }
+body.umsc-app .adm-modal .status-suspended { background: var(--warn-bg); color: var(--warn); }
+body.umsc-app .adm-modal .status-banned { background: var(--bad-bg); color: var(--bad); }
+body.umsc-app .adm-modal .status-inactive { background: var(--idle-bg); color: var(--idle); }
+body.umsc-app .adm-modal .edit-form label, body.umsc-app .adm-modal .form-label { margin-bottom: 6px; font-size: .82rem; font-weight: 600; color: var(--ink); }
+body.umsc-app .adm-modal .form-control, body.umsc-app .adm-modal .form-select { min-height: 42px; border: 1.5px solid #cfd6d2; border-radius: 6px; font-size: .92rem; box-shadow: none; }
+body.umsc-app .adm-modal .form-control:focus, body.umsc-app .adm-modal .form-select:focus { border-color: var(--green-700); box-shadow: 0 0 0 3px rgba(23, 138, 74, .16); }
+body.umsc-app .adm-modal .form-control[disabled], body.umsc-app .adm-modal .form-select[disabled] { background: #f1f4f2; color: var(--muted); }
+body.umsc-app .adm-modal .btn-custom-primary, body.umsc-app .adm-modal button[type="submit"].btn-custom-primary { display: inline-flex; align-items: center; gap: 8px; padding: .62rem 1.1rem; border: 1.5px solid var(--green-700); border-radius: 6px; background: var(--green-700); color: #fff; font: 600 .86rem/1 var(--sans); cursor: pointer; }
+body.umsc-app .adm-modal .btn-custom-primary:hover { background: var(--green-800); border-color: var(--green-800); }
+body.umsc-app .adm-modal .btn-custom-secondary { display: inline-flex; align-items: center; gap: 8px; padding: .62rem 1.1rem; border: 1.5px solid #cfd6d2; border-radius: 6px; background: #fff; color: var(--ink); font: 600 .86rem/1 var(--sans); cursor: pointer; }
+body.umsc-app .adm-modal .btn-custom-secondary:hover { border-color: var(--green-700); }
+body.umsc-app .adm-modal .btn i, body.umsc-app .adm-modal .btn-custom-primary i, body.umsc-app .adm-modal .btn-custom-secondary i { margin: 0 !important; }
+
+@media (max-width: 767.98px) {
+    body.umsc-app .adm-modal .modal-body { padding: 1rem; }
+    body.umsc-app .adm-role-head, body.umsc-app .adm-role-facts { padding-inline: 1rem; }
+    body.umsc-app .adm-log tr.adm-detail > td, [dir="rtl"] body.umsc-app .adm-log tr.adm-detail > td { padding: 0 1rem 1rem; }
+}
+@media print {
+    body.umsc-app .adm-icon-btn, body.umsc-app .adm-tabs, body.umsc-app .adm-foot .pagination { display: none !important; }
+}
