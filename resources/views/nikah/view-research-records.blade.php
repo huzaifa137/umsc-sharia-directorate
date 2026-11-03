@@ -2183,6 +2183,7 @@
                                 let colors = {
                                     'approved': ['#05956815', '#059568'],
                                     'pending': ['#FFF7E6', '#FF9F43'],
+                                    'submitted': ['#FFF7E6', '#FF9F43'],
                                     'rejected': ['#FFE5E5', '#EA5455']
                                 };
                                 let bg = colors[newStatus][0] ?? '#E7F3FF';

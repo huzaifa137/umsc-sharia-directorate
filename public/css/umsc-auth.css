@@ -14,7 +14,7 @@ body.umsc-auth { min-height: 100vh; }
 .a-aside > * { position: relative; }
 .a-brand { display: flex; align-items: center; gap: 14px; color: #fff; }
 .a-brand-badge { width: 64px; height: 64px; border-radius: 50%; background: #fff; display: grid; place-items: center; flex: none; box-shadow: 0 0 0 5px rgba(255,255,255,.08); }
-.a-brand-badge img { width: 40px; height: auto; }
+.a-brand-badge img { width: 40px; height: auto; transform: translateY(-6%); }
 .a-brand strong { display: block; font: 600 1.2rem/1.15 var(--serif); }
 .a-brand span { font-size: .82rem; color: #9db8a8; }
 .a-aside-body h2 { color: #fff; font-size: clamp(1.7rem, 2.6vw, 2.35rem); max-width: 14ch; margin-bottom: 16px; }

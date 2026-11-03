@@ -323,7 +323,7 @@ Route::get('/test1', function () {
 
 
 // Consultancy Routes - make sure all these exist
-Route::prefix('consultancy')->middleware('permission:consultancy.view')->group(function () {
+Route::prefix('consultancy')->middleware(['AdminAuth', 'permission:consultancy.view'])->group(function () {
     Route::get('/', [ConsultancyController::class, 'index'])->name('consultancy.index');
     Route::get('/dashboard', [ConsultancyController::class, 'dashboard'])->name('consultancy.dashboard');
     Route::get('/create', [ConsultancyController::class, 'create'])->name('consultancy.create')->middleware('permission:consultancy.create');

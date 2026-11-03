@@ -808,14 +808,14 @@ class MasterController extends Controller
 
     public function shownikahApplicationInformation($id)
     {
-        $application = NikkahApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(NikkahApplication::query())->findOrFail($id);
 
         return response()->json($application);
     }
 
     public function editNikahApplication($id)
     {
-        $application = NikkahApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(NikkahApplication::query())->findOrFail($id);
 
         return response()->json([
             'success' => true,
@@ -825,7 +825,7 @@ class MasterController extends Controller
 
     public function updateNikahApplication(Request $request, $id)
     {
-        $application = NikkahApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(NikkahApplication::query())->findOrFail($id);
 
         $data = $request->except([
             '_token',
@@ -874,7 +874,7 @@ class MasterController extends Controller
 
     public function deleteNikahApplication($id)
     {
-        $application = NikkahApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(NikkahApplication::query())->findOrFail($id);
 
         if ($application->groom_photo_path && Storage::disk('public')->exists($application->groom_photo_path)) {
             Storage::disk('public')->delete($application->groom_photo_path);
@@ -894,7 +894,7 @@ class MasterController extends Controller
 
     public function viewCertificate($id)
     {
-        $application = NikkahApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(NikkahApplication::query())->findOrFail($id);
         return view('certificates.nikah', compact('application'));
     }
 
@@ -932,11 +932,12 @@ class MasterController extends Controller
     public function updateNikkahApplicationStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:pending,approved,rejected'
+            'status' => 'required|in:submitted,pending,approved,rejected'
         ]);
 
-        $application = NikkahApplication::findOrFail($id);
-        $application->status = $request->status;
+        $application = AccessControl::scopeApplications(NikkahApplication::query())->findOrFail($id);
+        // "Pending" is stored as 'submitted' everywhere else (lists, dashboard, counts).
+        $application->status = $request->status === 'pending' ? 'submitted' : $request->status;
         $application->save();
 
         return response()->json(['success' => true, 'status' => $application->status]);
@@ -1071,7 +1072,7 @@ class MasterController extends Controller
 
     public function editDivorceApplication($id)
     {
-        $application = DivorceApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(DivorceApplication::query())->findOrFail($id);
         return view('divorce.edit-application', compact('application'));
     }
 
@@ -1079,7 +1080,7 @@ class MasterController extends Controller
     public function viewDivorceApplication($id)
     {
 
-        $application = DivorceApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(DivorceApplication::query())->findOrFail($id);
 
         return view('divorce.view-application', compact('application'));
     }
@@ -1088,7 +1089,7 @@ class MasterController extends Controller
     public function deleteDivorceApplication($id)
     {
 
-        $application = DivorceApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(DivorceApplication::query())->findOrFail($id);
         $application_id = $application->application_id;
 
         $application->delete();
@@ -1102,7 +1103,7 @@ class MasterController extends Controller
 
     public function showdivorceApplicationInformation($id)
     {
-        $application = DivorceApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(DivorceApplication::query())->findOrFail($id);
 
         return response()->json($application);
     }
@@ -1421,7 +1422,7 @@ class MasterController extends Controller
 
     public function viewNikahRecords($id)
     {
-        $application = NikkahApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(NikkahApplication::query())->findOrFail($id);
         Helper::auditTrail('view', 'NikkahApplication', $application->id, 'success', null, null, 'Viewed Nikah application ' . $application->application_id);
 
         return view(
@@ -1433,7 +1434,7 @@ class MasterController extends Controller
     public function viewDivorceRecords($id)
     {
 
-        $application = DivorceApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(DivorceApplication::query())->findOrFail($id);
 
         Helper::auditTrail('view', 'DivorceApplication', $application->id, 'success', null, null, 'Viewed Divorce application ' . $application->application_id);
 
@@ -1445,7 +1446,7 @@ class MasterController extends Controller
 
     public function viewInheritanceRecords($id)
     {
-        $application = InheritanceApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(InheritanceApplication::query())->findOrFail($id);
 
         Helper::auditTrail('view', 'InheritanceApplication', $application->id, 'success', null, null, 'Viewed Inheritance application ' . $application->application_id);
 
@@ -1457,7 +1458,7 @@ class MasterController extends Controller
 
     public function viewGuardianshipRecords($id)
     {
-        $application = GuardianshipApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(GuardianshipApplication::query())->findOrFail($id);
 
         Helper::auditTrail('view', 'GuardianshipApplication', $application->id, 'success', null, null, 'Viewed Guardianship application ' . $application->application_id);
 
@@ -1469,7 +1470,7 @@ class MasterController extends Controller
 
     public function viewConvertRecords($id)
     {
-        $application = ConvertApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(ConvertApplication::query())->findOrFail($id);
 
         Helper::auditTrail('view', 'ConvertApplication', $application->id, 'success', null, null, 'Viewed Convert application ' . $application->application_id);
 
@@ -1481,19 +1482,19 @@ class MasterController extends Controller
 
     public function showDivorceInformation($id)
     {
-        $application = DivorceApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(DivorceApplication::query())->findOrFail($id);
 
         return response()->json($application);
     }
 
     public function editDivorceInformation($id)
     {
-        return DivorceApplication::findOrFail($id);
+        return AccessControl::scopeApplications(DivorceApplication::query())->findOrFail($id);
     }
 
     public function updateDivorceInformation(Request $request, $id)
     {
-        $application = DivorceApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(DivorceApplication::query())->findOrFail($id);
 
         $application->update($request->except(['_token']));
 
@@ -1505,7 +1506,7 @@ class MasterController extends Controller
 
     public function deleteApplication($id)
     {
-        $application = DivorceApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(DivorceApplication::query())->findOrFail($id);
 
         // Delete groom photo if exists
         if ($application->groom_photo_path && Storage::disk('public')->exists($application->groom_photo_path)) {
@@ -1565,7 +1566,7 @@ class MasterController extends Controller
             ], 404);
         }
 
-        $application = $model::find($id);
+        $application = AccessControl::scopeApplications($model::query())->find($id);
 
         if (!$application) {
             return response()->json([
@@ -1595,7 +1596,7 @@ class MasterController extends Controller
 
     public function detailsInheritanceApplication($id)
     {
-        $application = InheritanceApplication::with(['properties', 'heirs', 'verification'])->findOrFail($id);
+        $application = AccessControl::scopeApplications(InheritanceApplication::with(['properties', 'heirs', 'verification']))->findOrFail($id);
 
         return response()->json([
             'application_id' => $application->application_id,
@@ -1654,7 +1655,7 @@ class MasterController extends Controller
     // Delete Application
     public function deleteInheritanceApplication($id)
     {
-        $application = InheritanceApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(InheritanceApplication::query())->findOrFail($id);
 
         // Optional: remove from search index
         Helper::removeFromSearchIndex('inheritance', $application->id);
@@ -1676,7 +1677,7 @@ class MasterController extends Controller
     public function getInheritanceDetails($id)
     {
 
-        $app = InheritanceApplication::with(['properties', 'heirs', 'verification'])->findOrFail($id);
+        $app = AccessControl::scopeApplications(InheritanceApplication::with(['properties', 'heirs', 'verification']))->findOrFail($id);
 
         return response()->json([
             'id' => $app->id,
@@ -1701,7 +1702,7 @@ class MasterController extends Controller
     public function updateInheritanceInformation(Request $request, $id)
     {
 
-        $app = InheritanceApplication::findOrFail($id);
+        $app = AccessControl::scopeApplications(InheritanceApplication::query())->findOrFail($id);
 
         $validated = $request->validate([
             'deceased_name' => 'required|string|max:255',
@@ -1731,14 +1732,14 @@ class MasterController extends Controller
     // Guardianship crud
     public function getGuardianshipDetails($id)
     {
-        $app = GuardianshipApplication::findOrFail($id);
+        $app = AccessControl::scopeApplications(GuardianshipApplication::query())->findOrFail($id);
 
         return response()->json($app);
     }
 
     public function updateGuardianshipApplication(Request $request, $id)
     {
-        $application = GuardianshipApplication::findOrFail($id);
+        $application = AccessControl::scopeApplications(GuardianshipApplication::query())->findOrFail($id);
 
         $validated = $request->validate([
             'ward_name' => 'nullable',
@@ -1768,7 +1769,7 @@ class MasterController extends Controller
 
     public function deleteGuardianshipApplication($id)
     {
-        $app = GuardianshipApplication::findOrFail($id);
+        $app = AccessControl::scopeApplications(GuardianshipApplication::query())->findOrFail($id);
 
         Helper::removeFromSearchIndex('guardianship', $app->id);
 
@@ -1900,8 +1901,19 @@ class MasterController extends Controller
         ]);
     }
 
+    /** Route-model-bound records skip scopeApplications(), so check jurisdiction explicitly. */
+    private function ensureInScope($application): void
+    {
+        abort_unless(
+            AccessControl::scopeApplications($application::query())->whereKey($application->getKey())->exists(),
+            404
+        );
+    }
+
     public function show(ConvertApplication $application)
     {
+        $this->ensureInScope($application);
+
         // Return JSON for AJAX requests (modal view)
         if (request()->expectsJson()) {
             return response()->json([
@@ -1919,6 +1931,8 @@ class MasterController extends Controller
      */
     public function update(Request $request, ConvertApplication $application)
     {
+        $this->ensureInScope($application);
+
         $validator = Validator::make($request->all(), [
             'former_names' => 'required|string|max:255',
             'former_religion' => 'required|string|max:255',
@@ -2025,6 +2039,8 @@ class MasterController extends Controller
      */
     public function destroy(ConvertApplication $application)
     {
+        $this->ensureInScope($application);
+
         try {
             // Delete associated files
             $files = ['signature', 'officer_signature', 'official_stamp'];

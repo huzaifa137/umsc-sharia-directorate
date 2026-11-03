@@ -84,9 +84,6 @@ class RecordSchema
             'status' => [
                 'url' => '/applications/{id}/update-status',
                 'options' => ['submitted' => 'Pending', 'approved' => 'Approved', 'rejected' => 'Rejected'],
-                // The Nikah endpoint only accepts pending|approved|rejected, and 'pending' is not the
-                // stored "awaiting" value ('submitted'), so reverting is not offered here.
-                'offer' => ['approved', 'rejected'],
                 'done' => ['approved'],
             ],
             'title' => fn ($r) => self::pair(

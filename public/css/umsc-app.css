@@ -68,7 +68,7 @@ body.umsc-app {
 
 .s-brand { display: flex; align-items: center; gap: 12px; padding: 18px 18px 16px; position: relative; }
 .s-brand-badge { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; background: #fff; display: grid; place-items: center; box-shadow: 0 0 0 2px rgba(230, 201, 58, .55); }
-.s-brand-badge img { max-width: 30px; max-height: 34px; width: auto; height: auto; display: block; }
+.s-brand-badge img { max-width: 30px; max-height: 34px; width: auto; height: auto; display: block; transform: translateY(-6%); }
 .s-brand-text { min-width: 0; line-height: 1.15; padding-inline-end: 26px; }
 .s-brand-text strong { display: block; font: 600 1rem/1.15 var(--serif); color: #fff; }
 .s-brand-text span { display: block; margin-top: 4px; font: 500 .7rem/1.2 var(--sans); color: #8fb09d; letter-spacing: .03em; }
