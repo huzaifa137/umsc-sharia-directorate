@@ -155,7 +155,7 @@
                     <h2 class="rec-panel__title">Decision</h2>
                     @if ($status['pending'])
                         <p class="rec-panel__text">
-                            This record is waiting for a decision@if ($case['waiting'] !== null && $case['waiting'] > 0), lodged {{ $case['waiting'] }} {{ \Illuminate\Support\Str::plural('day', $case['waiting']) }} ago @endif.
+                            This record is waiting for a decision{{ $case['waiting'] !== null && $case['waiting'] > 0 ? ', lodged ' . $case['waiting'] . ' ' . \Illuminate\Support\Str::plural('day', $case['waiting']) . ' ago' : '' }}.
                         </p>
                     @else
                         <p class="rec-panel__text">Current status: <strong>{{ $status['label'] }}</strong>. You can change it if a decision needs correcting.</p>

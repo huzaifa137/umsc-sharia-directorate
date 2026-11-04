@@ -90,6 +90,16 @@ body.umsc-app {
 .umsc-app .layout-menu .menu-icon { color: #8fb09d !important; font-size: 1.25rem; margin-inline-end: .7rem !important; }
 .umsc-app .layout-menu .menu-link:hover .menu-icon { color: #fff !important; }
 
+/* The Sneat theme paints the <li> itself: #eceded for an active item and for an
+   open group, and a pale blue when the sidebar is collapsed. Our link states
+   below are translucent tints meant to sit on the dark green sidebar, so on
+   that light fill the white labels vanish and the gold tint turns cream.
+   The sidebar surface is the only background; state is carried by .menu-link. */
+.umsc-app .layout-menu.bg-menu-theme .menu-inner .menu-item,
+.umsc-app .layout-menu.bg-menu-theme .menu-inner .menu-item.active,
+.umsc-app .layout-menu.bg-menu-theme .menu-inner .menu-item.open,
+html.layout-menu-collapsed:not(.layout-menu-hover):not(.layout-menu-expanded) .umsc-app .layout-menu.bg-menu-theme .menu-inner > .menu-item.active { background: transparent !important; }
+
 .umsc-app .layout-menu .menu-item.active > .menu-link:not(.menu-toggle),
 .umsc-app .layout-menu .menu-sub .menu-item.active > .menu-link {
     background: rgba(230, 201, 58, .13) !important;
@@ -104,8 +114,8 @@ body.umsc-app {
 .umsc-app .layout-menu .menu-item.active > .menu-link.menu-toggle { background: rgba(255, 255, 255, .05) !important; color: #fff !important; }
 .umsc-app .layout-menu .menu-toggle::after { color: #7fa08d !important; }
 
-.umsc-app .layout-menu .menu-sub { padding-top: 2px; }
-.umsc-app .layout-menu .menu-sub .menu-link { font-size: .88rem; font-weight: 400; padding-inline-start: 3.1rem !important; }
+.umsc-app .layout-menu .menu-sub { padding-top: 2px; margin-inline-start: 1.375rem; border-inline-start: 1px solid rgba(255, 255, 255, .12); }
+.umsc-app .layout-menu .menu-sub .menu-link { font-size: .88rem; font-weight: 400; padding-inline-start: 1.65rem !important; }
 .umsc-app .layout-menu .menu-sub .menu-link::before { display: none !important; }
 .umsc-app .layout-menu .menu-sub .menu-item.active > .menu-link { font-weight: 600; }
 
