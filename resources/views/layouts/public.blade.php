@@ -56,7 +56,8 @@
                 <li><a href="{{ url('/') }}#services">Services</a></li>
                 <li><a href="{{ url('/') }}#process">How it works</a></li>
                 <li><a href="{{ url('/') }}#structure">Structure</a></li>
-                <li><a href="{{ route('fatwa.public.index') }}">Fatwa</a></li>
+                <li><a href="{{ route('fatwa.public.index') }}"
+                        class="{{ request()->routeIs('fatwa.public.*') ? 'is-active' : '' }}">Fatwa</a></li>
                 <li><a href="{{ url('/') }}#contact">Contact</a></li>
                 <li class="u-nav-cta"><a href="{{ url('users/login') }}">{{ __('ui.nav.login') }}</a></li>
             </ul>
