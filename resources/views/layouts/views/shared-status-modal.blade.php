@@ -55,6 +55,11 @@
             { value: 'accomplished', label: 'Accomplished', color: '#059568' },
             { value: 'rejected',     label: 'Rejected',     color: '#dc2626' },
         ],
+        nikah: [
+            { value: 'pending',  label: 'Pending',  color: '#b58900' },
+            { value: 'approved', label: 'Approved', color: '#059568' },
+            { value: 'rejected', label: 'Rejected', color: '#dc2626' },
+        ],
     };
 
     const urlMap = {
@@ -62,6 +67,13 @@
         inheritance: '/inheritance-status-update',
         guardianship:'/guardianship-status-update',
         convert:     '/convert-status-update',
+        nikah:       '/applications/{id}/update-status',
+    };
+
+    // Most modules use <base>/<id>; Nikah's route has the id in the middle.
+    const statusUrl = (module, id) => {
+        const base = urlMap[module];
+        return base.includes('{id}') ? base.replace('{id}', id) : `${base}/${id}`;
     };
 
     document.addEventListener('click', function (e) {
@@ -115,7 +127,7 @@
 
                 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content ?? '';
 
-                fetch(`${urlMap[module]}/${id}`, {
+                fetch(statusUrl(module, id), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
