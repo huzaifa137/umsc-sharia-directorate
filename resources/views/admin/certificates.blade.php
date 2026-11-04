@@ -3,12 +3,9 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
 
-        <div class="card mb-4">
-            <div class="card-header" style="background: linear-gradient(135deg, #0d4b1e 0%, #08300f 100%); color: #fff;">
-                <h5 class="mb-0"><i class="bx bx-certification me-2"></i> Certificates</h5>
-                <small class="opacity-75">Search, preview, correct, and print certificates across every module.</small>
-            </div>
+        <x-ui.page-header title="Certificates" subtitle="Search, preview, correct and print certificates across every module." :crumbs="['Dashboard' => url('/users/dashboard'), 'Certificates' => null]" />
 
+        <div class="card mb-4">
             <div class="card-body">
                 <form method="GET" action="{{ route('certificates.index') }}" id="certFilterForm">
                     <div class="row g-3">
@@ -50,7 +47,7 @@
                         </div>
 
                         <div class="col-md-3 d-flex align-items-end">
-                            <button type="submit" class="btn w-100" style="background:#0d4b1e; color:#fff;">
+                            <button type="submit" class="ui-btn ui-btn--primary w-100 justify-content-center">
                                 <i class="bx bx-search-alt me-1"></i> Search
                             </button>
                         </div>
@@ -83,14 +80,14 @@
                         {{ collect($modules)->firstWhere('slug', $selectedType)['label'] }} —
                         {{ $results->total() }} certified {{ $results->total() === 1 ? 'record' : 'records' }} found
                     </h6>
-                    <button id="printSelectedBtn" class="btn btn-sm btn-danger" disabled>
+                    <button id="printSelectedBtn" class="ui-btn ui-btn--primary" disabled>
                         <i class="bx bx-printer me-1"></i> Print Selected (<span id="selectedCount">0</span>)
                     </button>
                 </div>
 
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
-                        <thead style="background:#0d4b1e; color:#fff;">
+                        <thead>
                             <tr>
                                 <th style="width:40px;"><input type="checkbox" id="selectAllCerts"></th>
                                 <th>Application ID</th>
@@ -110,19 +107,20 @@
                                     <td>{{ $record->created_at?->format('d M Y') }}</td>
                                     <td>
                                         <a href="{{ route('certificates.preview', [$selectedType, $record->id]) }}" target="_blank"
-                                            class="btn btn-sm btn-outline-success">
+                                            class="ui-btn">
                                             <i class="bx bx-show"></i> Preview / Print
                                         </a>
-                                        <button type="button" class="btn btn-sm btn-outline-warning quickEditBtn"
+                                        <button type="button" class="ui-btn quickEditBtn"
                                             data-id="{{ $record->id }}"
-                                            data-fields="{{ json_encode($editableFields) }}">
+                                            data-fields="{{ json_encode($editableFields) }}"
+                                            data-values="{{ json_encode(collect($editableFields)->mapWithKeys(fn ($f) => [$f => $record->{$f}])) }}">
                                             <i class="bx bx-edit"></i> Edit
                                         </button>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center text-muted py-4">No certified records match those filters.</td>
+                                    <td colspan="6"><x-ui.empty-state title="No certified records found" text="Only completed records have certificates. Widen the date or location filters and search again." icon="bx-certification" /></td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -140,16 +138,16 @@
     <div class="modal fade" id="quickEditModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header" style="background:#0d4b1e; color:#fff;">
+                <div class="modal-header">
                     <h5 class="modal-title">Quick Edit Before Printing</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body" id="quickEditFieldsContainer">
                     <!-- injected fields go here -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn" style="background:#0d4b1e;color:#fff;" id="saveQuickEditBtn">Save</button>
+                    <button type="button" class="ui-btn" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="ui-btn ui-btn--primary" id="saveQuickEditBtn">Save</button>
                 </div>
             </div>
         </div>
@@ -206,11 +204,12 @@
             btn.addEventListener('click', function () {
                 quickEditRecordId = this.dataset.id;
                 const fields = JSON.parse(this.dataset.fields);
+                const values = JSON.parse(this.dataset.values || '{}');
                 const container = document.getElementById('quickEditFieldsContainer');
                 container.innerHTML = fields.map(f => `
                     <div class="mb-3">
                         <label class="form-label fw-bold">${fieldLabels[f] || f}</label>
-                        <input type="text" class="form-control quickEditInput" data-field="${f}">
+                        <input type="text" class="form-control quickEditInput" data-field="${f}" value="${String(values[f] ?? '').replace(/"/g, '&quot;')}">
                     </div>
                 `).join('');
                 quickEditModal.show();
@@ -235,6 +234,7 @@
             }
 
             quickEditModal.hide();
+            if (window.UMSC) UMSC.toast('success', 'Saved. Reload the list to see the change.');
         });
     </script>
 @endsection

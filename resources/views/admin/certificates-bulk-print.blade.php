@@ -3,13 +3,13 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="card shadow-lg border-0">
-            <div class="card-header text-white" style="background:#0d4b1e;">
-                <h5 class="mb-0"><i class="bx bx-printer me-2"></i> Bulk Print — {{ $label }}</h5>
+            <div class="card-header">
+                <h5 class="mb-0">Bulk print: {{ $label }}</h5>
             </div>
             <div class="card-body text-center">
                 <p class="mb-3">Merging <strong>{{ $applications->count() }}</strong> certificate(s) into a single PDF…</p>
 
-                <button id="startMergeBtn" class="btn px-5" style="background:#0d4b1e;color:#fff;">
+                <button id="startMergeBtn" class="ui-btn ui-btn--primary px-5">
                     <i class="bx bx-play-circle me-1"></i> Start
                 </button>
 
@@ -19,7 +19,7 @@
                     </div>
                     <div style="background:#e9ecef; border-radius:8px; height:22px; width:100%;">
                         <div id="progressBar"
-                            style="background:#0d4b1e; height:100%; width:0%; border-radius:8px; transition:width 0.3s ease; text-align:center; color:white; font-size:13px; line-height:22px;">
+                            style="background:#136a3b; height:100%; width:0%; border-radius:8px; transition:width 0.3s ease; text-align:center; color:white; font-size:13px; line-height:22px;">
                         </div>
                     </div>
                 </div>

@@ -1,37 +1,32 @@
-{{-- Exactly one signature block (Director for Sharia) plus a QR code —
-     no second generic "Kazi/Imam signature" line, by design. --}}
-<div class="cert-footer">
-    <div class="sign-block">
-        <div class="line">PROF. DR. ZIYAD S. LUBANGA</div>
-        <div class="role-en">DIRECTOR OF SHARIA</div>
-        <div class="role-ar">مدير الشريعة</div>
+@php
+    $issuedOn = \App\Services\CertificateVerifier::issuedOn($record);
+    $verifyUrl = \App\Services\CertificateVerifier::url($certType, $record->id);
+    $verifyCode = \App\Services\CertificateVerifier::code($certType, $record->id);
+@endphp
+<footer class="cert-foot">
+    <div class="cert-sign">
+        <div class="cert-sign__space"></div>
+        <div class="cert-sign__line">Prof. Dr. Ziyad S. Lubanga</div>
+        <div class="cert-sign__role">Director of Sharia, Uganda Muslim Supreme Council</div>
+        <div class="cert-sign__ar" lang="ar" dir="rtl">مدير الشريعة</div>
     </div>
 
-    <div class="qr-block">
-        <div id="qr"></div>
-        <div class="caption">Scan to verify</div>
-    </div>
-
-    <div class="date-block">
-        <div class="row">
-            <span class="label">Date of Issue</span>
-            <span class="value">{{ \Carbon\Carbon::now()->format('jS F, Y') }}</span>
+    <div class="cert-issue">
+        <div>
+            <small>Date of issue</small>
+            <strong>{{ $issuedOn->format('j F Y') }}</strong>
         </div>
-        <div class="row">
-            <span class="label">Place</span>
-            <span class="value">{{ $application->officer_district ?? 'Uganda' }}</span>
+        <div>
+            <small>Place of issue</small>
+            <strong>{{ $record->officer_district ?? 'Uganda' }}</strong>
         </div>
     </div>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script>
-    new QRCode(document.getElementById("qr"), {
-        text: {!! json_encode(url('/certificates/verify/' . ($certType ?? 'nikah') . '/' . $application->id)) !!},
-        width: 60,
-        height: 60,
-        colorDark: "#0d4b1e",
-        colorLight: "#fdfbf3",
-        correctLevel: QRCode.CorrectLevel.H
-    });
-</script>
+    <div class="cert-verify">
+        <div class="cert-verify__text">
+            <small>Scan to check this certificate</small>
+            <div class="cert-verify__code">{{ $verifyCode }}</div>
+        </div>
+        <div class="cert-verify__qr" id="qr" data-url="{{ $verifyUrl }}"></div>
+    </div>
+</footer>

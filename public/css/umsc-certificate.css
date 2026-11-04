@@ -1,0 +1,253 @@
+/* ==========================================================================
+   UMSC Directorate of Sharia: certificates (Patch 11)
+   One sheet, one frame, one type scale for every certificate the Directorate
+   issues. Sheet sizes are exact A4, so what is on screen, what the browser
+   prints and what the PDF button saves are the same page.
+
+   Landscape (default): Nikah, Divorce, Inheritance, Guardianship, Convert.
+   Portrait (.certificate--portrait): Consultation.
+   ========================================================================== */
+
+:root {
+    --c-green: #0d4b1e;
+    --c-green-deep: #0a3320;
+    --c-gold: #b08d2e;
+    --c-gold-ink: #8a6b17;
+    --c-ink: #17231b;
+    --c-text: #2b382f;
+    --c-muted: #6a7469;
+    --c-rule: #d8cfae;
+    --c-paper: #fefdf9;
+    --c-desk: #e5eae7;
+    --c-serif: 'Source Serif 4', 'Times New Roman', Georgia, serif;
+    --c-sans: 'IBM Plex Sans', system-ui, 'Segoe UI', Arial, sans-serif;
+    --c-arabic: 'Amiri', 'Traditional Arabic', 'Times New Roman', serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body.cert-page {
+    background: var(--c-desk);
+    color: var(--c-text);
+    font-family: var(--c-serif);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* ---------- Screen chrome (never printed, never in the PDF) ---------- */
+.cert-toolbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 18px;
+    background: var(--c-green-deep); color: #fff;
+    font: 500 .9rem/1.2 var(--c-sans);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .08);
+}
+.cert-toolbar__back {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: .5rem .8rem; border: 1px solid rgba(255, 255, 255, .28); border-radius: 6px;
+    background: transparent; color: #fff; font: inherit; cursor: pointer; text-decoration: none;
+}
+.cert-toolbar__back:hover { background: rgba(255, 255, 255, .1); }
+.cert-toolbar__title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cert-toolbar__title small { display: block; margin-top: 2px; font-weight: 400; font-size: .76rem; color: rgba(255, 255, 255, .66); }
+.cert-toolbar__actions { display: flex; gap: 8px; }
+.cert-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: .55rem 1rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, .28);
+    background: transparent; color: #fff; font: 600 .88rem/1 var(--c-sans); cursor: pointer;
+}
+.cert-btn:hover { background: rgba(255, 255, 255, .1); }
+.cert-btn--primary { background: #e6c93a; border-color: #e6c93a; color: var(--c-green-deep); }
+.cert-btn--primary:hover { background: #f0d655; }
+.cert-btn[disabled] { opacity: .6; cursor: progress; }
+.cert-toolbar :focus-visible, .cert-btn:focus-visible { outline: 3px solid #e6c93a; outline-offset: 2px; }
+
+.cert-stage { display: flex; justify-content: center; padding: 28px 16px 56px; }
+.cert-box { position: relative; }
+.cert-fit { transform-origin: top left; box-shadow: 0 2px 4px rgba(10, 51, 32, .12), 0 24px 48px -20px rgba(10, 51, 32, .35); }
+
+.cert-loader {
+    position: fixed; inset: 0; z-index: 50; display: none; align-items: center; justify-content: center;
+    background: rgba(10, 51, 32, .45);
+}
+.cert-loader.is-on { display: flex; }
+.cert-loader__card { padding: 26px 32px; border-radius: 8px; background: #fff; text-align: center; font: 500 .95rem/1.4 var(--c-sans); color: var(--c-ink); }
+.cert-loader__card small { display: block; margin-top: 4px; color: var(--c-muted); font-weight: 400; }
+
+/* Inside the bulk-print iframe: sheet only, at full size. */
+html.is-embedded body.cert-page { background: #fff; }
+html.is-embedded .cert-toolbar { display: none; }
+html.is-embedded .cert-stage { padding: 0; }
+html.is-embedded .cert-fit { box-shadow: none; }
+
+/* ---------- The sheet ---------- */
+.certificate {
+    position: relative;
+    width: 297mm; height: 210mm;
+    background: var(--c-paper);
+    overflow: hidden;
+    color: var(--c-text);
+    font-family: var(--c-serif);
+    font-size: 11pt;
+    line-height: 1.4;
+}
+.certificate--portrait { width: 210mm; height: 297mm; }
+
+.cert-frame { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.cert-mark {
+    position: absolute; left: 50%; top: 54%; width: auto; height: 118mm;
+    transform: translate(-50%, -50%); opacity: .05; pointer-events: none;
+}
+.certificate--portrait .cert-mark { height: 150mm; }
+
+.cert-inner {
+    position: absolute; inset: 17mm 25mm 16mm;
+    display: flex; flex-direction: column;
+    z-index: 1;
+}
+.certificate--portrait .cert-inner { inset: 19mm 22mm 18mm; }
+
+[lang="ar"], .ar { font-family: var(--c-arabic); direction: rtl; unicode-bidi: isolate; }
+
+/* ---------- Header ---------- */
+.cert-head {
+    display: grid; grid-template-columns: 54mm 1fr 54mm; align-items: start; gap: 4mm;
+}
+.certificate--portrait .cert-head { grid-template-columns: 1fr auto; grid-template-areas: "org no" "heading heading"; gap: 2mm 6mm; align-items: center; }
+.certificate--portrait .cert-org { grid-area: org; }
+.certificate--portrait .cert-heading { grid-area: heading; }
+.certificate--portrait .cert-no { grid-area: no; }
+
+.cert-org { display: flex; align-items: center; gap: 3.2mm; }
+.cert-org img { height: 17mm; width: auto; display: block; flex: none; }
+.cert-org__name { font: 600 8.6pt/1.25 var(--c-serif); color: var(--c-green); text-wrap: balance; }
+.cert-org__sub { margin-top: .6mm; font: 400 7.4pt/1.25 var(--c-sans); color: var(--c-muted); }
+.cert-org__ar { margin-top: .8mm; font: 400 9pt/1.2 var(--c-arabic); color: var(--c-gold-ink); }
+.certificate--portrait .cert-org img { height: 16mm; }
+
+.cert-heading { text-align: center; }
+.cert-bismillah { font: 400 15pt/1.5 var(--c-arabic); color: var(--c-green); direction: rtl; }
+.cert-title { margin: .6mm 0 0; font: 600 26pt/1.08 var(--c-serif); letter-spacing: .005em; color: var(--c-green); white-space: nowrap; }
+.cert-title--long { font-size: 21pt; }
+.cert-title-ar { margin-top: 1.2mm; font: 400 17pt/1.3 var(--c-arabic); color: var(--c-gold-ink); direction: rtl; }
+.certificate--portrait .cert-title { font-size: 23pt; }
+.certificate--portrait .cert-rule { margin-top: 3mm; }
+.certificate--portrait .cert-sign__space { height: 9mm; }
+
+.cert-no { justify-self: end; text-align: right; font-family: var(--c-sans); }
+.cert-no__label { font-size: 7pt; color: var(--c-muted); }
+.cert-no__value { margin-top: .4mm; font-size: 10pt; font-weight: 600; color: var(--c-ink); font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+
+.cert-rule { display: flex; align-items: center; gap: 3mm; margin: 4mm auto 0; width: 150mm; max-width: 100%; }
+.cert-rule::before, .cert-rule::after { content: ""; flex: 1; height: 0; border-top: .3mm solid var(--c-gold); }
+.cert-rule i { width: 2.2mm; height: 2.2mm; background: var(--c-gold); transform: rotate(45deg); flex: none; }
+
+/* ---------- Body ---------- */
+.cert-body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 5.5mm; text-align: center; padding: 3mm 0; min-height: 0; }
+.cert-statement { max-width: 205mm; margin: 0 auto; font-size: 12pt; line-height: 1.55; color: var(--c-text); }
+.cert-statement b { font-weight: 600; color: var(--c-ink); }
+.cert-epigraph { max-width: 175mm; margin: 0 auto; font: italic 400 9.2pt/1.5 var(--c-serif); color: var(--c-muted); }
+
+/* Principal subject (one person or estate) */
+.cert-principal__role { font: 500 8.6pt/1 var(--c-sans); color: var(--c-gold-ink); }
+.cert-principal__name { margin-top: 1.6mm; font: 600 25pt/1.15 var(--c-serif); color: var(--c-ink); }
+.cert-principal__alt { margin-top: 1.2mm; font: 400 10.5pt/1.3 var(--c-serif); color: var(--c-muted); }
+.cert-principal__alt b { font-weight: 600; color: var(--c-text); }
+
+/* Two parties, each with a photograph */
+.cert-parties { display: grid; grid-template-columns: 1fr 1fr; align-items: center; max-width: 214mm; width: 100%; margin: 0 auto; }
+.cert-party { display: flex; align-items: center; gap: 5mm; padding: 0 7mm; text-align: left; }
+.cert-party + .cert-party { border-inline-start: .3mm solid var(--c-rule); }
+.cert-photo { flex: none; width: 24mm; height: 30mm; padding: .9mm; background: #fff; border: .35mm solid var(--c-gold); }
+.cert-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cert-photo.is-empty { background: #f5f1e3; }
+.cert-party__text { min-width: 0; }
+.cert-party__role { font: 500 8.4pt/1 var(--c-sans); color: var(--c-gold-ink); }
+.cert-party__name { margin-top: 1.4mm; font: 600 16.5pt/1.2 var(--c-serif); color: var(--c-ink); overflow-wrap: anywhere; }
+
+/* Particulars: label and value pairs with a ruled line under each */
+.cert-ledger { display: grid; grid-template-columns: 1fr 1fr; column-gap: 15mm; max-width: 214mm; width: 100%; margin: 0 auto; text-align: left; }
+.cert-ledger--one { grid-template-columns: 1fr; max-width: 120mm; }
+.cert-ledger div { display: grid; grid-template-columns: 35mm 1fr; align-items: baseline; padding: 1.7mm 0; border-bottom: .25mm solid var(--c-rule); }
+.cert-ledger dt { margin: 0; font: 400 7.8pt/1.3 var(--c-sans); color: var(--c-muted); }
+.cert-ledger dd { margin: 0; font: 500 11pt/1.3 var(--c-serif); color: var(--c-ink); overflow-wrap: anywhere; }
+.cert-ledger dd small { font: 400 8.6pt var(--c-sans); color: var(--c-muted); }
+
+.cert-dua { max-width: 185mm; margin: 0 auto; font: italic 400 9.6pt/1.5 var(--c-serif); color: var(--c-muted); }
+
+/* ---------- Footer: signature, issue details, verification ---------- */
+.cert-foot {
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 8mm;
+    padding-top: 4mm; border-top: .3mm solid var(--c-gold);
+}
+.cert-sign { width: 72mm; text-align: center; }
+.cert-sign__space { height: 12mm; }
+.cert-sign__line { border-top: .3mm solid var(--c-ink); padding-top: 1.6mm; font: 600 10.2pt/1.2 var(--c-serif); color: var(--c-ink); }
+.cert-sign__role { margin-top: .6mm; font: 400 7.8pt/1.3 var(--c-sans); color: var(--c-muted); }
+.cert-sign__ar { margin-top: .4mm; font: 400 9pt/1.2 var(--c-arabic); color: var(--c-gold-ink); }
+
+.cert-issue { text-align: center; font-family: var(--c-sans); }
+.cert-issue div + div { margin-top: 2mm; }
+.cert-issue small { display: block; font-size: 7pt; color: var(--c-muted); }
+.cert-issue strong { display: block; margin-top: .3mm; font: 600 10pt/1.2 var(--c-serif); color: var(--c-ink); }
+
+.cert-verify { justify-self: end; display: flex; align-items: flex-end; gap: 3.5mm; text-align: right; font-family: var(--c-sans); }
+.cert-verify__text small { display: block; font-size: 7pt; color: var(--c-muted); line-height: 1.35; }
+.cert-verify__code { margin-top: 1mm; font: 600 10.5pt/1 var(--c-sans); letter-spacing: .08em; color: var(--c-green); font-variant-numeric: tabular-nums; }
+.cert-verify__qr { width: 21mm; height: 21mm; flex: none; padding: 1mm; background: #fff; border: .3mm solid var(--c-rule); }
+.cert-verify__qr canvas, .cert-verify__qr img { width: 100% !important; height: 100% !important; display: block; }
+
+/* ---------- Consultation (portrait) specifics ---------- */
+.cert-section { text-align: left; }
+.cert-section + .cert-section { margin-top: 4.2mm; }
+.cert-section h3 { margin: 0 0 1.2mm; font: 600 9.4pt/1.2 var(--c-sans); color: var(--c-green); }
+.cert-section p { margin: 0; font-size: 10.4pt; line-height: 1.5; color: var(--c-text); white-space: pre-line; }
+.cert-refs { margin: 0; padding: 0; list-style: none; font-size: 9.6pt; line-height: 1.5; }
+.cert-refs b { font: 600 8.2pt var(--c-sans); color: var(--c-muted); margin-inline-end: 2mm; }
+.certificate--portrait .cert-body { justify-content: flex-start; text-align: left; gap: 4mm; padding-top: 5mm; }
+.certificate--portrait .cert-statement { max-width: none; text-align: center; font-size: 11pt; }
+.certificate--portrait .cert-foot { grid-template-columns: 1fr 1fr; row-gap: 5mm; }
+.certificate--portrait .cert-issue { grid-column: 1 / -1; grid-row: 2; display: flex; justify-content: center; gap: 14mm; }
+.certificate--portrait .cert-issue div + div { margin-top: 0; }
+
+/* ---------- Print ---------- */
+@media print {
+    html, body.cert-page { background: #fff !important; }
+    .cert-toolbar, .cert-loader { display: none !important; }
+    .cert-stage { display: block; padding: 0; }
+    .cert-box { width: auto !important; height: auto !important; }
+    .cert-fit { transform: none !important; box-shadow: none !important; }
+    .certificate { break-inside: avoid; page-break-inside: avoid; margin: 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .cert-btn { transition: background-color .15s ease; }
+}
+
+/* ---------- Added blocks: plain parties, scripture ---------- */
+.cert-parties--plain .cert-party { justify-content: center; text-align: center; flex-direction: column; gap: 1.4mm; }
+.cert-parties--plain .cert-party__name { margin-top: 0; font-size: 18pt; }
+
+.cert-verse { max-width: 185mm; margin: 0 auto; }
+.cert-verse__ar { font: 400 14pt/1.6 var(--c-arabic); color: var(--c-green); direction: rtl; }
+.cert-verse__en { margin-top: .6mm; font: italic 400 9.4pt/1.45 var(--c-serif); color: var(--c-muted); }
+.cert-verse__ref { margin-top: .6mm; font: 400 7.6pt/1.3 var(--c-sans); color: var(--c-muted); }
+.cert-verse + .cert-verse { margin-top: 2mm; }
+
+/* ---------- Fit: long text shrinks a little rather than being cut off ----------
+   umsc-certificate.js sets --fit (1 down to .72) on .cert-body only when the
+   content is taller than the space it has. */
+.cert-body { --fit: 1; }
+.cert-statement { font-size: calc(12pt * var(--fit)); }
+.certificate--portrait .cert-statement { font-size: calc(11pt * var(--fit)); }
+.cert-principal__name { font-size: calc(25pt * var(--fit)); }
+.cert-party__name { font-size: calc(16.5pt * var(--fit)); }
+.cert-parties--plain .cert-party__name { font-size: calc(18pt * var(--fit)); }
+.cert-ledger dd { font-size: calc(11pt * var(--fit)); }
+.cert-dua { font-size: calc(9.6pt * var(--fit)); }
+.cert-epigraph { font-size: calc(9.2pt * var(--fit)); }
+.cert-verse__en { font-size: calc(9.4pt * var(--fit)); }
+.cert-section p { font-size: calc(10.4pt * var(--fit)); }
+.cert-refs { font-size: calc(9.6pt * var(--fit)); }

@@ -33,17 +33,4 @@
         }, { rootMargin: '-40% 0px -55% 0px' });
         map.forEach(function (x) { spy.observe(x.el); });
     }
-
-    // Certificate check: interface only until the verification endpoint exists
-    var form = document.getElementById('uCheckForm');
-    if (form) {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            var code = form.querySelector('input[name="code"]').value.trim();
-            var out = document.getElementById('uCheckResult');
-            if (!code) { form.querySelector('input[name="code"]').focus(); return; }
-            out.textContent = 'Online verification is not switched on yet. Reference noted: ' + code;
-            out.classList.add('is-visible');
-        });
-    }
 })();

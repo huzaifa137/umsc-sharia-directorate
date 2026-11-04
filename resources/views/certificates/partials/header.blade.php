@@ -1,17 +1,22 @@
-{{-- Flows inside the parent .certificate-content box. Seal and title sit
-     side-by-side to save vertical space in landscape orientation. --}}
-
-<div class="cert-app-id">
-    Cert. Ref: {{ $application->application_id ?? ('UMSC-' . $application->id) }}
-</div>
-
-<div class="cert-header-row">
-    <div class="cert-seal">
-        <img src="{{ asset('assets/img/branding/umsc-seal.png') }}" alt="UMSC Seal">
+<header class="cert-head">
+    <div class="cert-org">
+        <img src="{{ asset('assets/img/branding/umsc-seal.png') }}" alt="UMSC seal">
+        <div>
+            <div class="cert-org__name">Uganda Muslim Supreme Council</div>
+            <div class="cert-org__sub">Directorate of Sharia</div>
+            <div class="cert-org__ar" lang="ar" dir="rtl">مديرية الشريعة</div>
+        </div>
     </div>
-    <div class="cert-title-wrap">
-        <div class="cert-dua">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-        <div class="cert-title-en">{{ $titleEn }}</div>
-        <div class="cert-title-ar">{{ $titleAr }}</div>
+
+    <div class="cert-heading">
+        <div class="cert-bismillah" lang="ar" dir="rtl">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+        <h1 class="cert-title {{ mb_strlen($titleEn) > 30 ? 'cert-title--long' : '' }}">{{ $titleEn }}</h1>
+        <div class="cert-title-ar" lang="ar" dir="rtl">{{ $titleAr }}</div>
     </div>
-</div>
+
+    <div class="cert-no">
+        <div class="cert-no__label">Certificate no.</div>
+        <div class="cert-no__value">{{ $certNo }}</div>
+    </div>
+</header>
+<div class="cert-rule" aria-hidden="true"><i></i></div>

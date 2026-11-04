@@ -49,6 +49,15 @@ Route::get('/time-test', function () {
 Route::get('/fatwa', [FatwaController::class, 'index'])->name('fatwa.public.index');
 Route::get('/fatwa/{fatwa:slug}', [FatwaController::class, 'show'])->name('fatwa.public.show');
 
+// Public certificate verification (QR codes and the homepage check form)
+Route::get('/certificates/verify', [\App\Http\Controllers\CertificateController::class, 'verifyLookup'])
+    ->middleware('throttle:30,1')->name('certificates.verify.lookup');
+Route::get('/certificates/verify/{type}/{id}', [\App\Http\Controllers\CertificateController::class, 'verify'])
+    ->whereNumber('id')->middleware('throttle:30,1')->name('certificates.verify');
+Route::get('/consultancy/verify/{id}', function (\Illuminate\Http\Request $request, int $id) {
+    return app(\App\Http\Controllers\CertificateController::class)->verify($request, 'consultancy', $id);
+})->whereNumber('id')->middleware('throttle:30,1')->name('consultancy.verify');
+
 
 
 Route::controller(AdminController::class)->group(function () {

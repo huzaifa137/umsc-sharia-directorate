@@ -8,6 +8,7 @@ use App\Models\GuardianshipApplication;
 use App\Models\InheritanceApplication;
 use App\Models\NikkahApplication;
 use App\Services\AccessControl;
+use App\Services\CertificateVerifier;
 use Illuminate\Http\Request;
 
 class CertificateController extends Controller
@@ -72,6 +73,12 @@ class CertificateController extends Controller
             'editable_fields' => ['conversion_place', 'officer_name'],
         ],
     ];
+
+    /** Read-only view of the type registry, for the verification service. */
+    public static function registry(): array
+    {
+        return self::MODULES;
+    }
 
     private function guard()
     {
@@ -215,6 +222,49 @@ class CertificateController extends Controller
             'type' => $type,
             'label' => $module['label'],
             'applications' => $applications,
+        ]);
+    }
+    /**
+     * Public: what a scanned QR code lands on. No login, rate limited by the
+     * route. Shows masked names only, and says plainly when a code is wrong.
+     */
+    public function verify(Request $request, string $type, int $id)
+    {
+        abort_unless(in_array($type, CertificateVerifier::types(), true), 404);
+
+        $result = CertificateVerifier::find($type, $id);
+        $given = $request->query('c');
+
+        return view('certificates.verify', [
+            'result' => $result,
+            'type' => $type,
+            'codeGiven' => filled($given),
+            'codeMatches' => $result ? CertificateVerifier::codeMatches($type, $id, $given) : false,
+            'reference' => null,
+        ]);
+    }
+
+    /**
+     * Public: the "Check a certificate" form on the homepage. Looks a record
+     * up by the reference printed on the paper, then shows the same page.
+     * Without the authenticity code this can only say "on record", never
+     * "verified".
+     */
+    public function verifyLookup(Request $request)
+    {
+        $type = (string) $request->query('type', 'nikah');
+        $reference = trim((string) $request->query('reference', ''));
+
+        abort_unless(in_array($type, CertificateVerifier::types(), true), 404);
+
+        $result = $reference !== '' ? CertificateVerifier::findByReference($type, $reference) : null;
+
+        return view('certificates.verify', [
+            'result' => $result,
+            'type' => $type,
+            'codeGiven' => false,
+            'codeMatches' => false,
+            'reference' => $reference,
         ]);
     }
 }

@@ -59,7 +59,7 @@
                 <h2 id="checkTitle">Check a certificate</h2>
                 <p>Enter the reference printed on the certificate to confirm it was issued by the Directorate.</p>
             </div>
-            <form id="uCheckForm" novalidate>
+            <form id="uCheckForm" method="get" action="{{ route('certificates.verify.lookup') }}">
                 <div>
                     <label for="cType">Type</label>
                     <select class="u-input" id="cType" name="type">
@@ -68,11 +68,12 @@
                         <option value="inheritance">Inheritance</option>
                         <option value="guardianship">Guardianship</option>
                         <option value="convert">Convert</option>
+                        <option value="consultancy">Consultation</option>
                     </select>
                 </div>
                 <div>
                     <label for="cCode">Reference number</label>
-                    <input class="u-input" id="cCode" name="code" type="text" placeholder="NK-UMSC0000000000"
+                    <input class="u-input" id="cCode" name="reference" type="text" required placeholder="NK-UMSC0000000000"
                         autocomplete="off">
                 </div>
                 <button type="submit" class="u-btn u-btn--solid">Check</button>
