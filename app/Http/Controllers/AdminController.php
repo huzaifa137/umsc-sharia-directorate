@@ -34,8 +34,9 @@ class AdminController extends Controller
     public function userProfile()
     {
         $admin = DB::table('users')->where('id', Session('LoggedAdmin'))->first();
+        $profile = \App\Services\ProfileData::for(\App\Services\AccessControl::user());
 
-        return view('admin.profile', compact(['admin']));
+        return view('admin.profile', compact(['admin', 'profile']));
     }
 
     public function userLogin()

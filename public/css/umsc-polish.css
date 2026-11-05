@@ -1,0 +1,81 @@
+/* ==========================================================================
+   UMSC Directorate of Sharia: final pass (Patch 12)
+   Accessibility, RTL, small screens, print. Loaded last in layouts/header.blade.php,
+   scoped to body.umsc-app. Nothing here changes layout or colour intent; it closes gaps.
+   ========================================================================== */
+
+/* ---------- Contrast: muted text and placeholders reach WCAG AA on the canvas ---------- */
+body.umsc-app { --muted: #566558; --idle: #4f5d55; }
+.umsc-app .form-control::placeholder, .umsc-app .ui-field::placeholder, .umsc-app input::placeholder { color: #708077; opacity: 1; }
+.umsc-app .ui-stat__label, .umsc-app .ui-crumbs { color: var(--muted); }
+
+/* ---------- Keyboard focus: one consistent, visible ring ---------- */
+.umsc-app a:focus-visible, .umsc-app button:focus-visible, .umsc-app summary:focus-visible,
+.umsc-app [tabindex]:focus-visible, .umsc-app .form-check-input:focus-visible,
+.umsc-app .page-link:focus-visible, .umsc-app .nav-link:focus-visible { outline: 3px solid #e6c93a; outline-offset: 2px; box-shadow: none; }
+.umsc-app .form-control:focus-visible, .umsc-app .form-select:focus-visible { outline: 0; }
+.umsc-app #main-content:focus { outline: none; }
+.umsc-app .layout-menu :focus-visible { outline-color: #e6c93a; outline-offset: -3px; }
+.umsc-app [id] { scroll-margin-top: 84px; }
+
+/* ---------- Screen-reader helper ---------- */
+.umsc-app .u-sr { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ---------- Touch devices: comfortable targets, no iOS input zoom ---------- */
+@media (pointer: coarse) {
+    .umsc-app .btn, .umsc-app .ui-btn, .umsc-app .s-iconbtn, .umsc-app .s-langbtn,
+    .umsc-app .dropdown-item, .umsc-app .page-link { min-height: 44px; }
+    .umsc-app .menu-link { min-height: 46px; }
+    .umsc-app .form-check-input { width: 1.3em; height: 1.3em; }
+}
+@media (max-width: 767.98px) {
+    .umsc-app .form-control, .umsc-app .form-select, .umsc-app .ui-field input,
+    .umsc-app .ui-field select, .umsc-app .ui-field textarea, .umsc-app .dataTables_filter input { font-size: 16px; }
+    .umsc-app .container-xxl, .umsc-app .container-fluid { padding-inline: 14px; }
+    .umsc-app .modal-dialog { margin: .75rem; }
+    .umsc-app .modal-footer { flex-wrap: wrap; gap: 8px; }
+    .umsc-app .modal-footer > .btn, .umsc-app .modal-footer > .ui-btn { flex: 1 1 140px; justify-content: center; }
+}
+
+/* ---------- Tables never push the page sideways ---------- */
+.umsc-app .card-datatable, .umsc-app .card > .dataTables_wrapper, .umsc-app .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.umsc-app .dataTables_wrapper .dataTables_paginate { overflow-x: auto; max-width: 100%; }
+.umsc-app img, .umsc-app video, .umsc-app canvas, .umsc-app svg { max-width: 100%; }
+.umsc-app .swal2-popup:not(.swal2-toast) { max-width: calc(100vw - 24px); }
+
+/* ---------- RTL / Arabic ---------- */
+[dir="rtl"] .umsc-app .bx-arrow-back, [dir="rtl"] .umsc-app .bx-left-arrow-alt, [dir="rtl"] .umsc-app .bx-right-arrow-alt,
+[dir="rtl"] .umsc-app .bx-chevron-left, [dir="rtl"] .umsc-app .bx-chevron-right,
+[dir="rtl"] .umsc-app .bx-log-out, [dir="rtl"] .umsc-app .bx-send { transform: scaleX(-1); }
+[dir="rtl"] .umsc-app .bx-send.rtl-flip { transform: scaleX(-1); }
+/* Values that are always left-to-right (IDs, references, phone numbers, emails) keep their order inside Arabic text */
+.umsc-app a[href^="mailto:"], .umsc-app a[href^="tel:"], .umsc-app input[type="email"], .umsc-app input[type="tel"],
+.umsc-app input[type="url"], .umsc-app .ui-id, .umsc-app .rec-ref, .umsc-app code { direction: ltr; unicode-bidi: isolate; }
+[dir="rtl"] .umsc-app input[type="email"], [dir="rtl"] .umsc-app input[type="tel"], [dir="rtl"] .umsc-app input[type="url"] { text-align: right; }
+[dir="rtl"] .umsc-app .table th, [dir="rtl"] .umsc-app .table td { text-align: right; }
+[dir="rtl"] .umsc-app .table .text-end { text-align: left !important; }
+[dir="rtl"] .umsc-app .dropdown-menu { text-align: right; }
+[dir="rtl"] .umsc-app .dataTables_filter, [dir="rtl"] .umsc-app .dataTables_paginate { float: left; }
+[dir="rtl"] .umsc-app .dataTables_length, [dir="rtl"] .umsc-app .dataTables_info { float: right; }
+
+/* ---------- Motion, contrast modes, print ---------- */
+@media (prefers-reduced-motion: reduce) {
+    .umsc-app *, .umsc-app *::before, .umsc-app *::after {
+        animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important; scroll-behavior: auto !important;
+    }
+    .umsc-app .bx-spin, .umsc-app .bx-spin::before { animation-duration: 1.6s !important; animation-iteration-count: infinite !important; }
+}
+@media (forced-colors: active) {
+    .umsc-app .ui-btn, .umsc-app .ui-status, .umsc-app .badge, .umsc-app .card { border: 1px solid CanvasText; }
+    .umsc-app .ui-status::before { background: CanvasText; }
+}
+@media print {
+    .umsc-app .layout-menu, .umsc-app .layout-navbar, .umsc-app .content-footer, .umsc-app .s-skip,
+    .umsc-app .layout-overlay, .umsc-app .drag-target, .umsc-app .s-pal { display: none !important; }
+    .umsc-app .layout-page { padding: 0 !important; }
+    .umsc-app .layout-content-navbar .layout-page, .umsc-app .content-wrapper { margin: 0 !important; }
+    .umsc-app, .umsc-app .content-wrapper { background: #fff !important; }
+    .umsc-app .card { break-inside: avoid; border-color: #ccc; }
+    .umsc-app a[href^="http"]:not(.ui-btn)::after { content: none; }
+}

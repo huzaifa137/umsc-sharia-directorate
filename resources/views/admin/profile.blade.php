@@ -1,236 +1,159 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- Content -->
+@php
+    // $admin is the raw users row (kept for backward compatibility); $profile is the prepared view data.
+    [$statusLabel, $statusTone] = \App\Services\ProfileData::status($admin->account_status ?? null);
+    $canLogs = \App\Services\AccessControl::can('activity_logs.view');
+    $fmt = fn ($d) => $d ? $d->format('j M Y, g:i A') : null;
+    $details = [
+        ['Full name', trim(($admin->firstname ?? '') . ' ' . ($admin->lastname ?? '')) ?: ($profile['name'] ?? '—')],
+        ['Username', $admin->username ?? '—'],
+        ['Email', $admin->email ?? '—'],
+        ['Phone', $admin->phonenumber ?? '—'],
+        ['Gender', $admin->gender ? ucfirst($admin->gender) : 'Not specified'],
+        ['Country', $admin->country ?? '—'],
+    ];
+@endphp
 
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="breadcrumb-wrapper py-3 mb-4">
-            <span class="text-muted fw-light">Admin / Profile
-        </h4>
-        <div class="row gy-4">
-            <!-- User Sidebar -->
-            <div class="col-md-12 col-lg-12 col-xl-12 order-1 order-md-0">
-                <!-- User Card -->
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <div class="user-avatar-section">
-                            <div class="d-flex flex-column align-items-center">
-                                <div class="avatar text-white rounded-circle d-flex align-items-center justify-content-center avatar-online fs-1"
-                                    style="width: 100px; height: 100px; font-weight: 600;background-color: #008F4C;">
-                                    {{ strtoupper(substr(Helper::logged_username(), 0, 1)) }}
-                                </div>
+<link rel="stylesheet" href="{{ asset('css/umsc-profile.css') }}">
 
-                                <div class="user-info text-center mt-1">
-                                    <h5 class="mb-2">{{ $admin->username }}</h5>
-                                    <span class="badge bg-label-secondary">Admin</span>
+<div class="container-xxl flex-grow-1 container-p-y prf">
+
+    <x-ui.page-header title="My profile"
+        subtitle="Your account, the area you work in, and your sign-in security."
+        :crumbs="['Dashboard' => url('/users/dashboard'), 'My profile' => null]" />
+
+    @if (!($profile['available'] ?? false))
+        <div class="card"><x-ui.empty-state icon="bx-user-x" title="Profile unavailable"
+            text="We could not load your account. Sign out and sign in again." /></div>
+    @else
+        <div class="prf-layout">
+
+            {{-- Identity --}}
+            <aside class="prf-id card" aria-label="Account summary">
+                <div class="prf-avatar" aria-hidden="true">{{ $profile['initial'] }}</div>
+                <h2 class="prf-name">{{ $profile['name'] }}</h2>
+                <p class="prf-role">{{ $profile['role'] }}</p>
+                <span class="ui-status ui-status--{{ $statusTone }}">{{ $statusLabel }}</span>
+
+                <dl class="prf-facts">
+                    <div><dt>Sees</dt><dd>{{ $profile['scope'] }}</dd></div>
+                    @if ($profile['jurisdiction'])
+                        <div><dt>Jurisdiction</dt><dd>{{ $profile['jurisdiction'] }}</dd></div>
+                    @endif
+                    @if ($profile['mosque'])
+                        <div><dt>Mosque</dt><dd>{{ $profile['mosque'] }}</dd></div>
+                    @endif
+                    <div><dt>Last sign-in</dt><dd>{{ $fmt($profile['last_login']) ?? 'This is your first session' }}</dd></div>
+                    @if ($profile['member_since'])
+                        <div><dt>Account created</dt><dd>{{ $profile['member_since']->format('j M Y') }}</dd></div>
+                    @endif
+                    @if ($profile['actions_30'] !== null)
+                        <div><dt>Actions, last 30 days</dt><dd>{{ number_format($profile['actions_30']) }}</dd></div>
+                    @endif
+                </dl>
+            </aside>
+
+            <div class="prf-main">
+
+                {{-- Details --}}
+                <section class="card" aria-labelledby="prf-details">
+                    <header class="card-header"><h2 id="prf-details" class="prf-h">Account details</h2></header>
+                    <dl class="prf-dl">
+                        @foreach ($details as [$label, $value])
+                            <div><dt>{{ $label }}</dt><dd>{{ $value }}</dd></div>
+                        @endforeach
+                    </dl>
+                    <p class="prf-note"><i class="bx bx-info-circle" aria-hidden="true"></i>
+                        To correct these details, ask the person who manages your account (your District Khadhi or the Directorate).</p>
+                </section>
+
+                {{-- Password --}}
+                <section class="card" id="security" aria-labelledby="prf-security">
+                    <header class="card-header">
+                        <h2 id="prf-security" class="prf-h">Password</h2>
+                    </header>
+
+                    @if ($profile['must_change'])
+                        <div class="prf-callout" role="status">
+                            <i class="bx bx-error-circle" aria-hidden="true"></i>
+                            <span>Your password was issued to you. Choose your own now so only you know it.</span>
+                        </div>
+                    @endif
+
+                    <form id="prfPassForm" class="prf-form" novalidate
+                        data-url="{{ route('admin.change.password') }}"
+                        data-must-change="{{ $profile['must_change'] ? '1' : '0' }}"
+                        data-dashboard="{{ url('/users/dashboard') }}">
+                        @csrf
+                        <div class="prf-form__fields">
+                            <div class="ui-field">
+                                <label for="newPassword">New password</label>
+                                <div class="prf-pw">
+                                    <input type="password" class="form-control" id="newPassword" name="newPassword"
+                                        autocomplete="new-password" aria-describedby="prfRules newPasswordErr" required>
+                                    <button type="button" class="prf-pw__toggle" data-toggle-pw="newPassword"
+                                        aria-label="Show password" aria-pressed="false"><i class="bx bx-show" aria-hidden="true"></i></button>
                                 </div>
+                                <p class="ui-err" id="newPasswordErr" role="alert" hidden></p>
+                            </div>
+                            <div class="ui-field">
+                                <label for="confirmPassword">Confirm new password</label>
+                                <div class="prf-pw">
+                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                        autocomplete="new-password" aria-describedby="confirmPasswordErr" required>
+                                    <button type="button" class="prf-pw__toggle" data-toggle-pw="confirmPassword"
+                                        aria-label="Show password" aria-pressed="false"><i class="bx bx-show" aria-hidden="true"></i></button>
+                                </div>
+                                <p class="ui-err" id="confirmPasswordErr" role="alert" hidden></p>
                             </div>
                         </div>
 
-                        <h5 class="border-bottom pb-2 mb-4">Information</h5>
-                        <div class="info-container">
-                            <div class="row">
-                                <!-- Column 1 -->
-                                <div class="col-md-6">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">
-                                            <strong>Full Name:</strong>
-                                            <span class="ms-2">{{ $admin->firstname }}
-                                                {{ $admin->lastname }}</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong>Username:</strong>
-                                            <span class="ms-2">{{ $admin->username }}</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong>Email:</strong>
-                                            <span class="ms-2">{{ $admin->email }}</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong>Phone:</strong>
-                                            <span class="ms-2">{{ $admin->phonenumber }}</span>
-                                        </li>
-                                    </ul>
-                                </div>
+                        <ul class="prf-rules" id="prfRules" aria-label="Password requirements">
+                            <li data-rule="len">At least 8 characters</li>
+                            <li data-rule="upper">One uppercase letter</li>
+                            <li data-rule="sym">One symbol, for example ! @ # $</li>
+                            <li data-rule="match">Both entries match</li>
+                        </ul>
 
-                                <!-- Column 2 -->
-                                <div class="col-md-6">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">
-                                            <strong>Country:</strong>
-                                            <span class="ms-2">{{ $admin->country }}</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong>Gender:</strong>
-                                            <span
-                                                class="ms-2 text-capitalize">{{ $admin->gender ?? 'Not specified' }}</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong>Role:</strong>
-                                            <span class="ms-2">Admin</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            @php
-                                                $statusMap = [
-                                                    0 => ['label' => 'Banned', 'class' => 'bg-label-danger'],
-                                                    8 => ['label' => 'Locked', 'class' => 'bg-label-dark'],
-                                                    9 => ['label' => 'Suspended', 'class' => 'bg-label-warning'],
-                                                    10 => ['label' => 'Active', 'class' => 'bg-label-success'],
-                                                ];
-                                                $status = $statusMap[$admin->account_status] ?? [
-                                                    'label' => 'Unknown',
-                                                    'class' => 'bg-label-secondary',
-                                                ];
-                                            @endphp
-                                            <strong>Status:</strong>
-                                            <span class="badge {{ $status['class'] }} ms-2">{{ $status['label'] }}</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <!-- Change Password Button -->
-                            <div class="d-flex justify-content-center mt-4">
-                                <a href="javascript:;" class="btn btn-outline-primary" data-bs-toggle="modal"
-                                    data-bs-target="#changePasswordModal">
-                                    <i class="bx bx-key me-1"></i>Change Password
-                                </a>
-                            </div>
-
-
-                            <!-- Change Password Modal -->
-                            <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog modal-md">
-                                    <div class="modal-content">
-
-                                        <!-- Modal Header with Icon and Close Button -->
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">
-                                                <i class="bx bx-key me-2"></i>Change Password
-                                            </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-
-                                        <!-- Modal Body -->
-                                        <div class="modal-body">
-                                            <form id="formChangePassword" method="POST">
-                                                @csrf
-                                                <div class="alert alert-warning" role="alert">
-                                                    <h6 class="alert-heading mb-1">Password Requirements
-                                                    </h6>
-                                                    <span>Minimum 8 characters, at least one uppercase,
-                                                        one symbol.</span>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="form-password-toggle col-12 mb-3">
-                                                        <label class="form-label" for="newPassword">New
-                                                            Password</label>
-                                                        <div class="input-group input-group-merge">
-                                                            <input type="password" class="form-control" id="newPassword"
-                                                                name="newPassword" placeholder="********" />
-                                                            <span class="input-group-text cursor-pointer"><i
-                                                                    class="bx bx-hide"></i></span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-password-toggle col-12 mb-3">
-                                                        <label class="form-label" for="confirmPassword">Confirm
-                                                            Password</label>
-                                                        <div class="input-group input-group-merge">
-                                                            <input type="password" class="form-control" id="confirmPassword"
-                                                                name="confirmPassword" placeholder="********" />
-                                                            <span class="input-group-text cursor-pointer"><i
-                                                                    class="bx bx-hide"></i></span>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Action Buttons -->
-                                                    <div class="col-12 text-end">
-                                                        <button type="submit" class="btn btn-primary me-2">
-                                                            <i class="bx bx-key me-1"></i>Change
-                                                            Password
-                                                        </button>
-
-                                                        <button type="button" class="btn btn-outline-danger"
-                                                            data-bs-dismiss="modal"><i
-                                                                class="bx bx-x me-1"></i>{{ __('ui.buttons.cancel') }}</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-
-                                            <div id="password-change-alert" class="mt-3"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
+                        <div class="prf-form__foot">
+                            <button type="submit" class="ui-btn ui-btn--primary" id="prfPassBtn" disabled>
+                                <i class="bx bx-key" aria-hidden="true"></i> Update password
+                            </button>
                         </div>
+                    </form>
+                </section>
 
-                    </div>
-                </div>
+                {{-- Activity --}}
+                <section class="card" aria-labelledby="prf-activity">
+                    <header class="card-header prf-head-row">
+                        <h2 id="prf-activity" class="prf-h">Your recent activity</h2>
+                        @if ($canLogs)
+                            <a class="ui-link" href="{{ route('activity-logs.index') }}">Full activity log</a>
+                        @endif
+                    </header>
 
+                    @forelse ($profile['recent'] as $log)
+                        @if ($loop->first)<ol class="prf-feed">@endif
+                        <li>
+                            <span class="ui-dot {{ $log->is_failure ? 'ui-dot--bad' : 'ui-dot--ok' }}" aria-hidden="true"></span>
+                            <div>
+                                <strong>{{ $log->action }}</strong>
+                                @if ($log->description)<span class="prf-feed__desc">{{ \Illuminate\Support\Str::limit($log->description, 110) }}</span>@endif
+                            </div>
+                            <time datetime="{{ $log->created_at->toIso8601String() }}" title="{{ $log->created_at->format('j M Y, g:i A') }}">{{ $log->created_at->diffForHumans() }}</time>
+                        </li>
+                        @if ($loop->last)</ol>@endif
+                    @empty
+                        <x-ui.empty-state icon="bx-history" title="No activity yet"
+                            text="Actions you take in the system, such as approving a record or changing a password, are listed here." />
+                    @endforelse
+                </section>
             </div>
-            <!--/ User Sidebar -->
-
         </div>
+    @endif
+</div>
 
-
-        <script>
-            $('#formChangePassword').on('submit', function(e) {
-                e.preventDefault();
-
-                let formData = {
-                    newPassword: $('#newPassword').val(),
-                    confirmPassword: $('#confirmPassword').val(),
-                    _token: '{{ csrf_token() }}'
-                };
-
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('admin.change.password') }}', // You will define this route
-                    data: formData,
-                    success: function(response) {
-                        $('#password-change-alert').html(`
-          <div class="alert alert-success">${response.message}</div>
-        `);
-                        $('#formChangePassword')[0].reset();
-                    },
-                    error: function(xhr) {
-                        let errorMsg = xhr.responseJSON?.message || 'An error occurred.';
-                        let errors = xhr.responseJSON?.errors;
-                        let details = '';
-                        if (errors) {
-                            Object.values(errors).forEach(errArray => {
-                                errArray.forEach(err => {
-                                    details += `<li>${err}</li>`;
-                                });
-                            });
-                        }
-                        $('#password-change-alert').html(`
-          <div class="alert alert-danger">
-            <strong>${errorMsg}</strong>
-            <ul class="mt-2">${details}</ul>
-          </div>
-        `);
-                    }
-                });
-            });
-
-            $('.form-password-toggle .input-group-text').on('click', function() {
-                const $icon = $(this).find('i');
-                const $input = $(this).closest('.input-group').find('input');
-
-                const currentType = $input.attr('type');
-                $input.attr('type', currentType === 'password' ? 'text' : 'password');
-
-                $icon.toggleClass('bx-hide bx-show');
-            });
-        </script>
-
-
-    </div>
-    </div>
-    <!-- / Content -->
+<script src="{{ asset('js/umsc-profile.js') }}" defer></script>
 @endsection

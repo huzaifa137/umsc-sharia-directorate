@@ -67,6 +67,13 @@
         el.appendChild(wrap);
     }
 
+    /** UMSC.esc(text) escapes text before it goes into innerHTML. */
+    function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+
     // Laravel flash messages: <div data-ui-flash="success" hidden>Saved</div>
     function flash() {
         document.querySelectorAll('[data-ui-flash]').forEach(function (n) {
@@ -76,5 +83,5 @@
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', flash); else flash();
 
-    window.UMSC = Object.assign(window.UMSC || {}, { toast: toast, confirm: confirm, busy: busy, skeleton: skeleton });
+    window.UMSC = Object.assign(window.UMSC || {}, { toast: toast, confirm: confirm, busy: busy, skeleton: skeleton, esc: esc });
 })();

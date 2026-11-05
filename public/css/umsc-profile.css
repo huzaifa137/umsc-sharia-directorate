@@ -1,0 +1,60 @@
+/* UMSC profile page (Patch 12). Loaded by resources/views/admin/profile.blade.php. */
+.prf-layout { display: grid; gap: 24px; align-items: start; grid-template-columns: 300px minmax(0, 1fr); }
+.prf-main { display: grid; gap: 24px; min-width: 0; }
+.prf-h { margin: 0; font: 600 1.05rem/1.3 var(--serif); color: var(--ink); }
+.prf-head-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+.prf-id { padding: 28px 24px; text-align: center; position: sticky; top: 88px; }
+.prf-avatar { width: 84px; height: 84px; margin: 0 auto 14px; display: grid; place-items: center; border-radius: 50%; background: var(--green-800, #0d4a2c); color: #fff; font: 600 2rem var(--serif); box-shadow: 0 0 0 4px #fff, 0 0 0 5px var(--gold, #c9a500); }
+.prf-name { margin: 0; font: 600 1.2rem/1.3 var(--serif); color: var(--ink); overflow-wrap: anywhere; }
+.prf-role { margin: 4px 0 12px; color: var(--muted); font-size: .9rem; }
+.prf-facts { margin: 22px 0 0; padding-top: 6px; border-top: 1px solid var(--line); text-align: start; }
+.prf-facts > div { padding: 11px 0; border-bottom: 1px solid var(--line-soft, #edf1ef); }
+.prf-facts > div:last-child { border-bottom: 0; }
+.prf-facts dt, .prf-dl dt { margin: 0 0 3px; font: 600 .68rem/1.2 var(--sans); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.prf-facts dd, .prf-dl dd { margin: 0; font-size: .92rem; color: var(--ink); overflow-wrap: anywhere; }
+
+.prf-dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; margin: 0; padding: 6px 1.4rem; }
+.prf-dl > div { padding: 14px 0; border-bottom: 1px solid var(--line-soft, #edf1ef); }
+.prf-dl > div:nth-last-child(-n+2) { border-bottom: 0; }
+.prf-note { display: flex; gap: 8px; align-items: flex-start; margin: 0; padding: 14px 1.4rem; border-top: 1px solid var(--line-soft, #edf1ef); font-size: .84rem; color: var(--muted); }
+.prf-note i { font-size: 1.1rem; margin-top: 1px; color: var(--green-700); }
+
+.prf-callout { display: flex; gap: 10px; align-items: center; margin: 1.1rem 1.4rem 0; padding: 12px 14px; border-radius: 6px; background: var(--warn-bg, #faf1d6); color: var(--warn, #8a6100); font-size: .9rem; }
+.prf-callout i { font-size: 1.25rem; }
+
+.prf-form { padding: 1.4rem; }
+.prf-form__fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 24px; }
+.prf-pw { position: relative; }
+.prf-pw .form-control { padding-inline-end: 44px; }
+.prf-pw__toggle { position: absolute; inset-block: 0; inset-inline-end: 0; width: 44px; border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 1.15rem; border-radius: 0 6px 6px 0; }
+[dir="rtl"] .prf-pw__toggle { border-radius: 6px 0 0 6px; }
+.prf-pw__toggle:hover { color: var(--green-700); }
+.prf-pw__toggle:focus-visible { outline-offset: -3px; }
+
+.prf-rules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 24px; margin: 18px 0 0; padding: 0; list-style: none; font-size: .86rem; color: var(--muted); }
+.prf-rules li { display: flex; align-items: center; gap: 9px; }
+.prf-rules li::before { content: ""; flex: none; width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #b4beb8; background: #fff; }
+.prf-rules li.is-met { color: var(--ok, #136a3b); }
+.prf-rules li.is-met::before { border-color: var(--ok, #136a3b); background: var(--ok, #136a3b) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.2 8.3l2.3 2.3 5-5.2' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat; }
+.prf-form__foot { display: flex; justify-content: flex-end; margin-top: 22px; }
+.prf-form__foot .ui-btn[disabled] { opacity: .5; cursor: not-allowed; }
+
+.prf-feed { margin: 0; padding: 6px 1.4rem; list-style: none; }
+.prf-feed li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--line-soft, #edf1ef); font-size: .9rem; }
+.prf-feed li:last-child { border-bottom: 0; }
+.prf-feed__desc { display: block; margin-top: 2px; color: var(--muted); font-size: .84rem; }
+.prf-feed time { color: var(--muted); font-size: .8rem; white-space: nowrap; }
+
+@media (max-width: 991.98px) {
+    .prf-layout { grid-template-columns: minmax(0, 1fr); }
+    .prf-id { position: static; }
+}
+@media (max-width: 640px) {
+    .prf-dl, .prf-form__fields, .prf-rules { grid-template-columns: minmax(0, 1fr); }
+    .prf-dl > div:nth-last-child(2) { border-bottom: 1px solid var(--line-soft, #edf1ef); }
+    .prf-form__foot .ui-btn { width: 100%; justify-content: center; }
+    .prf-feed li { grid-template-columns: auto minmax(0, 1fr); }
+    .prf-feed time { grid-column: 2; }
+}
+@media print { .prf-form, .prf-callout { display: none; } .prf-id { position: static; } }

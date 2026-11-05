@@ -1,0 +1,59 @@
+/* UMSC error pages (Patch 12). Standalone: no dependency on the app shell. */
+:root {
+    --g9: #0a3320; --g7: #136a3b; --g8: #0d4a2c; --gold: #c9a500;
+    --ink: #14241b; --text: #2c3b33; --muted: #586659; --line: #e1e6e3; --paper: #f3f5f4;
+    --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --arabic: 'Amiri', 'Noto Naskh Arabic', serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+    margin: 0; min-height: 100vh; min-height: 100dvh; color: var(--text); background: var(--paper);
+    font: 400 1rem/1.6 var(--sans); -webkit-font-smoothing: antialiased;
+}
+[dir="rtl"] body { font-family: var(--arabic), var(--sans); font-size: 1.08rem; }
+
+.err {
+    min-height: 100vh; min-height: 100dvh; display: grid; grid-template-rows: auto 1fr; justify-items: center;
+    padding: clamp(20px, 4vw, 40px) 20px 56px;
+    background: linear-gradient(180deg, var(--g9) 0, var(--g9) 118px, var(--paper) 118px);
+}
+.err-brand {
+    justify-self: stretch; max-width: 960px; width: 100%; margin: 0 auto; display: flex; align-items: center; gap: 14px;
+    color: #fff; text-decoration: none; font: 600 1.02rem/1.2 var(--serif);
+}
+.err-brand img { border-radius: 50%; background: #fff; padding: 2px; }
+.err-brand small { display: block; margin-top: 3px; font: 400 .74rem var(--sans); letter-spacing: .06em; text-transform: uppercase; color: rgba(255, 255, 255, .72); }
+
+.err-card {
+    align-self: start; width: 100%; max-width: 620px; margin-top: 40px; padding: clamp(28px, 5vw, 52px);
+    background: #fff; border: 1px solid var(--line); border-radius: 8px; border-top: 3px solid var(--gold);
+    box-shadow: 0 1px 2px rgba(15, 36, 27, .05), 0 22px 44px -26px rgba(15, 36, 27, .28);
+}
+.err-code {
+    margin: 0 0 6px; font: 600 clamp(3.4rem, 11vw, 5.4rem)/1 var(--serif); letter-spacing: -.03em;
+    color: var(--g7); font-variant-numeric: lining-nums; direction: ltr; text-align: start;
+}
+.err-card h1 { margin: 0 0 12px; font: 600 clamp(1.35rem, 3.2vw, 1.75rem)/1.25 var(--serif); color: var(--ink); }
+[dir="rtl"] .err-card h1 { font-family: var(--arabic); }
+[dir="rtl"] .err-code { text-align: right; }
+.err-text { margin: 0 0 28px; max-width: 52ch; color: var(--muted); }
+
+.err-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.err-btn {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 20px;
+    border: 1.5px solid #cfd6d2; border-radius: 6px; background: #fff; color: var(--ink);
+    font: 600 .92rem/1 var(--sans); text-decoration: none; transition: border-color .15s, background .15s;
+}
+.err-btn:hover { border-color: var(--g7); background: #f8faf9; }
+.err-btn--primary { background: var(--g7); border-color: var(--g7); color: #fff; }
+.err-btn--primary:hover { background: var(--g8); border-color: var(--g8); }
+.err-btn:focus-visible, .err-brand:focus-visible { outline: 3px solid #e6c93a; outline-offset: 2px; }
+
+.err-ref { margin: 26px 0 0; padding-top: 16px; border-top: 1px solid var(--line); font-size: .84rem; color: var(--muted); }
+.err-ref code { font: 500 .84rem ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--ink); user-select: all; }
+
+@media (max-width: 480px) { .err-btn { flex: 1 1 100%; } }
+@media (prefers-reduced-motion: reduce) { .err-btn { transition: none; } }
+@media (forced-colors: active) { .err-card, .err-btn { border: 1px solid CanvasText; } }

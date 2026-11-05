@@ -39,7 +39,7 @@
         <div class="u-wrap">
             <div>
                 <div class="u-bismillah">بسم الله الرحمن الرحيم</div>
-                <h1>Marriage, family and inheritance records for Uganda's Muslims.</h1>
+                <h1>Marriage, family and inheritance, divorce records for Uganda's Muslims.</h1>
                 <p class="u-lede">The Directorate of Sharia keeps the national register of Nikah, divorce, inheritance,
                     guardianship and conversion, and publishes rulings for anyone who needs guidance. Mosques,
                     counties, districts and regions all work from the same record.</p>
