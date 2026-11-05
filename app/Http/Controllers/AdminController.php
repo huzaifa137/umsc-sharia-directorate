@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Mail;
 
 use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\password_reset_table;
@@ -24,11 +25,33 @@ use App\Services\DashboardData;
 
 class AdminController extends Controller
 {
-    public function adminDashboard()
+    public function adminDashboard(Request $request)
     {
         // All numbers are built in DashboardData, which respects the viewer's
         // role permissions and data scope (self / county / district / region / global).
-        return view('admin.dashboard', ['dash' => DashboardData::build()]);
+        // The first payload is embedded in the page (no loading flash); the filters,
+        // Refresh button and auto-refresh then call dashboardData() for fresh JSON.
+        $payload = DashboardData::payload($request->query('period'), $request->query('service'));
+
+        return view('admin.dashboard', [
+            'payload' => $payload,
+            'dataUrl' => route('user.dashboard.data'),
+        ]);
+    }
+
+    public function dashboardData(Request $request): JsonResponse
+    {
+        try {
+            return response()->json(DashboardData::payload(
+                $request->query('period'),
+                $request->query('service'),
+                $request->boolean('fresh')
+            ));
+        } catch (\Throwable $e) {
+            report($e);
+
+            return response()->json(['message' => 'Unable to load dashboard data.'], 500);
+        }
     }
 
     public function userProfile()

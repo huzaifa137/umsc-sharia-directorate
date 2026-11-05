@@ -68,6 +68,7 @@ Route::controller(AdminController::class)->group(function () {
             Route::get('add-admin', 'addAdmin')->name('add.admin');
             Route::get('all-admins', 'addAdmins')->name('all.admins');
             Route::get('dashboard', 'adminDashboard')->name('user.dashboard');
+            Route::get('dashboard/data', 'dashboardData')->name('user.dashboard.data');
             Route::get('login', 'userLogin')->name('user.login');
             Route::get('profile', 'userProfile')->name('user.profile');
             Route::get('/forgot-password', 'forgotPassword')->name('forgot-password');
